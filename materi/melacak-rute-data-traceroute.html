@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melacak Rute Data (Traceroute) - Kryzna Learn</title>
+    <meta name="description" content="Panduan menggunakan traceroute/tracert untuk melacak jalur paket data dan membaca hasil output." />
+    <style>
+        /* Gaya Dasar & Reset - Disamakan dengan halaman utama Kryzna Learn */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+
+        /* Navigasi Atas - Menggunakan tanda ../ agar aman melompat keluar folder */
+        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+
+        /* Wadah Konten Materi */
+        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: #0284c7; }
+        
+        /* Tipografi Teks */
+        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .highlight { background-color: #e0f2fe; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: #0369a1; }
+        pre { background:#f1f5f9; padding:0.8rem; border-radius:6px; overflow:auto; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Atas yang Senada dengan Halaman Utama -->
+    <header>
+        <h1>Kryzna Learn</h1>
+        <nav>
+            <a href="../index.html#tutorial">Tutorial</a>
+            <a href="../index.html#tentang">Tentang</a>
+        </nav>
+    </header>
+
+    <!-- Tempat Isi Konten Edukasi -->
+    <main class="content-container">
+        <!-- Menggunakan ../index.html karena file berada di dalam folder materi -->
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        
+        <h1>6. Melacak Rute Perjalanan Paket Data (Traceroute)</h1>
+        <p>Pernahkah Anda penasaran bagaimana data internet dari perangkat Anda sampai ke server tujuan? <strong>Traceroute</strong> (Windows: <code>tracert</code>) membantu memetakan setiap "hop" atau lompatan router yang dilalui paket data.</p>
+        
+        <h3>Fungsi Utama Traceroute</h3>
+        <ul>
+            <li>Mengetahui jalur yang dilalui paket dari sumber ke tujuan.</li>
+            <li>Mendeteksi titik latensi tinggi atau kegagalan rute.</li>
+            <li>Membantu analisis masalah jaringan antara ISP dan server tujuan.</li>
+        </ul>
+
+        <h3>Cara Menjalankannya</h3>
+        <ol>
+            <li>Buka Command Prompt (Windows) atau Terminal (Mac/Linux).</li>
+            <li>Windows: jalankan <span class="highlight">tracert google.com</span>.</li>
+            <li>Mac/Linux: jalankan <span class="highlight">traceroute google.com</span> (bisa perlu instal paket traceroute pada beberapa distribusi).</li>
+        </ol>
+
+        <h3>Contoh Output (singkat)</h3>
+        <pre>
+1  192.168.1.1  1 ms  1 ms  1 ms
+2  10.10.10.1   10 ms  9 ms  11 ms
+3  203.0.113.5  30 ms  28 ms  31 ms
+...
+        </pre>
+
+        <h3>Cara Membaca Hasil</h3>
+        <ul>
+            <li><strong>Kolom pertama:</strong> nomor hop (1, 2, 3 ...).</li>
+            <li><strong>Kolom waktu:</strong> RTT (round-trip time) dalam ms, biasanya tiga nilai per hop.</li>
+            <li><strong>Kolom akhir:</strong> alamat IP atau nama host router di hop tersebut.</li>
+            <li><strong>Tanda * (asterisk):</strong> menandakan timeout atau tidak ada balasan dari hop tersebut.</li>
+        </ul>
+
+        <h3>Interpretasi & Troubleshooting</h3>
+        <ul>
+            <li>Lonjakan waktu pada satu hop bisa menandakan masalah pada router tersebut atau rute di sekitarnya.</li>
+            <li>Timeout (*) tidak selalu berarti gangguan — beberapa router memblok ICMP TTL-expired atau memberikan prioritas rendah pada traceroute.</li>
+            <li>Jika hop awal (gateway lokal) tidak merespon, periksa koneksi lokal Anda (router/modem).</li>
+        </ul>
+
+        <h3>Tips Praktis</h3>
+        <ul>
+            <li>Jalankan traceroute ke beberapa host (mis. google.com, cloudflare.com) untuk membandingkan rute.</li>
+            <li>Gabungkan dengan <code>ping</code> untuk memeriksa latensi stabil.</li>
+            <li>Gunakan opsi tambahan (mis. <code>-d</code> untuk menonaktifkan reverse DNS lookup pada traceroute) untuk mempercepat output.</li>
+        </ul>
+    </main>
+
+</body>
+</html>
