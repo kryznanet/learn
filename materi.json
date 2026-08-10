@@ -40,5 +40,11 @@
     "deskripsiSingkat": "Memahami struktur alamat IPv4, kelas jaringan (A, B, C), subnet mask, dan konsep dasar pengalamatan logika pada jaringan.",
     "linkHalaman": "materi/mengenal-ipv4.html",
     "kategori": "Dasar"
+  },
+  {
+    "judul": "Cara Cek IP di Windows 11",
+    "deskripsiSingkat": "Panduan praktis mengecek alamat IP di Windows 11 melalui Settings, Command Prompt (CMD), dan PowerShell secara cepat.",
+    "linkHalaman": "materi/cara-cek-ip-windows11.html",
+    "kategori": "Tools"
   }
 ]
