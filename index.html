@@ -142,7 +142,10 @@
         // Memuat data dari data.json secara dinamis
         function loadMateri() {
             fetch('data.json?v=' + new Date().getTime())
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) throw new Error('Gagal memuat file data.json');
+                    return res.json();
+                })
                 .then(data => {
                     dataMateriGlobal = data;
                     tampilkanKonten(dataMateriGlobal);
