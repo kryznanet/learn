@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengenal MAC Address - Kryzna Learn</title>
+    <style>
+        /* Gaya Dasar & Reset - Disamakan dengan halaman utama Kryzna Learn */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+
+        /* Navigasi Atas - Menggunakan tanda ../ agar aman melompat keluar folder */
+        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+
+        /* Wadah Konten Materi */
+        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: #0284c7; }
+        
+        /* Tipografi Teks */
+        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .highlight { background-color: #e0f2fe; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: #0369a1; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Atas yang Senada dengan Halaman Utama -->
+    <header>
+        <h1>Kryzna Learn</h1>
+        <nav>
+            <a href="../index.html#tutorial">Tutorial</a>
+            <a href="../index.html#tentang">Tentang</a>
+        </nav>
+    </header>
+
+    <!-- Tempat Isi Konten Edukasi -->
+    <main class="content-container">
+        <!-- Menggunakan ../index.html karena file berada di dalam folder materi -->
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        
+        <h1>5. Mengenal MAC Address (Alamat Fisik Perangkat)</h1>
+        <p><strong>Media Access Control Address (MAC Address)</strong> adalah identitas fisik unik sepanjang 48-bit yang ditanamkan secara permanen pada kartu jaringan atau <em>Network Interface Card</em> suatu perangkat.</p>
+        
+        <h3>Apa Bedanya dengan IP Address?</h3>
+        <ul>
+            <li><strong>IP Address (Alamat Logis):</strong> Bersifat dinamis atau bisa berubah tergantung jaringan tempat perangkat terhubung.</li>
+            <li><strong>MAC Address (Alamat Fisik):</strong> Umumnya bersifat statis dan unik untuk setiap perangkat, terikat pada hardware.</li>
+        </ul>
+
+        <h3>Struktur Penulisan MAC Address:</h3>
+        <p>MAC Address ditulis dalam 12 digit heksadesimal yang dikelompokkan menjadi 6 pasangan: contoh <span class="highlight">00:1A:2B:3C:4D:5E</span>.</p>
+        <ul>
+            <li><strong>OUI (3 blok pertama):</strong> Organizationally Unique Identifier — menunjukkan vendor pembuat perangkat.</li>
+            <li><strong>3 blok terakhir:</strong> Nomor seri atau identitas unik perangkat tersebut.</li>
+        </ul>
+
+        <h3>Cara Cek MAC Address di Windows:</h3>
+        <ol>
+            <li>Buka Command Prompt (CMD).</li>
+            <li>Ketik <span class="highlight">getmac</span> untuk daftar cepat atau <span class="highlight">ipconfig /all</span> untuk detail (lihat baris Physical Address).</li>
+        </ol>
+
+        <h3>Tips Keamanan & Praktis</h3>
+        <ul>
+            <li>Beberapa jaringan (mis. kantor) menggunakan MAC filtering — perangkat yang tidak terdaftar tidak akan mendapatkan akses.</li>
+            <li>MAC Address dapat dipalsukan (spoofing) pada sistem operasi tertentu untuk kebutuhan troubleshooting atau privacy.</li>
+        </ul>
+    </main>
+
+</body>
+</html>
