@@ -9,4 +9,4 @@ Website dapat langsung Anda akses dan baca melalui link berikut:
 👉 **[Kryzna Learn](https://krisnasatriaap.github.io/kryznalearn/)**
 
 ---
-Dibuat dengan 💻 oleh **Krisna Satria**. Hak Cipta © 2026 Kryzna Learn.
+Dibuat dengan 💻 oleh **Kryzna**. Hak Cipta © 2026 Kryzna Learn.
