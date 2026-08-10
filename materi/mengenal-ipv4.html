@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengenal IPv4 — Kryzna Learn</title>
+    <style>
+        /* Menggunakan style yang konsisten dengan file materi lainnya */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        .content-container { max-width: 900px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; }
+        h1 { color: #1e3a8a; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; }
+        .back-link { display:inline-block; margin-bottom:1rem; color:#0ea5e9; text-decoration:none; font-weight:600; }
+        pre { background:#f1f5f9; padding:1rem; border-radius:6px; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        <h1>Mengenal IPv4</h1>
+        <p>IPv4 (Internet Protocol version 4) adalah protokol yang digunakan untuk memberikan alamat unik kepada setiap perangkat di jaringan internet.</p>
+
+        <h3>Struktur IPv4</h3>
+        <p>IPv4 terdiri dari 32-bit yang dibagi menjadi 4 oktet (kelompok 8-bit). Setiap oktet dipisahkan oleh titik dan memiliki nilai antara 0 sampai 255.</p>
+        <pre>Contoh: 192.168.1.1</pre>
+
+        <h3>Kelas IPv4</h3>
+        <ul>
+            <li><strong>Kelas A:</strong> Untuk jaringan skala besar (0-127).</li>
+            <li><strong>Kelas B:</strong> Untuk jaringan skala menengah (128-191).</li>
+            <li><strong>Kelas C:</strong> Untuk jaringan skala kecil/rumahan (192-223).</li>
+        </ul>
+
+        <h3>Subnet Mask</h3>
+        <p>Subnet mask digunakan untuk membedakan bagian network ID dan host ID. Contoh paling umum untuk kelas C adalah <code>255.255.255.0</code>.</p>
+    </div>
+</body>
+</html>
