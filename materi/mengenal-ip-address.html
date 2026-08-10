@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mengenal IP Address — Kryzna Learn</title>
+    <style>
+        /* Gaya Dasar & Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+
+        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow:[...] }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+
+        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
+        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        .highlight { background-color: #e0f2fe; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: #0369a1; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kryzna Learn</h1>
+        <nav>
+            <a href="../index.html#tutorial">Tutorial</a>
+            <a href="../index.html#tentang">Tentang</a>
+        </nav>
+    </header>
+
+    <main class="content-container">
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        <h1>1. Mengenal IP Address secara Mendalam</h1>
+        <p><strong>Internet Protocol Address (IP Address)</strong> adalah identitas angka unik yang dimiliki oleh setiap perangkat (komputer, HP, router) agar bisa saling berkomunikasi di dalam jaringan.</p>
+
+        <h3>Fungsi Utama IP Address:</h3>
+        <ul>
+            <li><strong>Alamat Identifikasi Alat (Host):</strong> Mengetahui identitas spesifik suatu perangkat di jaringan.</li>
+            <li><strong>Alamat Lokasi Jaringan:</strong> Menunjukkan rute atau jalur mana yang harus dilewati data agar sampai ke perangkat tujuan.</li>
+        </ul>
+
+        <h3>Perbedaan IPv4 vs IPv6:</h3>
+        <ul>
+            <li><strong>IPv4:</strong> Terdiri dari 32-bit angka desimal yang dipisahkan titik. Contoh: <span class="highlight">192.168.1.1</span>. Kapasitasnya terbatas sekitar 4,3 miliar alamat.</li>
+            <li><strong>IPv6:</strong> Generasi baru dengan 128-bit kombinasi angka dan huruf (heksadesimal) dipisahkan titik dua. Contoh: <span class="highlight">2001:db8::ff00:42:8329</span>.</li>
+        </ul>
+
+        <h3>Cara Cek IP Address Sendiri (Windows):</h3>
+        <ol>
+            <li>Tekan tombol kombinasi <span class="highlight">Windows + R</span> di keyboard Anda, ketik <span class="highlight">cmd</span>, lalu tekan Enter.</li>
+            <li>Ketik perintah <span class="highlight">ipconfig</span> di dalam Command Prompt, lalu tekan Enter.</li>
+            <li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li>
+        </ol>
+    </main>
+
+</body>
+</html>
