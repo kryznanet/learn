@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Diagram urutan warna kabel UTP T568A dan T568B">
+  <style>
+    .bg { fill: #ffffff; }
+    .label { font-family: Arial, Helvetica, sans-serif; font-size:14px; fill:#0f172a; }
+    .title { font-family: Arial, Helvetica, sans-serif; font-size:18px; fill:#0f172a; font-weight:700; }
+    .t568 { font-size:13px; fill:#065f46; font-weight:700; }
+  </style>
+  <rect width="1200" height="300" class="bg"/>
+  <text x="40" y="30" class="title">UTP pinout — RJ45 front view (clip down)</text>
+
+  <text x="40" y="60" class="t568">T568A (pin 1 → 8)</text>
+
+  <g transform="translate(40,80)">
+    <text x="0" y="0" class="label">1: Putih - Hijau</text>
+    <text x="200" y="0" class="label">2: Hijau</text>
+    <text x="400" y="0" class="label">3: Putih - Oranye</text>
+    <text x="600" y="0" class="label">4: Biru</text>
+    <text x="800" y="0" class="label">5: Putih - Biru</text>
+    <text x="1000" y="0" class="label">6: Oranye</text>
+    <text x="200" y="28" class="label">7: Putih - Cokelat</text>
+    <text x="400" y="28" class="label">8: Cokelat</text>
+  </g>
+
+  <g transform="translate(40,120)">
+    <text x="0" y="0" class="t568">T568A</text>
+    <g transform="translate(0,10)">
+      <rect x="0" width="60" height="20" fill="#bbf7d0"/>
+      <rect x="70" width="60" height="20" fill="#16a34a"/>
+      <rect x="140" width="60" height="20" fill="#ffd7b5"/>
+      <rect x="210" width="60" height="20" fill="#60a5fa"/>
+      <rect x="280" width="60" height="20" fill="#bfdbfe"/>
+      <rect x="350" width="60" height="20" fill="#fb923c"/>
+      <rect x="420" width="60" height="20" fill="#f3e8ff"/>
+      <rect x="490" width="60" height="20" fill="#7c2d12"/>
+      <text x="560" y="15" class="label">1 2 3 4 5 6 7 8 (left → right)</text>
+    </g>
+  </g>
+
+  <g transform="translate(40,180)">
+    <text x="0" y="0" class="t568">T568B</text>
+    <g transform="translate(0,10)">
+      <rect x="0" width="60" height="20" fill="#ffd7b5"/>
+      <rect x="70" width="60" height="20" fill="#fb923c"/>
+      <rect x="140" width="60" height="20" fill="#bbf7d0"/>
+      <rect x="210" width="60" height="20" fill="#60a5fa"/>
+      <rect x="280" width="60" height="20" fill="#bfdbfe"/>
+      <rect x="350" width="60" height="20" fill="#16a34a"/>
+      <rect x="420" width="60" height="20" fill="#f3e8ff"/>
+      <rect x="490" width="60" height="20" fill="#7c2d12"/>
+      <text x="560" y="15" class="label">1 2 3 4 5 6 7 8 (left → right)</text>
+    </g>
+  </g>
+</svg>
