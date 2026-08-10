@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mengenal IP Address — Kryzna Learn</title>
     <style>
-        /* Variabel Warna Tema (Mendukung Dark Mode) */
         :root {
             --bg-body: #f4f7f6;
             --bg-card: #ffffff;
@@ -26,13 +25,16 @@
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
-        /* Gaya Dasar & Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
         body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
 
         /* Header */
         header { background-color: var(--header-bg); color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-        header h1 { font-size: 1.5rem; }
+        
+        /* Memperbaiki warna teks Logo Kryzna Learn agar selalu putih terang & jelas */
+        header h1 { font-size: 1.5rem; color: #ffffff !important; }
+        header a { color: #ffffff !important; text-decoration: none; }
+
         .nav-right { display: flex; align-items: center; gap: 1.5rem; }
         nav { display: flex; gap: 1.5rem; }
         nav a { color: #fff; text-decoration: none; font-weight: 500; cursor: pointer; }
@@ -42,7 +44,7 @@
         .theme-toggle { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #fff; padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         .theme-toggle:hover { background-color: rgba(255,255,255,0.2); }
 
-        /* Layout Utama Dua Kolom (Sidebar & Konten) */
+        /* Layout Utama Dua Kolom */
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
         .main-layout { display: flex; gap: 2rem; align-items: flex-start; }
 
@@ -51,10 +53,10 @@
         .sidebar-group h3 { margin-bottom: 0.8rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
         .sidebar-group ul { list-style: none; }
         .sidebar-group li { margin-bottom: 0.6rem; }
-        .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9img; display: block; }
+        .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; }
         .sidebar-group a:hover { color: #0ea5e9; font-weight: bold; }
 
-        /* Konten Artikel Utama di Kanan */
+        /* Konten Artikel Kanan */
         .content-container { flex: 1; background: var(--bg-card); padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); }
         .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
         .back-link:hover { text-decoration: underline; }
@@ -67,7 +69,6 @@
         p { color: var(--text-muted); margin-bottom: 1rem; }
         .highlight { background-color: var(--bg-body); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: var(--border-card); border: 1px solid var(--border-card); }
 
-        /* Responsif untuk Mobile */
         @media (max-width: 768px) { 
             .main-layout { flex-direction: column; } 
             .sidebar { width: 100%; position: relative; top: 0; } 
@@ -76,9 +77,9 @@
 </head>
 <body>
 
-    <!-- Header Disamakan dengan Index -->
+    <!-- Header dengan Logo yang Pasti Kelihatan Terang/Gelap -->
     <header>
-        <a href="../index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
+        <a href="../index.html"><h1>Kryzna Learn</h1></a>
         <div class="nav-right">
             <nav>
                 <a href="../index.html">Materi</a>
@@ -88,22 +89,17 @@
         </div>
     </header>
 
-    <!-- Layout Utama Dua Kolom -->
     <main class="main-layout container">
         
-        <!-- Sidebar Kiri (Daftar Materi & Tutorial dari data.json) -->
+        <!-- Sidebar Kiri -->
         <aside class="sidebar">
             <div class="sidebar-group">
                 <h3>Daftar Materi</h3>
-                <ul id="sidebar-materi">
-                    <!-- Diisi otomatis oleh JavaScript -->
-                </ul>
+                <ul id="sidebar-materi"></ul>
             </div>
             <div class="sidebar-group">
                 <h3>Daftar Tutorial</h3>
-                <ul id="sidebar-tutorial">
-                    <!-- Diisi otomatis oleh JavaScript -->
-                </ul>
+                <ul id="sidebar-tutorial"></ul>
             </div>
         </aside>
 
@@ -136,7 +132,6 @@
     </main>
 
     <script>
-        // Inisialisasi Tema Gelap/Terang saat halaman dimuat
         document.addEventListener('DOMContentLoaded', function() {
             const savedTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -144,7 +139,7 @@
             loadSidebarData();
         });
 
-        // Memuat data sidebar secara dinamis dari file data.json di root folder
+        // Memuat data sidebar dengan path yang aman dari subfolder
         function loadSidebarData() {
             fetch('../data.json?v=' + new Date().getTime())
                 .then(res => res.json())
@@ -155,18 +150,27 @@
                     const listMateri = data.filter(item => (item.kategori || '').toLowerCase() === 'materi');
                     const listTutorial = data.filter(item => (item.kategori || '').toLowerCase() === 'tutorial');
 
+                    // Mengatasi duplikasi path dengan memastikan link mengarah dari root repository
                     sidebarMateri.innerHTML = listMateri.length > 0 
-                        ? listMateri.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                        ? listMateri.map(item => {
+                            let cleanLink = item.linkHalaman.replace(/^\.\//, '').replace(/^materi\//, '').replace(/^tutorial\//, '');
+                            // Tentukan path folder berdasarkan kategori
+                            let folder = item.kategori.toLowerCase() === 'tutorial' ? 'tutorial/' : 'materi/';
+                            return `<li><a href="../${folder}${cleanLink}">• ${item.judul}</a></li>`;
+                          }).join('')
                         : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada materi</li>';
 
                     sidebarTutorial.innerHTML = listTutorial.length > 0 
-                        ? listTutorial.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                        ? listTutorial.map(item => {
+                            let cleanLink = item.linkHalaman.replace(/^\.\//, '').replace(/^materi\//, '').replace(/^tutorial\//, '');
+                            let folder = item.kategori.toLowerCase() === 'tutorial' ? 'tutorial/' : 'materi/';
+                            return `<li><a href="../${folder}${cleanLink}">• ${item.judul}</a></li>`;
+                          }).join('')
                         : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada tutorial</li>';
                 })
                 .catch(err => console.error('Gagal memuat sidebar:', err));
         }
 
-        // Fungsi Toggle Dark Mode yang tersinkronisasi dengan localStorage
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
