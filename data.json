@@ -2,49 +2,49 @@
   {
     "judul": "Mengenal IP Address",
     "deskripsiSingkat": "Penjelasan lengkap mengenai pengertian, fungsi, perbedaan IPv4 & IPv6, serta cara mengecek IP perangkat Anda.",
-    "linkHalaman": "mengenal-ip-address.html",
+    "linkHalaman": "materi/mengenal-ip-address.html",
     "kategori": "materi"
   },
   {
     "judul": "Cara Tes Koneksi (Ping)",
     "deskripsiSingkat": "Pelajari perintah dasar CMD untuk menganalisis kualitas jaringan internet, membaca status time out, dan delay ping.",
-    "linkHalaman": "cara-tes-koneksi-ping.html",
+    "linkHalaman": "tutorial/cara-tes-koneksi-ping.html",
     "kategori": "Tutorial"
   },
   {
     "judul": "Urutan Kabel LAN (Crimping)",
     "deskripsiSingkat": "Panduan teknis langkah demi langkah menyusun warna kabel standar Straight dan Cross menggunakan tang crimping.",
-    "linkHalaman": "urutan-kabel-lan-crimping.html",
+    "linkHalaman": "materi/urutan-kabel-lan-crimping.html",
     "kategori": "Materi"
   },
   {
     "judul": "Perbedaan Router dan Switch",
     "deskripsiSingkat": "Pahami perbedaan fungsi kedua alat jaringan ini dalam membagikan internet dan menghubungkan komputer lokal.",
-    "linkHalaman": "perbedaan-router-dan-switch.html",
+    "linkHalaman": "materi/perbedaan-router-dan-switch.html",
     "kategori": "Materi"
   },
   {
     "judul": "Mengenal MAC Address",
     "deskripsiSingkat": "Materi tentang alamat fisik permanen pada perangkat keras jaringan yang membedakannya dengan IP Address.",
-    "linkHalaman": "mengenal-mac-address.html",
+    "linkHalaman": "materi/mengenal-mac-address.html",
     "kategori": "Materi"
   },
   {
     "judul": "Melacak Rute Data (Traceroute)",
     "deskripsiSingkat": "Tutorial menggunakan perintah tracert untuk melacak jalur perjalanan paket data internet Anda ke server tujuan.",
-    "linkHalaman": "cara-melacak-rute-data-traceroute.html",
+    "linkHalaman": "tutorial/cara-melacak-rute-data-traceroute.html",
     "kategori": "Tutorial"
   },
   {
     "judul": "Mengenal IPv4",
     "deskripsiSingkat": "Memahami struktur alamat IPv4, kelas jaringan (A, B, C), subnet mask, dan konsep dasar pengalamatan logika pada jaringan.",
-    "linkHalaman": "mengenal-ipv4.html",
+    "linkHalaman": "materi/mengenal-ipv4.html",
     "kategori": "Materi"
   },
   {
     "judul": "Cara Cek IP di Windows 11",
     "deskripsiSingkat": "Panduan praktis mengecek alamat IP di Windows 11 melalui Settings, Command Prompt (CMD), dan PowerShell secara cepat.",
-    "linkHalaman": "cara-cek-ip-windows11.html",
+    "linkHalaman": "tutorial/cara-cek-ip-windows11.html",
     "kategori": "Tutorial"
   }
 ]
