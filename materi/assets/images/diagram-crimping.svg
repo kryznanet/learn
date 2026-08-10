@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320" role="img" aria-label="Diagram proses crimping RJ45">
+  <style>
+    .bg{fill:#ffffff}
+    .label{font-family:Arial,Helvetica,sans-serif;font-size:13px;fill:#0f172a}
+    .title{font-family:Arial,Helvetica,sans-serif;font-size:16px;fill:#0f172a;font-weight:700}
+    .step{font-size:12px;fill:#374151}
+    .rect{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1;rx:6;ry:6}
+  </style>
+  <rect width="1000" height="320" class="bg"/>
+  <text x="20" y="26" class="title">Langkah crimping — ilustrasi singkat</text>
+
+  <!-- Cable strip -->
+  <g transform="translate(20,50)">
+    <rect x="0" y="0" width="360" height="60" class="rect"/>
+    <text x="8" y="20" class="label">1. Kupas jacket ~2.5 cm</text>
+    <text x="8" y="40" class="step">Jangan potong twisted pairs terlalu pendek.</text>
+
+    <!-- small cable + twisted pairs visual -->
+    <g transform="translate(280,8)">
+      <!-- outer -->
+      <rect x="0" y="0" width="72" height="36" fill="#fff"/>
+      <!-- pairs -->
+      <circle cx="12" cy="18" r="6" fill="#34d399"/><!-- green -->
+      <circle cx="30" cy="18" r="6" fill="#f97316"/><!-- orange -->
+      <circle cx="48" cy="18" r="6" fill="#60a5fa"/><!-- blue -->
+      <circle cx="66" cy="18" r="6" fill="#7c2d12"/><!-- brown -->
+    </g>
+  </g>
+
+  <!-- RJ45 connector -->
+  <g transform="translate(410,50)">
+    <rect x="0" y="0" width="160" height="60" rx="6" ry="6" fill="#f3f4f6" stroke="#cbd5e1"/>
+    <text x="8" y="20" class="label">2. Susun urutan warna, masukkan ke RJ45</text>
+    <text x="8" y="40" class="step">Pastikan tembaga mencapai pin depan.</text>
+    <!-- pins -->
+    <g transform="translate(8,22)">
+      <rect x="0" y="0" width="12" height="10" fill="#f97316"/>
+      <rect x="18" y="0" width="12" height="10" fill="#16a34a"/>
+      <rect x="36" y="0" width="12" height="10" fill="#60a5fa"/>
+      <rect x="54" y="0" width="12" height="10" fill="#7c2d12"/>
+    </g>
+  </g>
+
+  <!-- Crimping tool -->
+  <g transform="translate(610,40)">
+    <rect x="0" y="0" width="320" height="100" rx="10" ry="10" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="12" y="22" class="label">3. Jepit pada tang crimping hingga terkunci</text>
+    <text x="12" y="42" class="step">Tekan kuat sampai mekanisme mengunci konektor</text>
+    <g transform="translate(12,60)">
+      <rect x="0" y="0" width="80" height="12" fill="#0ea5e9"/>
+      <rect x="100" y="0" width="80" height="12" fill="#0ea5e9"/>
+    </g>
+  </g>
+
+  <text x="20" y="200" class="label">Catatan: setelah crimping, uji kabel dengan LAN tester (semua 8 LED harus menyala berurutan).</text>
+</svg>
