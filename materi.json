@@ -35,4 +35,10 @@
     "linkHalaman": "materi/melacak-rute-data-traceroute.html",
     "kategori": "Tools"
   }
+  {
+    "judul": "Mengenal IPv4",
+    "deskripsiSingkat": "Memahami struktur alamat IPv4, kelas jaringan (A, B, C), subnet mask, dan konsep dasar pengalamatan logika pada jaringan.",
+    "linkHalaman": "materi/mengenal-ipv4.html",
+    "kategori": "Dasar"
+  }
 ]
