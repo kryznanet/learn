@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perbedaan Router dan Switch - Kryzna Learn</title>
+    <style>
+        /* Gaya Dasar & Reset - Disamakan dengan halaman utama Kryzna Learn */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+
+        /* Navigasi Atas - Menggunakan tanda ../ agar aman melompat keluar folder */
+        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+
+        /* Wadah Konten Materi */
+        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: #0284c7; }
+        
+        /* Tipografi Teks & Tabel */
+        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: #fff; margin-bottom: 1rem; }
+        th, td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+        th { background-color: #1e3a8a; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Atas yang Senada dengan Halaman Utama -->
+    <header>
+        <h1>Kryzna Learn</h1>
+        <nav>
+            <a href="../index.html#tutorial">Tutorial</a>
+            <a href="../index.html#tentang">Tentang</a>
+        </nav>
+    </header>
+
+    <!-- Tempat Isi Konten Edukasi -->
+    <main class="content-container">
+        <!-- Menggunakan ../index.html karena file berada di dalam folder materi -->
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        
+        <h1>4. Perbedaan Fungsi Router dan Switch</h1>
+        <p>Banyak orang awam mengira Router dan Switch adalah alat yang sama karena bentuk fisiknya mirip. Padahal keduanya bekerja di lapisan jaringan yang berbeda dan memiliki tugas utama yang jauh berbeda.</p>
+        
+        <h3>1. Switch (Penghubung Jaringan Lokal)</h3>
+        <p>Switch berfungsi untuk menghubungkan banyak komputer atau perangkat di dalam satu jaringan lokal (LAN) yang sama agar bisa saling bertukar data menggunakan MAC Address. Switch bekerja pada Layer 2 dari model OSI.</p>
+
+        <h3>2. Router (Penghubung Antar Jaringan / Internet)</h3>
+        <p>Router berfungsi untuk menghubungkan jaringan lokal Anda ke jaringan luar atau internet menggunakan IP Address. Router bekerja pada Network Layer (Layer 3) dalam model OSI dan bertugas meneruskan paket antarjaringan.</p>
+
+        <h3>Tabel Perbandingan Singkat:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fitur / Karakteristik</th>
+                    <th>Switch</th>
+                    <th>Router</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Fungsi Utama</strong></td>
+                    <td>Menghubungkan perangkat dalam satu jaringan (LAN)</td>
+                    <td>Menghubungkan beberapa jaringan yang berbeda (LAN ke WAN/Internet)</td>
+                </tr>
+                <tr>
+                    <td><strong>Lapisan OSI (Layer)</strong></td>
+                    <td>Layer 2 (Data Link Layer)</td>
+                    <td>Layer 3 (Network Layer)</td>
+                </tr>
+                <tr>
+                    <td><strong>Basis Pengiriman Data</strong></td>
+                    <td>Menggunakan MAC Address</td>
+                    <td>Menggunakan IP Address</td>
+                </tr>
+                <tr>
+                    <td><strong>Akses Internet</strong></td>
+                    <td>Tidak bisa membagikan internet secara mandiri</td>
+                    <td>Bisa mengatur dan membagikan akses internet</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>
