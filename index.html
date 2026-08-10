@@ -50,12 +50,12 @@
         .main-layout { display: flex; gap: 2rem; align-items: flex-start; }
         
         /* Sidebar Kiri */
-        .sidebar { width: 280px; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); position: sticky; top: 100px; }
-        .sidebar h3 { margin-bottom: 1rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.5rem; font-size: 1.1rem; }
-        .sidebar ul { list-style: none; }
-        .sidebar li { margin-bottom: 0.8rem; }
-        .sidebar a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; display: block; }
-        .sidebar a:hover { color: #0ea5e9; font-weight: bold; }
+        .sidebar { width: 280px; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
+        .sidebar-group h3 { margin-bottom: 0.8rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group ul { list-style: none; }
+        .sidebar-group li { margin-bottom: 0.6rem; }
+        .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; }
+        .sidebar-group a:hover { color: #0ea5e9; font-weight: bold; }
         
         /* Konten Utama */
         .content { flex: 1; }
@@ -107,10 +107,18 @@
     <!-- Layout Utama: Sidebar di Kiri, Grid Tutorial di Kanan -->
     <main class="main-layout container" id="tutorial">
         <aside class="sidebar">
-            <h3>Daftar Materi</h3>
-            <ul id="sidebar-list">
-                <!-- Otomatis diisi oleh JavaScript -->
-            </ul>
+            <div class="sidebar-group">
+                <h3>Daftar Materi</h3>
+                <ul id="sidebar-materi">
+                    <!-- Diisi otomatis oleh JavaScript -->
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <h3>Daftar Tutorial</h3>
+                <ul id="sidebar-tutorial">
+                    <!-- Diisi otomatis oleh JavaScript -->
+                </ul>
+            </div>
         </aside>
 
         <section class="content">
@@ -142,14 +150,16 @@
                 .catch(err => console.error('Gagal memuat data materi:', err));
         }
 
-        // Render Sidebar dan Grid Kartu
+        // Render Sidebar dan Grid Kartu Berdasarkan Kategori
         function tampilkanKonten(materiArray) {
             const grid = document.getElementById('tutorial-grid');
-            const sidebar = document.getElementById('sidebar-list');
+            const sidebarMateri = document.getElementById('sidebar-materi');
+            const sidebarTutorial = document.getElementById('sidebar-tutorial');
 
             if (!materiArray || materiArray.length === 0) {
                 grid.innerHTML = '<div class="no-results">Materi atau tutorial yang Anda cari tidak ditemukan.</div>';
-                sidebar.innerHTML = '<li style="color:var(--text-muted); font-size:0.9rem;">Tidak ada hasil</li>';
+                sidebarMateri.innerHTML = '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada hasil</li>';
+                sidebarTutorial.innerHTML = '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada hasil</li>';
                 return;
             }
 
@@ -165,10 +175,19 @@
                 </div>
             `).join('');
 
-            // Render Sidebar Kiri
-            sidebar.innerHTML = materiArray.map(item => `
-                <li><a href="${item.linkHalaman}">• ${item.judul}</a></li>
-            `).join('');
+            // Filter data untuk sidebar berdasarkan kategori (Materi / Tutorial)
+            const listMateri = materiArray.filter(item => (item.kategori || '').toLowerCase() === 'materi');
+            const listTutorial = materiArray.filter(item => (item.kategori || '').toLowerCase() === 'tutorial');
+
+            // Render Sidebar Kiri: Bagian Materi
+            sidebarMateri.innerHTML = listMateri.length > 0 
+                ? listMateri.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada materi</li>';
+
+            // Render Sidebar Kiri: Bagian Tutorial
+            sidebarTutorial.innerHTML = listTutorial.length > 0 
+                ? listTutorial.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada tutorial</li>';
         }
 
         // Fungsi Filter / Pencarian
