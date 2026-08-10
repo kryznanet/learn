@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Koneksi (Ping) - Kryzna Learn</title>
+    <style>
+        /* Gaya Dasar & Reset - Disamakan dengan halaman utama Kryzna Learn */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+
+        /* Navigasi Atas - Menggunakan tanda ../ agar aman melompat keluar folder */
+        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+        header h1 { font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        nav a:hover { color: #38bdf8; }
+
+        /* Wadah Konten Materi */
+        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
+        .back-link:hover { color: #0284c7; }
+        
+        /* Tipografi Teks */
+        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.5rem; }
+        .highlight { background-color: #e0f2fe; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: #0369a1; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Atas yang Senada dengan Halaman Utama -->
+    <header>
+        <h1>Kryzna Learn</h1>
+        <nav>
+            <a href="../index.html#tutorial">Tutorial</a>
+            <a href="../index.html#tentang">Tentang</a>
+        </nav>
+    </header>
+
+    <!-- Tempat Isi Konten Edukasi -->
+    <main class="content-container">
+        <!-- Menggunakan ../index.html karena file berada di dalam folder materi -->
+        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+        
+        <h1>2. Panduan Lengkap Tes Koneksi (Ping)</h1>
+        <p><strong>PING (Packet Internet Groper)</strong> adalah perintah utilitas yang digunakan untuk mengecek integritas atau kualitas koneksi antara perangkat Anda dengan server target di internet.</p>
+
+        <h3>Cara Melakukan Ping:</h3>
+        <ol>
+            <li>Buka aplikasi Command Prompt (Windows) atau Terminal (Mac/Linux) di komputer Anda.</li>
+            <li>Ketik perintah berikut: <span class="highlight">ping google.com</span> atau <span class="highlight">ping 8.8.8.8</span> lalu tekan Enter.</li>
+            <li>Sistem secara default akan mengirimkan 4 paket data uji coba dan menunggu balasan dari server tujuan.</li>
+        </ol>
+
+        <h3>Cara Membaca Hasil Respon Ping:</h3>
+        <ul>
+            <li><strong>Reply from ... bytes=32 time=15ms TTL=56 :</strong> Koneksi jaringan berjalan normal dan sukses. Nilai angka pada <strong>time</strong> menunjukkan delay/latensi pengiriman paket.</li>
+            <li><strong>Request Timed Out (RTO) :</strong> Paket data uji coba hilang di tengah jalan atau tidak mendapatkan balasan. Hal ini menandakan adanya gangguan kabel fisik, sinyal buruk, atau masalah rute.</li>
+            <li><strong>Destination Host Unreachable :</strong> Komputer lokal Anda sama sekali tidak dapat menemukan jalur rute menuju alamat IP target. Biasanya terjadi akibat kesalahan konfigurasi IP atau perangkat yang sedang offline.</li>
+        </ul>
+    </main>
+
+</body>
+</html>
