@@ -32,34 +32,62 @@
 
         header { background-color: var(--header-bg); color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
         .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        nav { display: flex; gap: 1.5rem; }
         nav a { color: #fff; cursor: pointer; font-weight: 500; text-decoration: none; }
+        nav a:hover { color: #38bdf8; }
 
-        /* Layout Sidebar */
+        /* Banner Utama */
+        .hero { background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%); color: white; text-align: center; padding: 4rem 1rem; }
+        .hero h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+        /* Kolom Pencarian (Search Bar) */
+        .search-container { max-width: 500px; margin: -1.8rem auto 3rem auto; padding: 0 1rem; position: relative; z-index: 10; }
+        .search-input { width: 100%; padding: 1.2rem 1.8rem; font-size: 1rem; border: 1px solid transparent; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); outline: none; background-color: var(--bg-card); color: var(--text-main); }
+        .search-input:focus { border-color: #0ea5e9; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25); }
+
+        /* Layout Dua Kolom (Sidebar & Konten) */
         .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
         .main-layout { display: flex; gap: 2rem; align-items: flex-start; }
+        
+        /* Sidebar Kiri */
         .sidebar { width: 280px; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); position: sticky; top: 100px; }
-        .sidebar h3 { margin-bottom: 1rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.5rem; }
+        .sidebar h3 { margin-bottom: 1rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.5rem; font-size: 1.1rem; }
         .sidebar ul { list-style: none; }
         .sidebar li { margin-bottom: 0.8rem; }
-        .sidebar a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; }
+        .sidebar a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; display: block; }
         .sidebar a:hover { color: #0ea5e9; font-weight: bold; }
         
+        /* Konten Utama */
         .content { flex: 1; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px var(--shadow); border-top: 4px solid var(--border-card); }
-        
-        .hero { background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%); color: white; text-align: center; padding: 4rem 1rem; }
-        .theme-toggle { cursor: pointer; background: none; border: none; font-size: 1.2rem; color: white; }
+        .section-title { margin-bottom: 1.5rem; color: var(--header-bg); font-size: 1.8rem; }
+        [data-theme="dark"] .section-title { color: #38bdf8; }
 
-        @media (max-width: 768px) { .main-layout { flex-direction: column; } .sidebar { width: 100%; position: relative; top: 0; } }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .card { background: var(--bg-card); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px var(--shadow); border-top: 4px solid var(--border-card); display: flex; flex-direction: column; justify-content: space-between; }
+        .card h3 { margin-bottom: 0.5rem; font-size: 1.2rem; color: var(--text-main); }
+        .card p { margin-bottom: 1.2rem; color: var(--text-muted); font-size: 0.9rem; }
+        .btn-read { color: #0ea5e9; font-weight: bold; text-decoration: none; font-size: 0.9rem; }
+        .btn-read:hover { text-decoration: underline; }
+
+        .theme-toggle { cursor: pointer; background: none; border: none; font-size: 1.2rem; color: white; padding: 0.5rem; border-radius: 50%; }
+        .theme-toggle:hover { background-color: rgba(255,255,255,0.2); }
+
+        .no-results { text-align: center; grid-column: 1/-1; padding: 3rem; color: var(--text-muted); }
+
+        /* Responsif untuk Mobile */
+        @media (max-width: 768px) { 
+            .main-layout { flex-direction: column; } 
+            .sidebar { width: 100%; position: relative; top: 0; } 
+        }
     </style>
 </head>
-<body>
+<body id="materi">
 
     <header>
         <a href="index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
         <div class="nav-right">
             <nav>
+                <a onclick="scrollToSection('materi')">Materi</a>
                 <a onclick="scrollToSection('tutorial')">Tutorial</a>
             </nav>
             <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌙</button>
@@ -68,59 +96,116 @@
 
     <section class="hero">
         <h2>Belajar Jaringan Komputer Jadi Mudah</h2>
+        <p>Pusat materi dan panduan praktis seputar jaringan komputer.</p>
     </section>
 
+    <!-- Kolom Pencarian (Search Bar) -->
+    <div class="search-container">
+        <input type="text" id="search-bar" class="search-input" placeholder="🔍 Cari materi atau tutorial (misal: ping, kabel, ip)..." onkeyup="filterMateri()">
+    </div>
+
+    <!-- Layout Utama: Sidebar di Kiri, Grid Tutorial di Kanan -->
     <main class="main-layout container" id="tutorial">
         <aside class="sidebar">
             <h3>Daftar Materi</h3>
-            <ul id="sidebar-list"></ul>
+            <ul id="sidebar-list">
+                <!-- Otomatis diisi oleh JavaScript -->
+            </ul>
         </aside>
 
         <section class="content">
-            <h2 style="margin-bottom: 1.5rem;">Daftar Tutorial</h2>
-            <div class="grid" id="tutorial-grid"></div>
+            <h2 class="section-title">Daftar Tutorial & Materi</h2>
+            <div class="grid" id="tutorial-grid">
+                <!-- Otomatis diisi oleh JavaScript -->
+            </div>
         </section>
     </main>
 
     <script>
+        let dataMateriGlobal = [];
+
         document.addEventListener('DOMContentLoaded', () => {
             const theme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', theme);
-            document.getElementById('theme-btn').textContent = theme === 'dark' ? '☀️' : '🌙';
+            updateThemeButton(theme);
             loadMateri();
         });
 
+        // Memuat data dari materi.json secara dinamis
         function loadMateri() {
             fetch('materi.json?v=' + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
-                    // Update Grid
-                    const grid = document.getElementById('tutorial-grid');
-                    grid.innerHTML = data.map(item => `
-                        <div class="card">
-                            <h3>${item.judul}</h3>
-                            <p>${item.deskripsiSingkat}</p>
-                            <br><a href="${item.linkHalaman}" style="color:#0ea5e9; font-weight:bold; text-decoration:none;">Baca Selengkapnya →</a>
-                        </div>
-                    `).join('');
-
-                    // Update Sidebar
-                    const sidebar = document.getElementById('sidebar-list');
-                    sidebar.innerHTML = data.map(item => `
-                        <li><a href="${item.linkHalaman}">• ${item.judul}</a></li>
-                    `).join('');
-                });
+                    dataMateriGlobal = data;
+                    tampilkanKonten(dataMateriGlobal);
+                })
+                .catch(err => console.error('Gagal memuat data materi:', err));
         }
 
+        // Render Sidebar dan Grid Kartu
+        function tampilkanKonten(materiArray) {
+            const grid = document.getElementById('tutorial-grid');
+            const sidebar = document.getElementById('sidebar-list');
+
+            if (!materiArray || materiArray.length === 0) {
+                grid.innerHTML = '<div class="no-results">Materi atau tutorial yang Anda cari tidak ditemukan.</div>';
+                sidebar.innerHTML = '<li style="color:var(--text-muted); font-size:0.9rem;">Tidak ada hasil</li>';
+                return;
+            }
+
+            // Render Grid Kanan
+            grid.innerHTML = materiArray.map(item => `
+                <div class="card">
+                    <div>
+                        <span style="font-size: 0.75rem; background: rgba(14,165,233,0.15); color: #0ea5e9; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: bold; text-transform: uppercase;">${item.kategori || 'Umum'}</span>
+                        <h3 style="margin-top: 0.5rem;">${item.judul}</h3>
+                        <p>${item.deskripsiSingkat}</p>
+                    </div>
+                    <a href="${item.linkHalaman}" class="btn-read">Baca Selengkapnya →</a>
+                </div>
+            `).join('');
+
+            // Render Sidebar Kiri
+            sidebar.innerHTML = materiArray.map(item => `
+                <li><a href="${item.linkHalaman}">• ${item.judul}</a></li>
+            `).join('');
+        }
+
+        // Fungsi Filter / Pencarian
+        function filterMateri() {
+            const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+            
+            if (searchTerm.trim() === '') {
+                tampilkanKonten(dataMateriGlobal);
+                return;
+            }
+
+            const filtered = dataMateriGlobal.filter(item => 
+                item.judul.toLowerCase().includes(searchTerm) ||
+                item.deskripsiSingkat.toLowerCase().includes(searchTerm) ||
+                item.kategori.toLowerCase().includes(searchTerm)
+            );
+
+            tampilkanKonten(filtered);
+        }
+
+        // Pengaturan Dark Mode
         function toggleTheme() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            const newTheme = isDark ? 'light' : 'dark';
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+            updateThemeButton(newTheme);
         }
 
-        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+        function updateThemeButton(theme) {
+            const btn = document.getElementById('theme-btn');
+            if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function scrollToSection(id) { 
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); 
+        }
     </script>
 </body>
 </html>
