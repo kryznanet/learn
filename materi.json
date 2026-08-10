@@ -34,7 +34,7 @@
     "deskripsiSingkat": "Tutorial menggunakan perintah tracert untuk melacak jalur perjalanan paket data internet Anda ke server tujuan.",
     "linkHalaman": "materi/melacak-rute-data-traceroute.html",
     "kategori": "Tools"
-  }
+  },
   {
     "judul": "Mengenal IPv4",
     "deskripsiSingkat": "Memahami struktur alamat IPv4, kelas jaringan (A, B, C), subnet mask, dan konsep dasar pengalamatan logika pada jaringan.",
