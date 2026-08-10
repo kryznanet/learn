@@ -3,36 +3,36 @@
     "judul": "Mengenal IP Address",
     "deskripsiSingkat": "Penjelasan lengkap mengenai pengertian, fungsi, perbedaan IPv4 & IPv6, serta cara mengecek IP perangkat Anda.",
     "linkHalaman": "materi/mengenal-ip-address.html",
-    "kategori": "Dasar",
+    "kategori": "Dasar"
   },
   {
     "judul": "Cara Tes Koneksi (Ping)",
     "deskripsiSingkat": "Pelajari perintah dasar CMD untuk menganalisis kualitas jaringan internet, membaca status time out, dan delay ping.",
     "linkHalaman": "materi/cara-tes-koneksi-ping.html",
-    "kategori": "Tools",
+    "kategori": "Tools"
   },
   {
     "judul": "Urutan Kabel LAN (Crimping)",
     "deskripsiSingkat": "Panduan teknis langkah demi langkah menyusun warna kabel standar Straight dan Cross menggunakan tang crimping.",
     "linkHalaman": "materi/urutan-kabel-lan-crimping.html",
-    "kategori": "Dasar",
+    "kategori": "Dasar"
   },
   {
     "judul": "Perbedaan Router dan Switch",
     "deskripsiSingkat": "Pahami perbedaan fungsi kedua alat jaringan ini dalam membagikan internet dan menghubungkan komputer lokal.",
     "linkHalaman": "materi/perbedaan-router-dan-switch.html",
-    "kategori": "Perangkat",
+    "kategori": "Perangkat"
   },
   {
     "judul": "Mengenal MAC Address",
     "deskripsiSingkat": "Materi tentang alamat fisik permanen pada perangkat keras jaringan yang membedakannya dengan IP Address.",
     "linkHalaman": "materi/mengenal-mac-address.html",
-    "kategori": "Dasar",
+    "kategori": "Dasar"
   },
   {
     "judul": "Melacak Rute Data (Traceroute)",
     "deskripsiSingkat": "Tutorial menggunakan perintah tracert untuk melacak jalur perjalanan paket data internet Anda ke server tujuan.",
     "linkHalaman": "materi/melacak-rute-data-traceroute.html",
-    "kategori": "Tools",
+    "kategori": "Tools"
   }
 ]
