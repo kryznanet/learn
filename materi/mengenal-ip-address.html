@@ -5,60 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mengenal IP Address — Kryzna Learn</title>
     <style>
-        /* Gaya Dasar & Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        /* Variabel Warna Tema (Mendukung Dark Mode) */
+        :root {
+            --bg-body: #f4f7f6;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-muted: #555555;
+            --header-bg: #1e3a8a;
+            --border-card: #0ea5e9;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
 
-        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow:[...] }
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+            --header-bg: #1e1b4b;
+            --border-card: #38bdf8;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Gaya Dasar & Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
+        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
+
+        /* Header */
+        header { background-color: var(--header-bg); color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
         header h1 { font-size: 1.5rem; }
-        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        nav { display: flex; gap: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; cursor: pointer; }
         nav a:hover { color: #38bdf8; }
 
-        .content-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        /* Tombol Dark Mode */
+        .theme-toggle { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #fff; padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .theme-toggle:hover { background-color: rgba(255,255,255,0.2); }
+
+        /* Layout Utama Dua Kolom (Sidebar & Konten) */
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        .main-layout { display: flex; gap: 2rem; align-items: flex-start; }
+
+        /* Sidebar Kiri */
+        .sidebar { width: 280px; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
+        .sidebar-group h3 { margin-bottom: 0.8rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group ul { list-style: none; }
+        .sidebar-group li { margin-bottom: 0.6rem; }
+        .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9img; display: block; }
+        .sidebar-group a:hover { color: #0ea5e9; font-weight: bold; }
+
+        /* Konten Artikel Utama di Kanan */
+        .content-container { flex: 1; background: var(--bg-card); padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); }
         .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
-        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        .back-link:hover { text-decoration: underline; }
+        
+        h1 { color: var(--header-bg); border-bottom: 2px solid var(--border-card); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
+        [data-theme="dark"] h1 { color: #38bdf8; }
         h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-        .highlight { background-color: #e0f2fe; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: #0369a1; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-muted); }
+        li { margin-bottom: 0.5rem; }
+        p { color: var(--text-muted); margin-bottom: 1rem; }
+        .highlight { background-color: var(--bg-body); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: var(--border-card); border: 1px solid var(--border-card); }
+
+        /* Responsif untuk Mobile */
+        @media (max-width: 768px) { 
+            .main-layout { flex-direction: column; } 
+            .sidebar { width: 100%; position: relative; top: 0; } 
+        }
     </style>
 </head>
 <body>
 
-   <header>
-        <a href="index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
+    <!-- Header Disamakan dengan Index -->
+    <header>
+        <a href="../index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
         <div class="nav-right">
+            <nav>
+                <a href="../index.html">Materi</a>
+                <a href="../index.html#tutorial">Tutorial</a>
+            </nav>
             <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌙</button>
         </div>
     </header>
 
-    <main class="content-container">
-        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
-        <h1>1. Mengenal IP Address secara Mendalam</h1>
-        <p><strong>Internet Protocol Address (IP Address)</strong> adalah identitas angka unik yang dimiliki oleh setiap perangkat (komputer, HP, router) agar bisa saling berkomunikasi di dalam jaringan.</p>
+    <!-- Layout Utama Dua Kolom -->
+    <main class="main-layout container">
+        
+        <!-- Sidebar Kiri (Daftar Materi & Tutorial dari data.json) -->
+        <aside class="sidebar">
+            <div class="sidebar-group">
+                <h3>Daftar Materi</h3>
+                <ul id="sidebar-materi">
+                    <!-- Diisi otomatis oleh JavaScript -->
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <h3>Daftar Tutorial</h3>
+                <ul id="sidebar-tutorial">
+                    <!-- Diisi otomatis oleh JavaScript -->
+                </ul>
+            </div>
+        </aside>
 
-        <h3>Fungsi Utama IP Address:</h3>
-        <ul>
-            <li><strong>Alamat Identifikasi Alat (Host):</strong> Mengetahui identitas spesifik suatu perangkat di jaringan.</li>
-            <li><strong>Alamat Lokasi Jaringan:</strong> Menunjukkan rute atau jalur mana yang harus dilewati data agar sampai ke perangkat tujuan.</li>
-        </ul>
+        <!-- Konten Artikel -->
+        <article class="content-container">
+            <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
+            <h1>1. Mengenal IP Address secara Mendalam</h1>
+            <p><strong>Internet Protocol Address (IP Address)</strong> adalah identitas angka unik yang dimiliki oleh setiap perangkat (komputer, HP, router) agar bisa saling berkomunikasi di dalam jaringan.</p>
 
-        <h3>Perbedaan IPv4 vs IPv6:</h3>
-        <ul>
-            <li><strong>IPv4:</strong> Terdiri dari 32-bit angka desimal yang dipisahkan titik. Contoh: <span class="highlight">192.168.1.1</span>. Kapasitasnya terbatas sekitar 4,3 miliar alamat.</li>
-            <li><strong>IPv6:</strong> Generasi baru dengan 128-bit kombinasi angka dan huruf (heksadesimal) dipisahkan titik dua. Contoh: <span class="highlight">2001:db8::ff00:42:8329</span>.</li>
-        </ul>
+            <h3>Fungsi Utama IP Address:</h3>
+            <ul>
+                <li><strong>Alamat Identifikasi Alat (Host):</strong> Mengetahui identitas spesifik suatu perangkat di jaringan.</li>
+                <li><strong>Alamat Lokasi Jaringan:</strong> Menunjukkan rute atau jalur mana yang harus dilewati data agar sampai ke perangkat tujuan.</li>
+            </ul>
 
-        <h3>Cara Cek IP Address Sendiri (Windows):</h3>
-        <ol>
-            <li>Tekan tombol kombinasi <span class="highlight">Windows + R</span> di keyboard Anda, ketik <span class="highlight">cmd</span>, lalu tekan Enter.</li>
-            <li>Ketik perintah <span class="highlight">ipconfig</span> di dalam Command Prompt, lalu tekan Enter.</li>
-            <li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li>
-        </ol>
+            <h3>Perbedaan IPv4 vs IPv6:</h3>
+            <ul>
+                <li><strong>IPv4:</strong> Terdiri dari 32-bit angka desimal yang dipisahkan titik. Contoh: <span class="highlight">192.168.1.1</span>. Kapasitasnya terbatas sekitar 4,3 miliar alamat.</li>
+                <li><strong>IPv6:</strong> Generasi baru dengan 128-bit kombinasi angka dan huruf (heksadesimal) dipisahkan titik dua. Contoh: <span class="highlight">2001:db8::ff00:42:8329</span>.</li>
+            </ul>
+
+            <h3>Cara Cek IP Address Sendiri (Windows):</h3>
+            <ol>
+                <li>Tekan tombol kombinasi <span class="highlight">Windows + R</span> di keyboard Anda, ketik <span class="highlight">cmd</span>, lalu tekan Enter.</li>
+                <li>Ketik perintah <span class="highlight">ipconfig</span> di dalam Command Prompt, lalu tekan Enter.</li>
+                <li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li>
+            </ol>
+        </article>
+
     </main>
-// Pengaturan Dark Mode
+
+    <script>
+        // Inisialisasi Tema Gelap/Terang saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+            loadSidebarData();
+        });
+
+        // Memuat data sidebar secara dinamis dari file data.json di root folder
+        function loadSidebarData() {
+            fetch('../data.json?v=' + new Date().getTime())
+                .then(res => res.json())
+                .then(data => {
+                    const sidebarMateri = document.getElementById('sidebar-materi');
+                    const sidebarTutorial = document.getElementById('sidebar-tutorial');
+
+                    const listMateri = data.filter(item => (item.kategori || '').toLowerCase() === 'materi');
+                    const listTutorial = data.filter(item => (item.kategori || '').toLowerCase() === 'tutorial');
+
+                    sidebarMateri.innerHTML = listMateri.length > 0 
+                        ? listMateri.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                        : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada materi</li>';
+
+                    sidebarTutorial.innerHTML = listTutorial.length > 0 
+                        ? listTutorial.map(item => `<li><a href="${item.linkHalaman}">• ${item.judul}</a></li>`).join('')
+                        : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada tutorial</li>';
+                })
+                .catch(err => console.error('Gagal memuat sidebar:', err));
+        }
+
+        // Fungsi Toggle Dark Mode yang tersinkronisasi dengan localStorage
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeButton(newTheme);
@@ -68,9 +180,6 @@
             const btn = document.getElementById('theme-btn');
             if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
         }
-
-        function scrollToSection(id) { 
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); 
-        }
+    </script>
 </body>
 </html>
