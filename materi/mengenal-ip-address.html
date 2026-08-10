@@ -59,6 +59,22 @@
             <li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li>
         </ol>
     </main>
+// Pengaturan Dark Mode
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        }
 
+        function updateThemeButton(theme) {
+            const btn = document.getElementById('theme-btn');
+            if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function scrollToSection(id) { 
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); 
+        }
 </body>
 </html>
