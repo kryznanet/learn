@@ -44,5 +44,22 @@
             <li><strong>Kelas C:</strong> Paling umum digunakan untuk jaringan rumah/kantor kecil. (192 - 223)</li>
         </ul>
     </main>
+// Pengaturan Dark Mode
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        }
+
+        function updateThemeButton(theme) {
+            const btn = document.getElementById('theme-btn');
+            if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function scrollToSection(id) { 
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); 
+        }
 </body>
 </html>
