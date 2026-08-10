@@ -34,12 +34,15 @@
 <body>
 
     <!-- Navigasi Atas yang Senada dengan Halaman Utama -->
-    <header>
-        <h1>Kryzna Learn</h1>
-        <nav>
-            <a href="../index.html#tutorial">Tutorial</a>
-            <a href="../index.html#tentang">Tentang</a>
-        </nav>
+   <header>
+        <a href="index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
+        <div class="nav-right">
+            <nav>
+                <a onclick="scrollToSection('materi')">Materi</a>
+                <a onclick="scrollToSection('tutorial')">Tutorial</a>
+            </nav>
+            <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌙</button>
+        </div>
     </header>
 
     <!-- Tempat Isi Konten Edukasi -->
