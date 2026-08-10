@@ -1,13 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kryzna Learn - Edukasi Jaringan & Komputer</title>
     <meta name="description" content="Kryzna Learn - Platform edukasi gratis dan panduan praktis belajar dasar-dasar jaringan komputer.">
-
+    
     <style>
         :root {
             --bg-body: #f4f7f6;
-	@@ -27,194 +25,147 @@
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-muted: #555555;
+            --header-bg: #1e3a8a;
+            --border-card: #0ea5e9;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+            --header-bg: #1e1b4b;
+            --border-card: #38bdf8;
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
@@ -40,7 +56,7 @@
         .sidebar-group li { margin-bottom: 0.6rem; }
         .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; }
         .sidebar-group a:hover { color: #0ea5e9; font-weight: bold; }
-
+        
         /* Konten Utama */
         .content { flex: 1; }
         .section-title { margin-bottom: 1.5rem; color: var(--header-bg); font-size: 1.8rem; }
@@ -180,7 +196,7 @@
         // Fungsi Filter / Pencarian
         function filterMateri() {
             const searchTerm = document.getElementById('search-bar').value.toLowerCase();
-
+            
             if (searchTerm.trim() === '') {
                 tampilkanKonten(dataMateriGlobal);
                 return;
@@ -202,7 +218,9 @@
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateThemeButton(newTheme);
-	@@ -224,10 +175,6 @@ <h3 style="margin-top: 0.5rem;">${item.judul}</h3>
+        }
+
+        function updateThemeButton(theme) {
             const btn = document.getElementById('theme-btn');
             if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
         }
