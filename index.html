@@ -139,9 +139,9 @@
             loadMateri();
         });
 
-        // Memuat data dari materi.json secara dinamis
+        // Memuat data dari data.json secara dinamis
         function loadMateri() {
-            fetch('materi.json?v=' + new Date().getTime())
+            fetch('data.json?v=' + new Date().getTime())
                 .then(res => res.json())
                 .then(data => {
                     dataMateriGlobal = data;
