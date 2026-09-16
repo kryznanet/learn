@@ -3,6 +3,17 @@
 const SUPABASE_URL = 'https://wtmkudojxenkjkoegibf.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_nk3PzGU0x2nEvku4g2mXTg_c82iN9jh';
 
+const isAdminPage = window.location.pathname.includes('/admin/');
+const isAdminDashboard = isAdminPage && /\/admin\/dashboard\.html$/i.test(window.location.pathname);
+
+if (isAdminDashboard) {
+  document.documentElement.classList.add('admin-auth-pending');
+  const bootStyle = document.createElement('style');
+  bootStyle.id = 'kryzna-admin-auth-boot';
+  bootStyle.textContent = '.admin-auth-pending body{visibility:hidden!important}.admin-auth-pending body:before{content:"Memeriksa sesi admin…";position:fixed;inset:0;display:grid;place-items:center;background:#f3f6fb;color:#64748b;font:600 14px Segoe UI,Arial,sans-serif;z-index:999999}';
+  document.head.appendChild(bootStyle);
+}
+
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY,
@@ -17,31 +28,36 @@ const supabaseClient = window.supabase.createClient(
   }
 );
 
-// Pada halaman admin, tunggu proses pemulihan session Supabase selesai
-// sebelum getSession() mengembalikan null. Ini mencegah redirect bolak-balik
-// login.html <-> dashboard.html ketika browser baru selesai refresh.
-if (window.location.pathname.includes('/admin/')) {
+if (isAdminPage) {
   const auth = supabaseClient.auth;
   const originalGetSession = auth.getSession.bind(auth);
   let recoveryPromise = null;
 
+  const clearAdminBoot = () => {
+    if (isAdminDashboard) document.documentElement.classList.remove('admin-auth-pending');
+  };
+
   auth.getSession = async function () {
     const first = await originalGetSession();
-    if (first?.data?.session) return first;
+    if (first?.data?.session) {
+      clearAdminBoot();
+      return first;
+    }
 
     if (!recoveryPromise) {
       recoveryPromise = new Promise(resolve => {
         let settled = false;
         let timer = null;
+        let subscription = null;
         const finish = session => {
           if (settled) return;
           settled = true;
           if (timer) clearTimeout(timer);
           try { subscription?.unsubscribe?.(); } catch (_) {}
+          clearAdminBoot();
           resolve({ data: { session: session || null }, error: null });
         };
 
-        let subscription = null;
         try {
           const result = auth.onAuthStateChange((event, session) => {
             if (session || event === 'INITIAL_SESSION') finish(session);
