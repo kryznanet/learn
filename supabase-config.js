@@ -12,29 +12,19 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
   }
 });
 
-// Global visual system: menjaga kontras, fokus, responsivitas, dan konsistensi antar halaman.
+// Global visual fixes: menjaga kontras teks, form, kartu, tabel, reader, dan admin.
 window.addEventListener('DOMContentLoaded', function () {
   const style = document.createElement('style');
   style.id = 'kryzna-contrast-fix';
   style.textContent = `
-    :root{color-scheme:light;accent-color:#2563eb}
-    [data-theme=dark]{color-scheme:dark;accent-color:#60a5fa}
-    html{scroll-behavior:smooth}
-    *{box-sizing:border-box}
-    ::selection{background:rgba(37,99,235,.2);color:inherit}
+    :root{color-scheme:light}
+    [data-theme=dark]{color-scheme:dark}
     body{color:#0f172a!important}
     body,body *{text-shadow:none}
     p,li,small,span,label,td,th{max-width:100%}
-    h1,h2,h3,h4,p,span,a,button,label,td,th{overflow-wrap:anywhere}
-    button,input,textarea,select{font:inherit}
     input,textarea,select{color:#0f172a!important;background:#fff!important}
     input::placeholder,textarea::placeholder{color:#64748b!important;opacity:1}
-    input:focus,textarea:focus,select:focus,button:focus-visible,a:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(37,99,235,.18)!important}
     button{color:inherit}
-    button:disabled{cursor:not-allowed;opacity:.65}
-    ::-webkit-scrollbar{width:10px;height:10px}
-    ::-webkit-scrollbar-track{background:#eef2f7}
-    ::-webkit-scrollbar-thumb{background:#c5d0df;border-radius:999px;border:2px solid #eef2f7}
 
     /* homepage */
     .hero p,.section-head p,.card p,.side a,.search-count,footer{color:#475569!important}
@@ -43,15 +33,9 @@ window.addEventListener('DOMContentLoaded', function () {
     .feature b,.card h3,.section-head h2,.side h3{color:#0f172a!important}
     .badge{color:#1d4ed8!important;background:#eff6ff!important}
     .read{color:#1d4ed8!important}
-    .card,.feature,.side,.search,.hero-card{box-shadow:0 12px 34px rgba(15,23,42,.06)}
-    .card:hover{box-shadow:0 20px 44px rgba(15,23,42,.11)}
-    .btn,.chip,.theme,.navlinks a,.read{transition:transform .16s ease,background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}
-    .btn:hover,.chip:hover,.theme:hover{transform:translateY(-1px)}
 
     /* dark mode */
     [data-theme=dark] body{background:#07101d!important;color:#f8fafc!important}
-    [data-theme=dark] ::-webkit-scrollbar-track{background:#0b1422}
-    [data-theme=dark] ::-webkit-scrollbar-thumb{background:#334155;border-color:#0b1422}
     [data-theme=dark] .hero p,[data-theme=dark] .section-head p,[data-theme=dark] .card p,[data-theme=dark] .side a,[data-theme=dark] .search-count,[data-theme=dark] footer{color:#cbd5e1!important}
     [data-theme=dark] .hero-card,[data-theme=dark] .feature,[data-theme=dark] .card,[data-theme=dark] .side,[data-theme=dark] .search,[data-theme=dark] .empty{background:#0f1a2c!important;color:#f8fafc!important;border-color:#334155!important}
     [data-theme=dark] .feature b,[data-theme=dark] .card h3,[data-theme=dark] .section-head h2,[data-theme=dark] .side h3{color:#f8fafc!important}
@@ -61,14 +45,11 @@ window.addEventListener('DOMContentLoaded', function () {
     [data-theme=dark] input::placeholder,[data-theme=dark] textarea::placeholder{color:#94a3b8!important}
 
     /* admin */
-    body:has(.layout .nav){color:#0f172a!important;background:radial-gradient(circle at 10% 0,#e8f0ff 0,transparent 28%),#eef2f7!important}
+    body:has(.layout .nav){color:#0f172a!important}
     body:has(.layout .nav) .card,body:has(.layout .nav) .stat,body:has(.layout .nav) .item,body:has(.layout .nav) .nav{color:#0f172a}
-    body:has(.layout .nav) .card,body:has(.layout .nav) .stat,body:has(.layout .nav) .item{box-shadow:0 10px 30px rgba(15,23,42,.06);border-color:#d8e1ec}
-    body:has(.layout .nav) .nav{box-shadow:0 10px 26px rgba(15,23,42,.05)}
     body:has(.layout .nav) .meta,body:has(.layout .nav) .status,body:has(.layout .nav) .hint{color:#64748b!important}
     body:has(.layout .nav) input,body:has(.layout .nav) textarea,body:has(.layout .nav) select{color:#0f172a!important;background:#fff!important}
     body:has(.layout .nav) .t,body:has(.layout .nav) .sel{color:#273449!important;background:#fff!important}
-    body:has(.layout .nav) .t:hover,body:has(.layout .nav) .nav button:hover{transform:translateY(-1px)}
 
     /* login */
     body:has(.box){color:#0f172a!important}
@@ -81,18 +62,87 @@ window.addEventListener('DOMContentLoaded', function () {
     .article,.article *{overflow-wrap:anywhere}
     .content p,.content li{color:#334155!important}
     .content h1,.content h2,.content h3,.content strong{color:#0f172a!important}
-    .content img{box-shadow:0 12px 28px rgba(15,23,42,.08)}
     [data-theme=dark] .article,[data-theme=dark] .article *{color:inherit}
     [data-theme=dark] .content p,[data-theme=dark] .content li{color:#dbeafe!important}
     [data-theme=dark] .content h1,[data-theme=dark] .content h2,[data-theme=dark] .content h3,[data-theme=dark] .content strong{color:#f8fafc!important}
 
-    /* text wrapping / mobile */
+    /* prevent text clipping/overlap */
+    h1,h2,h3,p,span,a,button,label{overflow-wrap:anywhere}
     .navlinks a,.btn,.chip,.badge,.read,.theme{overflow-wrap:normal;white-space:nowrap}
+
+    /* role based dashboard */
+    body.k-role-viewer .nav button[data-view="import"],
+    body.k-role-viewer .nav button[data-view="editor"],
+    body.k-role-viewer button[onclick*="newMaterial"],
+    body.k-role-viewer button[type="submit"],
+    body.k-role-viewer .edit,
+    body.k-role-viewer .delete{display:none!important}
+    body.k-role-penulis .delete{display:none!important}
+    body.k-role-admin .nav button[data-view="users"]{display:none!important}
+    #k-user-role{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#1e293b;color:#dbeafe;font-size:10px;font-weight:900;border:1px solid #334155}
+    #k-users-shell{height:calc(100vh - 130px);min-height:650px;padding:0;overflow:hidden}
+    #k-users-frame{width:100%;height:100%;min-height:650px;border:0;display:block;background:transparent}
+
     @media(max-width:640px){
       .hero p,.card p,.content p,.content li{line-height:1.7!important}
       .card h3{font-size:18px!important}
-      body:has(.layout .nav) .layout{padding:12px!important}
+      #k-users-shell,#k-users-frame{min-height:760px;height:calc(100vh - 100px)}
     }
   `;
   document.head.appendChild(style);
+});
+
+// RBAC UI bridge for Dashboard Admin.
+window.addEventListener('DOMContentLoaded', async function () {
+  try {
+    const {data:{user}} = await supabaseClient.auth.getUser();
+    if (!user) return;
+    const {data:staff,error} = await supabaseClient
+      .from('admin_users')
+      .select('role,active,display_name')
+      .eq('user_id',user.id)
+      .maybeSingle();
+    if (error || !staff) return;
+
+    if (!staff.active) {
+      await supabaseClient.auth.signOut();
+      if (/\/admin\/dashboard\.html$/i.test(location.pathname)) location.replace('login.html');
+      return;
+    }
+
+    const role = String(staff.role || 'viewer');
+    document.body.classList.add('k-role-' + role);
+
+    const top = document.querySelector('.top');
+    if (top && !document.getElementById('k-user-role')) {
+      const badge = document.createElement('span');
+      badge.id = 'k-user-role';
+      badge.textContent = staff.display_name ? (staff.display_name + ' · ' + roleLabel(role)) : roleLabel(role);
+      top.insertBefore(badge, top.firstChild);
+    }
+
+    // Kelola User tetap berada sebagai menu dan view di Dashboard, hanya untuk Super Admin.
+    const nav = document.querySelector('.layout .nav');
+    const content = document.querySelector('.layout .content');
+    if (role === 'super_admin' && nav && content && !document.querySelector('[data-view="users"]')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.dataset.view = 'users';
+      btn.textContent = '👥 Kelola User';
+      btn.addEventListener('click', function(){ if (typeof window.showView === 'function') window.showView('users'); });
+      nav.appendChild(btn);
+
+      const section = document.createElement('section');
+      section.id = 'users';
+      section.className = 'view';
+      section.innerHTML = '<div id="k-users-shell" class="card"><iframe id="k-users-frame" title="Kelola User" src="users.html"></iframe></div>';
+      content.appendChild(section);
+    }
+  } catch (e) {
+    console.warn('RBAC UI tidak dapat dimuat:', e);
+  }
+
+  function roleLabel(role){
+    return ({super_admin:'Super Admin',admin:'Admin',penulis:'Penulis / Pemateri',viewer:'Viewer'})[role] || role;
+  }
 });
