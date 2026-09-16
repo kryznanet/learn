@@ -6,7 +6,7 @@ Selamat datang di repositori proyek **Kryzna Learn**! Ini adalah platform websit
 
 ### 🚀 Tautan Akses Live
 Website dapat langsung Anda akses dan baca melalui link berikut:
-👉 **[Kryzna Learn](https://krisnasatriaap.github.io/kryznalearn/)**
+👉 **[Kryzna Learn](https://kryznanet.github.io/learn/)**
 
 ---
 Dibuat dengan 💻 oleh **Kryzna**. Hak Cipta © 2026 Kryzna Learn.
