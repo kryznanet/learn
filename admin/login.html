@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login Admin — Kryzna Learn</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<style>
+*{box-sizing:border-box;font-family:Segoe UI,sans-serif}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f7f6;color:#333}.box{width:min(420px,92%);background:#fff;padding:32px;border-radius:16px;box-shadow:0 10px 35px rgba(0,0,0,.12)}h1{margin-top:0;color:#1e3a8a}label{display:block;margin:14px 0 6px;font-weight:600}input{width:100%;padding:12px;border:1px solid #ccd5dd;border-radius:8px;font-size:16px}button{width:100%;margin-top:20px;padding:12px;border:0;border-radius:8px;background:#1e3a8a;color:white;font-size:16px;font-weight:700;cursor:pointer}button:hover{background:#0ea5e9}.msg{margin-top:14px;color:#c62828;min-height:22px}.back{display:block;margin-top:18px;text-align:center;color:#0ea5e9;text-decoration:none}
+</style>
+</head><body>
+<div class="box"><h1>Login Admin</h1><p>Masuk untuk mengelola materi Kryzna Learn.</p>
+<form id="login-form"><label>Email</label><input id="email" type="email" required autocomplete="username"><label>Password</label><input id="password" type="password" required autocomplete="current-password"><button type="submit">Masuk</button></form><div class="msg" id="msg"></div><a class="back" href="../index.html">← Kembali ke website</a></div>
+<script>
+const {createClient}=supabase;
+const client=supabaseClient;
+(async()=>{const {data:{session}}=await client.auth.getSession();if(session)location.href='dashboard.html';})();
+document.getElementById('login-form').addEventListener('submit',async e=>{e.preventDefault();const msg=document.getElementById('msg');msg.textContent='Memproses...';const {error}=await client.auth.signInWithPassword({email:email.value.trim(),password:password.value});if(error){msg.textContent=error.message;return}location.href='dashboard.html';});
+</script></body></html>
