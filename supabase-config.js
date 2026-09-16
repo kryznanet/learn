@@ -80,6 +80,7 @@ window.addEventListener('DOMContentLoaded', function () {
     body.k-role-penulis .delete{display:none!important}
     body.k-role-admin .nav button[data-view="users"]{display:none!important}
     #k-user-role{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#1e293b;color:#dbeafe;font-size:10px;font-weight:900;border:1px solid #334155}
+    #k-profile-link{display:inline-flex;align-items:center;gap:6px;text-decoration:none;padding:8px 11px;border-radius:9px;background:#ffffff14;color:#fff;border:1px solid #ffffff33;font-size:12px;font-weight:800}
     #k-users-shell{height:calc(100vh - 130px);min-height:650px;padding:0;overflow:hidden}
     #k-users-frame{width:100%;height:100%;min-height:650px;border:0;display:block;background:transparent}
 
@@ -119,6 +120,14 @@ window.addEventListener('DOMContentLoaded', async function () {
       badge.id = 'k-user-role';
       badge.textContent = staff.display_name ? (staff.display_name + ' · ' + roleLabel(role)) : roleLabel(role);
       top.insertBefore(badge, top.firstChild);
+    }
+
+    if (top && !document.getElementById('k-profile-link')) {
+      const profile = document.createElement('a');
+      profile.id = 'k-profile-link';
+      profile.href = 'profile.html';
+      profile.textContent = '👤 Profile Saya';
+      top.insertBefore(profile, top.firstChild);
     }
 
     // Kelola User tetap berada sebagai menu dan view di Dashboard, hanya untuk Super Admin.
