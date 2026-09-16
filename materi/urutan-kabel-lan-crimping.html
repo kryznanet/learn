@@ -1,128 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urutan Kabel LAN (Crimping) — Kryzna Learn</title>
-    <meta name="description" content="Panduan lengkap urutan kabel LAN, standar T568A & T568B, teknik crimping, pengujian, dan tips." />
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
-        header { background-color: #1e3a8a; color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-        header h1 { font-size: 1.5rem; }
-        nav a { color: #fff; text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
-        nav a:hover { color: #38bdf8; }
-        .content-container { max-width: 900px; margin: 2rem auto; padding: 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { color: #1e3a8a; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
-        h3 { color: #0ea5e9; margin-top: 1.2rem; margin-bottom: 0.5rem; }
-        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; }
-        li { margin-bottom: 0.5rem; }
-        pre { background:#f1f5f9; padding:0.8rem; border-radius:6px; overflow:auto; }
-        .note { background:#fffbeb; border-left:4px solid #f59e0b; padding:0.6rem 0.8rem; border-radius:6px; margin:0.8rem 0; }
-        .tips { background:#ecfeff; border-left:4px solid #06b6d4; padding:0.6rem 0.8rem; border-radius:6px; margin:0.8rem 0; }
-        .back-link { display:inline-block; margin-bottom:1rem; color:#0ea5e9; text-decoration:none; font-weight:600; }
-        .figure { text-align:center; margin:1rem 0; }
-        .figure img { max-width:100%; height:auto; border-radius:6px; }
-    </style>
-</head>
-<body>
-   <header>
-        <a href="index.html" style="color:white; text-decoration:none;"><h1>Kryzna Learn</h1></a>
-        <div class="nav-right">
-            <nav>
-                <a onclick="scrollToSection('materi')">Materi</a>
-                <a onclick="scrollToSection('tutorial')">Tutorial</a>
-            </nav>
-            <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌙</button>
-        </div>
-    </header>
-
-    <main class="content-container">
-        <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
-        <h1>3. Urutan Kabel LAN (Crimping) — Panduan Lengkap</h1>
-
-        <p>Halaman ini menjelaskan urutan warna kabel LAN (kabel UTP) untuk standar T568A dan T568B, langkah crimping yang benar, pengujian, serta tips troubleshooting yang sering ditemui saat pemasangan jaringan lokal (LAN).</p>
-
-        <h3>Tipe Kabel & Kapan Digunakan</h3>
-        <ul>
-            <li><strong>Cat5e:</strong> Umum untuk jaringan 1 Gbps hingga jarak 100 meter. Cocok untuk instalasi rumah/office standar.</li>
-            <li><strong>Cat6:</strong> Mendukung 1–10 Gbps pada jarak pendek; lebih baik untuk instalasi yang menuntut performa lebih tinggi.</li>
-        </ul>
-
-        <h3>Standar Urutan Warna</h3>
-        <p>Ada dua standar yang paling umum: <strong>T568A</strong> dan <strong>T568B</strong>. Pilih salah satu standar pada kedua ujung kabel untuk kabel straight-through; gunakan kombinasi A pada satu ujung dan B pada ujung lain untuk kabel crossover (jarang dipakai di jaringan modern karena perangkat biasanya auto-MDI/MDIX).</p>
-
-        <h3>T568A (dari pin 1 → pin 8):</h3>
-        <pre>
-1: Putih - Hijau
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Urutan Kabel LAN (Crimping) — Kryzna Learn</title><meta name="description" content="Panduan urutan kabel LAN, T568A, T568B, crimping, pengujian, dan troubleshooting."><style>
+:root{--bg:#f5f7fb;--surface:#fff;--surface2:#eef3fa;--text:#102033;--muted:#64748b;--line:#e2e8f0;--primary:#2563eb;--cyan:#06b6d4;--shadow:0 18px 45px rgba(15,23,42,.08)}[data-theme=dark]{--bg:#07101d;--surface:#0f1a2c;--surface2:#15243a;--text:#eef6ff;--muted:#9fb0c7;--line:#24344b;--primary:#60a5fa;--cyan:#22d3ee;--shadow:0 24px 60px rgba(0,0,0,.3)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#e7f2ff 0,transparent 32%),var(--bg);color:var(--text);font:16px/1.75 Inter,Segoe UI,Arial,sans-serif}header{position:sticky;top:0;z-index:20;background:rgba(9,17,31,.9);backdrop-filter:blur(18px);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}.nav{max-width:1200px;margin:auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:10px;align-items:center;color:#fff;text-decoration:none}.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#60a5fa,#22d3ee);color:#07101d;font-weight:950}.brand b{font-size:16px}.brand small{display:block;color:#9eb0c7;font-size:10px}.nav-actions{display:flex;gap:8px}.nav-btn{padding:9px 12px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:transparent;color:#dbe8f7;text-decoration:none;font-size:12px;font-weight:800;cursor:pointer}.nav-btn:hover{background:rgba(255,255,255,.08)}.wrap{max-width:1100px;margin:auto;padding:28px 20px 70px}.back{display:inline-flex;gap:7px;color:var(--primary);font-weight:850;text-decoration:none;margin-bottom:16px}.article{background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}.head{padding:32px 42px 24px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(248,251,255,.9),var(--surface))}.kicker{display:inline-flex;padding:6px 10px;border-radius:999px;background:var(--surface2);color:var(--primary);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.head h1{font-size:clamp(32px,4.5vw,54px);line-height:1.08;letter-spacing:-.04em;margin:14px 0 10px}.head p{margin:0;color:var(--muted)}.content{max-width:900px;margin:auto;padding:30px 42px 50px}.content h3{font-size:22px;line-height:1.25;color:var(--primary);margin:32px 0 12px}.content p{margin:0 0 16px}.content ul,.content ol{padding-left:25px}.content li{margin:7px 0}.content pre{margin:18px 0;padding:18px;border-radius:14px;overflow:auto;background:#0a1220;color:#e5eefb;border:1px solid #22334b}.content code{font-family:Consolas,monospace}.content :not(pre)>code{background:var(--surface2);border:1px solid var(--line);padding:2px 7px;border-radius:7px;color:var(--primary)}.content img{display:block;max-width:100%;height:auto;margin:18px auto;border-radius:16px;border:1px solid var(--line)}.note,.tips{padding:15px 17px;margin:16px 0;border-radius:14px;background:var(--surface2);border-left:4px solid var(--primary)}.note strong,.tips strong{display:block;margin-bottom:4px}.footer{padding:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:12px}@media(max-width:700px){.brand small,.home-label{display:none}.nav{padding:10px 14px}.wrap{padding:18px 14px 45px}.head{padding:24px 20px 20px}.head h1{font-size:34px}.content{padding:24px 20px 34px;font-size:16px}}
+</style></head><body><header><div class="nav"><a class="brand" href="../index.html"><span class="logo">K</span><span><b>Kryzna Learn</b><small>Jaringan • Komputer • Teknologi</small></span></a><div class="nav-actions"><a class="nav-btn home-label" href="../index.html">← Beranda</a><button class="nav-btn" id="theme">🌙</button></div></div></header><main class="wrap"><a class="back" href="../index.html">← Kembali ke koleksi materi</a><article class="article"><div class="head"><span class="kicker">Materi</span><h1>3. Urutan Kabel LAN (Crimping) — Panduan Lengkap</h1><p>Panduan teknis standar warna, proses crimping, pengujian, dan troubleshooting kabel LAN.</p></div><div class="content"><p>Halaman ini menjelaskan urutan warna kabel LAN (kabel UTP) untuk standar T568A dan T568B, langkah crimping yang benar, pengujian, serta tips troubleshooting yang sering ditemui saat pemasangan jaringan lokal (LAN).</p><h3>Tipe Kabel &amp; Kapan Digunakan</h3><ul><li><strong>Cat5e:</strong> Umum untuk jaringan 1 Gbps hingga jarak 100 meter. Cocok untuk instalasi rumah/office standar.</li><li><strong>Cat6:</strong> Mendukung 1–10 Gbps pada jarak pendek; lebih baik untuk instalasi yang menuntut performa lebih tinggi.</li></ul><h3>Standar Urutan Warna</h3><p>Ada dua standar yang paling umum: <strong>T568A</strong> dan <strong>T568B</strong>. Pilih salah satu standar pada kedua ujung kabel untuk kabel straight-through; gunakan kombinasi A pada satu ujung dan B pada ujung lain untuk kabel crossover (jarang dipakai di jaringan modern karena perangkat biasanya auto-MDI/MDIX).</p><h3>T568A (dari pin 1 → pin 8):</h3><pre>1: Putih - Hijau
 2: Hijau
 3: Putih - Oranye
 4: Biru
 5: Putih - Biru
 6: Oranye
 7: Putih - Cokelat
-8: Cokelat
-        </pre>
-
-        <h3>T568B (dari pin 1 → pin 8):</h3>
-        <pre>
-1: Putih - Oranye
+8: Cokelat</pre><h3>T568B (dari pin 1 → pin 8):</h3><pre>1: Putih - Oranye
 2: Oranye
 3: Putih - Hijau
 4: Biru
 5: Putih - Biru
 6: Hijau
 7: Putih - Cokelat
-8: Cokelat
-        </pre>
-
-        <div class="figure">
-            <img src="../assets/images/urutan kabel lan crimping/diagram-utp-colors.svg" alt="Diagram urutan warna kabel UTP (T568A vs T568B)">
-        </div>
-
-        <h3>Langkah Crimping (Praktis & Aman)</h3>
-        <ol>
-            <li>Siapkan kabel UTP dan alat: tang crimping, konektor RJ45, cutter/stripper, LAN tester.</li>
-            <li>Kupas sekitar 2.5–3 cm kulit luar kabel tanpa merusak lilitan di dalamnya.</li>
-            <li>Ratakan dan susun pasangan kabel sesuai standar yang dipilih (T568A atau T568B).</li>
-            <li>Pastikan urutan kabel lurus dan rapi; rapatkan dan potong ujung sehingga rata (sekitar 1–1.5 cm dari ujung isolasi ke pin).
-                <div class="tips">Tips: Pastikan pasangan twisted tetap dekat namun jangan dipotong terlalu dalam — twisted pair membantu mengurangi interferensi.</div>
-            </li>
-            <li>Masukkan kabel ke dalam konektor RJ45 hingga ujung tembaga menyentuh pin konektor; periksa kembali urutan di depan konektor.</li>
-            <li>Masukkan konektor ke tang crimping dan tekan kuat hingga mekanisme mengunci.
-                <div class="note">Catatan: Jika pin tidak terlihat menekan kabel, ulangi pemasangan — pin harus menembus isolasi hingga kontak logam menyentuh tembaga.</div>
-            </li>
-            <li>Uji kabel dengan LAN tester: semua 8 LED harus berkedip/menyala sesuai urutan untuk kabel straight-through.</li>
-        </ol>
-
-        <div class="figure">
-            <img src="../assets/images/urutan kabel lan crimping/diagram-crimping.svg" alt="Diagram teknik crimping RJ45">
-            <p style="font-size:0.9rem;color:#6b7280;">Diagram ilustrasi sederhana proses crimping.</p>
-        </div>
-
-        <h3>Contoh Visual (T568B, RJ45 depan - clip down)</h3>
-        <pre>
-RJ45 front view (clip down): 1 2 3 4 5 6 7 8
-                   T568B: W-O O W-G B W-B G W-Br Br
-        </pre>
-
-        <h3>Pengujian & Troubleshooting</h3>
-        <ul>
-            <li>Jika 1 atau lebih pin tidak terhubung → periksa urutan warna dan pastikan kabel benar-benar masuk ke konektor.</li>
-            <li>Jika pasangan saling tertukar (crossed pairs) → akan muncul masalah duplex/throughput rendah atau tidak ada koneksi.</li>
-            <li>Jika sinyal lemah pada jarak &gt;90 meter → pertimbangkan penggunaan repeater/switch tambahan atau ganti ke kabel Cat6.</li>
-        </ul>
-
-        <h3>Kesalahan Umum yang Harus Dihindari</h3>
-        <ul>
-            <li>Memotong terlalu banyak twisted pair (mengurangi kemampuan penangkal interferensi).</li>
-            <li>Memakai konektor murah atau rusak yang membuat kontak tidak rapat.</li>
-            <li>Mencampur standar (satu ujung A, ujung lain B) tanpa tujuan (kecuali benar-benar ingin membuat crossover).</li>
-        </ul>
-
-        <h3>Ringkasan Singkat</h3>
-        <p>Pilih standar (T568A atau T568B) dan gunakan secara konsisten. Ikuti langkah crimping dengan teliti, uji kabel dengan tester, dan perhatikan kualitas alat serta kabel untuk hasil maksimal.</p>
-
-    </main>
-</body>
-</html>
+8: Cokelat</pre><div class="figure"><img src="../assets/images/urutan kabel lan crimping/diagram-utp-colors.svg" alt="Diagram urutan warna kabel UTP T568A dan T568B"></div><h3>Langkah Crimping (Praktis &amp; Aman)</h3><ol><li>Siapkan kabel UTP dan alat: tang crimping, konektor RJ45, cutter/stripper, LAN tester.</li><li>Kupas sekitar 2.5–3 cm kulit luar kabel tanpa merusak lilitan di dalamnya.</li><li>Ratakan dan susun pasangan kabel sesuai standar yang dipilih (T568A atau T568B).</li><li>Pastikan urutan kabel lurus dan rapi; rapatkan dan potong ujung sehingga rata (sekitar 1–1.5 cm dari ujung isolasi ke pin).<div class="tips"><strong>Tips</strong>Pastikan pasangan twisted tetap dekat namun jangan dipotong terlalu dalam — twisted pair membantu mengurangi interferensi.</div></li><li>Masukkan kabel ke dalam konektor RJ45 hingga ujung tembaga menyentuh pin konektor; periksa kembali urutan di depan konektor.</li><li>Masukkan konektor ke tang crimping dan tekan kuat hingga mekanisme mengunci.<div class="note"><strong>Catatan</strong>Jika pin tidak terlihat menekan kabel, ulangi pemasangan — pin harus menembus isolasi hingga kontak logam menyentuh tembaga.</div></li><li>Uji kabel dengan LAN tester: semua 8 LED harus berkedip/menyala sesuai urutan untuk kabel straight-through.</li></ol><div class="figure"><img src="../assets/images/urutan kabel lan crimping/diagram-crimping.svg" alt="Diagram teknik crimping RJ45"><p style="text-align:center;color:var(--muted);font-size:13px">Diagram ilustrasi sederhana proses crimping.</p></div><h3>Contoh Visual (T568B, RJ45 depan - clip down)</h3><pre>RJ45 front view (clip down): 1 2 3 4 5 6 7 8
+T568B: W-O O W-G B W-B G W-Br Br</pre><h3>Pengujian &amp; Troubleshooting</h3><ul><li>Jika 1 atau lebih pin tidak terhubung → periksa urutan warna dan pastikan kabel benar-benar masuk ke konektor.</li><li>Jika pasangan saling tertukar (crossed pairs) → akan muncul masalah duplex/throughput rendah atau tidak ada koneksi.</li><li>Jika sinyal lemah pada jarak &gt;90 meter → pertimbangkan penggunaan repeater/switch tambahan atau ganti ke kabel Cat6.</li></ul><h3>Kesalahan Umum yang Harus Dihindari</h3><ul><li>Memotong terlalu banyak twisted pair (mengurangi kemampuan penangkal interferensi).</li><li>Memakai konektor murah atau rusak yang membuat kontak tidak rapat.</li><li>Mencampur standar (satu ujung A, ujung lain B) tanpa tujuan (kecuali benar-benar ingin membuat crossover).</li></ul><h3>Ringkasan Singkat</h3><p>Pilih standar (T568A atau T568B) dan gunakan secara konsisten. Ikuti langkah crimping dengan teliti, uji kabel dengan tester, dan perhatikan kualitas alat serta kabel untuk hasil maksimal.</p></div><div class="footer">Kryzna Learn • Materi Pembelajaran</div></article></main><script>const t=document.getElementById('theme');const setTheme=x=>{document.documentElement.dataset.theme=x;localStorage.setItem('theme',x);t.textContent=x==='dark'?'☀️':'🌙'};setTheme(localStorage.getItem('theme')||'light');t.addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));</script></body></html>
