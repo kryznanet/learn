@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profile Saya — Kryzna Learn</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<style>
+:root{--bg:#eef4ff;--surface:#fff;--text:#0f172a;--muted:#64748b;--line:#dbe3ee;--primary:#2563eb;--cyan:#06b6d4;--good:#166534;--goodbg:#ecfdf5;--bad:#991b1b;--badbg:#fef2f2;--bluebg:#eff6ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 5%,#dbeafe 0,transparent 28%),linear-gradient(135deg,#f8fbff,var(--bg));font-family:Segoe UI,Arial,sans-serif;color:var(--text)}header{background:#0f172a;color:#fff;padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;font-size:20px}.top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:0;border-radius:9px;padding:10px 13px;cursor:pointer;font-weight:800}.gray{background:#ffffff14;color:#fff;border:1px solid #ffffff33}.primary{background:linear-gradient(135deg,var(--primary),var(--cyan));color:#fff}.secondary{background:#e2e8f0;color:#1e293b}.wrap{max-width:980px;margin:auto;padding:28px 18px}.hero{display:flex;align-items:center;gap:16px;margin-bottom:18px}.avatar{width:68px;height:68px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;font-size:28px;font-weight:950;box-shadow:0 16px 32px rgba(37,99,235,.22)}h1{margin:0;font-size:30px;letter-spacing:-.03em}.sub{margin:5px 0 0;color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 16px 38px rgba(15,23,42,.07)}.full{grid-column:1/-1}.card h2{margin:0 0 6px;font-size:18px}.hint{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:16px}.field{margin-bottom:14px}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px;color:#334155}.field input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a}.field input:focus{outline:0;border-color:#60a5fa;box-shadow:0 0 0 4px rgba(37,99,235,.1)}.role{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:900}.readonly{background:#f8fafc!important;color:#64748b!important}.actions{display:flex;gap:8px;flex-wrap:wrap}.msg{margin-top:12px;min-height:20px;font-size:13px;line-height:1.5}.success{color:var(--good)}.error{color:var(--bad)}.security{padding:12px;border-radius:11px;background:var(--bluebg);color:#1e40af;font-size:12px;line-height:1.6;margin-top:12px}.danger-note{padding:12px;border-radius:11px;background:#fff7ed;color:#9a3412;font-size:12px;line-height:1.6;margin-top:10px}@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{align-items:flex-start}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div class="brand">Kryzna Learn · Profile</div><div class="top"><button class="btn gray" onclick="location.href='dashboard.html'">← Dashboard</button><button class="btn gray" id="logout">Keluar</button></div></header>
+<main class="wrap">
+<section class="hero"><div class="avatar" id="avatar">K</div><div><h1 id="hello">Profile Saya</h1><p class="sub" id="emailText">Memuat akun...</p></div></section>
+<div class="grid">
+<section class="card"><h2>Informasi Akun</h2><p class="hint">Nama tampilan dapat diubah sendiri oleh setiap user. Role dan status akun tetap dikendalikan oleh Super Admin.</p>
+<div class="field"><label>Email</label><input id="email" class="readonly" readonly></div>
+<div class="field"><label>Nama Tampilan</label><input id="name" maxlength="80" placeholder="Nama kamu"></div>
+<div class="field"><label>Role</label><div id="role" class="role">Memuat...</div></div>
+<div class="actions"><button class="btn primary" id="saveName">Simpan Nama</button></div><div id="nameMsg" class="msg"></div>
+</section>
+<section class="card"><h2>Ganti Password</h2><p class="hint">Untuk keamanan, masukkan password lama sebelum password baru disimpan.</p>
+<div class="field"><label>Password Lama</label><input id="oldPass" type="password" autocomplete="current-password" placeholder="Password saat ini"></div>
+<div class="field"><label>Password Baru</label><input id="newPass" type="password" autocomplete="new-password" minlength="8" placeholder="Minimal 8 karakter"></div>
+<div class="field"><label>Ulangi Password Baru</label><input id="newPass2" type="password" autocomplete="new-password" minlength="8" placeholder="Ketik ulang password baru"></div>
+<div class="actions"><button class="btn primary" id="savePass">Ganti Password</button></div><div id="passMsg" class="msg"></div><div class="security">🔐 Password diproses oleh Supabase Auth. Password tidak disimpan di tabel profile.</div>
+</section>
+<section class="card full"><h2>Saran Pengamanan</h2><p class="hint">Untuk Kryzna Learn, saya sarankan nanti ditambahkan MFA/2FA untuk Super Admin, riwayat aktivitas admin, notifikasi saat password berubah, dan fitur reset password melalui email.</p><div class="danger-note">Jangan pernah membagikan password atau memasukkan service_role/secret key ke file website.</div></section>
+</div>
+</main>
+<script>
+const db=supabaseClient,$=id=>document.getElementById(id);let currentUser=null;
+function roleLabel(r){return ({super_admin:'Super Admin',admin:'Admin',penulis:'Penulis / Pemateri',viewer:'Viewer'})[r]||r||'User'}
+function initials(name,email){const s=(name||email||'K').trim();const parts=s.split(/\s+/).filter(Boolean);return (parts.length>1?parts[0][0]+parts[1][0]:s.slice(0,2)).toUpperCase()}
+function msg(id,text,type){const e=$(id);e.textContent=text;e.className='msg '+(type||'')}
+async function boot(){const {data:{user},error}=await db.auth.getUser();if(error||!user){location.href='login.html';return}currentUser=user;$('email').value=user.email||'';$('emailText').textContent=user.email||'';$('avatar').textContent=initials(user.user_metadata?.display_name,user.email);const {data:staff,error:se}=await db.from('admin_users').select('display_name,role,active').eq('user_id',user.id).maybeSingle();if(se||!staff||!staff.active){location.href='login.html';return}$('name').value=staff.display_name||user.user_metadata?.display_name||'';$('role').textContent=roleLabel(staff.role);$('hello').textContent='Profile '+(($('name').value||'Saya').trim());$('name').dataset.role=staff.role}
+$('saveName').onclick=async()=>{const name=$('name').value.trim();if(name.length<2){msg('nameMsg','Nama minimal 2 karakter.','error');return}if(name.length>80){msg('nameMsg','Nama maksimal 80 karakter.','error');return}$('saveName').disabled=true;msg('nameMsg','Menyimpan...','');try{const {error}=await db.from('admin_users').update({display_name:name}).eq('user_id',currentUser.id);if(error)throw error;const {error:ae}=await db.auth.updateUser({data:{display_name:name}});if(ae)throw ae;$('avatar').textContent=initials(name,currentUser.email);$('hello').textContent='Profile '+name;msg('nameMsg','Nama berhasil diperbarui.','success')}catch(e){msg('nameMsg','Gagal: '+(e.message||String(e)),'error')}finally{$('saveName').disabled=false}}
+$('savePass').onclick=async()=>{const oldPass=$('oldPass').value,newPass=$('newPass').value,newPass2=$('newPass2').value;if(!oldPass||!newPass){msg('passMsg','Password lama dan baru wajib diisi.','error');return}if(newPass.length<8){msg('passMsg','Password baru minimal 8 karakter.','error');return}if(newPass!==newPass2){msg('passMsg','Konfirmasi password baru tidak sama.','error');return}if(oldPass===newPass){msg('passMsg','Password baru harus berbeda dari password lama.','error');return}$('savePass').disabled=true;msg('passMsg','Memverifikasi password lama...','');try{const {error:loginError}=await db.auth.signInWithPassword({email:currentUser.email,password:oldPass});if(loginError)throw new Error('Password lama salah.');const {error:updateError}=await db.auth.updateUser({password:newPass});if(updateError)throw updateError;$('oldPass').value='';$('newPass').value='';$('newPass2').value='';msg('passMsg','Password berhasil diganti.','success')}catch(e){msg('passMsg','Gagal: '+(e.message||String(e)),'error')}finally{$('savePass').disabled=false}}
+$('logout').onclick=async()=>{await db.auth.signOut();location.href='login.html'};
+boot();
+</script>
+</body>
+</html>
