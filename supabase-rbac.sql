@@ -18,9 +18,12 @@ from auth.users u
 where u.id = a.user_id
   and (a.email is null or a.email = '');
 
+-- Untuk migrasi awal: admin pertama yang sudah ada menjadi Super Admin.
 update public.admin_users
 set role = 'super_admin'
-where role is null or role = '';
+where user_id = (
+  select user_id from public.admin_users order by created_at asc limit 1
+);
 
 alter table public.admin_users drop constraint if exists admin_users_role_check;
 alter table public.admin_users
