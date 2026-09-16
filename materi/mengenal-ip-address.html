@@ -1,189 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mengenal IP Address — Kryzna Learn</title>
-    <style>
-        :root {
-            --bg-body: #f4f7f6;
-            --bg-card: #ffffff;
-            --text-main: #333333;
-            --text-muted: #555555;
-            --header-bg: #1e3a8a;
-            --border-card: #0ea5e9;
-            --shadow: rgba(0, 0, 0, 0.05);
-        }
-
-        [data-theme="dark"] {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #cbd5e1;
-            --header-bg: #1e1b4b;
-            --border-card: #38bdf8;
-            --shadow: rgba(0, 0, 0, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; transition: background 0.3s, color 0.3s; }
-        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
-
-        /* Header */
-        header { background-color: var(--header-bg); color: #fff; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-        
-        /* Memperbaiki warna teks Logo Kryzna Learn agar selalu putih terang & jelas */
-        header h1 { font-size: 1.5rem; color: #ffffff !important; }
-        header a { color: #ffffff !important; text-decoration: none; }
-
-        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-        nav { display: flex; gap: 1.5rem; }
-        nav a { color: #fff; text-decoration: none; font-weight: 500; cursor: pointer; }
-        nav a:hover { color: #38bdf8; }
-
-        /* Tombol Dark Mode */
-        .theme-toggle { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #fff; padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .theme-toggle:hover { background-color: rgba(255,255,255,0.2); }
-
-        /* Layout Utama Dua Kolom */
-        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
-        .main-layout { display: flex; gap: 2rem; align-items: flex-start; }
-
-        /* Sidebar Kiri */
-        .sidebar { width: 280px; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); position: sticky; top: 100px; display: flex; flex-direction: column; gap: 1.5rem; }
-        .sidebar-group h3 { margin-bottom: 0.8rem; color: var(--text-main); border-bottom: 2px solid var(--border-card); padding-bottom: 0.4rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px; }
-        .sidebar-group ul { list-style: none; }
-        .sidebar-group li { margin-bottom: 0.6rem; }
-        .sidebar-group a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; }
-        .sidebar-group a:hover { color: #0ea5e9; font-weight: bold; }
-
-        /* Konten Artikel Kanan */
-        .content-container { flex: 1; background: var(--bg-card); padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 15px var(--shadow); }
-        .back-link { display: inline-block; margin-bottom: 1.5rem; color: #0ea5e9; text-decoration: none; font-weight: bold; }
-        .back-link:hover { text-decoration: underline; }
-        
-        h1 { color: var(--header-bg); border-bottom: 2px solid var(--border-card); padding-bottom: 0.5rem; margin-bottom: 1rem; font-size: 1.8rem; }
-        [data-theme="dark"] h1 { color: #38bdf8; }
-        h3 { color: #0ea5e9; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        ul, ol { margin-left: 1.5rem; margin-bottom: 1rem; color: var(--text-muted); }
-        li { margin-bottom: 0.5rem; }
-        p { color: var(--text-muted); margin-bottom: 1rem; }
-        .highlight { background-color: var(--bg-body); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; color: var(--border-card); border: 1px solid var(--border-card); }
-
-        @media (max-width: 768px) { 
-            .main-layout { flex-direction: column; } 
-            .sidebar { width: 100%; position: relative; top: 0; } 
-        }
-    </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Mengenal IP Address — Kryzna Learn">
+<title>Mengenal IP Address — Kryzna Learn</title>
+<style>
+:root{--bg:#f5f7fb;--surface:#fff;--surface2:#eef3fa;--text:#102033;--muted:#64748b;--line:#e2e8f0;--primary:#2563eb;--cyan:#06b6d4;--navy:#09111f;--shadow:0 18px 45px rgba(15,23,42,.08)}
+[data-theme=dark]{--bg:#07101d;--surface:#0f1a2c;--surface2:#15243a;--text:#eef6ff;--muted:#9fb0c7;--line:#24344b;--primary:#60a5fa;--cyan:#22d3ee;--navy:#030913;--shadow:0 24px 60px rgba(0,0,0,.3)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:radial-gradient(circle at 20% 0,#e7f2ff 0,transparent 32%),var(--bg);color:var(--text);font:16px/1.75 Inter,Segoe UI,Arial,sans-serif}a{color:inherit}
+header{position:sticky;top:0;z-index:20;background:rgba(9,17,31,.9);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08);color:#fff}.nav{max-width:1200px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{text-decoration:none;display:flex;align-items:center;gap:10px}.logo{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#60a5fa,#22d3ee);color:#07101d;font-weight:950}.brand b{font-size:16px}.brand small{display:block;color:#9eb0c7;font-size:10px}.nav-actions{display:flex;gap:8px}.nav-btn{display:inline-flex;align-items:center;padding:9px 12px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:transparent;color:#dbe8f7;text-decoration:none;font-size:12px;font-weight:800;cursor:pointer}.nav-btn:hover{background:rgba(255,255,255,.08)}
+.wrap{max-width:1100px;margin:auto;padding:28px 20px 70px}.back{display:inline-flex;gap:7px;color:var(--primary);font-weight:850;text-decoration:none;margin-bottom:16px}.article{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.head{padding:32px 42px 24px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(248,251,255,.9),var(--surface))}.kicker{display:inline-flex;padding:6px 10px;background:var(--surface2);color:var(--primary);border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.head h1{font-size:clamp(32px,4.5vw,54px);line-height:1.08;letter-spacing:-.04em;margin:14px 0 10px}.head p{max-width:850px;color:var(--muted);margin:0}.content{max-width:850px;margin:auto;padding:30px 42px 50px}.content h2,.content h3{line-height:1.25;letter-spacing:-.02em;margin:32px 0 12px}.content h2{font-size:28px}.content h3{font-size:22px;color:var(--primary)}.content p{margin:0 0 16px}.content ul,.content ol{padding-left:25px}.content li{margin:7px 0}.highlight,.content code{background:var(--surface2);border:1px solid var(--line);padding:2px 7px;border-radius:7px;font-family:Consolas,monospace;color:var(--primary)}.content a{color:var(--primary);font-weight:700}.content blockquote{margin:20px 0;padding:14px 18px;border-left:4px solid var(--primary);background:var(--surface2);border-radius:0 12px 12px 0;color:var(--muted)}.content pre{margin:18px 0;padding:18px;border-radius:14px;overflow:auto;background:#0a1220;color:#e5eefb;border:1px solid #22334b}.content table{width:100%;border-collapse:collapse;margin:20px 0;display:block;overflow:auto}.content th,.content td{padding:10px 12px;border:1px solid var(--line);text-align:left;min-width:120px}.content th{background:var(--surface2)}.content img{max-width:100%;height:auto;border-radius:14px;display:block;margin:18px auto}.footer{padding:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:700px){.nav{padding:10px 14px}.brand small,.home-label{display:none}.wrap{padding:18px 14px 45px}.head{padding:24px 20px 20px}.content{padding:24px 20px 34px;font-size:16px}.head h1{font-size:34px}.nav-btn{padding:8px 10px}}
+</style></head>
 <body>
-
-    <!-- Header dengan Logo yang Pasti Kelihatan Terang/Gelap -->
-    <header>
-        <a href="../index.html"><h1>Kryzna Learn</h1></a>
-        <div class="nav-right">
-            <nav>
-                <a href="../index.html">Materi</a>
-                <a href="../index.html#tutorial">Tutorial</a>
-            </nav>
-            <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">🌙</button>
-        </div>
-    </header>
-
-    <main class="main-layout container">
-        
-        <!-- Sidebar Kiri -->
-        <aside class="sidebar">
-            <div class="sidebar-group">
-                <h3>Daftar Materi</h3>
-                <ul id="sidebar-materi"></ul>
-            </div>
-            <div class="sidebar-group">
-                <h3>Daftar Tutorial</h3>
-                <ul id="sidebar-tutorial"></ul>
-            </div>
-        </aside>
-
-        <!-- Konten Artikel -->
-        <article class="content-container">
-            <a href="../index.html" class="back-link">← Kembali ke Menu Utama</a>
-            <h1>1. Mengenal IP Address secara Mendalam</h1>
-            <p><strong>Internet Protocol Address (IP Address)</strong> adalah identitas angka unik yang dimiliki oleh setiap perangkat (komputer, HP, router) agar bisa saling berkomunikasi di dalam jaringan.</p>
-
-            <h3>Fungsi Utama IP Address:</h3>
-            <ul>
-                <li><strong>Alamat Identifikasi Alat (Host):</strong> Mengetahui identitas spesifik suatu perangkat di jaringan.</li>
-                <li><strong>Alamat Lokasi Jaringan:</strong> Menunjukkan rute atau jalur mana yang harus dilewati data agar sampai ke perangkat tujuan.</li>
-            </ul>
-
-            <h3>Perbedaan IPv4 vs IPv6:</h3>
-            <ul>
-                <li><strong>IPv4:</strong> Terdiri dari 32-bit angka desimal yang dipisahkan titik. Contoh: <span class="highlight">192.168.1.1</span>. Kapasitasnya terbatas sekitar 4,3 miliar alamat.</li>
-                <li><strong>IPv6:</strong> Generasi baru dengan 128-bit kombinasi angka dan huruf (heksadesimal) dipisahkan titik dua. Contoh: <span class="highlight">2001:db8::ff00:42:8329</span>.</li>
-            </ul>
-
-            <h3>Cara Cek IP Address Sendiri (Windows):</h3>
-            <ol>
-                <li>Tekan tombol kombinasi <span class="highlight">Windows + R</span> di keyboard Anda, ketik <span class="highlight">cmd</span>, lalu tekan Enter.</li>
-                <li>Ketik perintah <span class="highlight">ipconfig</span> di dalam Command Prompt, lalu tekan Enter.</li>
-                <li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li>
-            </ol>
-        </article>
-
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeButton(savedTheme);
-            loadSidebarData();
-        });
-
-        // Memuat data sidebar dengan path yang aman dari subfolder
-        function loadSidebarData() {
-            fetch('../data.json?v=' + new Date().getTime())
-                .then(res => res.json())
-                .then(data => {
-                    const sidebarMateri = document.getElementById('sidebar-materi');
-                    const sidebarTutorial = document.getElementById('sidebar-tutorial');
-
-                    const listMateri = data.filter(item => (item.kategori || '').toLowerCase() === 'materi');
-                    const listTutorial = data.filter(item => (item.kategori || '').toLowerCase() === 'tutorial');
-
-                    // Mengatasi duplikasi path dengan memastikan link mengarah dari root repository
-                    sidebarMateri.innerHTML = listMateri.length > 0 
-                        ? listMateri.map(item => {
-                            let cleanLink = item.linkHalaman.replace(/^\.\//, '').replace(/^materi\//, '').replace(/^tutorial\//, '');
-                            // Tentukan path folder berdasarkan kategori
-                            let folder = item.kategori.toLowerCase() === 'tutorial' ? 'tutorial/' : 'materi/';
-                            return `<li><a href="../${folder}${cleanLink}">• ${item.judul}</a></li>`;
-                          }).join('')
-                        : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada materi</li>';
-
-                    sidebarTutorial.innerHTML = listTutorial.length > 0 
-                        ? listTutorial.map(item => {
-                            let cleanLink = item.linkHalaman.replace(/^\.\//, '').replace(/^materi\//, '').replace(/^tutorial\//, '');
-                            let folder = item.kategori.toLowerCase() === 'tutorial' ? 'tutorial/' : 'materi/';
-                            return `<li><a href="../${folder}${cleanLink}">• ${item.judul}</a></li>`;
-                          }).join('')
-                        : '<li style="color:var(--text-muted); font-size:0.85rem;">Tidak ada tutorial</li>';
-                })
-                .catch(err => console.error('Gagal memuat sidebar:', err));
-        }
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeButton(newTheme);
-        }
-
-        function updateThemeButton(theme) {
-            const btn = document.getElementById('theme-btn');
-            if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-        }
-    </script>
-</body>
-</html>
+<header><div class="nav"><a class="brand" href="../index.html"><span class="logo">K</span><span><b>Kryzna Learn</b><small>Jaringan • Komputer • Teknologi</small></span></a><div class="nav-actions"><a class="nav-btn home-label" href="../index.html">← Beranda</a><button class="nav-btn" id="theme" aria-label="Ganti tema">🌙</button></div></div></header>
+<main class="wrap"><a class="back" href="../index.html">← Kembali ke koleksi materi</a><article class="article"><div class="head"><span class="kicker">Materi</span><h1>1. Mengenal IP Address secara Mendalam</h1><p>Memahami identitas perangkat dan pengalamatan pada jaringan komputer.</p></div><div class="content">
+<p><strong>Internet Protocol Address (IP Address)</strong> adalah identitas angka unik yang dimiliki oleh setiap perangkat (komputer, HP, router) agar bisa saling berkomunikasi di dalam jaringan.</p>
+<h3>Fungsi Utama IP Address:</h3><ul><li><strong>Alamat Identifikasi Alat (Host):</strong> Mengetahui identitas spesifik suatu perangkat di jaringan.</li><li><strong>Alamat Lokasi Jaringan:</strong> Menunjukkan rute atau jalur mana yang harus dilewati data agar sampai ke perangkat tujuan.</li></ul>
+<h3>Perbedaan IPv4 vs IPv6:</h3><ul><li><strong>IPv4:</strong> Terdiri dari 32-bit angka desimal yang dipisahkan titik. Contoh: <span class="highlight">192.168.1.1</span>. Kapasitasnya terbatas sekitar 4,3 miliar alamat.</li><li><strong>IPv6:</strong> Generasi baru dengan 128-bit kombinasi angka dan huruf (heksadesimal) dipisahkan titik dua. Contoh: <span class="highlight">2001:db8::ff00:42:8329</span>.</li></ul>
+<h3>Cara Cek IP Address Sendiri (Windows):</h3><ol><li>Tekan tombol kombinasi <span class="highlight">Windows + R</span> di keyboard Anda, ketik <span class="highlight">cmd</span>, lalu tekan Enter.</li><li>Ketik perintah <span class="highlight">ipconfig</span> di dalam Command Prompt, lalu tekan Enter.</li><li>Cari adapter jaringan aktif yang sedang Anda gunakan (Wi-Fi atau Ethernet), lalu lihat pada baris <strong>IPv4 Address</strong> untuk mengetahui alamat IP komputer Anda.</li></ol>
+</div><div class="footer">Kryzna Learn • Materi Pembelajaran</div></article></main>
+<script>const t=document.getElementById('theme');const setTheme=x=>{document.documentElement.dataset.theme=x;localStorage.setItem('theme',x);t.textContent=x==='dark'?'☀️':'🌙'};setTheme(localStorage.getItem('theme')||'light');t.addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));</script>
+</body></html>
