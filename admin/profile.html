@@ -1,860 +1,794 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profile Saya — Kryzna Learn</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../supabase-config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #eef4ff;
-      font-family: Segoe UI, Arial, sans-serif;
-      color: #0f172a;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile Saya — Kryzna Learn</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #eef4ff;
+        font-family:
+          Segoe UI,
+          Arial,
+          sans-serif;
+        color: #0f172a;
+      }
 
-    header {
-      background: #0f172a;
-      color: #fff;
-      padding: 14px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      header {
+        background: #0f172a;
+        color: #fff;
+        padding: 14px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    .top {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+      .top {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
 
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 10px 13px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+      .btn {
+        border: 0;
+        border-radius: 9px;
+        padding: 10px 13px;
+        font-weight: 800;
+        cursor: pointer;
+      }
 
-    .gray {
-      background: #ffffff14;
-      color: #fff;
-      border: 1px solid #ffffff33;
-    }
+      .gray {
+        background: #ffffff14;
+        color: #fff;
+        border: 1px solid #ffffff33;
+      }
 
-    .primary {
-      background: #2563eb;
-      color: #fff;
-    }
+      .primary {
+        background: #2563eb;
+        color: #fff;
+      }
 
-    .wrap {
-      max-width: 1000px;
-      margin: auto;
-      padding: 28px 18px;
-    }
+      .wrap {
+        max-width: 1000px;
+        margin: auto;
+        padding: 28px 18px;
+      }
 
-    .hero {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 18px;
-    }
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 18px;
+      }
 
-    .avatar {
-      width: 74px;
-      height: 74px;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #2563eb;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 28px;
-      font-weight: 900;
-    }
+      .avatar {
+        width: 74px;
+        height: 74px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #2563eb;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 28px;
+        font-weight: 900;
+      }
 
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .full {
-      grid-column: 1 / -1;
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid #dbe3ee;
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 14px 36px rgba(15, 23, 42, .07);
-    }
-
-    h1,
-    h2 {
-      margin-top: 0;
-    }
-
-    .muted {
-      color: #64748b;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .field {
-      margin: 12px 0;
-    }
-
-    .field label {
-      display: block;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .field input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 11px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-    }
-
-    .role {
-      display: inline-flex;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: #dbeafe;
-      color: #1d4ed8;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .msg {
-      margin-top: 10px;
-      font-size: 13px;
-      min-height: 20px;
-    }
-
-    .success {
-      color: #166534;
-    }
-
-    .error {
-      color: #991b1b;
-    }
-
-    .box {
-      padding: 12px;
-      background: #f8fafc;
-      border: 1px solid #dbe3ee;
-      border-radius: 12px;
-    }
-
-    .mfa-grid {
-      display: grid;
-      grid-template-columns: 1fr 180px;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .qr {
-      min-height: 180px;
-      display: grid;
-      place-items: center;
-      background: #fff;
-      border: 1px dashed #cbd5e1;
-      border-radius: 12px;
-    }
-
-    .sessions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    @media (max-width: 760px) {
-      .grid,
-      .mfa-grid,
-      .sessions {
-        grid-template-columns: 1fr;
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
       }
 
       .full {
-        grid-column: auto;
+        grid-column: 1 / -1;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <b>Kryzna Learn · Profile</b>
-    <div class="top">
-      <button
-        class="btn gray"
-        onclick="location.href='dashboard.html'"
-      >
-        ← Dashboard
-      </button>
-      <button class="btn gray" id="logout">Keluar</button>
-    </div>
-  </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="avatar" id="avatar">K</div>
-      <div>
-        <h1 id="hello">Profile Saya</h1>
-        <div class="muted" id="sub">Memuat akun...</div>
+      .card {
+        background: #fff;
+        border: 1px solid #dbe3ee;
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+      }
+
+      h1,
+      h2 {
+        margin-top: 0;
+      }
+
+      .muted {
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .field {
+        margin: 12px 0;
+      }
+
+      .field label {
+        display: block;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 6px;
+      }
+
+      .field input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+      }
+
+      .role {
+        display: inline-flex;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: #dbeafe;
+        color: #1d4ed8;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .msg {
+        margin-top: 10px;
+        font-size: 13px;
+        min-height: 20px;
+      }
+
+      .success {
+        color: #166534;
+      }
+
+      .error {
+        color: #991b1b;
+      }
+
+      .box {
+        padding: 12px;
+        background: #f8fafc;
+        border: 1px solid #dbe3ee;
+        border-radius: 12px;
+      }
+
+      .mfa-grid {
+        display: grid;
+        grid-template-columns: 1fr 180px;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .qr {
+        min-height: 180px;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+      }
+
+      .sessions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      @media (max-width: 760px) {
+        .grid,
+        .mfa-grid,
+        .sessions {
+          grid-template-columns: 1fr;
+        }
+
+        .full {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <b>Kryzna Learn · Profile</b>
+      <div class="top">
+        <button class="btn gray" onclick="location.href='dashboard.html'">
+          ← Dashboard
+        </button>
+        <button class="btn gray" id="logout">Keluar</button>
       </div>
-    </section>
+    </header>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Informasi Akun</h2>
-
-        <div class="field">
-          <label>Email</label>
-          <input id="email" readonly>
+    <main class="wrap">
+      <section class="hero">
+        <div class="avatar" id="avatar">K</div>
+        <div>
+          <h1 id="hello">Profile Saya</h1>
+          <div class="muted" id="sub">Memuat akun...</div>
         </div>
-
-        <div class="field">
-          <label>Nama Tampilan</label>
-          <input id="name" maxlength="80">
-        </div>
-
-        <div class="field">
-          <label>Role</label>
-          <div id="role" class="role">Memuat...</div>
-        </div>
-
-        <div class="actions">
-          <button class="btn primary" id="saveName">Simpan Nama</button>
-        </div>
-        <div id="nameMsg" class="msg"></div>
       </section>
 
-      <section class="card">
-        <h2>Ganti Password</h2>
-        <div class="muted">
-          Verifikasi password lama sebelum mengganti password baru.
-        </div>
+      <div class="grid">
+        <section class="card">
+          <h2>Informasi Akun</h2>
 
-        <div class="field">
-          <label>Password Lama</label>
-          <input
-            id="oldPass"
-            type="password"
-            autocomplete="current-password"
-          >
-        </div>
-
-        <div class="field">
-          <label>Password Baru</label>
-          <input
-            id="newPass"
-            type="password"
-            autocomplete="new-password"
-            minlength="8"
-          >
-        </div>
-
-        <div class="field">
-          <label>Ulangi Password Baru</label>
-          <input
-            id="newPass2"
-            type="password"
-            autocomplete="new-password"
-            minlength="8"
-          >
-        </div>
-
-        <button class="btn primary" id="savePass">
-          Ganti Password
-        </button>
-        <div id="passMsg" class="msg"></div>
-      </section>
-
-      <section class="card">
-        <h2>Ganti Email</h2>
-        <div class="muted">
-          Email baru akan mengikuti proses verifikasi Supabase.
-        </div>
-
-        <div class="field">
-          <label>Email Baru</label>
-          <input
-            id="newEmail"
-            type="email"
-            autocomplete="email"
-          >
-        </div>
-
-        <button class="btn primary" id="saveEmail">
-          Kirim Permintaan Perubahan
-        </button>
-        <div id="emailMsg" class="msg"></div>
-      </section>
-
-      <section class="card">
-        <h2>Foto Profile</h2>
-        <div class="muted">
-          Upload avatar pribadi. File disimpan di bucket avatar milik akun
-          sendiri.
-        </div>
-
-        <div class="field">
-          <input
-            id="avatarFile"
-            type="file"
-            accept="image/png,image/jpeg,image/webp"
-          >
-        </div>
-
-        <button class="btn primary" id="saveAvatar">
-          Upload Avatar
-        </button>
-        <div id="avatarMsg" class="msg"></div>
-      </section>
-
-      <section class="card full">
-        <h2>MFA / 2FA</h2>
-        <div class="muted">
-          Khusus Super Admin: aktifkan authenticator app agar login
-          membutuhkan kode OTP tambahan.
-        </div>
-
-        <div class="mfa-grid">
-          <div>
-            <div class="box">
-              <b id="mfaState">Memuat status...</b>
-              <p class="muted" id="mfaHint"></p>
-            </div>
-
-            <div class="field" id="mfaCodeWrap" hidden>
-              <label>Kode OTP</label>
-              <input
-                id="mfaCode"
-                inputmode="numeric"
-                maxlength="6"
-                placeholder="123456"
-              >
-            </div>
-
-            <div class="actions">
-              <button class="btn primary" id="mfaEnroll">
-                Aktifkan MFA
-              </button>
-              <button class="btn gray" id="mfaVerify" hidden>
-                Verifikasi & Aktifkan
-              </button>
-              <button class="btn gray" id="mfaUnenroll" hidden>
-                Nonaktifkan MFA
-              </button>
-            </div>
-
-            <div id="mfaMsg" class="msg"></div>
+          <div class="field">
+            <label>Email</label>
+            <input id="email" readonly />
           </div>
 
-          <div class="qr" id="qr"></div>
-        </div>
-      </section>
+          <div class="field">
+            <label>Nama Tampilan</label>
+            <input id="name" maxlength="80" />
+          </div>
 
-      <section class="card full">
-        <h2>Sesi Login</h2>
-        <div class="muted">
-          Keluar dari perangkat lain atau semua perangkat.
-        </div>
+          <div class="field">
+            <label>Role</label>
+            <div id="role" class="role">Memuat...</div>
+          </div>
 
-        <div class="sessions">
-          <button class="btn gray" id="others">
-            Keluar dari perangkat lain
+          <div class="actions">
+            <button class="btn primary" id="saveName">Simpan Nama</button>
+          </div>
+          <div id="nameMsg" class="msg"></div>
+        </section>
+
+        <section class="card">
+          <h2>Ganti Password</h2>
+          <div class="muted">
+            Verifikasi password lama sebelum mengganti password baru.
+          </div>
+
+          <div class="field">
+            <label>Password Lama</label>
+            <input
+              id="oldPass"
+              type="password"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <div class="field">
+            <label>Password Baru</label>
+            <input
+              id="newPass"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+            />
+          </div>
+
+          <div class="field">
+            <label>Ulangi Password Baru</label>
+            <input
+              id="newPass2"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+            />
+          </div>
+
+          <button class="btn primary" id="savePass">Ganti Password</button>
+          <div id="passMsg" class="msg"></div>
+        </section>
+
+        <section class="card">
+          <h2>Ganti Email</h2>
+          <div class="muted">
+            Email baru akan mengikuti proses verifikasi Supabase.
+          </div>
+
+          <div class="field">
+            <label>Email Baru</label>
+            <input id="newEmail" type="email" autocomplete="email" />
+          </div>
+
+          <button class="btn primary" id="saveEmail">
+            Kirim Permintaan Perubahan
           </button>
-          <button class="btn primary" id="all">
-            Keluar dari semua perangkat
-          </button>
-        </div>
+          <div id="emailMsg" class="msg"></div>
+        </section>
 
-        <div id="sessionMsg" class="msg"></div>
-      </section>
-    </div>
-  </main>
+        <section class="card">
+          <h2>Foto Profile</h2>
+          <div class="muted">
+            Upload avatar pribadi. File disimpan di bucket avatar milik akun
+            sendiri.
+          </div>
 
-  <script>
-    const db = supabaseClient;
-    const $ = (id) => document.getElementById(id);
-    let user = null;
-    let staff = null;
-    let mfaFactor = null;
-    let mfaChallenge = null;
+          <div class="field">
+            <input
+              id="avatarFile"
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+            />
+          </div>
 
-    const roleLabel = (r) =>
-      ({
-        super_admin: 'Super Admin',
-        admin: 'Admin',
-        penulis: 'Penulis / Pemateri',
-        viewer: 'Viewer',
-      })[r] || r;
+          <button class="btn primary" id="saveAvatar">Upload Avatar</button>
+          <div id="avatarMsg" class="msg"></div>
+        </section>
 
-    const initials = (n, e) => {
-      const s = (n || e || 'K').trim();
-      const p = s.split(/\s+/);
-      return (
-        p.length > 1
-          ? p[0][0] + p[1][0]
-          : s.slice(0, 2)
-      ).toUpperCase();
-    };
+        <section class="card full">
+          <h2>MFA / 2FA</h2>
+          <div class="muted">
+            Khusus Super Admin: aktifkan authenticator app agar login
+            membutuhkan kode OTP tambahan.
+          </div>
 
-    const msg = (id, t, c) => {
-      $(id).textContent = t;
-      $(id).className = 'msg ' + (c || '');
-    };
+          <div class="mfa-grid">
+            <div>
+              <div class="box">
+                <b id="mfaState">Memuat status...</b>
+                <p class="muted" id="mfaHint"></p>
+              </div>
 
-    const log = async (action, title, detail) => {
-      try {
-        await db.from('activity_logs').insert({
-          user_id: user.id,
-          action,
-          entity_type: 'account',
-          entity_id: user.id,
-          detail,
-          title,
-        });
-      } catch (e) {
-        // Logging tidak boleh menghentikan aksi utama.
-      }
-    };
+              <div class="field" id="mfaCodeWrap" hidden>
+                <label>Kode OTP</label>
+                <input
+                  id="mfaCode"
+                  inputmode="numeric"
+                  maxlength="6"
+                  placeholder="123456"
+                />
+              </div>
 
-    async function boot() {
-      const {
-        data: { user: u },
-        error,
-      } = await db.auth.getUser();
+              <div class="actions">
+                <button class="btn primary" id="mfaEnroll">Aktifkan MFA</button>
+                <button class="btn gray" id="mfaVerify" hidden>
+                  Verifikasi & Aktifkan
+                </button>
+                <button class="btn gray" id="mfaUnenroll" hidden>
+                  Nonaktifkan MFA
+                </button>
+              </div>
 
-      if (error || !u) {
-        location.href = 'login.html';
-        return;
-      }
+              <div id="mfaMsg" class="msg"></div>
+            </div>
 
-      user = u;
+            <div class="qr" id="qr"></div>
+          </div>
+        </section>
 
-      const { data: s } = await db
-        .from('admin_users')
-        .select('display_name,role,active')
-        .eq('user_id', user.id)
-        .maybeSingle();
+        <section class="card full">
+          <h2>Sesi Login</h2>
+          <div class="muted">
+            Keluar dari perangkat lain atau semua perangkat.
+          </div>
 
-      if (!s?.active) {
-        await db.auth.signOut();
-        location.href = 'login.html';
-        return;
-      }
+          <div class="sessions">
+            <button class="btn gray" id="others">
+              Keluar dari perangkat lain
+            </button>
+            <button class="btn primary" id="all">
+              Keluar dari semua perangkat
+            </button>
+          </div>
 
-      staff = s;
+          <div id="sessionMsg" class="msg"></div>
+        </section>
+      </div>
+    </main>
 
-      $('email').value = user.email || '';
-      $('newEmail').value = user.email || '';
-      $('name').value =
-        s.display_name ||
-        user.user_metadata?.display_name ||
-        '';
-      $('role').textContent = roleLabel(s.role);
-      $('sub').textContent = user.email || '';
-      $('hello').textContent =
-        'Profile ' + ($('name').value || 'Saya');
+    <script>
+      const db = supabaseClient;
+      const $ = (id) => document.getElementById(id);
+      let user = null;
+      let staff = null;
+      let mfaFactor = null;
+      let mfaChallenge = null;
 
-      setAvatar(
-        user.user_metadata?.avatar_url,
-        $('name').value,
-        user.email,
-      );
+      const roleLabel = (r) =>
+        ({
+          super_admin: "Super Admin",
+          admin: "Admin",
+          penulis: "Penulis / Pemateri",
+          viewer: "Viewer",
+        })[r] || r;
 
-      await loadMfa();
-    }
+      const initials = (n, e) => {
+        const s = (n || e || "K").trim();
+        const p = s.split(/\s+/);
+        return (p.length > 1 ? p[0][0] + p[1][0] : s.slice(0, 2)).toUpperCase();
+      };
 
-    function setAvatar(url, name, email) {
-      $('avatar').innerHTML = url
-        ? '<img src="' + url + '">'
-        : initials(name, email);
-    }
+      const msg = (id, t, c) => {
+        $(id).textContent = t;
+        $(id).className = "msg " + (c || "");
+      };
 
-    async function loadMfa() {
-      if (staff.role !== 'super_admin') {
-        $('mfaState').textContent =
-          'MFA tersedia untuk Super Admin';
-        $('mfaHint').textContent = 'Akun ini bukan Super Admin.';
-        $('mfaEnroll').hidden = true;
-        return;
-      }
+      const log = async (action, title, detail) => {
+        try {
+          await db.from("activity_logs").insert({
+            user_id: user.id,
+            action,
+            entity_type: "account",
+            entity_id: user.id,
+            detail,
+            title,
+          });
+        } catch (e) {
+          // Logging tidak boleh menghentikan aksi utama.
+        }
+      };
 
-      const { data, error } = await db.auth.mfa.listFactors();
+      async function boot() {
+        const {
+          data: { user: u },
+          error,
+        } = await db.auth.getUser();
 
-      if (error) {
-        $('mfaState').textContent = 'Gagal membaca MFA';
-        $('mfaHint').textContent = error.message;
-        return;
-      }
+        if (error || !u) {
+          location.href = "login.html";
+          return;
+        }
 
-      const f = (data.all || []).find(
-        (x) =>
-          x.factor_type === 'totp' &&
-          x.status === 'verified',
-      );
+        user = u;
 
-      if (f) {
-        mfaFactor = f;
-        $('mfaState').textContent = '✅ MFA aktif';
-        $('mfaHint').textContent =
-          'Authenticator app terdaftar.';
-        $('mfaEnroll').hidden = true;
-        $('mfaUnenroll').hidden = false;
-        $('qr').textContent = 'MFA aktif';
-      } else {
-        $('mfaState').textContent = 'MFA belum aktif';
-        $('mfaHint').textContent =
-          'Gunakan Google Authenticator, Microsoft Authenticator, ' +
-          'atau aplikasi TOTP lain.';
-        $('mfaEnroll').hidden = false;
-        $('mfaUnenroll').hidden = true;
-      }
-    }
+        const { data: s } = await db
+          .from("admin_users")
+          .select("display_name,role,active")
+          .eq("user_id", user.id)
+          .maybeSingle();
 
-    $('saveName').onclick = async () => {
-      const n = $('name').value.trim();
+        if (!s?.active) {
+          await db.auth.signOut();
+          location.href = "login.html";
+          return;
+        }
 
-      if (n.length < 2) {
-        msg('nameMsg', 'Nama minimal 2 karakter.', 'error');
-        return;
-      }
+        staff = s;
 
-      const { error } = await db
-        .from('admin_users')
-        .update({ display_name: n })
-        .eq('user_id', user.id);
+        $("email").value = user.email || "";
+        $("newEmail").value = user.email || "";
+        $("name").value =
+          s.display_name || user.user_metadata?.display_name || "";
+        $("role").textContent = roleLabel(s.role);
+        $("sub").textContent = user.email || "";
+        $("hello").textContent = "Profile " + ($("name").value || "Saya");
 
-      if (error) {
-        msg('nameMsg', error.message, 'error');
-        return;
+        setAvatar(user.user_metadata?.avatar_url, $("name").value, user.email);
+
+        await loadMfa();
       }
 
-      const { error: ae } = await db.auth.updateUser({
-        data: { display_name: n },
-      });
-
-      if (ae) {
-        msg('nameMsg', ae.message, 'error');
-        return;
+      function setAvatar(url, name, email) {
+        $("avatar").innerHTML = url
+          ? '<img src="' + url + '">'
+          : initials(name, email);
       }
 
-      setAvatar(user.user_metadata?.avatar_url, n, user.email);
-      $('hello').textContent = 'Profile ' + n;
-      msg(
-        'nameMsg',
-        'Nama berhasil diperbarui.',
-        'success',
-      );
-      await log(
-        'profile_updated',
-        'Profile diperbarui',
-        'Nama tampilan diperbarui',
-      );
-    };
+      async function loadMfa() {
+        if (staff.role !== "super_admin") {
+          $("mfaState").textContent = "MFA tersedia untuk Super Admin";
+          $("mfaHint").textContent = "Akun ini bukan Super Admin.";
+          $("mfaEnroll").hidden = true;
+          return;
+        }
 
-    $('savePass').onclick = async () => {
-      const oldP = $('oldPass').value;
-      const newP = $('newPass').value;
-      const confirm = $('newPass2').value;
+        const { data, error } = await db.auth.mfa.listFactors();
 
-      if (
-        !oldP ||
-        newP.length < 8 ||
-        newP !== confirm
-      ) {
-        msg(
-          'passMsg',
-          'Periksa password lama, minimal 8 karakter, dan konfirmasi password.',
-          'error',
+        if (error) {
+          $("mfaState").textContent = "Gagal membaca MFA";
+          $("mfaHint").textContent = error.message;
+          return;
+        }
+
+        const f = (data.all || []).find(
+          (x) => x.factor_type === "totp" && x.status === "verified",
         );
-        return;
+
+        if (f) {
+          mfaFactor = f;
+          $("mfaState").textContent = "✅ MFA aktif";
+          $("mfaHint").textContent = "Authenticator app terdaftar.";
+          $("mfaEnroll").hidden = true;
+          $("mfaUnenroll").hidden = false;
+          $("qr").textContent = "MFA aktif";
+        } else {
+          $("mfaState").textContent = "MFA belum aktif";
+          $("mfaHint").textContent =
+            "Gunakan Google Authenticator, Microsoft Authenticator, " +
+            "atau aplikasi TOTP lain.";
+          $("mfaEnroll").hidden = false;
+          $("mfaUnenroll").hidden = true;
+        }
       }
 
-      const { error: re } =
-        await db.auth.signInWithPassword({
+      $("saveName").onclick = async () => {
+        const n = $("name").value.trim();
+
+        if (n.length < 2) {
+          msg("nameMsg", "Nama minimal 2 karakter.", "error");
+          return;
+        }
+
+        const { error } = await db
+          .from("admin_users")
+          .update({ display_name: n })
+          .eq("user_id", user.id);
+
+        if (error) {
+          msg("nameMsg", error.message, "error");
+          return;
+        }
+
+        const { error: ae } = await db.auth.updateUser({
+          data: { display_name: n },
+        });
+
+        if (ae) {
+          msg("nameMsg", ae.message, "error");
+          return;
+        }
+
+        setAvatar(user.user_metadata?.avatar_url, n, user.email);
+        $("hello").textContent = "Profile " + n;
+        msg("nameMsg", "Nama berhasil diperbarui.", "success");
+        await log(
+          "profile_updated",
+          "Profile diperbarui",
+          "Nama tampilan diperbarui",
+        );
+      };
+
+      $("savePass").onclick = async () => {
+        const oldP = $("oldPass").value;
+        const newP = $("newPass").value;
+        const confirm = $("newPass2").value;
+
+        if (!oldP || newP.length < 8 || newP !== confirm) {
+          msg(
+            "passMsg",
+            "Periksa password lama, minimal 8 karakter, dan konfirmasi password.",
+            "error",
+          );
+          return;
+        }
+
+        const { error: re } = await db.auth.signInWithPassword({
           email: user.email,
           password: oldP,
         });
 
-      if (re) {
-        msg('passMsg', 'Password lama salah.', 'error');
-        return;
-      }
+        if (re) {
+          msg("passMsg", "Password lama salah.", "error");
+          return;
+        }
 
-      const { error } = await db.auth.updateUser({
-        password: newP,
-      });
+        const { error } = await db.auth.updateUser({
+          password: newP,
+        });
 
-      if (error) {
-        msg('passMsg', error.message, 'error');
-        return;
-      }
+        if (error) {
+          msg("passMsg", error.message, "error");
+          return;
+        }
 
-      $('oldPass').value = '';
-      $('newPass').value = '';
-      $('newPass2').value = '';
-      msg(
-        'passMsg',
-        'Password berhasil diganti.',
-        'success',
-      );
-      await log(
-        'password_changed',
-        'Password diganti',
-        'Password akun diperbarui',
-      );
-    };
-
-    $('saveEmail').onclick = async () => {
-      const e = $('newEmail').value.trim().toLowerCase();
-
-      if (!e || e === user.email) {
-        msg(
-          'emailMsg',
-          'Masukkan email baru yang berbeda.',
-          'error',
+        $("oldPass").value = "";
+        $("newPass").value = "";
+        $("newPass2").value = "";
+        msg("passMsg", "Password berhasil diganti.", "success");
+        await log(
+          "password_changed",
+          "Password diganti",
+          "Password akun diperbarui",
         );
-        return;
-      }
+      };
 
-      const { error } = await db.auth.updateUser({
-        email: e,
-      });
+      $("saveEmail").onclick = async () => {
+        const e = $("newEmail").value.trim().toLowerCase();
 
-      if (error) {
-        msg('emailMsg', error.message, 'error');
-        return;
-      }
+        if (!e || e === user.email) {
+          msg("emailMsg", "Masukkan email baru yang berbeda.", "error");
+          return;
+        }
 
-      msg(
-        'emailMsg',
-        'Permintaan perubahan email dikirim. Cek inbox email lama/baru sesuai konfigurasi verifikasi.',
-        'success',
-      );
-      await log(
-        'email_change_requested',
-        'Perubahan email diminta',
-        'Email baru: ' + e,
-      );
-    };
+        const { error } = await db.auth.updateUser({
+          email: e,
+        });
 
-    $('saveAvatar').onclick = async () => {
-      const f = $('avatarFile').files[0];
+        if (error) {
+          msg("emailMsg", error.message, "error");
+          return;
+        }
 
-      if (!f) {
-        msg('avatarMsg', 'Pilih file gambar dulu.', 'error');
-        return;
-      }
+        msg(
+          "emailMsg",
+          "Permintaan perubahan email dikirim. Cek inbox email lama/baru sesuai konfigurasi verifikasi.",
+          "success",
+        );
+        await log(
+          "email_change_requested",
+          "Perubahan email diminta",
+          "Email baru: " + e,
+        );
+      };
 
-      if (f.size > 2 * 1024 * 1024) {
-        msg('avatarMsg', 'Maksimal 2 MB.', 'error');
-        return;
-      }
+      $("saveAvatar").onclick = async () => {
+        const f = $("avatarFile").files[0];
 
-      const ext =
-        (f.name.split('.').pop() || 'jpg').toLowerCase();
-      const path = user.id + '/avatar.' + ext;
+        if (!f) {
+          msg("avatarMsg", "Pilih file gambar dulu.", "error");
+          return;
+        }
 
-      const { error } = await db.storage
-        .from('avatars')
-        .upload(path, f, {
+        if (f.size > 2 * 1024 * 1024) {
+          msg("avatarMsg", "Maksimal 2 MB.", "error");
+          return;
+        }
+
+        const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+        const path = user.id + "/avatar." + ext;
+
+        const { error } = await db.storage.from("avatars").upload(path, f, {
           upsert: true,
           contentType: f.type,
         });
 
-      if (error) {
-        msg('avatarMsg', error.message, 'error');
-        return;
-      }
+        if (error) {
+          msg("avatarMsg", error.message, "error");
+          return;
+        }
 
-      const { data } = db.storage
-        .from('avatars')
-        .getPublicUrl(path);
-      const url = data.publicUrl;
+        const { data } = db.storage.from("avatars").getPublicUrl(path);
+        const url = data.publicUrl;
 
-      const { error: ue } = await db.auth.updateUser({
-        data: { avatar_url: url },
-      });
+        const { error: ue } = await db.auth.updateUser({
+          data: { avatar_url: url },
+        });
 
-      if (ue) {
-        msg('avatarMsg', ue.message, 'error');
-        return;
-      }
+        if (ue) {
+          msg("avatarMsg", ue.message, "error");
+          return;
+        }
 
-      setAvatar(url, $('name').value, user.email);
-      msg(
-        'avatarMsg',
-        'Avatar berhasil diperbarui.',
-        'success',
-      );
-    };
+        setAvatar(url, $("name").value, user.email);
+        msg("avatarMsg", "Avatar berhasil diperbarui.", "success");
+      };
 
-    $('mfaEnroll').onclick = async () => {
-      const { data, error } = await db.auth.mfa.enroll({
-        factorType: 'totp',
-        friendlyName: 'Kryzna Learn Authenticator',
-      });
+      $("mfaEnroll").onclick = async () => {
+        const { data, error } = await db.auth.mfa.enroll({
+          factorType: "totp",
+          friendlyName: "Kryzna Learn Authenticator",
+        });
 
-      if (error) {
-        msg('mfaMsg', error.message, 'error');
-        return;
-      }
+        if (error) {
+          msg("mfaMsg", error.message, "error");
+          return;
+        }
 
-      mfaFactor = data;
-      const uri = data.totp?.uri;
+        mfaFactor = data;
+        const uri = data.totp?.uri;
 
-      if (uri) {
-        $('qr').innerHTML = '';
-        const c = document.createElement('canvas');
-        $('qr').appendChild(c);
-        QRCode.toCanvas(c, uri, { width: 170 }, () => {});
-      }
+        if (uri) {
+          $("qr").innerHTML = "";
+          const c = document.createElement("canvas");
+          $("qr").appendChild(c);
+          QRCode.toCanvas(c, uri, { width: 170 }, () => {});
+        }
 
-      $('mfaCodeWrap').hidden = false;
-      $('mfaVerify').hidden = false;
-      $('mfaEnroll').hidden = true;
-      msg(
-        'mfaMsg',
-        'Scan QR di authenticator lalu masukkan kode OTP.',
-        '',
-      );
-    };
+        $("mfaCodeWrap").hidden = false;
+        $("mfaVerify").hidden = false;
+        $("mfaEnroll").hidden = true;
+        msg("mfaMsg", "Scan QR di authenticator lalu masukkan kode OTP.", "");
+      };
 
-    $('mfaVerify').onclick = async () => {
-      if (!mfaFactor || !$('mfaCode').value) {
-        msg('mfaMsg', 'Masukkan kode OTP.', 'error');
-        return;
-      }
+      $("mfaVerify").onclick = async () => {
+        if (!mfaFactor || !$("mfaCode").value) {
+          msg("mfaMsg", "Masukkan kode OTP.", "error");
+          return;
+        }
 
-      const { data: ch, error: ce } =
-        await db.auth.mfa.challenge({
+        const { data: ch, error: ce } = await db.auth.mfa.challenge({
           factorId: mfaFactor.id,
         });
 
-      if (ce) {
-        msg('mfaMsg', ce.message, 'error');
-        return;
-      }
+        if (ce) {
+          msg("mfaMsg", ce.message, "error");
+          return;
+        }
 
-      const { error } = await db.auth.mfa.verify({
-        factorId: mfaFactor.id,
-        challengeId: ch.id,
-        code: $('mfaCode').value.trim(),
-      });
+        const { error } = await db.auth.mfa.verify({
+          factorId: mfaFactor.id,
+          challengeId: ch.id,
+          code: $("mfaCode").value.trim(),
+        });
 
-      if (error) {
+        if (error) {
+          msg("mfaMsg", "Kode OTP salah atau kedaluwarsa.", "error");
+          return;
+        }
+
         msg(
-          'mfaMsg',
-          'Kode OTP salah atau kedaluwarsa.',
-          'error',
+          "mfaMsg",
+          "MFA aktif. Login berikutnya akan memerlukan OTP.",
+          "success",
         );
-        return;
-      }
+        $("mfaCodeWrap").hidden = true;
+        $("mfaVerify").hidden = true;
+        $("mfaUnenroll").hidden = false;
 
-      msg(
-        'mfaMsg',
-        'MFA aktif. Login berikutnya akan memerlukan OTP.',
-        'success',
-      );
-      $('mfaCodeWrap').hidden = true;
-      $('mfaVerify').hidden = true;
-      $('mfaUnenroll').hidden = false;
-
-      await log(
-        'mfa_enabled',
-        'MFA diaktifkan',
-        'TOTP berhasil diverifikasi',
-      );
-      await loadMfa();
-    };
-
-    $('mfaUnenroll').onclick = async () => {
-      if (!mfaFactor) {
+        await log(
+          "mfa_enabled",
+          "MFA diaktifkan",
+          "TOTP berhasil diverifikasi",
+        );
         await loadMfa();
-        return;
-      }
+      };
 
-      const { error } = await db.auth.mfa.unenroll({
-        factorId: mfaFactor.id,
-      });
+      $("mfaUnenroll").onclick = async () => {
+        if (!mfaFactor) {
+          await loadMfa();
+          return;
+        }
 
-      if (error) {
-        msg('mfaMsg', error.message, 'error');
-        return;
-      }
+        const { error } = await db.auth.mfa.unenroll({
+          factorId: mfaFactor.id,
+        });
 
-      mfaFactor = null;
-      msg('mfaMsg', 'MFA dinonaktifkan.', 'success');
-      await log(
-        'mfa_disabled',
-        'MFA dinonaktifkan',
-        'TOTP dihapus',
-      );
-      await loadMfa();
-    };
+        if (error) {
+          msg("mfaMsg", error.message, "error");
+          return;
+        }
 
-    $('others').onclick = async () => {
-      const { error } = await db.auth.signOut({
-        scope: 'others',
-      });
+        mfaFactor = null;
+        msg("mfaMsg", "MFA dinonaktifkan.", "success");
+        await log("mfa_disabled", "MFA dinonaktifkan", "TOTP dihapus");
+        await loadMfa();
+      };
 
-      msg(
-        'sessionMsg',
-        error
-          ? error.message
-          : 'Perangkat lain sudah dikeluarkan.',
-        'success',
-      );
-    };
+      $("others").onclick = async () => {
+        const { error } = await db.auth.signOut({
+          scope: "others",
+        });
 
-    $('all').onclick = async () => {
-      const { error } = await db.auth.signOut({
-        scope: 'global',
-      });
+        msg(
+          "sessionMsg",
+          error ? error.message : "Perangkat lain sudah dikeluarkan.",
+          "success",
+        );
+      };
 
-      if (error) {
-        msg('sessionMsg', error.message, 'error');
-        return;
-      }
+      $("all").onclick = async () => {
+        const { error } = await db.auth.signOut({
+          scope: "global",
+        });
 
-      msg(
-        'sessionMsg',
-        'Semua sesi dikeluarkan. Silakan login kembali.',
-        'success',
-      );
-      setTimeout(() => (location.href = 'login.html'), 700);
-    };
+        if (error) {
+          msg("sessionMsg", error.message, "error");
+          return;
+        }
 
-    $('logout').onclick = async () => {
-      await db.auth.signOut();
-      location.href = 'login.html';
-    };
+        msg(
+          "sessionMsg",
+          "Semua sesi dikeluarkan. Silakan login kembali.",
+          "success",
+        );
+        setTimeout(() => (location.href = "login.html"), 700);
+      };
 
-    boot();
-  </script>
-</body>
+      $("logout").onclick = async () => {
+        await db.auth.signOut();
+        location.href = "login.html";
+      };
+
+      boot();
+    </script>
+  </body>
 </html>

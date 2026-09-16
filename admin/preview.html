@@ -1,259 +1,257 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Preview Materi — Kryzna Learn</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="../supabase-config.js"></script>
-  <style>
-    body {
-      margin: 0;
-      background: #f1f5f9;
-      color: #172033;
-      font-family: Segoe UI, sans-serif;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preview Materi — Kryzna Learn</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../supabase-config.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: #f1f5f9;
+        color: #172033;
+        font-family:
+          Segoe UI,
+          sans-serif;
+      }
 
-    header {
-      background: #0f172a;
-      color: #fff;
-      padding: 16px 6%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      header {
+        background: #0f172a;
+        color: #fff;
+        padding: 16px 6%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    header a {
-      color: #fff;
-      text-decoration: none;
-    }
+      header a {
+        color: #fff;
+        text-decoration: none;
+      }
 
-    .wrap {
-      max-width: 1000px;
-      margin: 30px auto;
-      padding: 0 18px;
-    }
+      .wrap {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 0 18px;
+      }
 
-    .article {
-      background: #fff;
-      border-radius: 16px;
-      padding: 35px;
-      box-shadow: 0 8px 25px #0001;
-    }
-
-    .back {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: #2563eb;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .meta {
-      color: #64748b;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .content {
-      line-height: 1.8;
-    }
-
-    .content h1,
-    .content h2,
-    .content h3,
-    .content h4 {
-      line-height: 1.3;
-    }
-
-    .content pre {
-      background: #0f172a;
-      color: #f8fafc;
-      padding: 15px;
-      border-radius: 8px;
-      overflow: auto;
-    }
-
-    .content code {
-      font-family: Consolas, monospace;
-    }
-
-    .content table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    .content th,
-    .content td {
-      border: 1px solid #cbd5e1;
-      padding: 8px;
-      text-align: left;
-    }
-
-    .content img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .content a {
-      color: #2563eb;
-    }
-
-    .content blockquote {
-      border-left: 4px solid #0ea5e9;
-      margin: 0;
-      padding-left: 14px;
-    }
-
-    .filebox {
-      margin: 18px 0;
-      padding: 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      background: #f8fafc;
-    }
-
-    .filebox a {
-      display: inline-block;
-      background: #2563eb;
-      color: #fff;
-      padding: 9px 13px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .filebox iframe {
-      width: 100%;
-      height: 80vh;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      background: #fff;
-    }
-
-    .empty {
-      text-align: center;
-      color: #64748b;
-      padding: 50px;
-    }
-
-    @media (max-width: 600px) {
       .article {
-        padding: 20px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 35px;
+        box-shadow: 0 8px 25px #0001;
+      }
+
+      .back {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .meta {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+
+      .content {
+        line-height: 1.8;
+      }
+
+      .content h1,
+      .content h2,
+      .content h3,
+      .content h4 {
+        line-height: 1.3;
+      }
+
+      .content pre {
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 15px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+
+      .content code {
+        font-family: Consolas, monospace;
+      }
+
+      .content table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .content th,
+      .content td {
+        border: 1px solid #cbd5e1;
+        padding: 8px;
+        text-align: left;
+      }
+
+      .content img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .content a {
+        color: #2563eb;
+      }
+
+      .content blockquote {
+        border-left: 4px solid #0ea5e9;
+        margin: 0;
+        padding-left: 14px;
+      }
+
+      .filebox {
+        margin: 18px 0;
+        padding: 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        background: #f8fafc;
+      }
+
+      .filebox a {
+        display: inline-block;
+        background: #2563eb;
+        color: #fff;
+        padding: 9px 13px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
       }
 
       .filebox iframe {
-        height: 65vh;
+        width: 100%;
+        height: 80vh;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #fff;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <strong>Kryzna Learn · Preview</strong>
-    <a href="dashboard.html">← Dashboard</a>
-  </header>
 
-  <main class="wrap">
-    <article class="article">
-      <a class="back" href="dashboard.html">← Kembali ke Dashboard</a>
-      <div id="app">
-        <div class="empty">Memuat materi...</div>
-      </div>
-    </article>
-  </main>
+      .empty {
+        text-align: center;
+        color: #64748b;
+        padding: 50px;
+      }
 
-  <script>
-    const db = supabaseClient;
+      @media (max-width: 600px) {
+        .article {
+          padding: 20px;
+        }
 
-    marked.setOptions({
-      gfm: true,
-      breaks: true,
-    });
+        .filebox iframe {
+          height: 65vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>Kryzna Learn · Preview</strong>
+      <a href="dashboard.html">← Dashboard</a>
+    </header>
 
-    function safeStyleText(s) {
-      return String(s || '')
-        .replace(/@import[^;]+;?/gi, '')
-        .replace(/javascript\s*:/gi, '')
-        .replace(/expression\s*\([^)]*\)/gi, '')
-        .replace(/behavior\s*:/gi, '')
-        .replace(/-moz-binding\s*:/gi, '');
-    }
+    <main class="wrap">
+      <article class="article">
+        <a class="back" href="dashboard.html">← Kembali ke Dashboard</a>
+        <div id="app">
+          <div class="empty">Memuat materi...</div>
+        </div>
+      </article>
+    </main>
 
-    function sanitize(html) {
-      const doc = new DOMParser().parseFromString(
-        html || '',
-        'text/html',
-      );
+    <script>
+      const db = supabaseClient;
 
-      doc
-        .querySelectorAll('script,iframe,object,embed,form,link,meta')
-        .forEach((e) => e.remove());
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+      });
 
-      doc.querySelectorAll('*').forEach((e) => {
-        [...e.attributes].forEach((a) => {
-          if (
-            /^on/i.test(a.name) ||
-            a.name.toLowerCase() === 'srcdoc' ||
-            ((a.name === 'href' || a.name === 'src') &&
-              /^\s*(javascript:|data:text\/html)/i.test(a.value))
-          ) {
-            e.removeAttribute(a.name);
+      function safeStyleText(s) {
+        return String(s || "")
+          .replace(/@import[^;]+;?/gi, "")
+          .replace(/javascript\s*:/gi, "")
+          .replace(/expression\s*\([^)]*\)/gi, "")
+          .replace(/behavior\s*:/gi, "")
+          .replace(/-moz-binding\s*:/gi, "");
+      }
+
+      function sanitize(html) {
+        const doc = new DOMParser().parseFromString(html || "", "text/html");
+
+        doc
+          .querySelectorAll("script,iframe,object,embed,form,link,meta")
+          .forEach((e) => e.remove());
+
+        doc.querySelectorAll("*").forEach((e) => {
+          [...e.attributes].forEach((a) => {
+            if (
+              /^on/i.test(a.name) ||
+              a.name.toLowerCase() === "srcdoc" ||
+              ((a.name === "href" || a.name === "src") &&
+                /^\s*(javascript:|data:text\/html)/i.test(a.value))
+            ) {
+              e.removeAttribute(a.name);
+            }
+          });
+
+          if (e.tagName === "IMG") {
+            e.setAttribute("loading", "lazy");
+            e.removeAttribute("srcset");
           }
         });
 
-        if (e.tagName === 'IMG') {
-          e.setAttribute('loading', 'lazy');
-          e.removeAttribute('srcset');
-        }
-      });
+        doc
+          .querySelectorAll("style")
+          .forEach((s) => (s.textContent = safeStyleText(s.textContent)));
 
-      doc
-        .querySelectorAll('style')
-        .forEach((s) => (s.textContent = safeStyleText(s.textContent)));
+        return doc.body.innerHTML;
+      }
 
-      return doc.body.innerHTML;
-    }
+      function looksLikeHtml(v) {
+        return /<\/?(p|div|h[1-6]|ul|ol|li|strong|em|u|s|a|img|blockquote|pre|code|table|span|br|font|style)\b/i.test(
+          v || "",
+        );
+      }
 
-    function looksLikeHtml(v) {
-      return /<\/?(p|div|h[1-6]|ul|ol|li|strong|em|u|s|a|img|blockquote|pre|code|table|span|br|font|style)\b/i.test(
-        v || '',
-      );
-    }
+      function renderContent(v) {
+        return sanitize(
+          looksLikeHtml(v) ? v : marked.parse(v || "_Belum ada isi materi._"),
+        );
+      }
 
-    function renderContent(v) {
-      return sanitize(
-        looksLikeHtml(v)
-          ? v
-          : marked.parse(v || '_Belum ada isi materi._'),
-      );
-    }
+      function esc(s) {
+        return String(s ?? "").replace(
+          /[&<>\"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '\"': "&quot;",
+              "'": "&#039;",
+            })[c],
+        );
+      }
 
-    function esc(s) {
-      return String(s ?? '').replace(
-        /[&<>\"']/g,
-        (c) => ({
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '\"': '&quot;',
-          "'": '&#039;',
-        })[c],
-      );
-    }
+      function fileBlock(x) {
+        if (!x.file_url) return "";
 
-    function fileBlock(x) {
-      if (!x.file_url) return '';
+        const url = esc(x.file_url);
+        const name = esc(x.file_name || "File materi");
 
-      const url = esc(x.file_url);
-      const name = esc(x.file_name || 'File materi');
-
-      if (
-        String(x.file_type || '').includes('pdf') ||
-        /\.pdf($|\?)/i.test(x.file_name || '')
-      ) {
-        return `
+        if (
+          String(x.file_type || "").includes("pdf") ||
+          /\.pdf($|\?)/i.test(x.file_name || "")
+        ) {
+          return `
           <div class="filebox">
             <strong>PDF asli</strong>
             <iframe src="${url}#toolbar=1&navpanes=0"></iframe>
@@ -268,9 +266,9 @@
             </p>
           </div>
         `;
-      }
+        }
 
-      return `
+        return `
         <div class="filebox">
           <strong>Word asli</strong>
           <p>File DOCX asli disimpan tanpa dikonversi.</p>
@@ -283,65 +281,65 @@
           </a>
         </div>
       `;
-    }
-
-    async function guard() {
-      const {
-        data: { session },
-      } = await db.auth.getSession();
-
-      if (!session) {
-        location.href = 'login.html';
-        return;
       }
 
-      const { data: admin } = await db
-        .from('admin_users')
-        .select('user_id')
-        .eq('user_id', session.user.id)
-        .maybeSingle();
+      async function guard() {
+        const {
+          data: { session },
+        } = await db.auth.getSession();
 
-      if (!admin) {
-        await db.auth.signOut();
-        location.href = 'login.html';
-        return;
+        if (!session) {
+          location.href = "login.html";
+          return;
+        }
+
+        const { data: admin } = await db
+          .from("admin_users")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (!admin) {
+          await db.auth.signOut();
+          location.href = "login.html";
+          return;
+        }
+
+        const id = new URLSearchParams(location.search).get("id");
+
+        if (!id) {
+          app.innerHTML = '<div class="empty">ID materi tidak ditemukan.</div>';
+          return;
+        }
+
+        const { data, error } = await db
+          .from("materi")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error || !data) {
+          app.innerHTML = '<div class="empty">Materi tidak ditemukan.</div>';
+          return;
+        }
+
+        document.title = "Preview: " + data.judul + " — Kryzna Learn";
+
+        app.innerHTML =
+          '<div class="meta">' +
+          esc(data.kategori || "Umum") +
+          "</div><h1>" +
+          esc(data.judul) +
+          '</h1><p class="meta">' +
+          esc(data.deskripsi_singkat || "") +
+          "</p>" +
+          fileBlock(data) +
+          '<div class="content">' +
+          renderContent(data.konten) +
+          "</div>";
       }
 
-      const id = new URLSearchParams(location.search).get('id');
-
-      if (!id) {
-        app.innerHTML = '<div class="empty">ID materi tidak ditemukan.</div>';
-        return;
-      }
-
-      const { data, error } = await db
-        .from('materi')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error || !data) {
-        app.innerHTML = '<div class="empty">Materi tidak ditemukan.</div>';
-        return;
-      }
-
-      document.title = 'Preview: ' + data.judul + ' — Kryzna Learn';
-
-      app.innerHTML =
-        '<div class="meta">' +
-        esc(data.kategori || 'Umum') +
-        '</div><h1>' +
-        esc(data.judul) +
-        '</h1><p class="meta">' +
-        esc(data.deskripsi_singkat || '') +
-        '</p>' +
-        fileBlock(data) +
-        '<div class="content">' +
-        renderContent(data.konten) +
-        '</div>';
-    }
-
-    guard();
-  </script>
-</body>
+      guard();
+    </script>
+  </body>
 </html>

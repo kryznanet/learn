@@ -1,9 +1,9 @@
 // Konfigurasi Supabase untuk Kryzna Learn
 // Publishable key aman digunakan di browser. Jangan pernah memasukkan
 // service_role/secret key di sini.
-const SUPABASE_URL = 'https://wtmkudojxenkjkoegibf.supabase.co';
+const SUPABASE_URL = "https://wtmkudojxenkjkoegibf.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
-  'sb_publishable_nk3PzGU0x2nEvku4g2mXTg_c82iN9jh';
+  "sb_publishable_nk3PzGU0x2nEvku4g2mXTg_c82iN9jh";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
@@ -18,8 +18,8 @@ const supabaseClient = window.supabase.createClient(
   },
 );
 
-window.addEventListener('DOMContentLoaded', function () {
-  const style = document.createElement('style');
+window.addEventListener("DOMContentLoaded", function () {
+  const style = document.createElement("style");
 
   style.textContent = `
     :root {
@@ -230,7 +230,7 @@ window.addEventListener('DOMContentLoaded', function () {
   document.head.appendChild(style);
 });
 
-window.addEventListener('DOMContentLoaded', async function () {
+window.addEventListener("DOMContentLoaded", async function () {
   try {
     const {
       data: { user },
@@ -239,9 +239,9 @@ window.addEventListener('DOMContentLoaded', async function () {
     if (!user) return;
 
     const { data: staff, error } = await supabaseClient
-      .from('admin_users')
-      .select('role,active,display_name')
-      .eq('user_id', user.id)
+      .from("admin_users")
+      .select("role,active,display_name")
+      .eq("user_id", user.id)
       .maybeSingle();
 
     if (error || !staff) return;
@@ -250,87 +250,87 @@ window.addEventListener('DOMContentLoaded', async function () {
       await supabaseClient.auth.signOut();
 
       if (/\/admin\/dashboard\.html$/i.test(location.pathname)) {
-        location.replace('login.html');
+        location.replace("login.html");
       }
 
       return;
     }
 
-    const role = String(staff.role || 'viewer');
-    document.body.classList.add('k-role-' + role);
+    const role = String(staff.role || "viewer");
+    document.body.classList.add("k-role-" + role);
 
-    const top = document.querySelector('.top');
+    const top = document.querySelector(".top");
 
-    if (top && !document.getElementById('k-user-role')) {
-      const badge = document.createElement('span');
-      badge.id = 'k-user-role';
+    if (top && !document.getElementById("k-user-role")) {
+      const badge = document.createElement("span");
+      badge.id = "k-user-role";
       badge.textContent = staff.display_name
-        ? staff.display_name + ' · ' + roleLabel(role)
+        ? staff.display_name + " · " + roleLabel(role)
         : roleLabel(role);
       top.insertBefore(badge, top.firstChild);
     }
 
-    if (top && !document.getElementById('k-profile-link')) {
-      const p = document.createElement('a');
-      p.id = 'k-profile-link';
-      p.href = 'profile.html';
-      p.textContent = '👤 Profile Saya';
+    if (top && !document.getElementById("k-profile-link")) {
+      const p = document.createElement("a");
+      p.id = "k-profile-link";
+      p.href = "profile.html";
+      p.textContent = "👤 Profile Saya";
       top.insertBefore(p, top.firstChild);
     }
 
     if (
-      role === 'super_admin' &&
+      role === "super_admin" &&
       top &&
-      !document.getElementById('k-activity-link')
+      !document.getElementById("k-activity-link")
     ) {
-      const a = document.createElement('a');
-      a.id = 'k-activity-link';
-      a.href = 'activity.html';
-      a.textContent = '📋 Aktivitas';
+      const a = document.createElement("a");
+      a.id = "k-activity-link";
+      a.href = "activity.html";
+      a.textContent = "📋 Aktivitas";
       top.insertBefore(a, top.firstChild);
     }
 
-    const nav = document.querySelector('.layout .nav');
-    const content = document.querySelector('.layout .content');
+    const nav = document.querySelector(".layout .nav");
+    const content = document.querySelector(".layout .content");
 
     if (
-      role === 'super_admin' &&
+      role === "super_admin" &&
       nav &&
       content &&
       !document.querySelector('[data-view="users"]')
     ) {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.dataset.view = 'users';
-      btn.textContent = '👥 Kelola User';
-      btn.addEventListener('click', function () {
-        if (typeof window.showView === 'function') {
-          window.showView('users');
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.dataset.view = "users";
+      btn.textContent = "👥 Kelola User";
+      btn.addEventListener("click", function () {
+        if (typeof window.showView === "function") {
+          window.showView("users");
         }
       });
       nav.appendChild(btn);
 
-      const section = document.createElement('section');
-      section.id = 'users';
-      section.className = 'view';
+      const section = document.createElement("section");
+      section.id = "users";
+      section.className = "view";
       section.innerHTML =
         '<div id="k-users-shell" class="card">' +
         '<iframe id="k-users-frame" title="Kelola User" src="users.html"></iframe>' +
-        '</div>';
+        "</div>";
       content.appendChild(section);
     }
   } catch (e) {
-    console.warn('RBAC UI tidak dapat dimuat:', e);
+    console.warn("RBAC UI tidak dapat dimuat:", e);
   }
 });
 
 function roleLabel(role) {
   return (
     {
-      super_admin: 'Super Admin',
-      admin: 'Admin',
-      penulis: 'Penulis / Pemateri',
-      viewer: 'Viewer',
+      super_admin: "Super Admin",
+      admin: "Admin",
+      penulis: "Penulis / Pemateri",
+      viewer: "Viewer",
     }[role] || role
   );
 }

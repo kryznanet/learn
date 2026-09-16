@@ -1,115 +1,118 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lupa Password — Kryzna Learn</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../supabase-config.js"></script>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #eef5ff;
-      font-family: Segoe UI, Arial, sans-serif;
-    }
-
-    .card {
-      width: min(430px, calc(100% - 32px));
-      background: #fff;
-      border: 1px solid #dbe3ee;
-      border-radius: 20px;
-      padding: 26px;
-      box-shadow: 0 18px 48px rgba(15, 23, 42, .12);
-    }
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-    }
-
-    .btn {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px;
-      border: 0;
-      border-radius: 10px;
-      background: #2563eb;
-      color: #fff;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .msg {
-      margin-top: 12px;
-      font-size: 13px;
-      color: #334155;
-      line-height: 1.5;
-    }
-
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 14px;
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 800;
-      font-size: 13px;
-    }
-  </style>
-</head>
-<body>
-  <section class="card">
-    <h1>🔑 Lupa Password</h1>
-    <p>Kirim link reset password ke email akun Kryzna Learn.</p>
-
-    <input
-      id="email"
-      type="email"
-      placeholder="admin@contoh.com"
-      autocomplete="email"
-    >
-
-    <button id="send" class="btn">Kirim Link Reset</button>
-    <div id="msg" class="msg"></div>
-
-    <a class="back" href="login.html">← Kembali ke login</a>
-  </section>
-
-  <script>
-    const db = supabaseClient;
-    const $ = (id) => document.getElementById(id);
-
-    $('send').onclick = async () => {
-      const e = $('email').value.trim();
-
-      if (!e) {
-        $('msg').textContent = 'Masukkan email.';
-        return;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lupa Password — Kryzna Learn</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #eef5ff;
+        font-family:
+          Segoe UI,
+          Arial,
+          sans-serif;
       }
 
-      $('send').disabled = true;
-      $('msg').textContent = 'Mengirim...';
-
-      const { error } = await db.auth.resetPasswordForEmail(e, {
-        redirectTo: new URL('reset-password.html', location.href).href,
-      });
-
-      if (error) {
-        $('msg').textContent = error.message;
-        $('send').disabled = false;
-        return;
+      .card {
+        width: min(430px, calc(100% - 32px));
+        background: #fff;
+        border: 1px solid #dbe3ee;
+        border-radius: 20px;
+        padding: 26px;
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
       }
 
-      $('msg').textContent =
-        'Link reset sudah dikirim. Cek inbox email akun Anda.';
-      $('send').disabled = false;
-    };
-  </script>
-</body>
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+      }
+
+      .btn {
+        width: 100%;
+        margin-top: 14px;
+        padding: 12px;
+        border: 0;
+        border-radius: 10px;
+        background: #2563eb;
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .msg {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.5;
+      }
+
+      .back {
+        display: block;
+        text-align: center;
+        margin-top: 14px;
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="card">
+      <h1>🔑 Lupa Password</h1>
+      <p>Kirim link reset password ke email akun Kryzna Learn.</p>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="admin@contoh.com"
+        autocomplete="email"
+      />
+
+      <button id="send" class="btn">Kirim Link Reset</button>
+      <div id="msg" class="msg"></div>
+
+      <a class="back" href="login.html">← Kembali ke login</a>
+    </section>
+
+    <script>
+      const db = supabaseClient;
+      const $ = (id) => document.getElementById(id);
+
+      $("send").onclick = async () => {
+        const e = $("email").value.trim();
+
+        if (!e) {
+          $("msg").textContent = "Masukkan email.";
+          return;
+        }
+
+        $("send").disabled = true;
+        $("msg").textContent = "Mengirim...";
+
+        const { error } = await db.auth.resetPasswordForEmail(e, {
+          redirectTo: new URL("reset-password.html", location.href).href,
+        });
+
+        if (error) {
+          $("msg").textContent = error.message;
+          $("send").disabled = false;
+          return;
+        }
+
+        $("msg").textContent =
+          "Link reset sudah dikirim. Cek inbox email akun Anda.";
+        $("send").disabled = false;
+      };
+    </script>
+  </body>
 </html>

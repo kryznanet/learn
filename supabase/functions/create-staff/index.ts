@@ -31,18 +31,21 @@ export default {
       if (!staff || !staff.active || staff.role !== "super_admin") {
         return Response.json(
           {
-            error:
-              "Akses ditolak. Hanya Super Admin yang dapat membuat user.",
+            error: "Akses ditolak. Hanya Super Admin yang dapat membuat user.",
           },
           { status: 403, headers },
         );
       }
 
       const body = await req.json();
-      const email = String(body.email || "").trim().toLowerCase();
+      const email = String(body.email || "")
+        .trim()
+        .toLowerCase();
       const password = String(body.password || "");
       const displayName = String(body.display_name || "").trim();
-      const role = String(body.role || "penulis").trim().toLowerCase();
+      const role = String(body.role || "penulis")
+        .trim()
+        .toLowerCase();
 
       if (!email || !password) {
         throw new Error("Email dan password wajib diisi.");
