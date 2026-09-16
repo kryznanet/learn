@@ -1,2 +1,281 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aktivitas — Kryzna Learn</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><style>body{margin:0;background:#eef2f7;color:#0f172a;font-family:Segoe UI,Arial,sans-serif}.wrap{max-width:1100px;margin:auto;padding:28px 18px}.card{background:#fff;border:1px solid #d9e0e8;border-radius:16px;padding:20px;box-shadow:0 12px 32px rgba(15,23,42,.06);margin-bottom:18px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}h1{margin:0}.muted{color:#64748b;font-size:13px}.btn{border:0;border-radius:9px;padding:10px 13px;font-weight:800;cursor:pointer}.gray{background:#e2e8f0;color:#1e293b}.filter{display:grid;grid-template-columns:1fr 180px;gap:10px;margin-top:14px}input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.item{border:1px solid #dbe3ee;border-radius:12px;padding:13px;margin-top:10px}.row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.action{font-size:11px;font-weight:900;color:#1d4ed8;background:#eff6ff;padding:5px 8px;border-radius:999px}.meta{font-size:12px;color:#64748b;margin-top:5px}.detail{font-size:13px;margin-top:8px;overflow-wrap:anywhere}.empty{text-align:center;color:#64748b;padding:32px}@media(max-width:700px){.filter{grid-template-columns:1fr}}
-</style></head><body><main class="wrap"><div class="top"><div><h1>📋 Riwayat Aktivitas</h1><div class="muted">Catatan perubahan materi dan aktivitas akun yang tercatat.</div></div><button class="btn gray" onclick="location.href='dashboard.html'">← Dashboard</button></div><section class="card"><div class="filter"><input id="q" placeholder="Cari aktivitas..."><select id="limit"><option value="50">50 aktivitas</option><option value="100">100 aktivitas</option><option value="200">200 aktivitas</option></select></div></section><section class="card"><div id="list" class="empty">Memuat...</div></section></main><script>const db=supabaseClient,$=id=>document.getElementById(id);let all=[];const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#039;'}[c]));const label=a=>({created:'Dibuat',updated:'Diubah',deleted:'Dihapus',profile_updated:'Profile diperbarui',password_changed:'Password diganti',email_change_requested:'Perubahan email diminta'})[a]||a;function render(){const q=$('q').value.trim().toLowerCase();const rows=all.filter(x=>(!q||JSON.stringify(x).toLowerCase().includes(q)));$('list').innerHTML=rows.map(x=>`<article class="item"><div class="row"><div><b>${esc(x.title||x.entity_type||'Aktivitas')}</b><div class="meta">${new Date(x.created_at).toLocaleString('id-ID')} · ${esc(x.user_email||'User')}</div></div><span class="action">${esc(label(x.action))}</span></div><div class="detail">${esc(x.detail||x.entity_id||'')}</div></article>`).join('')||'<div class="empty">Tidak ada aktivitas.</div>'}async function boot(){const {data:{user},error}=await db.auth.getUser();if(error||!user){location.href='login.html';return}const {data:staff}=await db.from('admin_users').select('role,active').eq('user_id',user.id).maybeSingle();if(!staff?.active||staff.role!=='super_admin'){document.body.innerHTML='<main class="wrap"><section class="card"><h2>Akses ditolak</h2><p class="muted">Halaman ini hanya untuk Super Admin.</p><button class="btn gray" onclick="location.href=\'dashboard.html\'">Kembali</button></section></main>';return}await load()}async function load(){const {data,error}=await db.from('activity_logs').select('*').order('created_at',{ascending:false}).limit(Number($('limit').value));if(error){$('list').textContent='Gagal memuat: '+error.message;return}all=data||[];render()}$('q').oninput=render;$('limit').onchange=load;boot();</script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aktivitas — Kryzna Learn</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #eef2f7;
+      color: #0f172a;
+      font-family: Segoe UI, Arial, sans-serif;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
+      padding: 28px 18px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d9e0e8;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, .06);
+      margin-bottom: 18px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .muted {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .gray {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .filter {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .item {
+      border: 1px solid #dbe3ee;
+      border-radius: 12px;
+      padding: 13px;
+      margin-top: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .action {
+      font-size: 11px;
+      font-weight: 900;
+      color: #1d4ed8;
+      background: #eff6ff;
+      padding: 5px 8px;
+      border-radius: 999px;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 5px;
+    }
+
+    .detail {
+      font-size: 13px;
+      margin-top: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .empty {
+      text-align: center;
+      color: #64748b;
+      padding: 32px;
+    }
+
+    @media (max-width: 700px) {
+      .filter {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <div>
+        <h1>📋 Riwayat Aktivitas</h1>
+        <div class="muted">
+          Catatan perubahan materi dan aktivitas akun yang tercatat.
+        </div>
+      </div>
+      <button
+        class="btn gray"
+        onclick="location.href='dashboard.html'"
+      >
+        ← Dashboard
+      </button>
+    </div>
+
+    <section class="card">
+      <div class="filter">
+        <input id="q" placeholder="Cari aktivitas...">
+        <select id="limit">
+          <option value="50">50 aktivitas</option>
+          <option value="100">100 aktivitas</option>
+          <option value="200">200 aktivitas</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
+      <div id="list" class="empty">Memuat...</div>
+    </section>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+    let all = [];
+
+    const esc = (v) =>
+      String(v ?? '').replace(
+        /[&<>\"']/g,
+        (c) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '\"': '&quot;',
+          "'": '&#039;',
+        })[c],
+      );
+
+    const label = (a) =>
+      ({
+        created: 'Dibuat',
+        updated: 'Diubah',
+        deleted: 'Dihapus',
+        profile_updated: 'Profile diperbarui',
+        password_changed: 'Password diganti',
+        email_change_requested: 'Perubahan email diminta',
+      })[a] || a;
+
+    function render() {
+      const q = $('q').value.trim().toLowerCase();
+      const rows = all.filter(
+        (x) => !q || JSON.stringify(x).toLowerCase().includes(q),
+      );
+
+      $('list').innerHTML =
+        rows
+          .map(
+            (x) => `
+              <article class="item">
+                <div class="row">
+                  <div>
+                    <b>${esc(x.title || x.entity_type || 'Aktivitas')}</b>
+                    <div class="meta">
+                      ${new Date(x.created_at).toLocaleString('id-ID')}
+                      · ${esc(x.user_email || 'User')}
+                    </div>
+                  </div>
+                  <span class="action">
+                    ${esc(label(x.action))}
+                  </span>
+                </div>
+                <div class="detail">
+                  ${esc(x.detail || x.entity_id || '')}
+                </div>
+              </article>
+            `,
+          )
+          .join('') || '<div class="empty">Tidak ada aktivitas.</div>';
+    }
+
+    async function boot() {
+      const {
+        data: { user },
+        error,
+      } = await db.auth.getUser();
+
+      if (error || !user) {
+        location.href = 'login.html';
+        return;
+      }
+
+      const { data: staff } = await db
+        .from('admin_users')
+        .select('role,active')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!staff?.active || staff.role !== 'super_admin') {
+        document.body.innerHTML = `
+          <main class="wrap">
+            <section class="card">
+              <h2>Akses ditolak</h2>
+              <p class="muted">
+                Halaman ini hanya untuk Super Admin.
+              </p>
+              <button
+                class="btn gray"
+                onclick="location.href='dashboard.html'"
+              >
+                Kembali
+              </button>
+            </section>
+          </main>
+        `;
+        return;
+      }
+
+      await load();
+    }
+
+    async function load() {
+      const { data, error } = await db
+        .from('activity_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(Number($('limit').value));
+
+      if (error) {
+        $('list').textContent = 'Gagal memuat: ' + error.message;
+        return;
+      }
+
+      all = data || [];
+      render();
+    }
+
+    $('q').oninput = render;
+    $('limit').onchange = load;
+
+    boot();
+  </script>
+</body>
+</html>
