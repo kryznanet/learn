@@ -1,17 +1,13 @@
 import { withSupabase } from "npm:@supabase/server";
+import { corsHeaders } from "npm:@supabase/supabase-js/cors";
 
-const cors = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json",
-};
+const headers = { ...corsHeaders, "Content-Type": "application/json" };
 
-Deno.serve(
-  withSupabase({ auth: "user" }, async (req, ctx) => {
-    if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
+export default {
+  fetch: withSupabase({ auth: "user" }, async (req, ctx) => {
+    if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
     if (req.method !== "POST") {
-      return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: cors });
+      return Response.json({ error: "Method not allowed" }, { status: 405, headers });
     }
 
     try {
@@ -21,8 +17,12 @@ Deno.serve(
         .eq("user_id", ctx.userClaims?.sub)
         .maybeSingle();
 
-      if (roleError || !staff || !staff.active || staff.role !== "super_admin") {
-        return new Response(JSON.stringify({ error: "Akses ditolak. Hanya Super Admin yang dapat membuat user." }), { status: 403, headers: cors });
+      if (roleError) throw roleError;
+      if (!staff || !staff.active || staff.role !== "super_admin") {
+        return Response.json(
+          { error: "Akses ditolak. Hanya Super Admin yang dapat membuat user." },
+          { status: 403, headers },
+        );
       }
 
       const body = await req.json();
@@ -33,7 +33,9 @@ Deno.serve(
 
       if (!email || !password) throw new Error("Email dan password wajib diisi.");
       if (password.length < 8) throw new Error("Password minimal 8 karakter.");
-      if (!["super_admin", "admin", "penulis", "viewer"].includes(role)) throw new Error("Role tidak valid.");
+      if (!["super_admin", "admin", "penulis", "viewer"].includes(role)) {
+        throw new Error("Role tidak valid.");
+      }
 
       const { data: created, error: createError } = await ctx.supabaseAdmin.auth.admin.createUser({
         email,
@@ -41,6 +43,7 @@ Deno.serve(
         email_confirm: true,
         user_metadata: { display_name: displayName },
       });
+
       if (createError) throw createError;
       if (!created.user) throw new Error("User Auth gagal dibuat.");
 
@@ -57,9 +60,13 @@ Deno.serve(
         throw staffError;
       }
 
-      return new Response(JSON.stringify({ ok: true, user_id: created.user.id }), { status: 200, headers: cors });
+      return Response.json({ ok: true, user_id: created.user.id }, { status: 200, headers });
     } catch (err) {
-      return new Response(JSON.stringify({ error: err instanceof Error ? err.message : String(err) }), { status: 400, headers: cors });
+      console.error("create-staff error", err);
+      return Response.json(
+        { error: err instanceof Error ? err.message : String(err) },
+        { status: 400, headers },
+      );
     }
   }),
-);
+};
