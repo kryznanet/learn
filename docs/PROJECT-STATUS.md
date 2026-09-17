@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Struktur dan readability kode Content/Admin dirapikan. Baseline Edge Function `create-staff` sudah disinkronkan dengan deployment aktif dan dukungan role Editor ditambahkan secara konsisten.
+**Status sesi:** Audit Edge Function, parity deployment, dan penyelarasan RBAC utama dilanjutkan. Perubahan backend sudah diverifikasi; pekerjaan security hardening berikutnya dicatat sebagai checkpoint.
 
 ## ✅ Progres terbaru — 17 September 2026
 
@@ -92,7 +92,7 @@ Aktivitas dipisahkan menjadi:
 Halaman activity menggunakan central permission helper.
 
 ### 9. Kelola Pengguna
-`admin/users.html` menggunakan permission terpusat untuk akses daftar dan aksi pengguna. RPC backend tetap menjadi enforcement utama.
+`admin/users.html` menggunakan permission terpusat untuk akses daftar dan aksi pengguna. Backend sekarang diselaraskan dengan pembagian akses: Admin dapat membaca dan memperbarui profil/status staf, sedangkan perubahan role dan jalur penambahan user tetap berada pada Super Admin.
 
 ### 10. Autosave & Draft Recovery
 `shared/draft-recovery.js` menyediakan autosave lokal berbasis `localStorage`, debounce, recovery draft, konfirmasi restore, dan pembersihan draft setelah penyimpanan server berhasil.
@@ -132,48 +132,70 @@ Audit memastikan RLS aktif pada tabel inti:
 - `system_activity_logs`
 - `user_roles`
 
-### Temuan yang sengaja ditunda
-Ditemukan dua area yang perlu diselaraskan sebelum perubahan akses dilakukan:
+### Penyelarasan RBAC terbaru
+Policy `system_activity_logs` sekarang mengizinkan Admin dan Super Admin membaca log sistem, sesuai permission `system.view_logs`.
 
-1. `admin` memiliki permission `system.view_logs`, tetapi policy SELECT `system_activity_logs` saat ini masih membatasi pembacaan kepada `super_admin`.
-2. Permission matrix memberikan Admin beberapa permission pengguna, sedangkan policy/RPC pengelolaan `admin_users` masih menggunakan jalur Super Admin untuk operasi staf tertentu.
+Policy `admin_users` sekarang mengizinkan Admin dan Super Admin membaca serta memperbarui profil/status staf. Pembagian kewenangan role tetap dijaga oleh RPC: perubahan role dan penambahan user melalui jalur administratif tetap memerlukan Super Admin.
 
-Keduanya belum diubah agar tidak membuka akses tanpa desain permission/RLS/RPC yang konsisten.
+### Security Advisor checkpoint
+Setelah perubahan RBAC, temuan yang tersisa adalah:
+- `set_materi_updated_at()` memiliki mutable `search_path`.
+- `snapshot_materi_version()` adalah `SECURITY DEFINER` yang masih executable oleh anon/authenticated dan perlu dibatasi karena dipakai sebagai trigger.
+- Beberapa SECURITY DEFINER RPC lain tetap executable oleh authenticated karena merupakan jalur aplikasi dan memiliki authorization internal.
+- Leaked Password Protection Supabase masih disabled.
 
-## ⚡ Edge Function — sinkronisasi `create-staff`
+Tidak ada perubahan pada temuan-temuan tersebut pada sesi ini.
 
-Audit deployment menemukan source repository sebelumnya berbeda dari Edge Function aktif. Baseline sekarang sudah disamakan.
+## ⚡ Edge Function — `create-staff` dan `swift-api`
 
-`create-staff`:
-- deployment aktif sekarang **version 3**;
+### `create-staff`
+Baseline source repository dan deployment aktif sudah disamakan.
+
+- deployment aktif **version 3**;
 - `verify_jwt=true`;
 - menggunakan `withSupabase({ auth: "user" })`;
 - pembuatan user tetap dibatasi kepada Super Admin aktif;
-- validasi password minimum 8 karakter dipertahankan;
-- proses pembuatan Auth user dan `admin_users` mempertahankan rollback jika penyimpanan staf gagal;
-- role `editor` sekarang diterima oleh Edge Function;
-- daftar role yang diterima konsisten dengan role aplikasi: `super_admin`, `admin`, `penulis`, `editor`, `viewer`.
+- role `editor` diterima;
+- role yang diterima: `super_admin`, `admin`, `penulis`, `editor`, `viewer`.
 
-Source repo `supabase/functions/create-staff/index.ts` sudah diverifikasi setelah commit sinkronisasi. Perubahan deployment dilakukan ke version 3 dan diverifikasi kembali melalui metadata/source function aktif.
+### `swift-api`
+Audit parity dilakukan terhadap deployment aktif.
 
-Perubahan ini tidak memperluas siapa yang boleh membuat user: otorisasi tetap Super Admin. Perubahan hanya menyelaraskan role Editor dengan RBAC yang sudah tersedia.
+- deployment: **version 1 ACTIVE**;
+- `verify_jwt=true`;
+- source aktif tidak memiliki counterpart di branch `17-Sep-2026`;
+- function merupakan endpoint demo dan tidak memakai tabel/Storage Kryzna Learn;
+- tidak ada perubahan deployment dilakukan;
+- audit detail dicatat di `docs/SWIFT-API-AUDIT.md`.
 
-## ⚠️ Pekerjaan berikutnya
+Catatan: konfigurasi `verify_jwt=true` perlu ditinjau jika function tersebut benar-benar akan digunakan dengan publishable/secret key melalui `withSupabase`, mengikuti pola autentikasi Edge Functions Supabase saat ini.
 
-1. Uji browser Version Restore.
-2. Uji Autosave & Draft Recovery.
-3. Selaraskan `system_activity_logs` dengan permission `system.view_logs`.
-4. Selaraskan `admin_users`/`update_staff` dengan permission user management yang sebenarnya.
-5. Audit final query halaman publik dan sanitasi.
-6. Audit final `SECURITY DEFINER`, `search_path`, RLS, Storage, dan index.
-7. Audit final formatting seluruh repo.
-8. Audit Edge Function lain (`swift-api`) dan source/deployment parity.
-9. Update dokumentasi setelah setiap perubahan signifikan.
+## 🛑 Checkpoint sesi ini
+
+Sesi dihentikan setelah:
+1. Audit `swift-api` dan parity source/deployment selesai.
+2. `system_activity_logs` diselaraskan dengan permission `system.view_logs`.
+3. Policy `admin_users` diselaraskan agar Admin dapat membaca dan memperbarui profil/status staf, sementara perubahan role tetap dibatasi melalui RPC Super Admin.
+4. Security Advisor dijalankan ulang dan hasil terbaru dicatat.
+5. Tidak ada perubahan pada hardening `set_materi_updated_at`, `snapshot_materi_version`, atau leaked password protection.
+
+## ⚠️ Pekerjaan selanjutnya
+
+1. Hardening `snapshot_materi_version()` — revoke `EXECUTE` untuk anon/authenticated tanpa memutus trigger.
+2. Hardening `set_materi_updated_at()` dengan `search_path` yang eksplisit.
+3. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
+4. Verifikasi ulang Security Advisor setelah hardening.
+5. Uji browser Version Restore.
+6. Uji Autosave & Draft Recovery.
+7. Audit final query halaman publik dan sanitasi.
+8. Audit final `SECURITY DEFINER`, RLS, Storage, dan index.
+9. Audit final formatting seluruh repo.
+10. Review apakah `swift-api` memiliki consumer eksternal; jangan hapus sebelum penggunaan dipastikan tidak ada.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dari **audit Edge Function `swift-api` dan parity source/deployment**, kemudian lanjutkan RBAC Admin ↔ System Activity Log dan User Management. Setelah itu lakukan audit final formatting seluruh repo.
+Mulai dari **hardening `snapshot_materi_version()` dan `set_materi_updated_at()`**, lalu jalankan ulang Security Advisor. Setelah itu lanjutkan E2E Version Restore/Autosave dan audit final repo.
 
 ---
 
-**Catatan sesi:** `create-staff` sudah sinkron antara repository dan deployment aktif. Role `editor` sudah diterima oleh Edge Function tanpa mengubah batas otorisasi pembuatan user.
+**Catatan sesi:** parity `create-staff` sudah sinkron dan role `editor` sudah konsisten. `swift-api` sudah diaudit tetapi masih menjadi deployment tanpa source counterpart di repo. RBAC Admin ↔ System Activity Log dan User Management sudah diselaraskan pada layer policy, dengan perubahan role tetap Super Admin-only.
