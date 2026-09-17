@@ -9,6 +9,15 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storage: window.localStorage },
 });
 
+/* Prevent the old dashboard inline handler from opening the URL-image prompt. */
+(function blockLegacyImagePrompt(){
+  const originalPrompt = window.prompt;
+  window.prompt = function(message, defaultValue){
+    if (/url\s+gambar/i.test(String(message || ""))) return null;
+    return originalPrompt.call(window, message, defaultValue);
+  };
+})();
+
 window.addEventListener("DOMContentLoaded", function () {
   const style = document.createElement("style");
   style.textContent = `
@@ -164,7 +173,7 @@ window.addEventListener("DOMContentLoaded", async function () {
   } catch(e){console.warn("RBAC UI tidak dapat dimuat:",e);}
 });
 
-window.addEventListener("DOMContentLoaded", async function () {
+window.addEventListener("DOMContentLoaded", function () {
   const editor=document.getElementById("konten"); const imageButton=document.getElementById("image");
   if(!editor||!imageButton||imageButton.dataset.kDirectUpload==="1")return; imageButton.dataset.kDirectUpload="1";
   imageButton.textContent="🖼️ Upload"; imageButton.title="Upload gambar dari komputer"; imageButton.setAttribute("aria-label","Upload gambar dari komputer");
