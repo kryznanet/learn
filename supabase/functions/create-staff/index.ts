@@ -1,169 +1,142 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { withSupabase } from "npm:@supabase/server";
 
-import { createClient } from "npm:@supabase/supabase-js@2";
-
-const corsHeaders = {
+const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Content-Type": "application/json",
 };
 
-Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
-  }
+const ALLOWED_ROLES = [
+  "super_admin",
+  "admin",
+  "penulis",
+  "editor",
+  "viewer",
+];
 
-  try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL");
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+export default {
+  fetch: withSupabase({ auth: "user" }, async (req, ctx) => {
+    if (req.method === "OPTIONS") {
+      return new Response("ok", { headers: cors });
+    }
 
-    if (!supabaseUrl || !serviceRoleKey) {
-      return new Response(
-        JSON.stringify({ error: "Konfigurasi server belum lengkap." }),
-        {
-          status: 500,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
+    if (req.method !== "POST") {
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405,
+        headers: cors,
+      });
+    }
+
+    try {
+      const callerId =
+        ctx.user?.id ?? ctx.userClaims?.sub ?? ctx.userClaims?.id;
+
+      if (!callerId) {
+        return new Response(
+          JSON.stringify({ error: "Token user tidak valid." }),
+          { status: 401, headers: cors },
+        );
+      }
+
+      const { data: staff, error: roleError } = await ctx.supabaseAdmin
+        .from("admin_users")
+        .select("role,active")
+        .eq("user_id", callerId)
+        .maybeSingle();
+
+      if (roleError) {
+        throw roleError;
+      }
+
+      if (!staff || !staff.active || staff.role !== "super_admin") {
+        return new Response(
+          JSON.stringify({
+            error: "Akses ditolak. Hanya Super Admin yang dapat membuat user.",
+          }),
+          { status: 403, headers: cors },
+        );
+      }
+
+      const body = await req.json();
+      const email = String(body.email || "").trim().toLowerCase();
+      const password = String(body.password || "");
+      const displayName = String(body.display_name || "").trim();
+      const role = String(body.role || "penulis").trim().toLowerCase();
+
+      if (!email || !password) {
+        throw new Error("Email dan password wajib diisi.");
+      }
+
+      if (password.length < 8) {
+        throw new Error("Password minimal 8 karakter.");
+      }
+
+      if (!ALLOWED_ROLES.includes(role)) {
+        throw new Error("Role tidak valid.");
+      }
+
+      const { data: created, error: createError } =
+        await ctx.supabaseAdmin.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: {
+            display_name: displayName,
           },
+        });
+
+      if (createError) {
+        throw createError;
+      }
+
+      if (!created.user) {
+        throw new Error("User Auth gagal dibuat.");
+      }
+
+      const { error: staffError } = await ctx.supabaseAdmin
+        .from("admin_users")
+        .upsert(
+          {
+            user_id: created.user.id,
+            email,
+            display_name: displayName,
+            role,
+            active: true,
+          },
+          { onConflict: "user_id" },
+        );
+
+      if (staffError) {
+        await ctx.supabaseAdmin.auth.admin.deleteUser(
+          created.user.id,
+          true,
+        );
+        throw staffError;
+      }
+
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          user_id: created.user.id,
+        }),
+        {
+          status: 200,
+          headers: cors,
         },
       );
-    }
-
-    const supabase = createClient(supabaseUrl, serviceRoleKey);
-    const authHeader = req.headers.get("Authorization");
-
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    const token = authHeader.replace(/^Bearer\s+/i, "");
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser(token);
-
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    const { data: staff, error: staffError } = await supabase
-      .from("admin_users")
-      .select("role, active")
-      .eq("user_id", user.id)
-      .maybeSingle();
-
-    if (staffError) {
-      throw staffError;
-    }
-
-    if (!staff?.active || staff.role !== "super_admin") {
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
-        status: 403,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    const body = await req.json();
-    const email = String(body.email || "").trim().toLowerCase();
-    const password = String(body.password || "");
-    const displayName = String(body.display_name || "").trim();
-    const role = String(body.role || "viewer").trim();
-
-    const allowedRoles = [
-      "super_admin",
-      "admin",
-      "penulis",
-      "editor",
-      "viewer",
-    ];
-
-    if (!email || !password || !allowedRoles.includes(role)) {
+    } catch (err) {
       return new Response(
-        JSON.stringify({ error: "Data pengguna tidak valid." }),
+        JSON.stringify({
+          error: err instanceof Error ? err.message : String(err),
+        }),
         {
           status: 400,
-          headers: {
-            ...corsHeaders,
-            "Content-Type": "application/json",
-          },
+          headers: cors,
         },
       );
     }
-
-    const { data: created, error: createError } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-    });
-
-    if (createError) {
-      throw createError;
-    }
-
-    const userId = created.user?.id;
-
-    if (!userId) {
-      throw new Error("User ID tidak tersedia setelah pembuatan akun.");
-    }
-
-    const { error: staffInsertError } = await supabase.from("admin_users").upsert(
-      {
-        user_id: userId,
-        email,
-        display_name: displayName || email,
-        role,
-        active: true,
-      },
-      { onConflict: "user_id" },
-    );
-
-    if (staffInsertError) {
-      await supabase.auth.admin.deleteUser(userId);
-      throw staffInsertError;
-    }
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        user_id: userId,
-      }),
-      {
-        status: 200,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  } catch (error) {
-    console.error("create-staff error:", error);
-
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Terjadi kesalahan server.",
-      }),
-      {
-        status: 500,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
-});
+  }),
+};
