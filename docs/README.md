@@ -2,125 +2,62 @@
 
 Selamat datang di pusat dokumentasi **Kryzna Learn**.
 
-Folder `docs/` menjadi titik masuk utama untuk memahami kondisi proyek, struktur UI, arsitektur, database, keamanan, dan workflow pengembangan.
+Folder `docs/` menjadi titik masuk utama untuk memahami kondisi proyek, struktur UI, arsitektur, database, keamanan, workflow, deployment, testing, dan keputusan teknis.
 
-> **Mulai dari:** [`PROJECT-STATUS.md`](./PROJECT-STATUS.md) untuk melihat progres terakhir dan titik pengembangan berikutnya.
+> **Mulai dari:** `PROJECT-STATUS.md` untuk progres terakhir dan titik pengembangan berikutnya.
 
-## 🚀 Status & Arah Proyek
+## Status & arah proyek
 
-### [PROJECT-STATUS.md](./PROJECT-STATUS.md)
-Catatan utama perkembangan proyek.
+- `PROJECT-STATUS.md` — checkpoint, progres, temuan audit, dan pekerjaan berikutnya.
+- `CHANGELOG.md` — ringkasan perubahan berdasarkan tanggal.
 
-Berisi:
-- progres terakhir,
-- fitur yang sudah selesai,
-- fitur yang masih dikerjakan,
-- catatan teknis penting,
-- masalah yang perlu diperbaiki,
-- prioritas pengembangan berikutnya.
+## Arsitektur & keputusan
 
-**Gunakan file ini sebagai titik awal setiap kali melanjutkan sesi pengembangan.**
+- `ARCHITECTURE.md` — modul, layer, alur data, dan boundary keamanan.
+- `DECISIONS.md` — keputusan arsitektur dan alasan desain yang sudah disepakati.
+- `UI-STRUCTURE.md` — struktur halaman, navigasi, penamaan UI, role, dan permission.
+- `CODE-STYLE.md` — standar readability dan formatting.
 
-## 🎨 UI & UX
+## Security & access
 
-### [UI-STRUCTURE.md](./UI-STRUCTURE.md)
-Acuan struktur halaman, navigasi, pembagian modul, role, dan standar penamaan UI.
+- `RBAC.md` — role, permission, mapping, dan enforcement.
+- `SECURITY.md` — model keamanan, RLS, Storage, SECURITY DEFINER, dan checklist audit.
+- `SWIFT-API-AUDIT.md` — audit khusus Edge Function `swift-api` dan parity deployment.
 
-Berisi:
-- Website Publik,
-- Kelola Materi,
-- Administrasi,
-- workflow materi,
-- role dan permission,
-- aturan navigasi,
-- status implementasi UI.
+## Database & content
 
-## 🏗️ Architecture
+- `DATABASE.md` — tabel inti, RPC, trigger, version history, RLS, dan migration discipline.
+- `CONTENT-WORKFLOW.md` — Draft → Review → Published → Archived, editor, versioning, dan activity log.
 
-### `architecture/ARCHITECTURE.md`
-Dokumentasi arsitektur aplikasi dan hubungan antar komponen.
+## Operations
 
-**Status:** akan dibuat ketika arsitektur inti sudah didokumentasikan secara lengkap.
+- `EDGE-FUNCTIONS.md` — inventory Edge Function, deployment/version, auth, dan parity source.
+- `DEPLOYMENT.md` — checklist sebelum/sesudah deployment dan rollback.
+- `TESTING.md` — checklist pengujian manual/E2E.
+- `LEGACY.md` — inventory object/file legacy dan aturan cleanup.
 
-## 🗄️ Database
-
-### `database/DATABASE.md`
-Dokumentasi struktur database dan relasi data Supabase.
-
-Rencana isi:
-- tabel utama,
-- relasi,
-- status workflow,
-- RBAC,
-- activity log,
-- version history,
-- aturan RLS.
-
-**Status:** akan dibuat pada tahap dokumentasi database.
-
-## 🔐 Security
-
-### `security/SECURITY.md`
-Dokumentasi keamanan aplikasi.
-
-Rencana isi:
-- autentikasi,
-- RBAC,
-- permission,
-- Row Level Security (RLS),
-- aturan akses publik/private,
-- keamanan RPC/Edge Function,
-- catatan security advisor.
-
-**Status:** akan dibuat pada tahap audit keamanan.
-
-## 🛠️ Development
-
-### `development/DEVELOPMENT.md`
-Panduan workflow pengembangan Kryzna Learn.
-
-Rencana isi:
-- struktur repository,
-- aturan branch,
-- pola commit,
-- cara melanjutkan pekerjaan,
-- aturan perubahan database,
-- proses verifikasi setelah perubahan.
-
-**Status:** akan dibuat setelah workflow development distandarkan.
-
-## 🧭 Urutan Membaca
+## Urutan membaca
 
 ```text
-1. docs/README.md
-       ↓
-2. docs/PROJECT-STATUS.md
-       ↓
-3. docs/UI-STRUCTURE.md
-       ↓
-4. Dokumentasi teknis sesuai pekerjaan
-       ├── architecture/
-       ├── database/
-       ├── security/
-       └── development/
+README
+  ↓
+PROJECT-STATUS
+  ↓
+ARCHITECTURE
+  ├── RBAC
+  ├── SECURITY
+  ├── DATABASE
+  └── CONTENT-WORKFLOW
+        ↓
+EDGE-FUNCTIONS / DEPLOYMENT / TESTING
+        ↓
+DECISIONS / CHANGELOG / LEGACY
 ```
 
-## 📌 Aturan Dokumentasi
+## Aturan dokumentasi
 
-- Dokumentasi harus mencerminkan kondisi repository yang sebenarnya.
-- Jangan menandai fitur sebagai selesai sebelum implementasi diverifikasi.
-- Perubahan besar pada UI, role, permission, database, keamanan, atau workflow harus diikuti pembaruan dokumentasi terkait.
-- `PROJECT-STATUS.md` digunakan untuk **kondisi/progres proyek**.
-- `UI-STRUCTURE.md` digunakan untuk **struktur dan aturan UI**.
-- Dokumentasi teknis digunakan untuk **detail implementasi**.
-
-## 🔄 Titik Lanjut Saat Ini
-
-1. Implementasi mapping role → permission dan central permission pada `KryznaAuth`.
-2. Integrasi permission ke halaman Admin/Content.
-3. Uji browser untuk Version Restore.
-4. Uji Autosave & Draft Recovery.
-5. Audit Activity Log dan Kelola Pengguna.
-6. Audit navigasi, workflow, dan keamanan Supabase/RLS.
-
-Dokumen status utama: [PROJECT-STATUS.md](./PROJECT-STATUS.md)
+- Dokumentasi harus mencerminkan kondisi repository dan deployment yang sebenarnya.
+- Jangan menandai fitur selesai sebelum implementasi diverifikasi.
+- Perubahan besar pada UI, role, permission, database, keamanan, workflow, atau deployment harus diikuti pembaruan dokumentasi.
+- `PROJECT-STATUS.md` adalah sumber checkpoint proyek.
+- Dokumen teknis menjelaskan kondisi dan aturan implementasi, bukan sekadar rencana.
