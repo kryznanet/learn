@@ -34,7 +34,7 @@ Kryzna Learn
 - **Website Publik**: area untuk membaca materi yang sudah dipublikasikan.
 - **Kelola Materi**: workspace untuk membuat, mengedit, meninjau, menerbitkan, mengarsipkan, dan melihat riwayat materi.
 - **Administrasi**: area untuk fungsi administratif dan kontrol sistem.
-- Menu ditampilkan sesuai role/permission pengguna.
+- Menu dan aksi mengikuti permission aktif pengguna.
 - Validasi akses tetap dilakukan ketika halaman dibuka; frontend bukan satu-satunya lapisan keamanan.
 
 ## 2. Website Publik
@@ -61,9 +61,9 @@ Fungsi:
 - mencari materi,
 - filter status,
 - filter kategori,
-- membuka editor,
-- membuka Riwayat Versi,
-- melihat dan mengubah status sesuai permission.
+- membuka editor sesuai `content.update`,
+- membuka Riwayat Versi sesuai `content.read`,
+- mengubah status sesuai permission workflow.
 
 Workflow konten:
 
@@ -73,7 +73,7 @@ Draft → Review → Published → Archived
   └─────────────────────────┘
 ```
 
-Transisi status harus dikendalikan oleh permission/RLS, bukan hanya tombol frontend.
+Aksi workflow sekarang memeriksa permission seperti `content.review`, `content.publish`, `content.archive`, dan `content.update`. RLS tetap menjadi enforcement final.
 
 ### Tulis / Edit Materi
 Editor materi untuk membuat atau mengubah konten.
@@ -92,15 +92,20 @@ Fungsi:
 - Riwayat Versi,
 - **Autosave lokal & Draft Recovery**.
 
+Permission:
+- materi baru → `content.create`,
+- edit materi → `content.update`,
+- Kirim ke Review → `content.review`.
+
 Autosave lokal menyimpan draft sementara di perangkat dan tidak membuat version snapshot baru di database pada setiap ketikan.
 
 ### Riwayat Versi
 Menampilkan versi-versi sebelumnya dari satu materi.
 
 Fungsi:
-- melihat versi,
+- melihat versi dengan `content.read`,
 - meninjau isi versi,
-- memulihkan versi melalui RPC terproteksi.
+- memulihkan versi dengan `content.update` pada frontend dan RPC terproteksi di backend.
 
 Restore saat ini tersedia untuk role Editor, Admin, dan Super Admin pada backend. Setiap restore memperbarui materi, menghasilkan snapshot melalui trigger, dan mencatat aktivitas `version_restored`.
 
@@ -113,7 +118,7 @@ Log khusus untuk aktivitas yang berkaitan dengan materi, misalnya:
 - publish/archive,
 - restore versi.
 
-Data internal menggunakan `content_activity_logs`.
+Data internal menggunakan `content_activity_logs`. Akses halaman menggunakan permission `content.view_logs`.
 
 ## 4. Administrasi
 
@@ -133,12 +138,11 @@ Role:
 - `Super Admin`
 - `Viewer` untuk kompatibilitas akun lama.
 
-Fungsi:
-- melihat staf,
-- mencari staf,
-- mengubah role,
-- mengaktifkan/nonaktifkan akses,
-- mengubah display name sesuai hak akses.
+Permission terkait:
+- melihat pengguna → `users.read`,
+- mengubah display name → `users.update`,
+- mengubah role → `roles.manage`,
+- aktif/nonaktif → `users.disable`.
 
 Perubahan role/status dilakukan melalui RPC backend yang memvalidasi hak akses dan menyinkronkan `admin_users` dengan `user_roles`.
 
@@ -151,10 +155,10 @@ Contoh:
 - aktivasi/nonaktifkan akun,
 - tindakan administratif lainnya.
 
-Data internal menggunakan `system_activity_logs`.
+Data internal menggunakan `system_activity_logs`. Akses halaman menggunakan `system.view_logs`.
 
 ### Import Materi
-Halaman untuk memasukkan materi dari file yang didukung, terutama DOCX/PDF.
+Halaman untuk memasukkan materi dari file yang didukung, terutama DOCX/PDF. Akses menggunakan `content.import`.
 
 ### Pengaturan
 Tempat untuk konfigurasi sistem yang akan ditambahkan bertahap.
@@ -162,10 +166,10 @@ Tempat untuk konfigurasi sistem yang akan ditambahkan bertahap.
 ## 5. Role dan Hak Akses
 
 ### Penulis
-Membuat dan mengelola materi sesuai hak akses serta mengirim materi untuk review.
+Membuat dan mengelola materi sesuai permission serta mengirim materi untuk review bila memiliki `content.review`.
 
 ### Editor
-Meninjau dan memproses materi sesuai hak akses, termasuk restore versi sesuai aturan backend saat ini.
+Meninjau dan memproses materi sesuai permission, termasuk restore versi sesuai aturan backend saat ini.
 
 ### Admin
 Mengelola operasional materi dan fungsi administratif yang diberikan.
@@ -202,9 +206,10 @@ settings.manage
 
 ### Status implementasi
 
-- `KryznaAuth` sudah menjadi helper role terpusat.
-- Central permission frontend **belum selesai**.
-- Database saat ini memiliki `roles`, `permissions`, dan `user_roles`, tetapi mapping role → permission belum tersedia sebagai tabel `role_permissions`.
+- `KryznaAuth` menjadi helper role dan permission terpusat.
+- Mapping role → permission tersedia melalui `role_permissions`.
+- `get_my_permissions()` mengambil permission aktif berdasarkan `auth.uid()`.
+- Halaman utama Content/Admin sudah mulai menggunakan `requirePermission(...)` dan `hasPermission(...)`.
 - Permission final tetap harus ditegakkan oleh backend/database/RLS.
 
 ## 7. Standar Penamaan UI
@@ -229,7 +234,7 @@ Nama internal database, RPC, JavaScript API, dan endpoint tidak perlu diubah han
 - `Administrasi` menjadi pusat navigasi fungsi sistem.
 - `Riwayat Versi` dibuka berdasarkan `materi.id`.
 - `Tulis / Edit Materi` dibuka berdasarkan `materi.id` saat mengedit.
-- Link menuju halaman yang tidak sesuai role/permission tidak ditampilkan bila dapat ditentukan di frontend.
+- Link/menu dan tombol aksi yang dapat ditentukan di frontend disaring berdasarkan permission.
 - Validasi akses tetap dilakukan ketika halaman dibuka.
 
 ## 9. Status Implementasi
@@ -237,28 +242,27 @@ Nama internal database, RPC, JavaScript API, dan endpoint tidak perlu diubah han
 | Area | Status |
 |---|---|
 | Website Publik | Aktif, masih perlu audit visibility `published` end-to-end |
-| Kelola Materi | Aktif |
-| Daftar Materi | Aktif |
-| Tulis / Edit Materi | Aktif |
-| Riwayat Versi | Aktif; restore RPC tersedia, browser E2E masih perlu diuji |
-| Riwayat Aktivitas Materi | Aktif |
+| Kelola Materi | Aktif + central permission terintegrasi |
+| Daftar Materi | Aktif + permission workflow |
+| Tulis / Edit Materi | Aktif + `content.create/update/review` |
+| Riwayat Versi | Aktif + `content.read/update`; restore browser E2E masih perlu diuji |
+| Riwayat Aktivitas Materi | Aktif + `content.view_logs` |
 | Dashboard Admin | Aktif |
 | Dashboard Super Admin | Aktif |
-| Kelola Pengguna | Aktif |
-| Riwayat Aktivitas Sistem | Aktif |
-| Import Materi | Aktif |
+| Kelola Pengguna | Aktif + `users.*` / `roles.manage` |
+| Riwayat Aktivitas Sistem | Aktif + `system.view_logs` |
+| Import Materi | Aktif + `content.import` |
 | Pengaturan | Placeholder / tahap berikutnya |
 | Central Role Helper | Aktif |
-| Central Permission Helper | Belum selesai |
+| Central Permission Helper | Aktif |
 | Autosave + Draft Recovery | Aktif tahap awal; perlu pengujian recovery lintas skenario |
 
 ## 10. Acuan Pengembangan Berikutnya
 
-1. Implementasi mapping role → permission dan central permission pada `KryznaAuth`.
-2. Integrasi permission ke seluruh halaman Admin/Content.
-3. Uji browser untuk Version Restore.
-4. Uji Autosave & Draft Recovery.
-5. Audit Activity Log dan Kelola Pengguna.
-6. Audit navigasi, workflow, dan keamanan Supabase/RLS.
+1. Uji browser untuk Version Restore.
+2. Uji Autosave & Draft Recovery.
+3. Audit Activity Log dan Kelola Pengguna.
+4. Pastikan Website Publik hanya menampilkan `published`.
+5. Audit navigasi, workflow, dan keamanan Supabase/RLS.
 
 Dokumen ini harus diperbarui apabila struktur menu, role, permission, atau status implementasi berubah secara signifikan.
