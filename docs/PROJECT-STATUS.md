@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Central Permission sudah diimplementasikan dan kini terintegrasi pada workspace Content, editor, version history, activity log, system activity log, dan user administration.
+**Status sesi:** Checkpoint keamanan publik dan Storage/RLS selesai untuk sesi ini. Pekerjaan berikutnya ditunda ke sesi berikutnya.
 
 ## ✅ Progres terbaru — 17 September 2026
 
@@ -54,8 +54,6 @@ Database memiliki tabel mapping:
 
 Mapping sudah tersedia untuk `super_admin`, `admin`, `editor`, dan `penulis`; role legacy `viewer` tetap tersedia dengan akses `content.read`.
 
-Super Admin mendapat seluruh permission yang tersedia. Role lain mendapat permission sesuai fungsi masing-masing.
-
 ### 4. RPC permission
 `public.get_my_permissions()` menggunakan `SECURITY DEFINER` dengan `search_path = public` dan membaca permission berdasarkan `auth.uid()` melalui `user_roles → role_permissions → permissions`.
 
@@ -64,13 +62,7 @@ Verifikasi privilege terbaru:
 - `authenticated`: `EXECUTE = true`
 
 ### 5. Integrasi Central Permission pada Content
-Permission sekarang dipakai langsung pada halaman:
-- `content/index.html` → `content.read` dan penyaringan kartu berdasarkan permission.
-- `content/materials.html` → `content.read`, `content.update`, `content.review`, `content.publish`, `content.archive`.
-- `content/editor.html` → `content.create` untuk materi baru, `content.update` untuk edit, `content.review` untuk Kirim ke Review.
-- `content/versions.html` → `content.read`; tombol dan aksi restore mengikuti `content.update`.
-- `content/activity.html` → `content.view_logs`.
-- `admin/import.html` → `content.import`.
+Permission sudah dipakai pada halaman utama Content dan Administrasi, termasuk daftar materi, editor, version history, activity log, import, dan user administration.
 
 Permission frontend hanya untuk guard/UX. RLS dan RPC tetap menjadi enforcement backend.
 
@@ -83,8 +75,6 @@ Permission frontend hanya untuk guard/UX. RLS dan RPC tetap menjadi enforcement 
 - Riwayat Versi,
 - pencatatan status ke `content_activity_logs`.
 
-Aksi workflow sekarang memeriksa permission yang sesuai, bukan hanya nama role di frontend.
-
 ### 7. Riwayat Versi
 Supabase memiliki:
 - `materi_versions`,
@@ -92,105 +82,77 @@ Supabase memiliki:
 - trigger snapshot setelah insert/update `materi`,
 - RLS untuk role content.
 
-`content/versions.html` sudah terhubung ke editor/Daftar Materi dan menggunakan permission `content.read` serta `content.update` untuk restore.
-
-**Restore tersedia:**
-- RPC `public.restore_materi_version(uuid)` tersedia.
-- menggunakan `SECURITY DEFINER` dengan `search_path = public`.
-- `anon` tidak memiliki EXECUTE.
-- `authenticated` memiliki EXECUTE.
-- restore dibatasi untuk role yang sesuai di backend.
-- restore memperbarui materi, membuat snapshot versi baru, dan mencatat `version_restored`.
-
-End-to-end browser restore masih perlu pengujian dengan akun role yang sesuai sebelum dinyatakan final.
+RPC `public.restore_materi_version(uuid)` tersedia, tidak dapat dieksekusi oleh `anon`, dan restore dibatasi di backend. End-to-end browser restore masih perlu pengujian.
 
 ### 8. Riwayat Aktivitas
 Aktivitas dipisahkan menjadi:
 - `content_activity_logs` untuk aktivitas materi,
 - `system_activity_logs` untuk aktivitas administratif/sistem.
 
-`content/activity.html` sekarang menggunakan `content.view_logs` melalui `KryznaAuth`.
-
-`admin/activity.html` sekarang menggunakan `system.view_logs` melalui `KryznaAuth`.
+Halaman activity menggunakan central permission helper.
 
 ### 9. Kelola Pengguna
-`admin/users.html` tersedia untuk pengguna dengan permission `users.read`.
-
-Fungsi:
-- daftar user melalui `list_staff`,
-- pencarian nama/email,
-- ubah display name dengan `users.update`,
-- ubah role dengan `roles.manage`,
-- aktif/nonaktif dengan `users.disable`,
-- sinkronisasi `admin_users` dengan `user_roles` melalui `update_staff`.
-
-RPC backend tetap menjadi enforcement utama.
+`admin/users.html` menggunakan permission terpusat untuk akses daftar dan aksi pengguna. RPC backend tetap menjadi enforcement utama.
 
 ### 10. Autosave & Draft Recovery
-Tahap Autosave & Draft Recovery sudah mulai diimplementasikan.
+`shared/draft-recovery.js` menyediakan autosave lokal berbasis `localStorage`, debounce, recovery draft, konfirmasi restore, dan pembersihan draft setelah penyimpanan server berhasil.
 
-File:
-- `shared/draft-recovery.js`
+## 🔐 Checkpoint keamanan publik & Storage/RLS — 17 September 2026
 
-Fungsi saat ini:
-- autosave draft lokal menggunakan `localStorage`,
-- debounce sekitar 900 ms setelah perubahan,
-- menyimpan judul, deskripsi, kategori, dan isi editor,
-- recovery ketika membuka editor kembali,
-- konfirmasi sebelum memulihkan draft lokal,
-- menghapus draft lokal setelah penyimpanan server berhasil.
+### Public Website
+Audit halaman publik dilakukan terhadap alur Website Publik → Detail Materi.
 
-Autosave sengaja bersifat lokal agar setiap ketikan tidak membuat row/version baru di Supabase.
+- `index.html` menggunakan query Supabase untuk daftar materi dan dimaksudkan hanya menampilkan materi `published`.
+- `materi/view.html` sekarang secara eksplisit memfilter detail dengan `status='published'`.
+- RLS `public.materi` juga membatasi SELECT publik ke `status='published'`, sehingga filter frontend bukan satu-satunya lapisan keamanan.
+- Rendering konten di detail materi tetap melalui sanitasi HTML setelah parsing HTML/Markdown.
 
-## ⚠️ Hal yang masih perlu dilanjutkan
+Perubahan `materi/view.html` telah diverifikasi setelah commit `ce65c2a0b4febff19a77674c448d95a0bdd4d223`.
 
-### Prioritas 1 — Verifikasi Version Restore
-- Uji restore sebagai Editor.
-- Uji restore sebagai Admin/Super Admin.
-- Pastikan Penulis tidak dapat restore.
-- Pastikan snapshot dan `version_restored` tercatat setelah restore.
+### Storage `materi-files`
+Policy Storage telah diselaraskan dengan RBAC:
+- Penulis, Editor, Admin, dan Super Admin dapat upload.
+- Penulis, Editor, Admin, dan Super Admin dapat update.
+- Admin dan Super Admin dapat delete.
+- Publik tidak dapat upload/update/delete.
+- Publik hanya dapat membaca file jika file tersebut berada di bucket `materi-files`, path-nya cocok dengan `materi.file_path`, dan materi terkait berstatus `published`.
 
-### Prioritas 2 — Autosave & Draft Recovery
-- Uji recovery saat refresh/tab tertutup.
-- Uji draft baru dan draft edit materi lama.
-- Tambahkan indikator autosave yang tidak menimpa pesan hasil simpan server.
-- Pertimbangkan server-side draft recovery jika dibutuhkan lintas perangkat/browser.
+Dengan demikian file dari materi `draft`, `review`, atau `archived` tidak dibuka melalui policy public read berdasarkan relasi materi yang dipublikasikan.
 
-### Prioritas 3 — Audit Activity & User Management
-- Audit actor visibility agar tidak bergantung pada SELECT `admin_users` yang tidak dimiliki semua role.
-- Rapikan label/action agar konsisten dengan event yang benar-benar dicatat.
-- Audit permission terhadap setiap action backend RPC.
+### RLS tabel inti
+Audit memastikan RLS aktif pada tabel inti:
+- `admin_users`
+- `content_activity_logs`
+- `materi`
+- `materi_versions`
+- `permissions`
+- `role_permissions`
+- `roles`
+- `system_activity_logs`
+- `user_roles`
 
-### Prioritas 4 — Public content
-- Pastikan query Website Publik dan Detail Materi secara eksplisit menggunakan `status='published'`.
-- Verifikasi sanitasi HTML/Markdown.
+### Temuan yang sengaja ditunda
+Ditemukan dua area yang perlu diselaraskan sebelum perubahan akses dilakukan:
 
-### Prioritas 5 — Security audit
-- Audit ulang advisory `SECURITY DEFINER`.
-- Audit `search_path` semua fungsi.
-- Audit RLS dan index.
-- Evaluasi leaked password protection.
+1. `admin` memiliki permission `system.view_logs`, tetapi policy SELECT `system_activity_logs` saat ini masih membatasi pembacaan kepada `super_admin`.
+2. Permission matrix memberikan Admin beberapa permission pengguna, sedangkan policy/RPC pengelolaan `admin_users` masih menggunakan jalur Super Admin untuk operasi staf tertentu.
 
-## 🔐 Catatan keamanan
-RLS tetap menjadi lapisan enforcement utama. `KryznaAuth` digunakan untuk UX dan guard halaman, sedangkan akses final harus ditegakkan oleh database/RLS/RPC.
+Keduanya **belum diubah pada sesi ini** agar tidak membuka akses tanpa desain permission/RLS/RPC yang konsisten.
 
-`get_my_permissions()` sudah diverifikasi: `anon` tidak memiliki EXECUTE, sedangkan `authenticated` memiliki EXECUTE.
-
-## 🧭 Aturan kerja
-- Fetch file/schema dan gunakan SHA terbaru sebelum update.
-- Setelah perubahan GitHub, fetch ulang dan verifikasi.
-- Setelah perubahan Supabase, jalankan query verifikasi.
-- Jangan menandai fitur selesai sebelum mekanismenya benar-benar teruji.
-- Setiap perubahan signifikan harus dicatat kembali ke dokumentasi.
-
-## ▶️ Titik lanjut sesi berikutnya
+## ⚠️ Pekerjaan berikutnya
 
 1. Uji browser Version Restore.
 2. Uji Autosave & Draft Recovery.
-3. Audit Activity Log dan Kelola Pengguna.
-4. Pastikan Website Publik hanya menampilkan `published`.
-5. Audit final UI, workflow, dan keamanan.
+3. Selaraskan `system_activity_logs` dengan permission `system.view_logs`.
+4. Selaraskan `admin_users`/`update_staff` dengan permission user management yang sebenarnya.
+5. Audit final query halaman publik dan sanitasi.
+6. Audit final `SECURITY DEFINER`, `search_path`, RLS, Storage, dan index.
+7. Update dokumentasi setelah setiap perubahan signifikan.
+
+## 🧭 Titik lanjut sesi berikutnya
+
+Mulai dari **RBAC Admin ↔ System Activity Log dan User Management**, lalu lanjutkan verifikasi keamanan end-to-end.
 
 ---
 
-**Catatan sesi:** Pada 17 September 2026, Central Permission telah diterapkan sampai ke halaman Content dan Administrasi utama. Database/RLS/RPC tetap menjadi lapisan keamanan final.
+**Catatan sesi:** Pekerjaan dihentikan pada checkpoint keamanan 17 September 2026. Jangan menganggap dua ketidaksesuaian RBAC di atas sudah diperbaiki; keduanya adalah pekerjaan lanjutan.
