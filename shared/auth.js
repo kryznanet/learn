@@ -18,15 +18,28 @@
     return data || null;
   }
 
+  async function getPermissions(){
+    if(!db) return [];
+    const {data,error} = await db.rpc('get_my_permissions');
+    if(error) throw error;
+    return (data||[]).map(x=>x.code).filter(Boolean);
+  }
+
   async function getSession(){
     const user = await getUser();
     if(!user) return {user:null, staff:null, role:null, permissions:[]};
     const staff = await getStaff(user.id);
     const role = staff?.active ? (ROLE_ALIASES[staff.role] || null) : null;
-    return {user, staff, role, permissions:[]};
+    let permissions=[];
+    if(role) {
+      try { permissions=await getPermissions(); }
+      catch(error) { console.warn('Permission load gagal:',error); }
+    }
+    return {user, staff, role, permissions};
   }
 
   function hasRole(role, allowed){ return Array.isArray(allowed) && allowed.includes(role); }
+  function hasPermission(permission, permissions=[]){ return Array.isArray(permissions) && permissions.includes(permission); }
 
   async function requireRole(allowedRoles, options={}){
     const {login='../admin/login.html', denied='../admin/login.html'} = options;
@@ -46,6 +59,24 @@
     }
   }
 
+  async function requirePermission(permission, options={}){
+    const {login='../admin/login.html', denied='../admin/login.html'} = options;
+    try{
+      const session=await getSession();
+      if(!session.user){ location.href=login; return null; }
+      if(!session.role || !hasPermission(permission,session.permissions)){
+        const target=denied||login;
+        if(target) location.href=target;
+        return null;
+      }
+      return session;
+    }catch(error){
+      console.error('Permission error:',error);
+      if(login) location.href=login;
+      return null;
+    }
+  }
+
   window.KryznaAuth = {
     db,
     roles: ROLE_ALIASES,
@@ -53,9 +84,12 @@
     adminRoles: ADMIN_ROLES,
     getUser,
     getStaff,
+    getPermissions,
     getSession,
     requireRole,
+    requirePermission,
     hasRole: (role, roles)=>hasRole(role, roles),
+    hasPermission: (permission, permissions)=>hasPermission(permission, permissions),
     isContent: role=>CONTENT_ROLES.includes(role),
     isAdmin: role=>ADMIN_ROLES.includes(role),
     isSuperAdmin: role=>role==='super_admin'
