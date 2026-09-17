@@ -20,6 +20,10 @@
       localStorage.setItem(key(),JSON.stringify(data));
       status('✓ Draft tersimpan otomatis di perangkat');
     }
+    function clearLocal(){
+      localStorage.removeItem(key());
+      localStorage.removeItem(newKey());
+    }
     function schedule(){clearTimeout(timer);timer=setTimeout(saveLocal,900)}
     async function setupUser(){
       try{const {data:{user}}=await window.supabaseClient.auth.getUser();userId=user?.id||'guest'}catch{}
@@ -29,7 +33,7 @@
       const draft=read()||(()=>{try{return JSON.parse(localStorage.getItem(newKey())||'null')}catch{return null}})();
       if(!draft) return;
       const current=snapshot();
-      if(same(draft,current)) return;
+      if(same(draft,current)){clearLocal();return}
       const when=draft.savedAt?new Date(draft.savedAt).toLocaleString('id-ID'):'';
       if(!confirm(`Ditemukan draft lokal${when?' dari '+when:''}. Pulihkan draft ini?`)) return;
       restoring=true;
@@ -43,7 +47,10 @@
     }
     [title,description,category,editor].filter(Boolean).forEach(el=>el.addEventListener('input',schedule));
     category?.addEventListener('change',schedule);
-    form.addEventListener('submit',()=>setTimeout(()=>{clearTimeout(timer);saveLocal()},0),true);
+    new MutationObserver(()=>{
+      const text=msg?.textContent||'';
+      if(text==='Draft tersimpan.'||text==='Materi dikirim ke Review.') clearLocal();
+    }).observe(msg,{childList:true,characterData:true,subtree:true});
     window.addEventListener('beforeunload',()=>{clearTimeout(timer);saveLocal()});
     if(window.supabaseClient) setupUser();
   }
