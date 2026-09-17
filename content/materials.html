@@ -1,1 +1,460 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daftar Materi — Kelola Materi</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../shared/auth.js"></script><script src="../shared/content-activity.js"></script><style>:root{--bg:#f6f8fc;--card:#fff;--line:#e2e8f0;--text:#172033;--muted:#64748b;--primary:#2563eb;--soft:#eff6ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.top{background:#0f172a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;gap:12px;align-items:center}.top a,.btn{display:inline-block;padding:9px 12px;border-radius:9px;text-decoration:none;border:0;font-weight:800}.top a{background:#ffffff14;color:#fff}.wrap{max-width:1100px;margin:auto;padding:26px 18px}.hero h1{margin:5px 0}.muted{color:var(--muted);font-size:13px}.filters{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}.filters input,.filters select{padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.filters input{flex:1;min-width:220px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;margin:10px 0}.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.badge{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:var(--soft);color:#1d4ed8}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.btn{cursor:pointer;background:#e2e8f0;color:#1e293b}.primary{background:var(--primary);color:#fff}.review{background:#fef3c7;color:#92400e}.published{background:#dcfce7;color:#166534}.archived{background:#e5e7eb;color:#374151}.empty{text-align:center;padding:35px;color:var(--muted)}@media(max-width:650px){.head{flex-direction:column}}</style></head><body><header class="top"><div><b>📚 Kryzna Learn</b><div style="font-size:11px;color:#94a3b8">Kelola Materi · Daftar Materi</div></div><div><a href="index.html">← Kelola Materi</a></div></header><main class="wrap"><section><div style="font-size:12px;color:#2563eb;font-weight:900;letter-spacing:.08em">DAFTAR MATERI</div><div class="hero"><h1>Daftar Materi</h1><p class="muted">Kelola status materi: Draft → Review → Published → Archived.</p></div></section><section class="filters"><input id="q" placeholder="🔎 Cari judul atau kategori..."><select id="status"><option value="all">Semua status</option><option value="draft">Draft</option><option value="review">Review</option><option value="published">Published</option><option value="archived">Archived</option></select><select id="cat"><option value="all">Semua kategori</option></select></section><section id="list"><div class="empty">Memuat...</div></section></main><script>const db=supabaseClient,$=id=>document.getElementById(id);let session=null,rows=[];const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const can=p=>KryznaAuth.hasPermission(p,session?.permissions);async function boot(){session=await KryznaAuth.requirePermission('content.read',{login:'../admin/login.html',denied:null});if(!session){$('list').innerHTML='<div class="empty">Akses ditolak.</div>';return}await load()}async function load(){const {data,error}=await db.from('materi').select('id,judul,deskripsi_singkat,kategori,slug,status,author_id,updated_at').order('updated_at',{ascending:false});if(error){$('list').innerHTML='<div class="empty">Gagal memuat: '+esc(error.message)+'</div>';return}rows=data||[];buildCats();render()}function buildCats(){const cats=[...new Set(rows.map(x=>String(x.kategori||'Umum').trim()))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'id'));$('cat').innerHTML='<option value="all">Semua kategori</option>'+cats.map(x=>'<option value="'+esc(x)+'">'+esc(x)+'</option>').join('')}function render(){const q=$('q').value.toLowerCase().trim(),s=$('status').value,c=$('cat').value;const a=rows.filter(x=>(s==='all'||x.status===s)&&(c==='all'||x.kategori===c)&&(!q||[x.judul,x.deskripsi_singkat,x.kategori].join(' ').toLowerCase().includes(q)));$('list').innerHTML=a.map(x=>{const next=x.status==='draft'?'review':x.status==='review'?'published':x.status==='published'?'archived':'draft';const label=x.status==='draft'?'Kirim Review':x.status==='review'?'Publish':x.status==='published'?'Arsipkan':'Kembalikan ke Draft';const permission={draft:'content.review',review:'content.publish',published:'content.archive',archived:'content.update'}[x.status];const canAdvance=can(permission);return '<article class="card"><div class="head"><div><h3 style="margin:0 0 5px">'+esc(x.judul)+'</h3><div class="muted">'+esc(x.kategori||'Umum')+' · diperbarui '+new Date(x.updated_at).toLocaleString('id-ID')+'</div></div><span class="badge">'+esc(x.status)+'</span></div><div class="muted" style="margin-top:8px">'+esc(x.deskripsi_singkat||'Belum ada deskripsi.')+'</div><div class="actions">'+(can('content.update')?'<a class="btn primary" href="editor.html?id='+encodeURIComponent(x.id)+'">Tulis / Edit</a>':'')+(can('content.read')?'<a class="btn" href="versions.html?id='+encodeURIComponent(x.id)+'">Riwayat Versi</a>':'')+(canAdvance?'<button class="btn '+esc(next)+'" onclick="changeStatus(\''+x.id+'\',\''+next+'\')">'+label+'</button>':'')+'</div></article>'}).join('')||'<div class="empty">Tidak ada materi sesuai filter.</div>')}async function changeStatus(id,status){const current=rows.find(x=>x.id===id);if(!current)return;const from=current.status;if(from===status)return;const permission={draft:'content.review',review:'content.publish',published:'content.archive',archived:'content.update'}[from];if(!can(permission)){alert('Anda tidak memiliki permission untuk aksi ini.');return}if(!confirm('Ubah status materi menjadi '+status+'?'))return;const r=await db.from('materi').update({status}).eq('id',id);if(r.error){alert('Gagal mengubah status: '+r.error.message);return}const log=await window.kryznaLogContent({action:'status_changed',entityId:id,description:'Status materi "'+(current.judul||'')+'" diubah dari '+from+' menjadi '+status,metadata:{from,to:status}});if(log?.error)console.warn('Status berhasil diubah tetapi log gagal:',log.error);await load()}$('q').oninput=render;$('status').onchange=render;$('cat').onchange=render;boot();</script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daftar Materi — Kelola Materi</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../shared/auth.js"></script>
+  <script src="../shared/content-activity.js"></script>
+
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #fff;
+      --line: #e2e8f0;
+      --text: #172033;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --soft: #eff6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 20px;
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .top a,
+    .btn {
+      display: inline-block;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 9px;
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .top a {
+      background: #ffffff14;
+      color: #fff;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
+      padding: 26px 18px;
+    }
+
+    .hero h1 {
+      margin: 5px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin: 18px 0;
+    }
+
+    .filters input,
+    .filters select {
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .filters input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .card {
+      margin: 10px 0;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+    }
+
+    .head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .btn {
+      cursor: pointer;
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .review {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .published {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .archived {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .empty {
+      padding: 35px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .head {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top">
+    <div>
+      <b>📚 Kryzna Learn</b>
+      <div style="font-size:11px;color:#94a3b8">
+        Kelola Materi · Daftar Materi
+      </div>
+    </div>
+    <div>
+      <a href="index.html">← Kelola Materi</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <div style="font-size:12px;color:#2563eb;font-weight:900;letter-spacing:.08em">
+        DAFTAR MATERI
+      </div>
+      <div class="hero">
+        <h1>Daftar Materi</h1>
+        <p class="muted">
+          Kelola status materi: Draft → Review → Published → Archived.
+        </p>
+      </div>
+    </section>
+
+    <section class="filters">
+      <input id="q" placeholder="🔎 Cari judul atau kategori...">
+      <select id="status">
+        <option value="all">Semua status</option>
+        <option value="draft">Draft</option>
+        <option value="review">Review</option>
+        <option value="published">Published</option>
+        <option value="archived">Archived</option>
+      </select>
+      <select id="cat">
+        <option value="all">Semua kategori</option>
+      </select>
+    </section>
+
+    <section id="list">
+      <div class="empty">Memuat...</div>
+    </section>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+
+    let session = null;
+    let rows = [];
+
+    const esc = (value) => String(value ?? '').replace(
+      /[&<>"']/g,
+      (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char])
+    );
+
+    const can = (permission) => KryznaAuth.hasPermission(
+      permission,
+      session?.permissions
+    );
+
+    async function boot() {
+      session = await KryznaAuth.requirePermission(
+        'content.read',
+        {
+          login: '../admin/login.html',
+          denied: null
+        }
+      );
+
+      if (!session) {
+        $('list').innerHTML = '<div class="empty">Akses ditolak.</div>';
+        return;
+      }
+
+      await load();
+    }
+
+    async function load() {
+      const { data, error } = await db
+        .from('materi')
+        .select(
+          'id,judul,deskripsi_singkat,kategori,slug,status,author_id,updated_at'
+        )
+        .order('updated_at', { ascending: false });
+
+      if (error) {
+        $('list').innerHTML =
+          '<div class="empty">Gagal memuat: ' +
+          esc(error.message) +
+          '</div>';
+        return;
+      }
+
+      rows = data || [];
+      buildCats();
+      render();
+    }
+
+    function buildCats() {
+      const cats = [
+        ...new Set(
+          rows
+            .map((item) => String(item.kategori || 'Umum').trim())
+        )
+      ]
+        .filter(Boolean)
+        .sort((a, b) => a.localeCompare(b, 'id'));
+
+      $('cat').innerHTML =
+        '<option value="all">Semua kategori</option>' +
+        cats
+          .map(
+            (item) =>
+              '<option value="' +
+              esc(item) +
+              '">' +
+              esc(item) +
+              '</option>'
+          )
+          .join('');
+    }
+
+    function render() {
+      const query = $('q').value.toLowerCase().trim();
+      const status = $('status').value;
+      const category = $('cat').value;
+
+      const filtered = rows.filter(
+        (item) =>
+          (status === 'all' || item.status === status) &&
+          (category === 'all' || item.kategori === category) &&
+          (!query ||
+            [item.judul, item.deskripsi_singkat, item.kategori]
+              .join(' ')
+              .toLowerCase()
+              .includes(query))
+      );
+
+      $('list').innerHTML =
+        filtered
+          .map((item) => {
+            const next =
+              item.status === 'draft'
+                ? 'review'
+                : item.status === 'review'
+                  ? 'published'
+                  : item.status === 'published'
+                    ? 'archived'
+                    : 'draft';
+
+            const label =
+              item.status === 'draft'
+                ? 'Kirim Review'
+                : item.status === 'review'
+                  ? 'Publish'
+                  : item.status === 'published'
+                    ? 'Arsipkan'
+                    : 'Kembalikan ke Draft';
+
+            const permission = {
+              draft: 'content.review',
+              review: 'content.publish',
+              published: 'content.archive',
+              archived: 'content.update'
+            }[item.status];
+
+            const canAdvance = can(permission);
+
+            return `
+              <article class="card">
+                <div class="head">
+                  <div>
+                    <h3 style="margin:0 0 5px">
+                      ${esc(item.judul)}
+                    </h3>
+                    <div class="muted">
+                      ${esc(item.kategori || 'Umum')} · diperbarui
+                      ${new Date(item.updated_at).toLocaleString('id-ID')}
+                    </div>
+                  </div>
+                  <span class="badge">${esc(item.status)}</span>
+                </div>
+
+                <div class="muted" style="margin-top:8px">
+                  ${esc(item.deskripsi_singkat || 'Belum ada deskripsi.')}
+                </div>
+
+                <div class="actions">
+                  ${can('content.update') ? `
+                    <a
+                      class="btn primary"
+                      href="editor.html?id=${encodeURIComponent(item.id)}"
+                    >
+                      Tulis / Edit
+                    </a>
+                  ` : ''}
+
+                  ${can('content.read') ? `
+                    <a
+                      class="btn"
+                      href="versions.html?id=${encodeURIComponent(item.id)}"
+                    >
+                      Riwayat Versi
+                    </a>
+                  ` : ''}
+
+                  ${canAdvance ? `
+                    <button
+                      class="btn ${esc(next)}"
+                      onclick="changeStatus('${item.id}', '${next}')"
+                    >
+                      ${label}
+                    </button>
+                  ` : ''}
+                </div>
+              </article>
+            `;
+          })
+          .join('') ||
+        '<div class="empty">Tidak ada materi sesuai filter.</div>';
+    }
+
+    async function changeStatus(id, status) {
+      const current = rows.find((item) => item.id === id);
+      if (!current) return;
+
+      const from = current.status;
+      if (from === status) return;
+
+      const permission = {
+        draft: 'content.review',
+        review: 'content.publish',
+        published: 'content.archive',
+        archived: 'content.update'
+      }[from];
+
+      if (!can(permission)) {
+        alert('Anda tidak memiliki permission untuk aksi ini.');
+        return;
+      }
+
+      if (!confirm('Ubah status materi menjadi ' + status + '?')) return;
+
+      const result = await db
+        .from('materi')
+        .update({ status })
+        .eq('id', id);
+
+      if (result.error) {
+        alert('Gagal mengubah status: ' + result.error.message);
+        return;
+      }
+
+      const log = await window.kryznaLogContent({
+        action: 'status_changed',
+        entityId: id,
+        description:
+          'Status materi "' +
+          (current.judul || '') +
+          '" diubah dari ' +
+          from +
+          ' menjadi ' +
+          status,
+        metadata: {
+          from,
+          to: status
+        }
+      });
+
+      if (log?.error) {
+        console.warn(
+          'Status berhasil diubah tetapi log gagal:',
+          log.error
+        );
+      }
+
+      await load();
+    }
+
+    $('q').oninput = render;
+    $('status').onchange = render;
+    $('cat').onchange = render;
+
+    boot();
+  </script>
+</body>
+</html>
