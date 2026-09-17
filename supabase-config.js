@@ -20,7 +20,6 @@ const supabaseClient = window.supabase.createClient(
 
 window.addEventListener("DOMContentLoaded", function () {
   const style = document.createElement("style");
-
   style.textContent = `
     :root { color-scheme: light; }
     [data-theme=dark] { color-scheme: dark; }
@@ -71,7 +70,6 @@ window.addEventListener("DOMContentLoaded", function () {
       body:has(.layout .nav) .editor .grp { max-width: 100%; flex-wrap: wrap; }
     }
   `;
-
   document.head.appendChild(style);
 });
 
@@ -81,190 +79,193 @@ window.addEventListener("DOMContentLoaded", function () {
   editor.dataset.kEditorEnhanced = "1";
   editor.setAttribute("contenteditable", "true");
   editor.setAttribute("spellcheck", "true");
-
   const focusEditor = () => editor.focus();
   const refreshPreview = () => {
     if (typeof window.preview === "function") window.preview();
-    else {
-      const live = document.getElementById("live");
-      if (live) live.innerHTML = editor.innerHTML || "";
-    }
+    else { const live = document.getElementById("live"); if (live) live.innerHTML = editor.innerHTML || ""; }
     editor.dispatchEvent(new Event("input", { bubbles: true }));
   };
   const exec = (command, value = null) => {
     focusEditor();
-    try { document.execCommand(command, false, value); }
-    catch (e) { console.warn("Format command gagal:", command, e); }
-    refreshPreview();
-    syncToolbarState();
-  };
-  const applyInlineStyle = (property, value) => {
-    focusEditor();
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const span = document.createElement("span");
-    span.style[property] = value;
-    if (range.collapsed) {
-      span.appendChild(document.createTextNode("\u200b"));
-      range.insertNode(span);
-      const next = document.createRange(); next.selectNodeContents(span); next.collapse(false);
-      selection.removeAllRanges(); selection.addRange(next);
-    } else {
-      span.appendChild(range.extractContents()); range.insertNode(span);
-      selection.removeAllRanges(); const next = document.createRange(); next.selectNodeContents(span); selection.addRange(next);
-    }
+    try { document.execCommand(command, false, value); } catch (e) { console.warn("Format command gagal:", command, e); }
     refreshPreview(); syncToolbarState();
   };
-
+  const applyInlineStyle = (property, value) => {
+    focusEditor(); const selection = window.getSelection(); if (!selection || !selection.rangeCount) return;
+    const range = selection.getRangeAt(0); const span = document.createElement("span"); span.style[property] = value;
+    if (range.collapsed) { span.appendChild(document.createTextNode("\u200b")); range.insertNode(span); const next = document.createRange(); next.selectNodeContents(span); next.collapse(false); selection.removeAllRanges(); selection.addRange(next); }
+    else { span.appendChild(range.extractContents()); range.insertNode(span); selection.removeAllRanges(); const next = document.createRange(); next.selectNodeContents(span); selection.addRange(next); }
+    refreshPreview(); syncToolbarState();
+  };
   const block = document.getElementById("block");
   if (block) { block.onmousedown = e => e.preventDefault(); block.onchange = e => exec("formatBlock", e.target.value); }
   const font = document.getElementById("font");
   if (font) { font.onmousedown = e => e.preventDefault(); font.onchange = e => exec("fontName", e.target.value); }
   const size = document.getElementById("size");
-  if (size) {
-    size.onmousedown = e => e.preventDefault();
-    size.onchange = e => {
-      focusEditor();
-      try { document.execCommand("styleWithCSS", false, true); } catch (_) {}
-      try {
-        document.execCommand("fontSize", false, "7");
-        editor.querySelectorAll('font[size="7"]').forEach(node => {
-          const span = document.createElement("span"); span.style.fontSize = e.target.value; span.innerHTML = node.innerHTML; node.replaceWith(span);
-        });
-      } catch (_) { applyInlineStyle("fontSize", e.target.value); }
-      refreshPreview(); syncToolbarState();
-    };
-  }
+  if (size) { size.onmousedown = e => e.preventDefault(); size.onchange = e => { focusEditor(); try { document.execCommand("styleWithCSS", false, true); } catch (_) {} try { document.execCommand("fontSize", false, "7"); editor.querySelectorAll('font[size="7"]').forEach(node => { const span = document.createElement("span"); span.style.fontSize = e.target.value; span.innerHTML = node.innerHTML; node.replaceWith(span); }); } catch (_) { applyInlineStyle("fontSize", e.target.value); } refreshPreview(); syncToolbarState(); }; }
   const color = document.getElementById("color");
   if (color) { color.onmousedown = e => e.preventDefault(); color.oninput = e => exec("foreColor", e.target.value); }
   const hilite = document.getElementById("hilite");
-  if (hilite) {
-    hilite.onmousedown = e => e.preventDefault();
-    hilite.oninput = e => { focusEditor(); try { document.execCommand("hiliteColor", false, e.target.value); } catch (_) { document.execCommand("backColor", false, e.target.value); } refreshPreview(); };
-  }
-  document.querySelectorAll(".editor [data-cmd]").forEach(button => {
-    button.onmousedown = e => e.preventDefault();
-    button.onclick = () => exec(button.dataset.cmd);
-  });
-  const clear = document.getElementById("clear");
-  if (clear) { clear.onmousedown = e => e.preventDefault(); clear.onclick = () => { exec("removeFormat"); exec("unlink"); }; }
-  const link = document.getElementById("link");
-  if (link) { link.onmousedown = e => e.preventDefault(); link.onclick = () => { const url = prompt("URL tautan:", "https://"); if (url) exec("createLink", url.trim()); }; }
-  const image = document.getElementById("image");
-  if (image) { image.onmousedown = e => e.preventDefault(); image.onclick = () => { const url = prompt("URL gambar:", "https://"); if (url) exec("insertImage", url.trim()); }; }
-
-  function makeButton(label, command, title) {
-    const button = document.createElement("button");
-    button.type = "button"; button.className = "t"; button.dataset.cmd = command; button.title = title; button.setAttribute("aria-label", title); button.textContent = label;
-    button.onmousedown = e => e.preventDefault(); button.onclick = () => exec(command);
-    return button;
-  }
+  if (hilite) { hilite.onmousedown = e => e.preventDefault(); hilite.oninput = e => { focusEditor(); try { document.execCommand("hiliteColor", false, e.target.value); } catch (_) { document.execCommand("backColor", false, e.target.value); } refreshPreview(); }; }
+  document.querySelectorAll(".editor [data-cmd]").forEach(button => { button.onmousedown = e => e.preventDefault(); button.onclick = () => exec(button.dataset.cmd); });
+  const clear = document.getElementById("clear"); if (clear) { clear.onmousedown = e => e.preventDefault(); clear.onclick = () => { exec("removeFormat"); exec("unlink"); }; }
+  const link = document.getElementById("link"); if (link) { link.onmousedown = e => e.preventDefault(); link.onclick = () => { const url = prompt("URL tautan:", "https://"); if (url) exec("createLink", url.trim()); }; }
+  const image = document.getElementById("image"); if (image) { image.onmousedown = e => e.preventDefault(); image.onclick = () => { const url = prompt("URL gambar:", "https://"); if (url) exec("insertImage", url.trim()); }; }
+  function makeButton(label, command, title) { const button = document.createElement("button"); button.type = "button"; button.className = "t"; button.dataset.cmd = command; button.title = title; button.setAttribute("aria-label", title); button.textContent = label; button.onmousedown = e => e.preventDefault(); button.onclick = () => exec(command); return button; }
   const toolbar = editor.closest(".editor")?.querySelector(".toolbar");
-  if (toolbar && !toolbar.querySelector(".k-extra-group")) {
-    const group = document.createElement("div"); group.className = "grp k-extra-group";
-    const label = document.createElement("span"); label.className = "k-extra-label"; label.textContent = "Format"; group.appendChild(label);
-    group.appendChild(makeButton("S̶", "strikeThrough", "Coret / Strikethrough"));
-    group.appendChild(makeButton("x₂", "subscript", "Subscript"));
-    group.appendChild(makeButton("x²", "superscript", "Superscript"));
-    const row = toolbar.querySelector(".toolbar-row");
-    if (row) row.appendChild(group); else toolbar.appendChild(group);
-  }
-
-  function syncToolbarState() {
-    if (!editor.matches(":focus") && !window.getSelection()?.rangeCount) return;
-    const commands = ["bold","italic","underline","strikeThrough","subscript","superscript","insertUnorderedList","insertOrderedList","justifyLeft","justifyCenter","justifyRight","justifyFull"];
-    document.querySelectorAll(".editor [data-cmd]").forEach(button => {
-      if (!commands.includes(button.dataset.cmd)) return;
-      let active = false;
-      try { active = document.queryCommandState(button.dataset.cmd); } catch (_) {}
-      button.classList.toggle("active", !!active); button.setAttribute("aria-pressed", String(!!active));
-    });
-  }
-  ["keyup","mouseup","input"].forEach(eventName => editor.addEventListener(eventName, syncToolbarState));
-  document.addEventListener("selectionchange", syncToolbarState);
-
-  function cleanWordMarkup() {
-    editor.querySelectorAll("*").forEach(node => {
-      if (node.nodeType !== 1) return;
-      [...node.attributes].forEach(attr => {
-        const name = attr.name.toLowerCase(); const value = attr.value || "";
-        if (name === "class" && /(^|\\s)Mso/i.test(value)) node.removeAttribute(attr.name);
-        if (/^(lang|xml:|xmlns|width|height)$/i.test(name)) node.removeAttribute(attr.name);
-        if (name === "style") {
-          const cleaned = value.split(";").map(x => x.trim()).filter(x => x && !/^mso-/i.test(x)).join("; ");
-          if (cleaned) node.setAttribute("style", cleaned); else node.removeAttribute("style");
-        }
-      });
-    });
-    editor.querySelectorAll("p.MsoNormal, p.MsoTitle, p.MsoSubtitle").forEach(p => p.removeAttribute("class"));
-    refreshPreview();
-  }
+  if (toolbar && !toolbar.querySelector(".k-extra-group")) { const group = document.createElement("div"); group.className = "grp k-extra-group"; const label = document.createElement("span"); label.className = "k-extra-label"; label.textContent = "Format"; group.appendChild(label); group.appendChild(makeButton("S̶", "strikeThrough", "Coret / Strikethrough")); group.appendChild(makeButton("x₂", "subscript", "Subscript")); group.appendChild(makeButton("x²", "superscript", "Superscript")); const row = toolbar.querySelector(".toolbar-row"); if (row) row.appendChild(group); else toolbar.appendChild(group); }
+  function syncToolbarState() { if (!editor.matches(":focus") && !window.getSelection()?.rangeCount) return; const commands = ["bold","italic","underline","strikeThrough","subscript","superscript","insertUnorderedList","insertOrderedList","justifyLeft","justifyCenter","justifyRight","justifyFull"]; document.querySelectorAll(".editor [data-cmd]").forEach(button => { if (!commands.includes(button.dataset.cmd)) return; let active = false; try { active = document.queryCommandState(button.dataset.cmd); } catch (_) {} button.classList.toggle("active", !!active); button.setAttribute("aria-pressed", String(!!active)); }); }
+  ["keyup","mouseup","input"].forEach(eventName => editor.addEventListener(eventName, syncToolbarState)); document.addEventListener("selectionchange", syncToolbarState);
+  function cleanWordMarkup() { editor.querySelectorAll("*").forEach(node => { if (node.nodeType !== 1) return; [...node.attributes].forEach(attr => { const name = attr.name.toLowerCase(); const value = attr.value || ""; if (name === "class" && /(^|\s)Mso/i.test(value)) node.removeAttribute(attr.name); if (/^(lang|xml:|xmlns|width|height)$/i.test(name)) node.removeAttribute(attr.name); if (name === "style") { const cleaned = value.split(";").map(x => x.trim()).filter(x => x && !/^mso-/i.test(x)).join("; "); if (cleaned) node.setAttribute("style", cleaned); else node.removeAttribute("style"); } }); }); editor.querySelectorAll("p.MsoNormal, p.MsoTitle, p.MsoSubtitle").forEach(p => p.removeAttribute("class")); refreshPreview(); }
   editor.addEventListener("paste", () => setTimeout(cleanWordMarkup, 0));
-
   let selectedImage = null;
-  editor.addEventListener("click", e => {
-    if (selectedImage) selectedImage.classList.remove("k-selected-image");
-    selectedImage = e.target.closest("img");
-    if (selectedImage && editor.contains(selectedImage)) selectedImage.classList.add("k-selected-image"); else selectedImage = null;
-  });
-  editor.addEventListener("dblclick", e => {
-    const img = e.target.closest("img");
-    if (!img || !editor.contains(img)) return;
-    const current = Math.round(img.getBoundingClientRect().width || img.naturalWidth || 600);
-    const value = prompt("Lebar gambar (px):", String(current));
-    if (value === null) return;
-    const width = Math.max(40, Math.min(2400, parseInt(value, 10) || current));
-    img.style.width = width + "px"; img.style.height = "auto"; img.removeAttribute("width"); img.removeAttribute("height");
-    refreshPreview();
-  });
+  editor.addEventListener("click", e => { if (selectedImage) selectedImage.classList.remove("k-selected-image"); selectedImage = e.target.closest("img"); if (selectedImage && editor.contains(selectedImage)) selectedImage.classList.add("k-selected-image"); else selectedImage = null; });
+  editor.addEventListener("dblclick", e => { const img = e.target.closest("img"); if (!img || !editor.contains(img)) return; const current = Math.round(img.getBoundingClientRect().width || img.naturalWidth || 600); const value = prompt("Lebar gambar (px):", String(current)); if (value === null) return; const width = Math.max(40, Math.min(2400, parseInt(value, 10) || current)); img.style.width = width + "px"; img.style.height = "auto"; img.removeAttribute("width"); img.removeAttribute("height"); refreshPreview(); });
+  function tableTools() { let tools = toolbar?.querySelector(".k-table-tools"); if (!toolbar) return null; if (!tools) { tools = document.createElement("div"); tools.className = "k-table-tools"; [["+ Baris","row-add"],["− Baris","row-del"],["+ Kolom","col-add"],["− Kolom","col-del"]].forEach(([label, action]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.dataset.tableAction = action; b.onmousedown = e => e.preventDefault(); tools.appendChild(b); }); toolbar.appendChild(tools); } return tools; }
+  function currentCell() { const node = window.getSelection()?.anchorNode; const el = node?.nodeType === 1 ? node : node?.parentElement; return el?.closest?.("td,th"); }
+  function updateTableTools() { const tools = tableTools(); const cell = currentCell(); if (tools) tools.classList.toggle("visible", !!cell); }
+  editor.addEventListener("click", updateTableTools); editor.addEventListener("keyup", updateTableTools); document.addEventListener("selectionchange", updateTableTools);
+  editor.closest(".editor")?.addEventListener("click", e => { const button = e.target.closest("[data-table-action]"); if (!button) return; const cell = currentCell(); if (!cell) return; const table = cell.closest("table"); const row = cell.parentElement; const index = [...row.children].indexOf(cell); if (button.dataset.tableAction === "row-add") { const newRow = table.insertRow(row.rowIndex + 1); for (let i=0;i<row.cells.length;i++) { const c = newRow.insertCell(); c.innerHTML = "&nbsp;"; } } else if (button.dataset.tableAction === "row-del") { if (table.rows.length > 1) table.deleteRow(row.rowIndex); } else if (button.dataset.tableAction === "col-add") { [...table.rows].forEach(r => { const c = r.insertCell(index + 1); c.innerHTML = "&nbsp;"; }); } else if (button.dataset.tableAction === "col-del") { if (row.cells.length > 1) [...table.rows].forEach(r => r.deleteCell(index)); } refreshPreview(); updateTableTools(); });
+  editor.addEventListener("keydown", e => { if (!(e.ctrlKey || e.metaKey)) return; const key = e.key.toLowerCase(); if (key === "b") { e.preventDefault(); exec("bold"); } else if (key === "i") { e.preventDefault(); exec("italic"); } else if (key === "u") { e.preventDefault(); exec("underline"); } else if (e.shiftKey && key === "x") { e.preventDefault(); exec("strikeThrough"); } });
+});
 
-  function tableTools() {
-    let tools = toolbar?.querySelector(".k-table-tools");
-    if (!toolbar) return null;
-    if (!tools) {
-      tools = document.createElement("div"); tools.className = "k-table-tools";
-      const buttons = [
-        ["+ Baris", "row-add"], ["− Baris", "row-del"], ["+ Kolom", "col-add"], ["− Kolom", "col-del"]
-      ];
-      buttons.forEach(([label, action]) => { const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.dataset.tableAction = action; b.onmousedown = e => e.preventDefault(); tools.appendChild(b); });
-      toolbar.appendChild(tools);
-    }
-    return tools;
-  }
-  function currentCell() {
+// Advanced table editing: merge/split cells + Tab-to-add-row, dibuat terpisah
+// agar tidak mengganggu toolbar editor yang sudah ada.
+window.addEventListener("DOMContentLoaded", function () {
+  const editor = document.getElementById("konten");
+  const toolbar = editor?.closest(".editor")?.querySelector(".toolbar");
+  if (!editor || !toolbar || editor.dataset.kAdvancedTable === "1") return;
+  editor.dataset.kAdvancedTable = "1";
+
+  const refresh = () => {
+    if (typeof window.preview === "function") window.preview();
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+  const currentCell = () => {
     const node = window.getSelection()?.anchorNode;
     const el = node?.nodeType === 1 ? node : node?.parentElement;
     return el?.closest?.("td,th");
+  };
+  const makeAdvancedButton = (label, action, title) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = label; b.title = title; b.dataset.advancedTable = action;
+    b.onmousedown = e => e.preventDefault();
+    return b;
+  };
+  const ensureButtons = () => {
+    let tools = toolbar.querySelector(".k-table-tools");
+    if (!tools) return;
+    const add = (label, action, title) => {
+      if (tools.querySelector(`[data-advanced-table="${action}"]`)) return;
+      tools.appendChild(makeAdvancedButton(label, action, title));
+    };
+    add("Gabung →", "merge-right", "Gabungkan cell ini dengan cell di sebelah kanan");
+    add("Gabung ↓", "merge-down", "Gabungkan cell ini dengan cell di bawah");
+    add("Pisah →", "split-horizontal", "Pisahkan cell berdasarkan colspan");
+    add("Pisah ↓", "split-vertical", "Pisahkan cell berdasarkan rowspan");
+  };
+  const observer = new MutationObserver(ensureButtons);
+  observer.observe(toolbar, { childList: true, subtree: true });
+  ensureButtons();
+
+  function mergeRight(cell) {
+    const row = cell.parentElement;
+    const index = [...row.cells].indexOf(cell);
+    const next = row.cells[index + 1];
+    if (!next) return false;
+    const leftSpan = cell.colSpan || 1;
+    const rightSpan = next.colSpan || 1;
+    const join = cell.innerHTML.trim() && next.innerHTML.trim() ? "<br>" : "";
+    cell.innerHTML += join + next.innerHTML;
+    cell.colSpan = leftSpan + rightSpan;
+    next.remove();
+    return true;
   }
-  function updateTableTools() {
-    const tools = tableTools(); const cell = currentCell();
-    if (tools) tools.classList.toggle("visible", !!cell);
+  function mergeDown(cell) {
+    const table = cell.closest("table");
+    const row = cell.parentElement;
+    const rowIndex = row.rowIndex;
+    const cellIndex = [...row.cells].indexOf(cell);
+    const belowRow = table?.rows[rowIndex + 1];
+    if (!belowRow) return false;
+    const below = belowRow.cells[cellIndex];
+    if (!below) return false;
+    const topSpan = cell.rowSpan || 1;
+    const bottomSpan = below.rowSpan || 1;
+    const join = cell.innerHTML.trim() && below.innerHTML.trim() ? "<br>" : "";
+    cell.innerHTML += join + below.innerHTML;
+    cell.rowSpan = topSpan + bottomSpan;
+    below.remove();
+    return true;
   }
-  editor.addEventListener("click", updateTableTools); editor.addEventListener("keyup", updateTableTools); document.addEventListener("selectionchange", updateTableTools);
-  editor.closest(".editor")?.addEventListener("click", e => {
-    const button = e.target.closest("[data-table-action]"); if (!button) return;
-    const cell = currentCell(); if (!cell) return;
-    const table = cell.closest("table"); const row = cell.parentElement; const index = [...row.children].indexOf(cell);
-    if (button.dataset.tableAction === "row-add") {
-      const newRow = table.insertRow(row.rowIndex + 1); for (let i=0;i<row.cells.length;i++) { const c = newRow.insertCell(); c.innerHTML = "&nbsp;"; }
-    } else if (button.dataset.tableAction === "row-del") {
-      if (table.rows.length > 1) table.deleteRow(row.rowIndex);
-    } else if (button.dataset.tableAction === "col-add") {
-      [...table.rows].forEach(r => { const c = r.insertCell(index + 1); c.innerHTML = "&nbsp;"; });
-    } else if (button.dataset.tableAction === "col-del") {
-      if (row.cells.length > 1) [...table.rows].forEach(r => r.deleteCell(index));
+  function splitHorizontal(cell) {
+    const span = cell.colSpan || 1;
+    if (span <= 1) return false;
+    cell.colSpan = 1;
+    const row = cell.parentElement;
+    const index = [...row.cells].indexOf(cell);
+    for (let i = 1; i < span; i++) {
+      const c = row.insertCell(index + i);
+      c.innerHTML = "&nbsp;";
     }
-    refreshPreview(); updateTableTools();
+    return true;
+  }
+  function splitVertical(cell) {
+    const span = cell.rowSpan || 1;
+    if (span <= 1) return false;
+    const table = cell.closest("table");
+    const row = cell.parentElement;
+    const rowIndex = row.rowIndex;
+    const cellIndex = [...row.cells].indexOf(cell);
+    cell.rowSpan = 1;
+    for (let i = 1; i < span; i++) {
+      const targetRow = table?.rows[rowIndex + i];
+      if (!targetRow) break;
+      const c = targetRow.insertCell(Math.min(cellIndex, targetRow.cells.length));
+      c.innerHTML = "&nbsp;";
+    }
+    return true;
+  }
+
+  toolbar.addEventListener("click", e => {
+    const button = e.target.closest("[data-advanced-table]");
+    if (!button) return;
+    const cell = currentCell();
+    if (!cell) return;
+    let changed = false;
+    switch (button.dataset.advancedTable) {
+      case "merge-right": changed = mergeRight(cell); break;
+      case "merge-down": changed = mergeDown(cell); break;
+      case "split-horizontal": changed = splitHorizontal(cell); break;
+      case "split-vertical": changed = splitVertical(cell); break;
+    }
+    if (changed) refresh();
   });
 
   editor.addEventListener("keydown", e => {
-    if (!(e.ctrlKey || e.metaKey)) return;
-    const key = e.key.toLowerCase();
-    if (key === "b") { e.preventDefault(); exec("bold"); }
-    else if (key === "i") { e.preventDefault(); exec("italic"); }
-    else if (key === "u") { e.preventDefault(); exec("underline"); }
-    else if (e.shiftKey && key === "x") { e.preventDefault(); exec("strikeThrough"); }
+    if (e.key !== "Tab" || e.ctrlKey || e.metaKey || e.altKey) return;
+    const cell = currentCell();
+    if (!cell) return;
+    const table = cell.closest("table");
+    if (!table) return;
+    const rows = [...table.rows];
+    const lastRow = rows[rows.length - 1];
+    if (e.shiftKey) return;
+    const isLastCell = cell.parentElement === lastRow && cell === lastRow.cells[lastRow.cells.length - 1];
+    if (!isLastCell) return;
+    e.preventDefault();
+    const newRow = table.insertRow(-1);
+    const count = Math.max(1, lastRow.cells.length);
+    for (let i = 0; i < count; i++) {
+      const c = newRow.insertCell(-1);
+      c.innerHTML = "&nbsp;";
+    }
+    refresh();
+    const target = newRow.cells[0];
+    const range = document.createRange();
+    range.selectNodeContents(target); range.collapse(true);
+    const selection = window.getSelection();
+    selection.removeAllRanges(); selection.addRange(range);
   });
 });
 
