@@ -1,1 +1,602 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tulis / Edit Materi — Kryzna Learn</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../shared/auth.js"></script><script src="../shared/content-activity.js"></script><style>:root{--bg:#f6f8fc;--card:#fff;--line:#e2e8f0;--text:#172033;--muted:#64748b;--primary:#2563eb}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.top{background:#0f172a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}.top a,.btn{padding:9px 12px;border-radius:9px;text-decoration:none;border:0;font-weight:800}.top a{background:#ffffff14;color:#fff}.wrap{max-width:1100px;margin:auto;padding:24px 18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit}textarea{min-height:90px}.full{grid-column:1/-1}.toolbar{display:flex;gap:7px;flex-wrap:wrap;padding:10px;background:#f8fafc;border:1px solid #dbe3ec;border-bottom:0;border-radius:11px 11px 0 0}.toolbar button,.toolbar select{width:auto;padding:7px 9px;border:1px solid #cbd5e1;border-radius:7px;background:#fff}.body{min-height:440px;padding:18px;border:1px solid #cbd5e1;border-radius:0 0 11px 11px;outline:0;line-height:1.7}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.btn{cursor:pointer;background:#e2e8f0;color:#1e293b}.primary{background:var(--primary);color:#fff}.review{background:#d97706;color:#fff}.status{margin-top:12px;padding:11px 13px;border-radius:9px;background:#eff6ff;color:#1e40af}.preview{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:11px;background:#f8fafc}.muted{color:var(--muted);font-size:13px}@media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:16px}.body{min-height:360px}}</style></head><body><header class="top"><div><b>✏️ Kryzna Learn</b><div style="font-size:11px;color:#94a3b8">Kelola Materi · Tulis / Edit Materi</div></div><a href="materials.html">← Daftar Materi</a></header><main class="wrap"><div class="card"><div style="margin-bottom:18px"><h1 id="title" style="margin:0 0 5px">Materi Baru</h1><div class="muted">Simpan sebagai Draft atau kirim ke Review.</div></div><form id="form"><input type="hidden" id="id"><div class="grid"><div><label>Judul</label><input id="judul" required></div><div><label>Kategori</label><select id="kategori"><option>Materi</option><option>Tutorial</option></select></div><div class="full"><label>Deskripsi Singkat</label><textarea id="deskripsi" required></textarea></div><div class="full"><label>Isi Materi</label><div class="toolbar"><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><button type="button" data-cmd="insertUnorderedList">• List</button><button type="button" data-cmd="insertOrderedList">1. List</button><button type="button" data-cmd="justifyLeft">Kiri</button><button type="button" data-cmd="justifyCenter">Tengah</button><select id="block"><option value="p">Normal</option><option value="h2">Heading 2</option><option value="h3">Heading 3</option><option value="blockquote">Quote</option></select><select id="size"><option value="14px">14</option><option value="16px" selected>16</option><option value="18px">18</option><option value="20px">20</option><option value="24px">24</option><option value="28px">28</option></select></div><div id="konten" class="body" contenteditable="true"></div></div></div><div class="actions"><button id="saveBtn" class="btn primary" type="submit">💾 Simpan Draft</button><button class="btn review" type="button" id="submitReview">📤 Kirim ke Review</button><button class="btn" type="button" id="history">🕘 Riwayat Versi</button><button class="btn" type="button" id="cancel">Batal</button></div><div id="msg"></div></form><div class="preview"><b>Preview</b><div id="preview"></div></div></div></main><script>const db=supabaseClient,$=id=>document.getElementById(id),ed=$("konten");let session=null,currentUser=null,currentStatus='draft';function has(p){return KryznaAuth.hasPermission(p,session?.permissions)}function sanitize(html){const d=new DOMParser().parseFromString(html||'','text/html');d.querySelectorAll('script,iframe,object,embed,form,link,meta').forEach(x=>x.remove());d.querySelectorAll('*').forEach(e=>Array.from(e.attributes).forEach(a=>{if(/^on/i.test(a.name)||((a.name==='href'||a.name==='src')&&/^\s*(javascript:|data:text\/html)/i.test(a.value)))e.removeAttribute(a.name)}));return d.body.innerHTML}function slugify(v){return String(v||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'materi-'+Date.now()}async function slug(title,id){let base=slugify(title),s=base,n=2;while(true){let q=db.from('materi').select('id').eq('slug',s).limit(1);if(id)q=q.neq('id',id);const {data,error}=await q;if(error)throw error;if(!data?.length)return s;s=base+'-'+n++}}function preview(){const h=sanitize(ed.innerHTML);$('preview').innerHTML=h||'<span class="muted">Belum ada isi.</span>'}function cmd(c){ed.focus();document.execCommand(c,false,null);preview()}document.querySelectorAll('[data-cmd]').forEach(b=>{b.onmousedown=e=>e.preventDefault();b.onclick=()=>cmd(b.dataset.cmd)});$('block').onchange=e=>{ed.focus();document.execCommand('formatBlock',false,e.target.value);preview()};$('size').onchange=e=>{ed.focus();const s=getSelection();if(!s?.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0),sp=document.createElement('span');sp.style.fontSize=e.target.value;sp.appendChild(r.extractContents());r.insertNode(sp);preview()};ed.oninput=preview;async function save(status){if(status==='draft'&&!has('content.update')&&!has('content.create'))throw Error('Anda tidak memiliki permission untuk menyimpan materi.');if(status==='review'&&!has('content.review'))throw Error('Anda tidak memiliki permission untuk mengirim materi ke Review.');$('msg').className='status';$('msg').textContent='Menyimpan…';try{const judul=$('judul').value.trim();if(!judul)throw Error('Judul wajib diisi.');const id=$('id').value;if(id&&!has('content.update'))throw Error('Anda tidak memiliki permission untuk mengedit materi ini.');if(!id&&!has('content.create'))throw Error('Anda tidak memiliki permission untuk membuat materi.');const newSlug=await slug(judul,id);const payload={judul,deskripsi_singkat:$('deskripsi').value.trim(),kategori:$('kategori').value,konten:sanitize(ed.innerHTML),slug:newSlug,status};let r;if(id)r=await db.from('materi').update(payload).eq('id',id).select('id,judul,status,author_id').single();else r=await db.from('materi').insert({...payload,author_id:currentUser.id}).select('id,judul,status,author_id').single();if(r.error)throw r.error;const row=r.data;const oldStatus=currentStatus;const action=id?'updated':'created';const log=await window.kryznaLogContent({action,entityId:row.id,description:(id?'Mengubah':'Membuat')+' materi "'+judul+'" sebagai '+status,metadata:{from:id?oldStatus:null,to:status,status}});if(log?.error)console.warn('Materi tersimpan tetapi log gagal:',log.error);if(id&&oldStatus!==status){const transition=await window.kryznaLogContent({action:'status_changed',entityId:row.id,description:'Status materi "'+judul+'" diubah dari '+oldStatus+' menjadi '+status,metadata:{from:oldStatus,to:status}});if(transition?.error)console.warn('Status berubah tetapi log gagal:',transition.error)}if(status==='review'&&oldStatus!=='review'){const reviewLog=await window.kryznaLogContent({action:'submitted_for_review',entityId:row.id,description:'Materi "'+judul+'" dikirim ke Review',metadata:{from:oldStatus,to:'review'}});if(reviewLog?.error)console.warn('Review tersimpan tetapi log gagal:',reviewLog.error)}$('msg').textContent=status==='review'?'Materi dikirim ke Review.':'Draft tersimpan.';currentStatus=status;if(!id)$('id').value=row.id;return true}catch(e){$('msg').className='status';$('msg').textContent='Gagal menyimpan: '+e.message;return false}}$('form').onsubmit=async e=>{e.preventDefault();if(await save('draft'))setTimeout(()=>location.href='materials.html',500)};$('submitReview').onclick=async()=>{if(await save('review'))setTimeout(()=>location.href='materials.html',700)};$('history').onclick=()=>{const id=$('id').value;if(!id){alert('Simpan materi terlebih dahulu untuk melihat riwayat versi.');return}location.href='versions.html?id='+encodeURIComponent(id)};$('cancel').onclick=()=>location.href='materials.html';async function boot(){session=await KryznaAuth.getSession();if(!session.user){location.href='../admin/login.html';return}const id=new URLSearchParams(location.search).get('id');if(id){if(!has('content.update')){document.body.innerHTML='<main class="wrap"><div class="card">Akses ditolak. Anda tidak memiliki permission <b>content.update</b>.</div></main>';return}const {data:x,error:xe}=await db.from('materi').select('id,judul,deskripsi_singkat,kategori,konten,status,author_id').eq('id',id).maybeSingle();if(xe||!x){$('msg').textContent='Materi tidak ditemukan.';return}$('id').value=x.id;$('judul').value=x.judul||'';$('deskripsi').value=x.deskripsi_singkat||'';$('kategori').value=x.kategori||'Materi';ed.innerHTML=sanitize(x.konten||'');currentStatus=x.status||'draft';$('title').textContent='Edit Materi';preview()}else{if(!has('content.create')){document.body.innerHTML='<main class="wrap"><div class="card">Akses ditolak. Anda tidak memiliki permission <b>content.create</b>.</div></main>';return}}$('submitReview').hidden=!has('content.review');$('history').hidden=false;currentUser=session.user}boot();</script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tulis / Edit Materi — Kryzna Learn</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../shared/auth.js"></script>
+  <script src="../shared/content-activity.js"></script>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #fff;
+      --line: #e2e8f0;
+      --text: #172033;
+      --muted: #64748b;
+      --primary: #2563eb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+    }
+
+    .top {
+      background: #0f172a;
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .top a,
+    .btn {
+      padding: 9px 12px;
+      border-radius: 9px;
+      text-decoration: none;
+      border: 0;
+      font-weight: 800;
+    }
+
+    .top a {
+      background: #ffffff14;
+      color: #fff;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
+      padding: 24px 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    textarea { min-height: 90px; }
+
+    .full { grid-column: 1 / -1; }
+
+    .toolbar {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid #dbe3ec;
+      border-bottom: 0;
+      border-radius: 11px 11px 0 0;
+    }
+
+    .toolbar button,
+    .toolbar select {
+      width: auto;
+      padding: 7px 9px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .body {
+      min-height: 440px;
+      padding: 18px;
+      border: 1px solid #cbd5e1;
+      border-radius: 0 0 11px 11px;
+      outline: 0;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .btn {
+      cursor: pointer;
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .review {
+      background: #d97706;
+      color: #fff;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 11px 13px;
+      border-radius: 9px;
+      background: #eff6ff;
+      color: #1e40af;
+    }
+
+    .preview {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #f8fafc;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+      .card { padding: 16px; }
+      .body { min-height: 360px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div>
+      <b>✏️ Kryzna Learn</b>
+      <div style="font-size: 11px; color: #94a3b8">
+        Kelola Materi · Tulis / Edit Materi
+      </div>
+    </div>
+    <a href="materials.html">← Daftar Materi</a>
+  </header>
+
+  <main class="wrap">
+    <div class="card">
+      <div style="margin-bottom: 18px">
+        <h1 id="title" style="margin: 0 0 5px">Materi Baru</h1>
+        <div class="muted">Simpan sebagai Draft atau kirim ke Review.</div>
+      </div>
+
+      <form id="form">
+        <input type="hidden" id="id">
+
+        <div class="grid">
+          <div>
+            <label>Judul</label>
+            <input id="judul" required>
+          </div>
+
+          <div>
+            <label>Kategori</label>
+            <select id="kategori">
+              <option>Materi</option>
+              <option>Tutorial</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label>Deskripsi Singkat</label>
+            <textarea id="deskripsi" required></textarea>
+          </div>
+
+          <div class="full">
+            <label>Isi Materi</label>
+            <div class="toolbar">
+              <button type="button" data-cmd="bold"><b>B</b></button>
+              <button type="button" data-cmd="italic"><i>I</i></button>
+              <button type="button" data-cmd="underline"><u>U</u></button>
+              <button type="button" data-cmd="insertUnorderedList">• List</button>
+              <button type="button" data-cmd="insertOrderedList">1. List</button>
+              <button type="button" data-cmd="justifyLeft">Kiri</button>
+              <button type="button" data-cmd="justifyCenter">Tengah</button>
+              <select id="block">
+                <option value="p">Normal</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="blockquote">Quote</option>
+              </select>
+              <select id="size">
+                <option value="14px">14</option>
+                <option value="16px" selected>16</option>
+                <option value="18px">18</option>
+                <option value="20px">20</option>
+                <option value="24px">24</option>
+                <option value="28px">28</option>
+              </select>
+            </div>
+            <div id="konten" class="body" contenteditable="true"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="saveBtn" class="btn primary" type="submit">
+            💾 Simpan Draft
+          </button>
+          <button class="btn review" type="button" id="submitReview">
+            📤 Kirim ke Review
+          </button>
+          <button class="btn" type="button" id="history">
+            🕘 Riwayat Versi
+          </button>
+          <button class="btn" type="button" id="cancel">Batal</button>
+        </div>
+
+        <div id="msg"></div>
+      </form>
+
+      <div class="preview">
+        <b>Preview</b>
+        <div id="preview"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+    const ed = $("konten");
+
+    let session = null;
+    let currentUser = null;
+    let currentStatus = 'draft';
+
+    function has(permission) {
+      return KryznaAuth.hasPermission(permission, session?.permissions);
+    }
+
+    function sanitize(html) {
+      const doc = new DOMParser().parseFromString(html || '', 'text/html');
+
+      doc
+        .querySelectorAll('script,iframe,object,embed,form,link,meta')
+        .forEach((element) => element.remove());
+
+      doc.querySelectorAll('*').forEach((element) => {
+        Array.from(element.attributes).forEach((attribute) => {
+          const unsafeUrl =
+            (attribute.name === 'href' || attribute.name === 'src') &&
+            /^\s*(javascript:|data:text\/html)/i.test(attribute.value);
+
+          if (/^on/i.test(attribute.name) || unsafeUrl) {
+            element.removeAttribute(attribute.name);
+          }
+        });
+      });
+
+      return doc.body.innerHTML;
+    }
+
+    function slugify(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 90) || 'materi-' + Date.now();
+    }
+
+    async function slug(title, id) {
+      const base = slugify(title);
+      let value = base;
+      let number = 2;
+
+      while (true) {
+        let query = db
+          .from('materi')
+          .select('id')
+          .eq('slug', value)
+          .limit(1);
+
+        if (id) {
+          query = query.neq('id', id);
+        }
+
+        const { data, error } = await query;
+        if (error) throw error;
+        if (!data?.length) return value;
+
+        value = base + '-' + number++;
+      }
+    }
+
+    function preview() {
+      const html = sanitize(ed.innerHTML);
+      $('preview').innerHTML =
+        html || '<span class="muted">Belum ada isi.</span>';
+    }
+
+    function cmd(command) {
+      ed.focus();
+      document.execCommand(command, false, null);
+      preview();
+    }
+
+    document.querySelectorAll('[data-cmd]').forEach((button) => {
+      button.onmousedown = (event) => event.preventDefault();
+      button.onclick = () => cmd(button.dataset.cmd);
+    });
+
+    $('block').onchange = (event) => {
+      ed.focus();
+      document.execCommand('formatBlock', false, event.target.value);
+      preview();
+    };
+
+    $('size').onchange = (event) => {
+      ed.focus();
+      const selection = getSelection();
+
+      if (!selection?.rangeCount || selection.isCollapsed) return;
+
+      const range = selection.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.fontSize = event.target.value;
+      span.appendChild(range.extractContents());
+      range.insertNode(span);
+      preview();
+    };
+
+    ed.oninput = preview;
+
+    async function save(status) {
+      if (
+        status === 'draft' &&
+        !has('content.update') &&
+        !has('content.create')
+      ) {
+        throw Error('Anda tidak memiliki permission untuk menyimpan materi.');
+      }
+
+      if (status === 'review' && !has('content.review')) {
+        throw Error('Anda tidak memiliki permission untuk mengirim materi ke Review.');
+      }
+
+      $('msg').className = 'status';
+      $('msg').textContent = 'Menyimpan…';
+
+      try {
+        const judul = $('judul').value.trim();
+        if (!judul) throw Error('Judul wajib diisi.');
+
+        const id = $('id').value;
+
+        if (id && !has('content.update')) {
+          throw Error('Anda tidak memiliki permission untuk mengedit materi ini.');
+        }
+
+        if (!id && !has('content.create')) {
+          throw Error('Anda tidak memiliki permission untuk membuat materi.');
+        }
+
+        const newSlug = await slug(judul, id);
+        const payload = {
+          judul,
+          deskripsi_singkat: $('deskripsi').value.trim(),
+          kategori: $('kategori').value,
+          konten: sanitize(ed.innerHTML),
+          slug: newSlug,
+          status
+        };
+
+        let result;
+
+        if (id) {
+          result = await db
+            .from('materi')
+            .update(payload)
+            .eq('id', id)
+            .select('id,judul,status,author_id')
+            .single();
+        } else {
+          result = await db
+            .from('materi')
+            .insert({ ...payload, author_id: currentUser.id })
+            .select('id,judul,status,author_id')
+            .single();
+        }
+
+        if (result.error) throw result.error;
+
+        const row = result.data;
+        const oldStatus = currentStatus;
+        const action = id ? 'updated' : 'created';
+        const log = await window.kryznaLogContent({
+          action,
+          entityId: row.id,
+          description: (id ? 'Mengubah' : 'Membuat') +
+            ' materi "' + judul + '" sebagai ' + status,
+          metadata: {
+            from: id ? oldStatus : null,
+            to: status,
+            status
+          }
+        });
+
+        if (log?.error) {
+          console.warn('Materi tersimpan tetapi log gagal:', log.error);
+        }
+
+        if (id && oldStatus !== status) {
+          const transition = await window.kryznaLogContent({
+            action: 'status_changed',
+            entityId: row.id,
+            description:
+              'Status materi "' +
+              judul +
+              '" diubah dari ' +
+              oldStatus +
+              ' menjadi ' +
+              status,
+            metadata: {
+              from: oldStatus,
+              to: status
+            }
+          });
+
+          if (transition?.error) {
+            console.warn('Status berubah tetapi log gagal:', transition.error);
+          }
+        }
+
+        if (status === 'review' && oldStatus !== 'review') {
+          const reviewLog = await window.kryznaLogContent({
+            action: 'submitted_for_review',
+            entityId: row.id,
+            description: 'Materi "' + judul + '" dikirim ke Review',
+            metadata: {
+              from: oldStatus,
+              to: 'review'
+            }
+          });
+
+          if (reviewLog?.error) {
+            console.warn('Review tersimpan tetapi log gagal:', reviewLog.error);
+          }
+        }
+
+        $('msg').textContent =
+          status === 'review'
+            ? 'Materi dikirim ke Review.'
+            : 'Draft tersimpan.';
+        currentStatus = status;
+
+        if (!id) {
+          $('id').value = row.id;
+        }
+
+        return true;
+      } catch (error) {
+        $('msg').className = 'status';
+        $('msg').textContent = 'Gagal menyimpan: ' + error.message;
+        return false;
+      }
+    }
+
+    $('form').onsubmit = async (event) => {
+      event.preventDefault();
+
+      if (await save('draft')) {
+        setTimeout(() => location.href = 'materials.html', 500);
+      }
+    };
+
+    $('submitReview').onclick = async () => {
+      if (await save('review')) {
+        setTimeout(() => location.href = 'materials.html', 700);
+      }
+    };
+
+    $('history').onclick = () => {
+      const id = $('id').value;
+
+      if (!id) {
+        alert('Simpan materi terlebih dahulu untuk melihat riwayat versi.');
+        return;
+      }
+
+      location.href = 'versions.html?id=' + encodeURIComponent(id);
+    };
+
+    $('cancel').onclick = () => {
+      location.href = 'materials.html';
+    };
+
+    async function boot() {
+      session = await KryznaAuth.getSession();
+
+      if (!session.user) {
+        location.href = '../admin/login.html';
+        return;
+      }
+
+      const id = new URLSearchParams(location.search).get('id');
+
+      if (id) {
+        if (!has('content.update')) {
+          document.body.innerHTML = `
+            <main class="wrap">
+              <div class="card">
+                Akses ditolak. Anda tidak memiliki permission
+                <b>content.update</b>.
+              </div>
+            </main>
+          `;
+          return;
+        }
+
+        const { data: material, error } = await db
+          .from('materi')
+          .select(
+            'id,judul,deskripsi_singkat,kategori,konten,status,author_id'
+          )
+          .eq('id', id)
+          .maybeSingle();
+
+        if (error || !material) {
+          $('msg').textContent = 'Materi tidak ditemukan.';
+          return;
+        }
+
+        $('id').value = material.id;
+        $('judul').value = material.judul || '';
+        $('deskripsi').value = material.deskripsi_singkat || '';
+        $('kategori').value = material.kategori || 'Materi';
+        ed.innerHTML = sanitize(material.konten || '');
+        currentStatus = material.status || 'draft';
+        $('title').textContent = 'Edit Materi';
+        preview();
+      } else if (!has('content.create')) {
+        document.body.innerHTML = `
+          <main class="wrap">
+            <div class="card">
+              Akses ditolak. Anda tidak memiliki permission
+              <b>content.create</b>.
+            </div>
+          </main>
+        `;
+        return;
+      }
+
+      $('submitReview').hidden = !has('content.review');
+      $('history').hidden = false;
+      currentUser = session.user;
+    }
+
+    boot();
+  </script>
+</body>
+</html>
