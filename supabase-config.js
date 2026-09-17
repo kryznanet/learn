@@ -196,3 +196,89 @@ window.addEventListener("DOMContentLoaded", async function () {
 function roleLabel(role) {
   return ({ super_admin: "Super Admin", admin: "Admin", penulis: "Penulis / Pemateri", viewer: "Viewer" }[role] || role);
 }
+
+window.addEventListener("DOMContentLoaded", async function () {
+  const editor = document.getElementById("konten");
+  const imageButton = document.getElementById("image");
+  if (!editor || !imageButton || imageButton.dataset.kDirectUpload === "1") return;
+  imageButton.dataset.kDirectUpload = "1";
+  imageButton.textContent = "🖼️ Upload";
+  imageButton.title = "Upload gambar dari komputer";
+  imageButton.setAttribute("aria-label", "Upload gambar dari komputer");
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/jpeg,image/png,image/webp,image/gif";
+  input.hidden = true;
+  input.id = "k-image-upload-input";
+  document.body.appendChild(input);
+
+  let savedRange = null;
+  const saveSelection = () => {
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return;
+    const range = selection.getRangeAt(0);
+    if (editor.contains(range.commonAncestorContainer)) savedRange = range.cloneRange();
+  };
+  const restoreSelection = () => {
+    if (!savedRange) { editor.focus(); return; }
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(savedRange);
+    editor.focus();
+  };
+  const setStatus = text => {
+    imageButton.title = text;
+    imageButton.setAttribute("aria-label", text);
+  };
+
+  imageButton.addEventListener("mousedown", e => { e.preventDefault(); saveSelection(); });
+  imageButton.addEventListener("click", () => { saveSelection(); input.click(); });
+
+  input.addEventListener("change", async () => {
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file) return;
+    if (!/^image\/(jpeg|png|webp|gif)$/i.test(file.type)) {
+      alert("Format gambar harus JPG, PNG, WebP, atau GIF.");
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      alert("Ukuran gambar maksimal 25 MB.");
+      return;
+    }
+
+    const originalLabel = imageButton.textContent;
+    imageButton.disabled = true;
+    imageButton.textContent = "⏳ Upload...";
+    setStatus("Sedang mengupload gambar...");
+    try {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (!user) throw new Error("Sesi login tidak ditemukan. Silakan login ulang.");
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "gambar";
+      const path = `images/${user.id}/${Date.now()}-${safeName}`;
+      const { error: uploadError } = await supabaseClient.storage.from("materi-files").upload(path, file, {
+        cacheControl: "3600",
+        contentType: file.type,
+        upsert: false,
+      });
+      if (uploadError) throw uploadError;
+      const { data: publicData } = supabaseClient.storage.from("materi-files").getPublicUrl(path);
+      const publicUrl = publicData?.publicUrl;
+      if (!publicUrl) throw new Error("URL gambar tidak berhasil dibuat.");
+      restoreSelection();
+      document.execCommand("insertImage", false, publicUrl);
+      editor.dispatchEvent(new Event("input", { bubbles: true }));
+      if (typeof window.preview === "function") window.preview();
+      imageButton.textContent = "🖼️ Upload";
+      setStatus("Upload gambar dari komputer");
+    } catch (error) {
+      console.error("Upload gambar gagal:", error);
+      alert("Upload gambar gagal: " + (error?.message || "Kesalahan tidak diketahui"));
+      imageButton.textContent = originalLabel || "🖼️ Upload";
+      setStatus("Upload gambar dari komputer");
+    } finally {
+      imageButton.disabled = false;
+    }
+  });
+});
