@@ -11,6 +11,12 @@ Folder `docs/` menjadi titik masuk utama untuk memahami kondisi proyek, struktur
 - `PROJECT-STATUS.md` — checkpoint, progres, temuan audit, dan pekerjaan berikutnya.
 - `CHANGELOG.md` — ringkasan perubahan berdasarkan tanggal.
 
+## Aturan kerja pengembangan
+
+- `DEVELOPMENT.md` — aturan wajib siklus **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**.
+- Setiap commit harus diikuti pembaruan dokumentasi teknis yang relevan dan `PROJECT-STATUS.md`.
+- Perubahan arsitektur, security, RBAC, database, workflow, atau deployment wajib memperbarui dokumen khusus terkait.
+
 ## Arsitektur & keputusan
 
 - `ARCHITECTURE.md` — modul, layer, alur data, dan boundary keamanan.
@@ -42,6 +48,8 @@ Folder `docs/` menjadi titik masuk utama untuk memahami kondisi proyek, struktur
 README
   ↓
 PROJECT-STATUS
+  ↓
+DEVELOPMENT
   ↓
 ARCHITECTURE
   ├── RBAC
