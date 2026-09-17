@@ -207,6 +207,40 @@ window.addEventListener("DOMContentLoaded", function () {
       background: transparent;
     }
 
+    /* Admin rich-text editor: keep the Word-like toolbar visible and usable. */
+    body:has(.layout .nav) .editor,
+    body:has(.layout .nav) .editor .toolbar,
+    body:has(.layout .nav) .editor .toolbar-row {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    body:has(.layout .nav) .editor .toolbar {
+      display: block !important;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    body:has(.layout .nav) .editor .toolbar-row {
+      display: flex !important;
+      align-items: flex-start;
+    }
+
+    body:has(.layout .nav) .editor .toolbar select,
+    body:has(.layout .nav) .editor .toolbar button,
+    body:has(.layout .nav) .editor .toolbar input[type="color"] {
+      pointer-events: auto !important;
+    }
+
+    body:has(.layout .nav) .editor .body {
+      display: block !important;
+      min-height: 430px;
+      background: #fff !important;
+      color: #0f172a !important;
+      cursor: text;
+    }
+
     @media (max-width: 640px) {
       .hero p,
       .card p,
@@ -224,10 +258,194 @@ window.addEventListener("DOMContentLoaded", function () {
         min-height: 760px;
         height: calc(100vh - 100px);
       }
+
+      body:has(.layout .nav) .editor .toolbar-row {
+        gap: 6px;
+      }
+
+      body:has(.layout .nav) .editor .grp {
+        max-width: 100%;
+        flex-wrap: wrap;
+      }
     }
   `;
 
   document.head.appendChild(style);
+});
+
+/*
+ * The dashboard already contains a rich-text toolbar. This enhancement makes
+ * its formatting commands reliable across browsers and ensures that the
+ * font-size selector actually applies a CSS size to the current selection.
+ */
+window.addEventListener("DOMContentLoaded", function () {
+  const editor = document.getElementById("konten");
+  if (!editor || editor.dataset.kEditorEnhanced === "1") return;
+  editor.dataset.kEditorEnhanced = "1";
+
+  editor.setAttribute("contenteditable", "true");
+  editor.setAttribute("spellcheck", "true");
+
+  const focusEditor = () => {
+    editor.focus();
+  };
+
+  const refreshPreview = () => {
+    if (typeof window.preview === "function") {
+      window.preview();
+    } else {
+      const live = document.getElementById("live");
+      if (live) live.innerHTML = editor.innerHTML || "";
+    }
+    editor.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+
+  const exec = (command, value = null) => {
+    focusEditor();
+    try {
+      document.execCommand(command, false, value);
+    } catch (e) {
+      console.warn("Format command gagal:", command, e);
+    }
+    refreshPreview();
+  };
+
+  const applyInlineStyle = (property, value) => {
+    focusEditor();
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return;
+    const range = selection.getRangeAt(0);
+
+    if (range.collapsed) {
+      const span = document.createElement("span");
+      span.style[property] = value;
+      span.appendChild(document.createTextNode("\u200b"));
+      range.insertNode(span);
+      const next = document.createRange();
+      next.selectNodeContents(span);
+      next.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(next);
+      refreshPreview();
+      return;
+    }
+
+    const span = document.createElement("span");
+    span.style[property] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    selection.removeAllRanges();
+    const next = document.createRange();
+    next.selectNodeContents(span);
+    selection.addRange(next);
+    refreshPreview();
+  };
+
+  const block = document.getElementById("block");
+  if (block) {
+    block.onmousedown = (e) => e.preventDefault();
+    block.onchange = (e) => {
+      focusEditor();
+      exec("formatBlock", e.target.value);
+    };
+  }
+
+  const font = document.getElementById("font");
+  if (font) {
+    font.onmousedown = (e) => e.preventDefault();
+    font.onchange = (e) => exec("fontName", e.target.value);
+  }
+
+  const size = document.getElementById("size");
+  if (size) {
+    size.onmousedown = (e) => e.preventDefault();
+    size.onchange = (e) => {
+      focusEditor();
+      try {
+        document.execCommand("styleWithCSS", false, true);
+      } catch (_) {}
+      try {
+        document.execCommand("fontSize", false, "7");
+        editor.querySelectorAll('font[size="7"]').forEach((node) => {
+          const span = document.createElement("span");
+          span.style.fontSize = e.target.value;
+          span.innerHTML = node.innerHTML;
+          node.replaceWith(span);
+        });
+      } catch (_) {
+        applyInlineStyle("fontSize", e.target.value);
+      }
+      refreshPreview();
+    };
+  }
+
+  const color = document.getElementById("color");
+  if (color) {
+    color.onmousedown = (e) => e.preventDefault();
+    color.oninput = (e) => exec("foreColor", e.target.value);
+  }
+
+  const hilite = document.getElementById("hilite");
+  if (hilite) {
+    hilite.onmousedown = (e) => e.preventDefault();
+    hilite.oninput = (e) => {
+      focusEditor();
+      try {
+        document.execCommand("hiliteColor", false, e.target.value);
+      } catch (_) {
+        document.execCommand("backColor", false, e.target.value);
+      }
+      refreshPreview();
+    };
+  }
+
+  document.querySelectorAll(".editor [data-cmd]").forEach((button) => {
+    button.onmousedown = (e) => e.preventDefault();
+    button.onclick = () => exec(button.dataset.cmd);
+  });
+
+  const clear = document.getElementById("clear");
+  if (clear) {
+    clear.onmousedown = (e) => e.preventDefault();
+    clear.onclick = () => {
+      exec("removeFormat");
+      exec("unlink");
+    };
+  }
+
+  /* Preserve the selection when opening prompts for link/image/table. */
+  const link = document.getElementById("link");
+  if (link) {
+    link.onmousedown = (e) => e.preventDefault();
+    link.onclick = () => {
+      const url = prompt("URL tautan:", "https://");
+      if (url) exec("createLink", url.trim());
+    };
+  }
+
+  const image = document.getElementById("image");
+  if (image) {
+    image.onmousedown = (e) => e.preventDefault();
+    image.onclick = () => {
+      const url = prompt("URL gambar:", "https://");
+      if (url) exec("insertImage", url.trim());
+    };
+  }
+
+  editor.addEventListener("keydown", (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const key = e.key.toLowerCase();
+    if (key === "b") {
+      e.preventDefault();
+      exec("bold");
+    } else if (key === "i") {
+      e.preventDefault();
+      exec("italic");
+    } else if (key === "u") {
+      e.preventDefault();
+      exec("underline");
+    }
+  });
 });
 
 window.addEventListener("DOMContentLoaded", async function () {
