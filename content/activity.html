@@ -1,1 +1,333 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Riwayat Aktivitas Materi — Kryzna Learn</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../shared/auth.js"></script><style>:root{--bg:#f6f8fc;--card:#fff;--line:#e2e8f0;--text:#172033;--muted:#64748b;--primary:#2563eb;--soft:#eff6ff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.top{background:#0f172a;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;gap:12px;align-items:center}.top a{color:#fff;text-decoration:none;background:#ffffff14;padding:9px 12px;border-radius:9px}.wrap{max-width:1100px;margin:auto;padding:28px 18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}.filter{display:grid;grid-template-columns:1fr 190px 150px;gap:10px;margin-top:14px}input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.item{border:1px solid var(--line);border-radius:13px;padding:14px;margin-top:10px}.row{display:flex;justify-content:space-between;gap:10px}.badge{font-size:11px;font-weight:900;color:#1d4ed8;background:var(--soft);border-radius:999px;padding:5px 8px;height:max-content}.muted{color:var(--muted);font-size:13px}.detail{font-size:13px;margin-top:8px;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);margin-top:5px}.json{margin-top:8px;padding:9px;background:#f8fafc;border-radius:8px;font:12px ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow:auto}.empty{text-align:center;padding:30px;color:var(--muted)}@media(max-width:800px){.filter{grid-template-columns:1fr}.row{flex-direction:column}}</style></head><body><header class="top"><div><b>📚 Kryzna Learn</b><div style="font-size:11px;color:#94a3b8">Kelola Materi · Riwayat Aktivitas Materi</div></div><a href="index.html">← Kelola Materi</a></header><main class="wrap"><section class="card"><h1 style="margin:0">📝 Riwayat Aktivitas Materi</h1><div class="muted">Riwayat perubahan materi, terpisah dari Riwayat Aktivitas Sistem.</div><div class="filter"><input id="q" placeholder="Cari aktivitas materi..."><select id="action"><option value="">Semua aksi</option></select><select id="limit"><option value="50">50 aktivitas</option><option value="100">100 aktivitas</option><option value="200">200 aktivitas</option></select></div></section><section class="card"><div id="list" class="empty">Memuat...</div></section></main><script>const db=supabaseClient,$=id=>document.getElementById(id);let all=[],staffMap={},session=null;const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));const labels={created:'Materi dibuat',updated:'Materi diperbarui',status_changed:'Status materi berubah',submitted_review:'Dikirim untuk review',submitted_for_review:'Dikirim untuk review',published:'Materi dipublikasikan',archived:'Materi diarsipkan',deleted:'Materi dihapus',version_restored:'Versi dipulihkan'};function render(){const q=$("q").value.trim().toLowerCase(),a=$("action").value;const rows=all.filter(x=>(!a||x.action===a)&&(!q||JSON.stringify({...x,actor_email:staffMap[x.actor_user_id]?.email||''}).toLowerCase().includes(q)));$("list").innerHTML=rows.map(x=>{const s=staffMap[x.actor_user_id];return `<article class="item"><div class="row"><div><b>${esc(x.description||x.entity_type||'Aktivitas materi')}</b><div class="meta">${new Date(x.created_at).toLocaleString('id-ID')} · ${esc(s?.display_name||s?.email||x.actor_user_id||'User')}</div></div><span class="badge">${esc(labels[x.action]||x.action||'Aktivitas')}</span></div><div class="detail">${x.entity_type?`Jenis: ${esc(x.entity_type)}`:''}${x.entity_id?` · ID: ${esc(x.entity_id)}`:''}</div>${x.metadata&&Object.keys(x.metadata).length?`<div class="json">${esc(JSON.stringify(x.metadata,null,2))}</div>`:''}</article>`}).join('')||'<div class="empty">Belum ada aktivitas konten yang tercatat.</div>')}async function boot(){session=await KryznaAuth.requirePermission('content.view_logs',{login:'../admin/login.html',denied:null});if(!session){document.querySelector('main').innerHTML='<section class="card"><h2>Akses ditolak</h2><p class="muted">Anda belum memiliki permission untuk melihat log materi.</p></section>';return}await load()}async function load(){const {data,error}=await db.from('content_activity_logs').select('id,actor_user_id,action,entity_type,entity_id,description,metadata,created_at').order('created_at',{ascending:false}).limit(Number($("limit").value));if(error){$("list").innerHTML='<div class="empty">Gagal memuat: '+esc(error.message)+'</div>';return}all=data||[];const ids=[...new Set(all.map(x=>x.actor_user_id).filter(Boolean))];if(ids.length){const {data:staff}=await db.from('admin_users').select('user_id,email,display_name').in('user_id',ids);(staff||[]).forEach(s=>staffMap[s.user_id]=s)}const actions=[...new Set(all.map(x=>x.action).filter(Boolean))];$("action").innerHTML='<option value="">Semua aksi</option>'+actions.map(a=>`<option value="${esc(a)}">${esc(labels[a]||a)}</option>`).join('');render()}$("q").oninput=render;$("action").onchange=render;$("limit").onchange=load;boot();</script></body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riwayat Aktivitas Materi — Kryzna Learn</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../shared/auth.js"></script>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --card: #fff;
+      --line: #e2e8f0;
+      --text: #172033;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --soft: #eff6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+    }
+
+    .top {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .top a {
+      color: #fff;
+      text-decoration: none;
+      background: #ffffff14;
+      padding: 9px 12px;
+      border-radius: 9px;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: auto;
+      padding: 28px 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .filter {
+      display: grid;
+      grid-template-columns: 1fr 190px 150px;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 900;
+      color: #1d4ed8;
+      background: var(--soft);
+      border-radius: 999px;
+      padding: 5px 8px;
+      height: max-content;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .detail {
+      font-size: 13px;
+      margin-top: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .json {
+      margin-top: 8px;
+      padding: 9px;
+      background: #f8fafc;
+      border-radius: 8px;
+      font: 12px ui-monospace, SFMono-Regular, Consolas, monospace;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 800px) {
+      .filter {
+        grid-template-columns: 1fr;
+      }
+
+      .row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div>
+      <b>📚 Kryzna Learn</b>
+      <div style="font-size: 11px; color: #94a3b8">
+        Kelola Materi · Riwayat Aktivitas Materi
+      </div>
+    </div>
+    <a href="index.html">← Kelola Materi</a>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h1 style="margin: 0">📝 Riwayat Aktivitas Materi</h1>
+      <div class="muted">
+        Riwayat perubahan materi, terpisah dari Riwayat Aktivitas Sistem.
+      </div>
+      <div class="filter">
+        <input id="q" placeholder="Cari aktivitas materi...">
+        <select id="action">
+          <option value="">Semua aksi</option>
+        </select>
+        <select id="limit">
+          <option value="50">50 aktivitas</option>
+          <option value="100">100 aktivitas</option>
+          <option value="200">200 aktivitas</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
+      <div id="list" class="empty">Memuat...</div>
+    </section>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+
+    let all = [];
+    let staffMap = {};
+    let session = null;
+
+    const esc = (value) => String(value ?? '').replace(
+      /[&<>"']/g,
+      (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[char])
+    );
+
+    const labels = {
+      created: 'Materi dibuat',
+      updated: 'Materi diperbarui',
+      status_changed: 'Status materi berubah',
+      submitted_review: 'Dikirim untuk review',
+      submitted_for_review: 'Dikirim untuk review',
+      published: 'Materi dipublikasikan',
+      archived: 'Materi diarsipkan',
+      deleted: 'Materi dihapus',
+      version_restored: 'Versi dipulihkan'
+    };
+
+    function render() {
+      const q = $("q").value.trim().toLowerCase();
+      const action = $("action").value;
+      const rows = all.filter((item) => {
+        const searchable = JSON.stringify({
+          ...item,
+          actor_email: staffMap[item.actor_user_id]?.email || ''
+        }).toLowerCase();
+
+        return (!action || item.action === action) &&
+          (!q || searchable.includes(q));
+      });
+
+      $("list").innerHTML = rows.map((item) => {
+        const staff = staffMap[item.actor_user_id];
+        const detail = item.entity_type
+          ? `Jenis: ${esc(item.entity_type)}`
+          : '';
+        const entityId = item.entity_id
+          ? ` · ID: ${esc(item.entity_id)}`
+          : '';
+        const metadata = item.metadata && Object.keys(item.metadata).length
+          ? `<div class="json">${esc(JSON.stringify(item.metadata, null, 2))}</div>`
+          : '';
+
+        return `
+          <article class="item">
+            <div class="row">
+              <div>
+                <b>${esc(item.description || item.entity_type || 'Aktivitas materi')}</b>
+                <div class="meta">
+                  ${new Date(item.created_at).toLocaleString('id-ID')}
+                  · ${esc(staff?.display_name || staff?.email || item.actor_user_id || 'User')}
+                </div>
+              </div>
+              <span class="badge">
+                ${esc(labels[item.action] || item.action || 'Aktivitas')}
+              </span>
+            </div>
+            <div class="detail">${detail}${entityId}</div>
+            ${metadata}
+          </article>
+        `;
+      }).join('') || '<div class="empty">Belum ada aktivitas konten yang tercatat.</div>';
+    }
+
+    async function boot() {
+      session = await KryznaAuth.requirePermission('content.view_logs', {
+        login: '../admin/login.html',
+        denied: null
+      });
+
+      if (!session) {
+        document.querySelector('main').innerHTML = `
+          <section class="card">
+            <h2>Akses ditolak</h2>
+            <p class="muted">
+              Anda belum memiliki permission untuk melihat log materi.
+            </p>
+          </section>
+        `;
+        return;
+      }
+
+      await load();
+    }
+
+    async function load() {
+      const { data, error } = await db
+        .from('content_activity_logs')
+        .select(
+          'id,actor_user_id,action,entity_type,entity_id,description,metadata,created_at'
+        )
+        .order('created_at', { ascending: false })
+        .limit(Number($("limit").value));
+
+      if (error) {
+        $("list").innerHTML =
+          '<div class="empty">Gagal memuat: ' + esc(error.message) + '</div>';
+        return;
+      }
+
+      all = data || [];
+      const ids = [
+        ...new Set(all.map((item) => item.actor_user_id).filter(Boolean))
+      ];
+
+      if (ids.length) {
+        const { data: staff } = await db
+          .from('admin_users')
+          .select('user_id,email,display_name')
+          .in('user_id', ids);
+
+        (staff || []).forEach((item) => {
+          staffMap[item.user_id] = item;
+        });
+      }
+
+      const actions = [
+        ...new Set(all.map((item) => item.action).filter(Boolean))
+      ];
+
+      $("action").innerHTML =
+        '<option value="">Semua aksi</option>' +
+        actions.map((action) => `
+          <option value="${esc(action)}">
+            ${esc(labels[action] || action)}
+          </option>
+        `).join('');
+
+      render();
+    }
+
+    $("q").oninput = render;
+    $("action").onchange = render;
+    $("limit").onchange = load;
+
+    boot();
+  </script>
+</body>
+</html>
