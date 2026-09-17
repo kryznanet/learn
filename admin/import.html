@@ -1,14 +1,340 @@
 <!doctype html>
 <html lang="id">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Import Materi — Kryzna Learn</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../shared/auth.js"></script><style>*{box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}body{margin:0;background:#eef2f7;color:#172033}header{background:#0f172a;color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px}header h1{margin:0;font-size:21px}.top{display:flex;gap:8px;align-items:center}.top a,.top button,.btn{border:0;border-radius:8px;padding:9px 13px;cursor:pointer;font-weight:600;text-decoration:none}.top a,.top button{background:#ffffff18;color:#fff;border:1px solid #ffffff44}.wrap{max-width:900px;margin:28px auto;padding:0 18px}.card{background:#fff;border:1px solid #d9e0e8;border-radius:14px;padding:22px;margin-bottom:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}input,textarea,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px}textarea{min-height:100px}.drop{border:2px dashed #94a3b8;border-radius:12px;padding:28px;text-align:center;background:#f8fafc}.drop b{font-size:17px}.buttons{display:flex;gap:8px;flex-wrap:wrap}.primary{background:#2563eb;color:#fff}.secondary{background:#e2e8f0;color:#172033}.status{margin-top:12px;font-size:13px;color:#475569;white-space:pre-wrap}.ok{color:#047857}.err{color:#b91c1c}.note{font-size:13px;color:#64748b;line-height:1.6}.file{padding:12px;border:1px solid #dbe3ec;border-radius:10px;background:#f8fafc;margin-top:10px}@media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}</style></head>
-<body><header><h1>Kryzna Learn · Import Materi</h1><div class="top"><a href="dashboard.html">Dashboard</a><a href="../index.html">Website</a><button id="logout">Keluar</button></div></header><main class="wrap"><section class="card"><h2>Import Word / PDF</h2><p class="note">File asli disimpan langsung di Supabase Storage. Tidak ada PDF.js, tidak ada render 300 halaman, dan tidak ada konversi PDF ke HTML saat upload.</p><div class="grid"><div><label>Judul Materi</label><input id="judul" required></div><div><label>Kategori</label><select id="kategori"><option>Materi</option><option>Tutorial</option></select></div><div class="full"><label>Deskripsi Singkat</label><textarea id="deskripsi" placeholder="Deskripsi materi"></textarea></div><div class="full"><label>File</label><div class="drop"><b id="filename">Belum memilih file</b><p class="note">Format yang didukung: .PDF dan .DOCX</p><input id="file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div></div><div class="full buttons"><button id="upload" class="btn primary" type="button">Upload &amp; Simpan Materi</button><a class="btn secondary" href="dashboard.html">Batal</a></div></div><div id="fileInfo"></div><div id="status" class="status"></div></section></main>
-<script>
-const db=supabaseClient,$=id=>document.getElementById(id);
-function slugify(s){return String(s||'').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,90)||'materi-'+Date.now()}
-function cleanName(s){return String(s||'file').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(0,140)}
-function setStatus(msg,cls=''){const el=$("status");el.textContent=msg;el.className='status '+cls}
-$("file").addEventListener('change',e=>{const f=e.target.files?.[0];$("filename").textContent=f?f.name:'Belum memilih file';$("fileInfo").innerHTML=f?'<div class="file"><b>File:</b> '+f.name+'<br><b>Ukuran:</b> '+(f.size/1024/1024).toFixed(2)+' MB</div>':''});
-$("upload").onclick=async()=>{setStatus('');const f=$("file").files?.[0],title=$("judul").value.trim();if(!f)return setStatus('Pilih file PDF atau DOCX terlebih dahulu.','err');if(!title)return setStatus('Judul materi wajib diisi.','err');if(!/\.(pdf|docx)$/i.test(f.name))return setStatus('Format file tidak didukung.','err');const {data:{user}}=await db.auth.getUser();if(!user)return;const btn=$("upload");btn.disabled=true;try{setStatus('Mengupload file asli ke Storage…');const path='materi/'+crypto.randomUUID()+'-'+cleanName(f.name);const up=await db.storage.from('materi-files').upload(path,f,{contentType:f.type||undefined,upsert:false});if(up.error)throw up.error;const url=db.storage.from('materi-files').getPublicUrl(path).data.publicUrl;setStatus('Membuat data materi…');const payload={judul:title,deskripsi_singkat:$("deskripsi").value.trim(),kategori:$("kategori").value,link_halaman:'',konten:f.type==='application/pdf'?'PDF asli disimpan di Storage.':'',slug:slugify(title),file_url:url,file_path:path,file_name:f.name,file_type:f.type||'application/octet-stream'};const ins=await db.from('materi').insert(payload).select('id').single();if(ins.error)throw ins.error;setStatus('Berhasil. Materi tersimpan dan file asli tetap utuh.\nID: '+ins.data.id,'ok');setTimeout(()=>location.href='dashboard.html',900)}catch(err){console.error(err);setStatus('Gagal import: '+(err?.message||err),'err')}finally{btn.disabled=false}};
-$("logout").onclick=async()=>{await db.auth.signOut();location.href='login.html'};
-(async()=>{const session=await KryznaAuth.requirePermission('content.import',{login:'login.html',denied:'dashboard.html'});if(!session)return;})();
-</script></body></html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Import Materi — Kryzna Learn</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../shared/auth.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Segoe UI, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #eef2f7;
+      color: #172033;
+    }
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { margin: 0; font-size: 21px; }
+    .top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .top a,
+    .top button,
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .top a,
+    .top button {
+      background: #ffffff18;
+      color: #fff;
+      border: 1px solid #ffffff44;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 28px auto;
+      padding: 0 18px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #d9e0e8;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .full { grid-column: 1 / -1; }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    textarea { min-height: 100px; }
+    .drop {
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center;
+      background: #f8fafc;
+    }
+    .drop b { font-size: 17px; }
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .primary { background: #2563eb; color: #fff; }
+    .secondary { background: #e2e8f0; color: #172033; }
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #475569;
+      white-space: pre-wrap;
+    }
+    .ok { color: #047857; }
+    .err { color: #b91c1c; }
+    .note {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    .file {
+      padding: 12px;
+      border: 1px solid #dbe3ec;
+      border-radius: 10px;
+      background: #f8fafc;
+      margin-top: 10px;
+    }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .full { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kryzna Learn · Import Materi</h1>
+    <div class="top">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="../index.html">Website</a>
+      <button id="logout">Keluar</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Import Word / PDF</h2>
+      <p class="note">
+        File asli disimpan langsung di Supabase Storage. Tidak ada PDF.js,
+        tidak ada render 300 halaman, dan tidak ada konversi PDF ke HTML saat upload.
+      </p>
+
+      <div class="grid">
+        <div>
+          <label>Judul Materi</label>
+          <input id="judul" required>
+        </div>
+
+        <div>
+          <label>Kategori</label>
+          <select id="kategori">
+            <option>Materi</option>
+            <option>Tutorial</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label>Deskripsi Singkat</label>
+          <textarea id="deskripsi" placeholder="Deskripsi materi"></textarea>
+        </div>
+
+        <div class="full">
+          <label>File</label>
+          <div class="drop">
+            <b id="filename">Belum memilih file</b>
+            <p class="note">Format yang didukung: .PDF dan .DOCX</p>
+            <input
+              id="file"
+              type="file"
+              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            >
+          </div>
+        </div>
+
+        <div class="full buttons">
+          <button id="upload" class="btn primary" type="button">
+            Upload &amp; Simpan Materi
+          </button>
+          <a class="btn secondary" href="dashboard.html">Batal</a>
+        </div>
+      </div>
+
+      <div id="fileInfo"></div>
+      <div id="status" class="status"></div>
+    </section>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+
+    function slugify(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 90) || 'materi-' + Date.now();
+    }
+
+    function cleanName(value) {
+      return String(value || 'file')
+        .replace(/[^a-zA-Z0-9._-]+/g, '-')
+        .slice(0, 140);
+    }
+
+    function setStatus(message, className = '') {
+      const element = $('status');
+      element.textContent = message;
+      element.className = 'status ' + className;
+    }
+
+    $('file').addEventListener('change', (event) => {
+      const file = event.target.files?.[0];
+      $('filename').textContent = file
+        ? file.name
+        : 'Belum memilih file';
+
+      $('fileInfo').innerHTML = file
+        ? `<div class="file">
+            <b>File:</b> ${file.name}<br>
+            <b>Ukuran:</b> ${(file.size / 1024 / 1024).toFixed(2)} MB
+          </div>`
+        : '';
+    });
+
+    $('upload').onclick = async () => {
+      setStatus('');
+
+      const file = $('file').files?.[0];
+      const title = $('judul').value.trim();
+
+      if (!file) {
+        return setStatus(
+          'Pilih file PDF atau DOCX terlebih dahulu.',
+          'err'
+        );
+      }
+
+      if (!title) {
+        return setStatus('Judul materi wajib diisi.', 'err');
+      }
+
+      if (!/\.(pdf|docx)$/i.test(file.name)) {
+        return setStatus('Format file tidak didukung.', 'err');
+      }
+
+      const {
+        data: { user }
+      } = await db.auth.getUser();
+
+      if (!user) return;
+
+      const button = $('upload');
+      button.disabled = true;
+
+      try {
+        setStatus('Mengupload file asli ke Storage…');
+
+        const path =
+          'materi/' + crypto.randomUUID() + '-' + cleanName(file.name);
+        const upload = await db.storage
+          .from('materi-files')
+          .upload(path, file, {
+            contentType: file.type || undefined,
+            upsert: false
+          });
+
+        if (upload.error) throw upload.error;
+
+        const url = db.storage
+          .from('materi-files')
+          .getPublicUrl(path).data.publicUrl;
+
+        setStatus('Membuat data materi…');
+
+        const payload = {
+          judul: title,
+          deskripsi_singkat: $('deskripsi').value.trim(),
+          kategori: $('kategori').value,
+          link_halaman: '',
+          konten: file.type === 'application/pdf'
+            ? 'PDF asli disimpan di Storage.'
+            : '',
+          slug: slugify(title),
+          file_url: url,
+          file_path: path,
+          file_name: file.name,
+          file_type: file.type || 'application/octet-stream'
+        };
+
+        const insert = await db
+          .from('materi')
+          .insert(payload)
+          .select('id')
+          .single();
+
+        if (insert.error) throw insert.error;
+
+        setStatus(
+          'Berhasil. Materi tersimpan dan file asli tetap utuh.\nID: ' +
+          insert.data.id,
+          'ok'
+        );
+
+        setTimeout(() => {
+          location.href = 'dashboard.html';
+        }, 900);
+      } catch (error) {
+        console.error(error);
+        setStatus(
+          'Gagal import: ' + (error?.message || error),
+          'err'
+        );
+      } finally {
+        button.disabled = false;
+      }
+    };
+
+    $('logout').onclick = async () => {
+      await db.auth.signOut();
+      location.href = 'login.html';
+    };
+
+    (async () => {
+      const session = await KryznaAuth.requirePermission(
+        'content.import',
+        {
+          login: 'login.html',
+          denied: 'dashboard.html'
+        }
+      );
+
+      if (!session) return;
+    })();
+  </script>
+</body>
+</html>
