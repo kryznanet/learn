@@ -16,11 +16,13 @@
 - Mencatat Security Advisor findings untuk hardening lanjutan.
 - Menetapkan aturan wajib post-commit: setiap commit harus diikuti verifikasi, pembaruan dokumentasi teknis yang relevan, pembaruan `PROJECT-STATUS.md`, dan verifikasi dokumentasi.
 - Menambahkan `docs/DEVELOPMENT.md` sebagai acuan workflow pengembangan.
+- Menetapkan aturan branch dinamis: branch pengembangan tidak permanen, harus diverifikasi sebelum pekerjaan, dan tidak boleh dikunci berdasarkan nama/tanggal branch sebelumnya.
 
 ## Checkpoint akhir sesi — 17 September 2026
 
 - Tidak ada perubahan behavior aplikasi pada checkpoint ini.
 - Dokumentasi workflow pengembangan sudah masuk repository.
+- Aturan branch dinamis sudah didokumentasikan.
 - `PROJECT-STATUS.md` diperbarui untuk mencatat checkpoint dan pekerjaan berikutnya.
 
 ## Aturan pencatatan
