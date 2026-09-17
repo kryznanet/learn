@@ -1,2 +1,332 @@
 <!doctype html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Login Admin — Kryzna Learn</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><style>:root{--bg:#eef5ff;--text:#0f172a;--muted:#64748b;--surface:rgba(255,255,255,.94);--primary:#2563eb;--cyan:#06b6d4}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,#f8fbff,var(--bg));font-family:Segoe UI,Arial,sans-serif;padding:18px;color:var(--text)}.shell{width:min(960px,100%);display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border-radius:24px;overflow:hidden;box-shadow:0 28px 80px rgba(15,23,42,.14)}.visual{padding:42px;background:linear-gradient(150deg,#0b1730,#12325e 55%,#0f7490);color:#fff;min-height:520px;display:flex;flex-direction:column;justify-content:space-between}.logo{font-weight:950;font-size:20px}.visual h2{font-size:clamp(36px,4vw,50px);line-height:1.03}.visual h2 span{color:#67e8f9}.visual p{color:#c8d8eb;line-height:1.7}.formside{padding:42px;display:flex;align-items:center}.box{width:100%;max-width:420px;margin:auto}.box h1{margin:0 0 8px}.box>p{color:var(--muted);font-size:14px}.field{margin:15px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}.field input{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:12px}.submit,.btn{width:100%;padding:13px;border:0;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--cyan));color:#fff;font-weight:900;cursor:pointer}.msg{margin-top:12px;min-height:24px;color:#dc2626;font-size:13px;line-height:1.5}.links{display:flex;justify-content:space-between;gap:8px;margin-top:14px}.links a{color:#2563eb;text-decoration:none;font-size:12px;font-weight:800}.mfa{display:none;margin-top:14px;padding:14px;border:1px solid #bfdbfe;background:#eff6ff;border-radius:12px}.mfa input{margin:8px 0;padding:12px;width:100%;border:1px solid #93c5fd;border-radius:9px}.mfa .btn{margin-top:4px}@media(max-width:800px){.shell{grid-template-columns:1fr}.visual{min-height:auto;padding:28px}.features{display:none}.formside{padding:30px 24px}}</style></head><body><div class="shell"><section class="visual"><div class="logo">Kryzna Learn</div><div><h2>Kelola materi <span>lebih aman.</span></h2><p>Dashboard untuk materi, tutorial, import Word/PDF, role, dan kontrol akun.</p></div><small>Jaringan • Komputer • Teknologi</small></section><section class="formside"><div class="box"><h1>Masuk ke Admin</h1><p>Gunakan akun administrator Kryzna Learn.</p><form id="login-form"><div class="field"><label>Email</label><input id="email" type="email" required autocomplete="username"></div><div class="field"><label>Password</label><input id="password" type="password" required autocomplete="current-password"></div><button class="submit" type="submit">Masuk →</button></form><div id="msg" class="msg"></div><div id="mfa" class="mfa"><b>🔐 Verifikasi MFA</b><div style="font-size:12px;color:#475569;margin-top:4px">Masukkan kode 6 digit dari authenticator.</div><input id="otp" inputmode="numeric" maxlength="6" placeholder="123456"><button class="btn" id="verifyMfa">Verifikasi OTP</button></div><div class="links"><a href="reset-request.html">Lupa password?</a><a href="../index.html">← Website</a></div></div></section></div><script>const client=supabaseClient,$=id=>document.getElementById(id);let mfaFactor=null,mfaChallenge=null;async function route(){const {data:{user}}=await client.auth.getUser();if(!user)return;const {data:r}=await client.from('admin_users').select('role,active').eq('user_id',user.id).maybeSingle();if(!r?.active)return;if(r.role==='super_admin')location.replace('index.html');else if(['penulis','editor'].includes(r.role))location.replace('../content/index.html');else if(r.role==='admin')location.replace('dashboard.html');}async function checkSession(){const {data:{session}}=await client.auth.getSession();if(!session)return;const aal=await client.auth.mfa.getAuthenticatorAssuranceLevel();if(aal.data?.currentLevel==='aal2'||aal.data?.nextLevel!=='aal2')route()}checkSession();$("login-form").addEventListener("submit",async e=>{e.preventDefault();$("msg").textContent="Memproses...";const b=$("login-form").querySelector("button");b.disabled=true;const {error}=await client.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error){$("msg").textContent=error.message;b.disabled=false;return}const {data:aal}=await client.auth.mfa.getAuthenticatorAssuranceLevel();if(aal?.nextLevel==='aal2'){const {data:factors}=await client.auth.mfa.listFactors();const f=(factors?.all||[]).find(x=>x.factor_type==='totp'&&x.status==='verified');if(f){mfaFactor=f;const {data:ch,error:ce}=await client.auth.mfa.challenge({factorId:f.id});if(ce){$("msg").textContent=ce.message;b.disabled=false;return}mfaChallenge=ch;$("mfa").style.display='block';$("msg").textContent='';$("login-form").style.display='none';return}}route()});$("verifyMfa").onclick=async()=>{const code=$("otp").value.trim();if(!mfaFactor||!mfaChallenge||!/^[0-9]{6}$/.test(code)){$("msg").textContent='Masukkan kode OTP 6 digit.';return}const {error}=await client.auth.mfa.verify({factorId:mfaFactor.id,challengeId:mfaChallenge.id,code});if(error){$("msg").textContent='Kode MFA salah atau kedaluwarsa.';return}route()};</script></body></html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Admin — Kryzna Learn</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <style>
+    :root {
+      --bg: #eef5ff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --surface: rgba(255, 255, 255, .94);
+      --primary: #2563eb;
+      --cyan: #06b6d4;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #f8fbff, var(--bg));
+      font-family: Segoe UI, Arial, sans-serif;
+      padding: 18px;
+      color: var(--text);
+    }
+    .shell {
+      width: min(960px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--surface);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 28px 80px rgba(15, 23, 42, .14);
+    }
+    .visual {
+      padding: 42px;
+      background: linear-gradient(150deg, #0b1730, #12325e 55%, #0f7490);
+      color: #fff;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .logo { font-weight: 950; font-size: 20px; }
+    .visual h2 {
+      font-size: clamp(36px, 4vw, 50px);
+      line-height: 1.03;
+    }
+    .visual h2 span { color: #67e8f9; }
+    .visual p { color: #c8d8eb; line-height: 1.7; }
+    .formside {
+      padding: 42px;
+      display: flex;
+      align-items: center;
+    }
+    .box {
+      width: 100%;
+      max-width: 420px;
+      margin: auto;
+    }
+    .box h1 { margin: 0 0 8px; }
+    .box > p { color: var(--muted); font-size: 14px; }
+    .field { margin: 15px 0; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+    .field input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+    }
+    .submit,
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: 0;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      color: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .msg {
+      margin-top: 12px;
+      min-height: 24px;
+      color: #dc2626;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .links {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .links a {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .mfa {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      border-radius: 12px;
+    }
+    .mfa input {
+      margin: 8px 0;
+      padding: 12px;
+      width: 100%;
+      border: 1px solid #93c5fd;
+      border-radius: 9px;
+    }
+    .mfa .btn { margin-top: 4px; }
+    @media (max-width: 800px) {
+      .shell { grid-template-columns: 1fr; }
+      .visual {
+        min-height: auto;
+        padding: 28px;
+      }
+      .features { display: none; }
+      .formside { padding: 30px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="visual">
+      <div class="logo">Kryzna Learn</div>
+      <div>
+        <h2>Kelola materi <span>lebih aman.</span></h2>
+        <p>
+          Dashboard untuk materi, tutorial, import Word/PDF, role, dan kontrol akun.
+        </p>
+      </div>
+      <small>Jaringan • Komputer • Teknologi</small>
+    </section>
+
+    <section class="formside">
+      <div class="box">
+        <h1>Masuk ke Admin</h1>
+        <p>Gunakan akun administrator Kryzna Learn.</p>
+
+        <form id="login-form">
+          <div class="field">
+            <label>Email</label>
+            <input
+              id="email"
+              type="email"
+              required
+              autocomplete="username"
+            >
+          </div>
+
+          <div class="field">
+            <label>Password</label>
+            <input
+              id="password"
+              type="password"
+              required
+              autocomplete="current-password"
+            >
+          </div>
+
+          <button class="submit" type="submit">Masuk →</button>
+        </form>
+
+        <div id="msg" class="msg"></div>
+
+        <div id="mfa" class="mfa">
+          <b>🔐 Verifikasi MFA</b>
+          <div style="font-size: 12px; color: #475569; margin-top: 4px">
+            Masukkan kode 6 digit dari authenticator.
+          </div>
+          <input
+            id="otp"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="123456"
+          >
+          <button class="btn" id="verifyMfa">Verifikasi OTP</button>
+        </div>
+
+        <div class="links">
+          <a href="reset-request.html">Lupa password?</a>
+          <a href="../index.html">← Website</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const client = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+
+    let mfaFactor = null;
+    let mfaChallenge = null;
+
+    async function route() {
+      const {
+        data: { user }
+      } = await client.auth.getUser();
+
+      if (!user) return;
+
+      const { data: role } = await client
+        .from('admin_users')
+        .select('role,active')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!role?.active) return;
+
+      if (role.role === 'super_admin') {
+        location.replace('index.html');
+      } else if (['penulis', 'editor'].includes(role.role)) {
+        location.replace('../content/index.html');
+      } else if (role.role === 'admin') {
+        location.replace('dashboard.html');
+      }
+    }
+
+    async function checkSession() {
+      const {
+        data: { session }
+      } = await client.auth.getSession();
+
+      if (!session) return;
+
+      const aal = await client.auth.mfa.getAuthenticatorAssuranceLevel();
+
+      if (
+        aal.data?.currentLevel === 'aal2' ||
+        aal.data?.nextLevel !== 'aal2'
+      ) {
+        route();
+      }
+    }
+
+    checkSession();
+
+    $("login-form").addEventListener('submit', async (event) => {
+      event.preventDefault();
+      $("msg").textContent = 'Memproses...';
+
+      const button = $("login-form").querySelector('button');
+      button.disabled = true;
+
+      const { error } = await client.auth.signInWithPassword({
+        email: $("email").value.trim(),
+        password: $("password").value
+      });
+
+      if (error) {
+        $("msg").textContent = error.message;
+        button.disabled = false;
+        return;
+      }
+
+      const { data: aal } =
+        await client.auth.mfa.getAuthenticatorAssuranceLevel();
+
+      if (aal?.nextLevel === 'aal2') {
+        const { data: factors } = await client.auth.mfa.listFactors();
+        const factor = (factors?.all || []).find(
+          (item) =>
+            item.factor_type === 'totp' &&
+            item.status === 'verified'
+        );
+
+        if (factor) {
+          mfaFactor = factor;
+
+          const { data: challenge, error: challengeError } =
+            await client.auth.mfa.challenge({ factorId: factor.id });
+
+          if (challengeError) {
+            $("msg").textContent = challengeError.message;
+            button.disabled = false;
+            return;
+          }
+
+          mfaChallenge = challenge;
+          $("mfa").style.display = 'block';
+          $("msg").textContent = '';
+          $("login-form").style.display = 'none';
+          return;
+        }
+      }
+
+      route();
+    });
+
+    $("verifyMfa").onclick = async () => {
+      const code = $("otp").value.trim();
+
+      if (
+        !mfaFactor ||
+        !mfaChallenge ||
+        !/^[0-9]{6}$/.test(code)
+      ) {
+        $("msg").textContent = 'Masukkan kode OTP 6 digit.';
+        return;
+      }
+
+      const { error } = await client.auth.mfa.verify({
+        factorId: mfaFactor.id,
+        challengeId: mfaChallenge.id,
+        code
+      });
+
+      if (error) {
+        $("msg").textContent = 'Kode MFA salah atau kedaluwarsa.';
+        return;
+      }
+
+      route();
+    };
+  </script>
+</body>
+</html>
