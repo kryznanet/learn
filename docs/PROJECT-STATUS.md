@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Checkpoint keamanan publik dan Storage/RLS selesai untuk sesi ini. Pekerjaan berikutnya ditunda ke sesi berikutnya.
+**Status sesi:** Struktur dan readability kode Content/Admin dirapikan. Pekerjaan berikutnya tetap berfokus pada audit keamanan/RBAC dan verifikasi end-to-end.
 
 ## ✅ Progres terbaru — 17 September 2026
 
@@ -97,6 +97,22 @@ Halaman activity menggunakan central permission helper.
 ### 10. Autosave & Draft Recovery
 `shared/draft-recovery.js` menyediakan autosave lokal berbasis `localStorage`, debounce, recovery draft, konfirmasi restore, dan pembersihan draft setelah penyimpanan server berhasil.
 
+### 11. Code readability / formatting
+Batch formatting terbaru dilakukan tanpa sengaja mengubah alur fitur:
+- `admin/activity.html`
+- `admin/users.html`
+- `admin/dashboard.html`
+- `admin/index.html`
+- `admin/login.html`
+- `admin/import.html`
+- `content/activity.html`
+- `content/editor.html`
+- `content/index.html`
+- `content/versions.html`
+- `shared/content-activity.js`
+
+Acuan formatting berada di `docs/CODE-STYLE.md`: indentasi 2 spasi, satu ide per baris, query Supabase multiline, CSS satu deklarasi per baris, dan perubahan formatting tidak mengubah behavior.
+
 ## 🔐 Checkpoint keamanan publik & Storage/RLS — 17 September 2026
 
 ### Public Website
@@ -147,12 +163,13 @@ Keduanya **belum diubah pada sesi ini** agar tidak membuka akses tanpa desain pe
 4. Selaraskan `admin_users`/`update_staff` dengan permission user management yang sebenarnya.
 5. Audit final query halaman publik dan sanitasi.
 6. Audit final `SECURITY DEFINER`, `search_path`, RLS, Storage, dan index.
-7. Update dokumentasi setelah setiap perubahan signifikan.
+7. Audit final formatting seluruh repo.
+8. Update dokumentasi setelah setiap perubahan signifikan.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dari **RBAC Admin ↔ System Activity Log dan User Management**, lalu lanjutkan verifikasi keamanan end-to-end.
+Mulai dari **RBAC Admin ↔ System Activity Log dan User Management**, lalu lanjutkan verifikasi keamanan end-to-end. Setelah itu lakukan audit final formatting seluruh repo.
 
 ---
 
-**Catatan sesi:** Pekerjaan dihentikan pada checkpoint keamanan 17 September 2026. Jangan menganggap dua ketidaksesuaian RBAC di atas sudah diperbaiki; keduanya adalah pekerjaan lanjutan.
+**Catatan sesi:** Batch formatting Content/Admin dan helper bersama sudah selesai. Jangan menganggap dua ketidaksesuaian RBAC di atas sudah diperbaiki; keduanya adalah pekerjaan lanjutan.
