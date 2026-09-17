@@ -1,8 +1,18 @@
 # 📌 Status Proyek — Kryzna Learn
 
-**Tanggal:** 17 September 2026  
-**Branch:** `17-Sep-2026`  
-**Status sesi:** Checkpoint dokumentasi dan workflow pengembangan selesai. Tidak ada perubahan behavior aplikasi pada checkpoint ini. Sesi dihentikan dengan pekerjaan berikutnya tercatat pada security hardening database.
+**Tanggal checkpoint:** 17 September 2026  
+**Branch aktif saat checkpoint:** `17-Sep-2026`  
+**Status sesi:** Aturan branch dinamis dan workflow pengembangan sudah diselaraskan di repository. Tidak ada perubahan behavior aplikasi. Pekerjaan berikutnya tetap security hardening database.
+
+## 🔁 Aturan branch aktif
+
+Branch pengembangan Kryzna Learn **dinamis** dan tidak permanen. Nama branch dapat berubah berdasarkan tanggal atau checkpoint update proyek.
+
+- Branch aktif harus diverifikasi dari GitHub sebelum pekerjaan dimulai.
+- `PROJECT-STATUS.md` pada branch yang telah diverifikasi menjadi acuan checkpoint dan branch aktif.
+- Jangan mengasumsikan branch dari sesi sebelumnya masih aktif.
+- Jika pengguna menentukan branch secara eksplisit, branch tersebut menjadi acuan.
+- Pola seperti `17-Sep-2026`, `18-Sep-2026`, dan seterusnya hanya merupakan konvensi; nama branch aktual wajib diverifikasi.
 
 ## 📚 Dokumentasi teknis
 
@@ -20,7 +30,7 @@ Dokumentasi sekarang mencakup:
 - `DECISIONS.md` — keputusan arsitektur dan alasannya.
 - `LEGACY.md` — inventory legacy dan aturan cleanup.
 - `SWIFT-API-AUDIT.md` — audit khusus `swift-api`.
-- `DEVELOPMENT.md` — aturan wajib siklus pengembangan dan dokumentasi setelah commit.
+- `DEVELOPMENT.md` — aturan branch dinamis, siklus pengembangan, dan dokumentasi setelah commit.
 - `README.md` — documentation index.
 
 `PROJECT-STATUS.md` tetap menjadi sumber checkpoint/progres, sedangkan dokumen teknis menjadi sumber detail implementasi.
@@ -67,7 +77,7 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 `create-staff` aktif version 3 dan source repo parity dengan deployment. Role `editor` sudah didukung. `swift-api` aktif version 1 tetapi tidak memiliki source counterpart di branch; tidak diubah dan tidak dihapus.
 
 ### 8. Aturan workflow pengembangan
-Aturan resmi sekarang terdokumentasi di `docs/DEVELOPMENT.md`: setiap perubahan mengikuti **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**. Setiap commit wajib diikuti pembaruan dokumentasi teknis yang relevan dan `PROJECT-STATUS.md`.
+`docs/DEVELOPMENT.md` sekarang menetapkan branch dinamis: verifikasi branch aktif sebelum pekerjaan, gunakan `PROJECT-STATUS.md` sebagai checkpoint, dan jangan mengunci nama branch berdasarkan sesi/tanggal sebelumnya. Siklus perubahan tetap **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**.
 
 ## 🔐 Security Advisor checkpoint
 
@@ -77,12 +87,13 @@ Temuan yang masih dicatat:
 - SECURITY DEFINER RPC yang menjadi jalur aplikasi tetap perlu ditinjau satu per satu berdasarkan kebutuhan execute/authorization.
 - Leaked Password Protection Supabase masih disabled.
 
-## 🛑 Checkpoint akhir sesi — 17 September 2026
+## 🛑 Checkpoint dokumentasi — 17 September 2026
 
-- Aturan post-commit dan dokumentasi sudah ditambahkan ke repository.
-- `docs/README.md`, `docs/CHANGELOG.md`, dan `docs/PROJECT-STATUS.md` sudah diperbarui.
-- Tidak ada perubahan behavior aplikasi pada checkpoint dokumentasi ini.
-- Checkpoint sesi berikutnya ditetapkan pada hardening database/security.
+- `docs/DEVELOPMENT.md` diperbarui untuk aturan branch dinamis.
+- `docs/CHANGELOG.md` mencatat perubahan aturan branch.
+- `docs/PROJECT-STATUS.md` diperbarui untuk menjadikan aturan branch dinamis sebagai bagian dari project source of truth.
+- Commit dokumentasi terakhir untuk checkpoint ini: `8c4b6c13684b853b6b7a350c925c96bb8dd1984a`.
+- Tidak ada perubahan behavior aplikasi.
 
 ## ⚠️ Pekerjaan selanjutnya
 
@@ -104,13 +115,15 @@ Temuan yang masih dicatat:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai langsung dari **audit dan hardening `snapshot_materi_version()`**, pastikan trigger insert/update tetap bekerja setelah pembatasan `EXECUTE`. Lanjutkan dengan `search_path` `set_materi_updated_at()`, rerun Security Advisor, lalu dokumentasikan hasil sebelum masuk ke E2E.
+Mulai dengan **verifikasi branch aktif terbaru**, baca `docs/PROJECT-STATUS.md`, lalu lanjut langsung dari **audit dan hardening `snapshot_materi_version()`**. Pastikan trigger insert/update tetap bekerja setelah pembatasan `EXECUTE`. Lanjutkan dengan `search_path` `set_materi_updated_at()`, rerun Security Advisor, lalu dokumentasikan hasil sebelum masuk ke E2E.
 
-## 🔁 Aturan sesi berikutnya
-
-Untuk setiap perubahan setelah checkpoint ini tetap gunakan siklus:
+## 🔁 Siklus wajib setiap sesi
 
 ```text
+verifikasi branch aktif
+ ↓
+baca PROJECT-STATUS
+ ↓
 ubah
  ↓
 commit
