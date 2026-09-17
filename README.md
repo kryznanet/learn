@@ -11,4 +11,4 @@ Website dapat langsung Anda akses dan baca melalui link berikut:
 
 ---
 
-Dibuat dengan 💻 oleh **Kryzna**. Hak Cipta © 2026 Kryzna Learn.
+Dibuat oleh **Kryzna**. Hak Cipta © 2026 Kryzna Learn.
