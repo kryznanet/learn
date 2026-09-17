@@ -62,6 +62,11 @@ window.addEventListener("DOMContentLoaded", function () {
     .k-table-tools { display: none; gap: 4px; flex-wrap: wrap; align-items: center; padding: 5px 0 0; }
     .k-table-tools.visible { display: flex; }
     .k-table-tools button { border: 1px solid #cbd5e1; background: #fff; border-radius: 6px; padding: 4px 7px; font-size: 11px; cursor: pointer; }
+    .k-cell-tools { display:none; gap:4px; flex-wrap:wrap; align-items:center; padding:5px 0 0; }
+    .k-cell-tools.visible { display:flex; }
+    .k-cell-tools button { border:1px solid #cbd5e1; background:#fff; border-radius:6px; padding:4px 7px; font-size:11px; cursor:pointer; }
+    .k-image-resizer { position:absolute; width:10px; height:10px; border:2px solid #2563eb; background:#fff; border-radius:2px; z-index:9999; cursor:nwse-resize; display:none; box-sizing:border-box; }
+    .k-image-resizer.visible { display:block; }
     @media (max-width: 640px) {
       .hero p, .card p, .content p, .content li { line-height: 1.7 !important; }
       .card h3 { font-size: 18px !important; }
@@ -129,144 +134,43 @@ window.addEventListener("DOMContentLoaded", function () {
   editor.addEventListener("keydown", e => { if (!(e.ctrlKey || e.metaKey)) return; const key = e.key.toLowerCase(); if (key === "b") { e.preventDefault(); exec("bold"); } else if (key === "i") { e.preventDefault(); exec("italic"); } else if (key === "u") { e.preventDefault(); exec("underline"); } else if (e.shiftKey && key === "x") { e.preventDefault(); exec("strikeThrough"); } });
 });
 
-// Advanced table editing: merge/split cells + Tab-to-add-row, dibuat terpisah
-// agar tidak mengganggu toolbar editor yang sudah ada.
 window.addEventListener("DOMContentLoaded", function () {
   const editor = document.getElementById("konten");
   const toolbar = editor?.closest(".editor")?.querySelector(".toolbar");
   if (!editor || !toolbar || editor.dataset.kAdvancedTable === "1") return;
   editor.dataset.kAdvancedTable = "1";
+  const refresh = () => { if (typeof window.preview === "function") window.preview(); editor.dispatchEvent(new Event("input", { bubbles: true })); };
+  const currentCell = () => { const node = window.getSelection()?.anchorNode; const el = node?.nodeType === 1 ? node : node?.parentElement; return el?.closest?.("td,th"); };
+  const makeAdvancedButton = (label, action, title) => { const b = document.createElement("button"); b.type = "button"; b.textContent = label; b.title = title; b.dataset.advancedTable = action; b.onmousedown = e => e.preventDefault(); return b; };
+  const ensureButtons = () => { let tools = toolbar.querySelector(".k-table-tools"); if (!tools) return; const add = (label, action, title) => { if (tools.querySelector(`[data-advanced-table="${action}"]`)) return; tools.appendChild(makeAdvancedButton(label, action, title)); }; add("Gabung →", "merge-right", "Gabungkan cell ini dengan cell di sebelah kanan"); add("Gabung ↓", "merge-down", "Gabungkan cell ini dengan cell di bawah"); add("Pisah →", "split-horizontal", "Pisahkan cell berdasarkan colspan"); add("Pisah ↓", "split-vertical", "Pisahkan cell berdasarkan rowspan"); };
+  const observer = new MutationObserver(ensureButtons); observer.observe(toolbar, { childList: true, subtree: true }); ensureButtons();
+  function mergeRight(cell) { const row = cell.parentElement; const index = [...row.cells].indexOf(cell); const next = row.cells[index + 1]; if (!next) return false; const leftSpan = cell.colSpan || 1; const rightSpan = next.colSpan || 1; const join = cell.innerHTML.trim() && next.innerHTML.trim() ? "<br>" : ""; cell.innerHTML += join + next.innerHTML; cell.colSpan = leftSpan + rightSpan; next.remove(); return true; }
+  function mergeDown(cell) { const table = cell.closest("table"); const row = cell.parentElement; const rowIndex = row.rowIndex; const cellIndex = [...row.cells].indexOf(cell); const belowRow = table?.rows[rowIndex + 1]; if (!belowRow) return false; const below = belowRow.cells[cellIndex]; if (!below) return false; const topSpan = cell.rowSpan || 1; const bottomSpan = below.rowSpan || 1; const join = cell.innerHTML.trim() && below.innerHTML.trim() ? "<br>" : ""; cell.innerHTML += join + below.innerHTML; cell.rowSpan = topSpan + bottomSpan; below.remove(); return true; }
+  function splitHorizontal(cell) { const span = cell.colSpan || 1; if (span <= 1) return false; cell.colSpan = 1; const row = cell.parentElement; const index = [...row.cells].indexOf(cell); for (let i = 1; i < span; i++) { const c = row.insertCell(index + i); c.innerHTML = "&nbsp;"; } return true; }
+  function splitVertical(cell) { const span = cell.rowSpan || 1; if (span <= 1) return false; const table = cell.closest("table"); const row = cell.parentElement; const rowIndex = row.rowIndex; const cellIndex = [...row.cells].indexOf(cell); cell.rowSpan = 1; for (let i = 1; i < span; i++) { const targetRow = table?.rows[rowIndex + i]; if (!targetRow) break; const c = targetRow.insertCell(Math.min(cellIndex, targetRow.cells.length)); c.innerHTML = "&nbsp;"; } return true; }
+  toolbar.addEventListener("click", e => { const button = e.target.closest("[data-advanced-table]"); if (!button) return; const cell = currentCell(); if (!cell) return; let changed = false; switch (button.dataset.advancedTable) { case "merge-right": changed = mergeRight(cell); break; case "merge-down": changed = mergeDown(cell); break; case "split-horizontal": changed = splitHorizontal(cell); break; case "split-vertical": changed = splitVertical(cell); break; } if (changed) refresh(); });
+  editor.addEventListener("keydown", e => { if (e.key !== "Tab" || e.ctrlKey || e.metaKey || e.altKey) return; const cell = currentCell(); if (!cell) return; const table = cell.closest("table"); if (!table || e.shiftKey) return; const rows = [...table.rows]; const lastRow = rows[rows.length - 1]; const isLastCell = cell.parentElement === lastRow && cell === lastRow.cells[lastRow.cells.length - 1]; if (!isLastCell) return; e.preventDefault(); const newRow = table.insertRow(-1); const count = Math.max(1, lastRow.cells.length); for (let i = 0; i < count; i++) { const c = newRow.insertCell(-1); c.innerHTML = "&nbsp;"; } refresh(); const target = newRow.cells[0]; const range = document.createRange(); range.selectNodeContents(target); range.collapse(true); const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range); });
+});
 
-  const refresh = () => {
-    if (typeof window.preview === "function") window.preview();
-    editor.dispatchEvent(new Event("input", { bubbles: true }));
-  };
-  const currentCell = () => {
-    const node = window.getSelection()?.anchorNode;
-    const el = node?.nodeType === 1 ? node : node?.parentElement;
-    return el?.closest?.("td,th");
-  };
-  const makeAdvancedButton = (label, action, title) => {
-    const b = document.createElement("button");
-    b.type = "button"; b.textContent = label; b.title = title; b.dataset.advancedTable = action;
-    b.onmousedown = e => e.preventDefault();
-    return b;
-  };
-  const ensureButtons = () => {
-    let tools = toolbar.querySelector(".k-table-tools");
-    if (!tools) return;
-    const add = (label, action, title) => {
-      if (tools.querySelector(`[data-advanced-table="${action}"]`)) return;
-      tools.appendChild(makeAdvancedButton(label, action, title));
-    };
-    add("Gabung →", "merge-right", "Gabungkan cell ini dengan cell di sebelah kanan");
-    add("Gabung ↓", "merge-down", "Gabungkan cell ini dengan cell di bawah");
-    add("Pisah →", "split-horizontal", "Pisahkan cell berdasarkan colspan");
-    add("Pisah ↓", "split-vertical", "Pisahkan cell berdasarkan rowspan");
-  };
-  const observer = new MutationObserver(ensureButtons);
-  observer.observe(toolbar, { childList: true, subtree: true });
-  ensureButtons();
-
-  function mergeRight(cell) {
-    const row = cell.parentElement;
-    const index = [...row.cells].indexOf(cell);
-    const next = row.cells[index + 1];
-    if (!next) return false;
-    const leftSpan = cell.colSpan || 1;
-    const rightSpan = next.colSpan || 1;
-    const join = cell.innerHTML.trim() && next.innerHTML.trim() ? "<br>" : "";
-    cell.innerHTML += join + next.innerHTML;
-    cell.colSpan = leftSpan + rightSpan;
-    next.remove();
-    return true;
-  }
-  function mergeDown(cell) {
-    const table = cell.closest("table");
-    const row = cell.parentElement;
-    const rowIndex = row.rowIndex;
-    const cellIndex = [...row.cells].indexOf(cell);
-    const belowRow = table?.rows[rowIndex + 1];
-    if (!belowRow) return false;
-    const below = belowRow.cells[cellIndex];
-    if (!below) return false;
-    const topSpan = cell.rowSpan || 1;
-    const bottomSpan = below.rowSpan || 1;
-    const join = cell.innerHTML.trim() && below.innerHTML.trim() ? "<br>" : "";
-    cell.innerHTML += join + below.innerHTML;
-    cell.rowSpan = topSpan + bottomSpan;
-    below.remove();
-    return true;
-  }
-  function splitHorizontal(cell) {
-    const span = cell.colSpan || 1;
-    if (span <= 1) return false;
-    cell.colSpan = 1;
-    const row = cell.parentElement;
-    const index = [...row.cells].indexOf(cell);
-    for (let i = 1; i < span; i++) {
-      const c = row.insertCell(index + i);
-      c.innerHTML = "&nbsp;";
-    }
-    return true;
-  }
-  function splitVertical(cell) {
-    const span = cell.rowSpan || 1;
-    if (span <= 1) return false;
-    const table = cell.closest("table");
-    const row = cell.parentElement;
-    const rowIndex = row.rowIndex;
-    const cellIndex = [...row.cells].indexOf(cell);
-    cell.rowSpan = 1;
-    for (let i = 1; i < span; i++) {
-      const targetRow = table?.rows[rowIndex + i];
-      if (!targetRow) break;
-      const c = targetRow.insertCell(Math.min(cellIndex, targetRow.cells.length));
-      c.innerHTML = "&nbsp;";
-    }
-    return true;
-  }
-
-  toolbar.addEventListener("click", e => {
-    const button = e.target.closest("[data-advanced-table]");
-    if (!button) return;
-    const cell = currentCell();
-    if (!cell) return;
-    let changed = false;
-    switch (button.dataset.advancedTable) {
-      case "merge-right": changed = mergeRight(cell); break;
-      case "merge-down": changed = mergeDown(cell); break;
-      case "split-horizontal": changed = splitHorizontal(cell); break;
-      case "split-vertical": changed = splitVertical(cell); break;
-    }
-    if (changed) refresh();
-  });
-
-  editor.addEventListener("keydown", e => {
-    if (e.key !== "Tab" || e.ctrlKey || e.metaKey || e.altKey) return;
-    const cell = currentCell();
-    if (!cell) return;
-    const table = cell.closest("table");
-    if (!table) return;
-    const rows = [...table.rows];
-    const lastRow = rows[rows.length - 1];
-    if (e.shiftKey) return;
-    const isLastCell = cell.parentElement === lastRow && cell === lastRow.cells[lastRow.cells.length - 1];
-    if (!isLastCell) return;
-    e.preventDefault();
-    const newRow = table.insertRow(-1);
-    const count = Math.max(1, lastRow.cells.length);
-    for (let i = 0; i < count; i++) {
-      const c = newRow.insertCell(-1);
-      c.innerHTML = "&nbsp;";
-    }
-    refresh();
-    const target = newRow.cells[0];
-    const range = document.createRange();
-    range.selectNodeContents(target); range.collapse(true);
-    const selection = window.getSelection();
-    selection.removeAllRanges(); selection.addRange(range);
-  });
+window.addEventListener("DOMContentLoaded", function () {
+  const editor = document.getElementById("konten");
+  const toolbar = editor?.closest(".editor")?.querySelector(".toolbar");
+  if (!editor || !toolbar || editor.dataset.kEditorPro === "1") return;
+  editor.dataset.kEditorPro = "1";
+  const refresh = () => { if (typeof window.preview === "function") window.preview(); editor.dispatchEvent(new Event("input", { bubbles: true })); };
+  const cellFromSelection = () => { const n = window.getSelection()?.anchorNode; const el = n?.nodeType === 1 ? n : n?.parentElement; return el?.closest?.("td,th"); };
+  const image = () => { const n = window.getSelection()?.anchorNode; const el = n?.nodeType === 1 ? n : n?.parentElement; return el?.closest?.("img"); };
+  let cellTools = toolbar.querySelector(".k-cell-tools");
+  if (!cellTools) { cellTools = document.createElement("div"); cellTools.className = "k-cell-tools"; cellTools.innerHTML = '<button type="button" data-cell-action="bg">Warna Cell</button><button type="button" data-cell-action="align-left">Kiri</button><button type="button" data-cell-action="align-center">Tengah</button><button type="button" data-cell-action="align-right">Kanan</button><button type="button" data-cell-action="valign-top">Atas</button><button type="button" data-cell-action="valign-middle">Tengah Vert.</button><button type="button" data-cell-action="valign-bottom">Bawah</button>'; toolbar.appendChild(cellTools); }
+  const updateCellTools = () => cellTools.classList.toggle("visible", !!cellFromSelection());
+  editor.addEventListener("click", updateCellTools); editor.addEventListener("keyup", updateCellTools); document.addEventListener("selectionchange", updateCellTools);
+  cellTools.addEventListener("click", e => { const b = e.target.closest("[data-cell-action]"); const cell = cellFromSelection(); if (!b || !cell) return; const a = b.dataset.cellAction; if (a === "bg") { const color = prompt("Warna background cell (contoh #fff2cc):", cell.style.backgroundColor || "#fff2cc"); if (color) cell.style.backgroundColor = color; } else if (a.startsWith("align-")) cell.style.textAlign = a.replace("align-", ""); else if (a.startsWith("valign-")) cell.style.verticalAlign = a.replace("valign-", ""); refresh(); });
+  let handle = null; let selected = null; let startX = 0; let startWidth = 0;
+  const removeHandle = () => { if (handle) { handle.remove(); handle = null; } selected = null; };
+  const placeHandle = img => { removeHandle(); selected = img; img.classList.add("k-selected-image"); handle = document.createElement("span"); handle.className = "k-image-resizer visible"; document.body.appendChild(handle); const place = () => { if (!handle || !selected?.isConnected) return; const r = selected.getBoundingClientRect(); handle.style.left = (window.scrollX + r.right - 6) + "px"; handle.style.top = (window.scrollY + r.bottom - 6) + "px"; }; place(); window.addEventListener("scroll", place, true); window.addEventListener("resize", place); handle._cleanup = () => { window.removeEventListener("scroll", place, true); window.removeEventListener("resize", place); }; };
+  editor.addEventListener("click", e => { const img = e.target.closest("img"); if (img && editor.contains(img)) placeHandle(img); else removeHandle(); });
+  document.addEventListener("mousedown", e => { if (!handle || e.target !== handle || !selected) return; e.preventDefault(); e.stopPropagation(); startX = e.clientX; startWidth = selected.getBoundingClientRect().width; const move = ev => { const width = Math.max(40, Math.min(2400, Math.round(startWidth + ev.clientX - startX))); selected.style.width = width + "px"; selected.style.height = "auto"; const r = selected.getBoundingClientRect(); handle.style.left = (window.scrollX + r.right - 6) + "px"; handle.style.top = (window.scrollY + r.bottom - 6) + "px"; refresh(); }; const up = () => { document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up); }; document.addEventListener("mousemove", move); document.addEventListener("mouseup", up); });
+  editor.addEventListener("keydown", e => { if (e.key !== "Escape") return; removeHandle(); });
 });
 
 window.addEventListener("DOMContentLoaded", async function () {
