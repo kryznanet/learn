@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Audit Edge Function, parity deployment, penyelarasan RBAC, dan dokumentasi teknis utama sudah diperbarui. Checkpoint berikutnya tetap security hardening database.
+**Status sesi:** Checkpoint dokumentasi dan workflow pengembangan selesai. Tidak ada perubahan behavior aplikasi pada checkpoint ini. Sesi dihentikan dengan pekerjaan berikutnya tercatat pada security hardening database.
 
 ## 📚 Dokumentasi teknis
 
@@ -16,11 +16,12 @@ Dokumentasi sekarang mencakup:
 - `EDGE-FUNCTIONS.md` — inventory Edge Function dan parity source/deployment.
 - `DEPLOYMENT.md` — checklist deployment dan rollback.
 - `TESTING.md` — checklist authentication, RBAC, content, versioning, autosave, storage, dan security.
-- `CHANGELOG.md` — histori perubahan.
+- `CHANGELOG.md` — histori perubahan dan checkpoint sesi.
 - `DECISIONS.md` — keputusan arsitektur dan alasannya.
 - `LEGACY.md` — inventory legacy dan aturan cleanup.
 - `SWIFT-API-AUDIT.md` — audit khusus `swift-api`.
-- `README.md` — documentation index yang sudah diperbarui.
+- `DEVELOPMENT.md` — aturan wajib siklus pengembangan dan dokumentasi setelah commit.
+- `README.md` — documentation index.
 
 `PROJECT-STATUS.md` tetap menjadi sumber checkpoint/progres, sedangkan dokumen teknis menjadi sumber detail implementasi.
 
@@ -65,6 +66,9 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 ### 7. Edge Functions
 `create-staff` aktif version 3 dan source repo parity dengan deployment. Role `editor` sudah didukung. `swift-api` aktif version 1 tetapi tidak memiliki source counterpart di branch; tidak diubah dan tidak dihapus.
 
+### 8. Aturan workflow pengembangan
+Aturan resmi sekarang terdokumentasi di `docs/DEVELOPMENT.md`: setiap perubahan mengikuti **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**. Setiap commit wajib diikuti pembaruan dokumentasi teknis yang relevan dan `PROJECT-STATUS.md`.
+
 ## 🔐 Security Advisor checkpoint
 
 Temuan yang masih dicatat:
@@ -73,23 +77,49 @@ Temuan yang masih dicatat:
 - SECURITY DEFINER RPC yang menjadi jalur aplikasi tetap perlu ditinjau satu per satu berdasarkan kebutuhan execute/authorization.
 - Leaked Password Protection Supabase masih disabled.
 
-## 🛑 Checkpoint sesi
+## 🛑 Checkpoint akhir sesi — 17 September 2026
 
-Dokumentasi proyek sudah diperluas dan index dokumentasi diperbarui. Tidak ada perubahan code aplikasi pada pekerjaan dokumentasi ini.
+- Aturan post-commit dan dokumentasi sudah ditambahkan ke repository.
+- `docs/README.md`, `docs/CHANGELOG.md`, dan `docs/PROJECT-STATUS.md` sudah diperbarui.
+- Tidak ada perubahan behavior aplikasi pada checkpoint dokumentasi ini.
+- Checkpoint sesi berikutnya ditetapkan pada hardening database/security.
 
 ## ⚠️ Pekerjaan selanjutnya
 
+### Prioritas 1 — Security hardening database
 1. Hardening `snapshot_materi_version()` — revoke `EXECUTE` untuk anon/authenticated tanpa memutus trigger.
 2. Hardening `set_materi_updated_at()` dengan `search_path` eksplisit.
 3. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
-4. Jalankan ulang Security Advisor.
-5. Uji browser Version Restore.
+4. Jalankan ulang Security Advisor dan dokumentasikan hasil terbaru.
+
+### Prioritas 2 — Browser E2E
+5. Uji Version Restore dari UI sampai database.
 6. Uji Autosave & Draft Recovery.
+
+### Prioritas 3 — Final audit
 7. Audit final query halaman publik dan sanitasi.
-8. Audit final `SECURITY DEFINER`, RLS, Storage, dan index.
+8. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
 9. Audit final formatting seluruh repo.
 10. Review consumer eksternal `swift-api` sebelum keputusan retirement.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dari **hardening `snapshot_materi_version()` dan `set_materi_updated_at()`**, lalu verifikasi ulang Security Advisor. Setelah itu lanjut E2E Version Restore/Autosave dan audit final.
+Mulai langsung dari **audit dan hardening `snapshot_materi_version()`**, pastikan trigger insert/update tetap bekerja setelah pembatasan `EXECUTE`. Lanjutkan dengan `search_path` `set_materi_updated_at()`, rerun Security Advisor, lalu dokumentasikan hasil sebelum masuk ke E2E.
+
+## 🔁 Aturan sesi berikutnya
+
+Untuk setiap perubahan setelah checkpoint ini tetap gunakan siklus:
+
+```text
+ubah
+ ↓
+commit
+ ↓
+verifikasi
+ ↓
+update dokumentasi & PROJECT-STATUS
+ ↓
+verifikasi dokumentasi
+ ↓
+lanjut
+```
