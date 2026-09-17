@@ -1,7 +1,30 @@
 # Development Workflow Kryzna Learn
 
-**Tanggal:** 17 September 2026  
-**Branch aktif:** `17-Sep-2026`
+**Tanggal dokumen:** 17 September 2026  
+**Branch saat dokumen ini diperbarui:** `17-Sep-2026`
+
+## Aturan branch dinamis
+
+Branch pengembangan Kryzna Learn **tidak permanen** dan dapat berganti berdasarkan tanggal atau checkpoint update proyek.
+
+- Jangan mengunci nama branch tertentu di instruksi proyek atau dokumentasi umum.
+- Sebelum setiap pekerjaan, verifikasi branch pengembangan yang aktif di GitHub.
+- Baca `docs/PROJECT-STATUS.md` pada branch yang telah diverifikasi.
+- Gunakan branch yang tercatat sebagai branch aktif/current pada `PROJECT-STATUS.md`.
+- Jika branch berbeda dari sesi sebelumnya, ikuti branch terbaru yang telah diverifikasi; jangan berasumsi branch lama masih aktif.
+- Jika pengguna secara eksplisit menentukan branch, gunakan branch tersebut.
+- Setelah checkpoint/perubahan signifikan, catat branch aktif terbaru di `docs/PROJECT-STATUS.md`.
+- Pola tanggal adalah konvensi pengelolaan branch, bukan nama branch yang harus dianggap permanen.
+
+Contoh:
+
+```text
+17-Sep-2026
+18-Sep-2026
+19-Sep-2026
+```
+
+Contoh di atas hanya menggambarkan pola; branch aktual harus selalu diverifikasi dari repository.
 
 ## Aturan wajib perubahan
 
@@ -35,7 +58,7 @@ Minimal:
 
 ## Repository
 
-- Kerjakan pada branch yang ditentukan.
+- Kerjakan pada branch yang telah diverifikasi sebagai branch aktif.
 - Fetch file dan SHA terbaru sebelum update.
 - Jangan menimpa perubahan yang lebih baru.
 - Commit message harus menjelaskan perubahan secara ringkas.
