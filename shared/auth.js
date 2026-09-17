@@ -60,4 +60,11 @@
     isAdmin: role=>ADMIN_ROLES.includes(role),
     isSuperAdmin: role=>role==='super_admin'
   };
+
+  if(location.pathname.endsWith('/content/editor.html')){
+    const s=document.createElement('script');
+    s.src='../shared/draft-recovery.js';
+    s.defer=true;
+    document.head.appendChild(s);
+  }
 })();
