@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Struktur dan readability kode Content/Admin dirapikan. Pekerjaan berikutnya tetap berfokus pada audit keamanan/RBAC dan verifikasi end-to-end.
+**Status sesi:** Struktur dan readability kode Content/Admin dirapikan. Baseline Edge Function `create-staff` sudah disinkronkan dengan deployment aktif dan dukungan role Editor ditambahkan secara konsisten.
 
 ## ✅ Progres terbaru — 17 September 2026
 
@@ -98,18 +98,7 @@ Halaman activity menggunakan central permission helper.
 `shared/draft-recovery.js` menyediakan autosave lokal berbasis `localStorage`, debounce, recovery draft, konfirmasi restore, dan pembersihan draft setelah penyimpanan server berhasil.
 
 ### 11. Code readability / formatting
-Batch formatting terbaru dilakukan tanpa sengaja mengubah alur fitur:
-- `admin/activity.html`
-- `admin/users.html`
-- `admin/dashboard.html`
-- `admin/index.html`
-- `admin/login.html`
-- `admin/import.html`
-- `content/activity.html`
-- `content/editor.html`
-- `content/index.html`
-- `content/versions.html`
-- `shared/content-activity.js`
+Batch formatting terbaru dilakukan tanpa sengaja mengubah alur fitur pada halaman dan helper Content/Admin.
 
 Acuan formatting berada di `docs/CODE-STYLE.md`: indentasi 2 spasi, satu ide per baris, query Supabase multiline, CSS satu deklarasi per baris, dan perubahan formatting tidak mengubah behavior.
 
@@ -123,8 +112,6 @@ Audit halaman publik dilakukan terhadap alur Website Publik → Detail Materi.
 - RLS `public.materi` juga membatasi SELECT publik ke `status='published'`, sehingga filter frontend bukan satu-satunya lapisan keamanan.
 - Rendering konten di detail materi tetap melalui sanitasi HTML setelah parsing HTML/Markdown.
 
-Perubahan `materi/view.html` telah diverifikasi setelah commit `ce65c2a0b4febff19a77674c448d95a0bdd4d223`.
-
 ### Storage `materi-files`
 Policy Storage telah diselaraskan dengan RBAC:
 - Penulis, Editor, Admin, dan Super Admin dapat upload.
@@ -132,8 +119,6 @@ Policy Storage telah diselaraskan dengan RBAC:
 - Admin dan Super Admin dapat delete.
 - Publik tidak dapat upload/update/delete.
 - Publik hanya dapat membaca file jika file tersebut berada di bucket `materi-files`, path-nya cocok dengan `materi.file_path`, dan materi terkait berstatus `published`.
-
-Dengan demikian file dari materi `draft`, `review`, atau `archived` tidak dibuka melalui policy public read berdasarkan relasi materi yang dipublikasikan.
 
 ### RLS tabel inti
 Audit memastikan RLS aktif pada tabel inti:
@@ -153,7 +138,25 @@ Ditemukan dua area yang perlu diselaraskan sebelum perubahan akses dilakukan:
 1. `admin` memiliki permission `system.view_logs`, tetapi policy SELECT `system_activity_logs` saat ini masih membatasi pembacaan kepada `super_admin`.
 2. Permission matrix memberikan Admin beberapa permission pengguna, sedangkan policy/RPC pengelolaan `admin_users` masih menggunakan jalur Super Admin untuk operasi staf tertentu.
 
-Keduanya **belum diubah pada sesi ini** agar tidak membuka akses tanpa desain permission/RLS/RPC yang konsisten.
+Keduanya belum diubah agar tidak membuka akses tanpa desain permission/RLS/RPC yang konsisten.
+
+## ⚡ Edge Function — sinkronisasi `create-staff`
+
+Audit deployment menemukan source repository sebelumnya berbeda dari Edge Function aktif. Baseline sekarang sudah disamakan.
+
+`create-staff`:
+- deployment aktif sekarang **version 3**;
+- `verify_jwt=true`;
+- menggunakan `withSupabase({ auth: "user" })`;
+- pembuatan user tetap dibatasi kepada Super Admin aktif;
+- validasi password minimum 8 karakter dipertahankan;
+- proses pembuatan Auth user dan `admin_users` mempertahankan rollback jika penyimpanan staf gagal;
+- role `editor` sekarang diterima oleh Edge Function;
+- daftar role yang diterima konsisten dengan role aplikasi: `super_admin`, `admin`, `penulis`, `editor`, `viewer`.
+
+Source repo `supabase/functions/create-staff/index.ts` sudah diverifikasi setelah commit sinkronisasi. Perubahan deployment dilakukan ke version 3 dan diverifikasi kembali melalui metadata/source function aktif.
+
+Perubahan ini tidak memperluas siapa yang boleh membuat user: otorisasi tetap Super Admin. Perubahan hanya menyelaraskan role Editor dengan RBAC yang sudah tersedia.
 
 ## ⚠️ Pekerjaan berikutnya
 
@@ -164,12 +167,13 @@ Keduanya **belum diubah pada sesi ini** agar tidak membuka akses tanpa desain pe
 5. Audit final query halaman publik dan sanitasi.
 6. Audit final `SECURITY DEFINER`, `search_path`, RLS, Storage, dan index.
 7. Audit final formatting seluruh repo.
-8. Update dokumentasi setelah setiap perubahan signifikan.
+8. Audit Edge Function lain (`swift-api`) dan source/deployment parity.
+9. Update dokumentasi setelah setiap perubahan signifikan.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dari **RBAC Admin ↔ System Activity Log dan User Management**, lalu lanjutkan verifikasi keamanan end-to-end. Setelah itu lakukan audit final formatting seluruh repo.
+Mulai dari **audit Edge Function `swift-api` dan parity source/deployment**, kemudian lanjutkan RBAC Admin ↔ System Activity Log dan User Management. Setelah itu lakukan audit final formatting seluruh repo.
 
 ---
 
-**Catatan sesi:** Batch formatting Content/Admin dan helper bersama sudah selesai. Jangan menganggap dua ketidaksesuaian RBAC di atas sudah diperbaiki; keduanya adalah pekerjaan lanjutan.
+**Catatan sesi:** `create-staff` sudah sinkron antara repository dan deployment aktif. Role `editor` sudah diterima oleh Edge Function tanpa mengubah batas otorisasi pembuatan user.
