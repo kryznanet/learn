@@ -2,7 +2,7 @@
 
 **Tanggal:** 17 September 2026  
 **Branch:** `17-Sep-2026`  
-**Status sesi:** Central Permission sudah diimplementasikan pada database dan `KryznaAuth`. Mapping role → permission, RPC permission, helper frontend, dan verifikasi akses fungsi sudah dilakukan.
+**Status sesi:** Central Permission sudah diimplementasikan dan kini terintegrasi pada workspace Content, editor, version history, activity log, system activity log, dan user administration.
 
 ## ✅ Progres terbaru — 17 September 2026
 
@@ -30,7 +30,7 @@ Kryzna Learn
 Documentation hub tersedia di `docs/README.md`. Acuan UI tersedia di `docs/UI-STRUCTURE.md`.
 
 ### 2. Central authentication & permission helper
-`shared/auth.js` sekarang menjadi helper autentikasi, role, dan permission terpusat.
+`shared/auth.js` menjadi helper autentikasi, role, dan permission terpusat.
 
 Fungsi yang tersedia:
 - `getUser()`
@@ -46,31 +46,35 @@ Fungsi yang tersedia:
 Permission diambil dari RPC `public.get_my_permissions()` sehingga frontend tidak perlu menentukan mapping role secara manual.
 
 ### 3. Role → Permission
-Database sekarang memiliki tabel mapping:
+Database memiliki tabel mapping:
 - `roles`
 - `permissions`
 - `user_roles`
 - `role_permissions`
 
-`role_permissions` sudah diisi untuk role:
-- `super_admin`
-- `admin`
-- `editor`
-- `penulis`
-- `viewer`
+Mapping sudah tersedia untuk `super_admin`, `admin`, `editor`, dan `penulis`; role legacy `viewer` tetap tersedia dengan akses `content.read`.
 
 Super Admin mendapat seluruh permission yang tersedia. Role lain mendapat permission sesuai fungsi masing-masing.
 
 ### 4. RPC permission
-Dibuat `public.get_my_permissions()` sebagai `SECURITY DEFINER` dengan `search_path = public`.
+`public.get_my_permissions()` menggunakan `SECURITY DEFINER` dengan `search_path = public` dan membaca permission berdasarkan `auth.uid()` melalui `user_roles → role_permissions → permissions`.
 
-Verifikasi privilege:
-- `anon`: tidak memiliki EXECUTE.
-- `authenticated`: memiliki EXECUTE.
+Verifikasi privilege terbaru:
+- `anon`: `EXECUTE = false`
+- `authenticated`: `EXECUTE = true`
 
-RPC hanya membaca permission berdasarkan `auth.uid()` dan relasi `user_roles → role_permissions → permissions`.
+### 5. Integrasi Central Permission pada Content
+Permission sekarang dipakai langsung pada halaman:
+- `content/index.html` → `content.read` dan penyaringan kartu berdasarkan permission.
+- `content/materials.html` → `content.read`, `content.update`, `content.review`, `content.publish`, `content.archive`.
+- `content/editor.html` → `content.create` untuk materi baru, `content.update` untuk edit, `content.review` untuk Kirim ke Review.
+- `content/versions.html` → `content.read`; tombol dan aksi restore mengikuti `content.update`.
+- `content/activity.html` → `content.view_logs`.
+- `admin/import.html` → `content.import`.
 
-### 5. Daftar Materi dan workflow
+Permission frontend hanya untuk guard/UX. RLS dan RPC tetap menjadi enforcement backend.
+
+### 6. Daftar Materi dan workflow
 `content/materials.html` mendukung:
 - pencarian,
 - filter status/kategori,
@@ -79,50 +83,50 @@ RPC hanya membaca permission berdasarkan `auth.uid()` dan relasi `user_roles →
 - Riwayat Versi,
 - pencatatan status ke `content_activity_logs`.
 
-### 6. Riwayat Versi
+Aksi workflow sekarang memeriksa permission yang sesuai, bukan hanya nama role di frontend.
+
+### 7. Riwayat Versi
 Supabase memiliki:
 - `materi_versions`,
 - unique `(materi_id, version_number)`,
 - trigger snapshot setelah insert/update `materi`,
 - RLS untuk role content.
 
-`content/versions.html` sudah terhubung ke editor/Daftar Materi.
+`content/versions.html` sudah terhubung ke editor/Daftar Materi dan menggunakan permission `content.read` serta `content.update` untuk restore.
 
 **Restore tersedia:**
 - RPC `public.restore_materi_version(uuid)` tersedia.
 - menggunakan `SECURITY DEFINER` dengan `search_path = public`.
 - `anon` tidak memiliki EXECUTE.
 - `authenticated` memiliki EXECUTE.
-- restore dibatasi untuk role yang sesuai.
+- restore dibatasi untuk role yang sesuai di backend.
 - restore memperbarui materi, membuat snapshot versi baru, dan mencatat `version_restored`.
 
 End-to-end browser restore masih perlu pengujian dengan akun role yang sesuai sebelum dinyatakan final.
 
-### 7. Riwayat Aktivitas
+### 8. Riwayat Aktivitas
 Aktivitas dipisahkan menjadi:
 - `content_activity_logs` untuk aktivitas materi,
 - `system_activity_logs` untuk aktivitas administratif/sistem.
 
-`shared/content-activity.js` digunakan oleh workspace materi.
+`content/activity.html` sekarang menggunakan `content.view_logs` melalui `KryznaAuth`.
 
-`content/activity.html` tersedia untuk melihat aktivitas materi dan memfilter berdasarkan aksi.
+`admin/activity.html` sekarang menggunakan `system.view_logs` melalui `KryznaAuth`.
 
-Aktivitas user management juga dicatat oleh RPC backend seperti `user_added` dan `user_updated` ke `system_activity_logs`.
-
-### 8. Kelola Pengguna
-`admin/users.html` tersedia untuk Super Admin.
+### 9. Kelola Pengguna
+`admin/users.html` tersedia untuk pengguna dengan permission `users.read`.
 
 Fungsi:
 - daftar user melalui `list_staff`,
 - pencarian nama/email,
-- ubah display name,
-- ubah role,
-- aktif/nonaktif,
+- ubah display name dengan `users.update`,
+- ubah role dengan `roles.manage`,
+- aktif/nonaktif dengan `users.disable`,
 - sinkronisasi `admin_users` dengan `user_roles` melalui `update_staff`.
 
-RPC `list_staff`, `update_staff`, dan `add_staff_by_email` telah diverifikasi memiliki kontrol akses backend dan tidak memberikan EXECUTE kepada `anon`.
+RPC backend tetap menjadi enforcement utama.
 
-### 9. Autosave & Draft Recovery
+### 10. Autosave & Draft Recovery
 Tahap Autosave & Draft Recovery sudah mulai diimplementasikan.
 
 File:
@@ -140,33 +144,28 @@ Autosave sengaja bersifat lokal agar setiap ketikan tidak membuat row/version ba
 
 ## ⚠️ Hal yang masih perlu dilanjutkan
 
-### Prioritas 1 — Integrasi Central Permission
-- Terapkan `requirePermission(...)` pada seluruh halaman Admin/Content yang sesuai.
-- Ganti pemeriksaan role lokal jika permission yang lebih spesifik sudah tersedia.
-- Pastikan tombol/action juga mengikuti permission tanpa menjadikannya satu-satunya lapisan keamanan.
-
-### Prioritas 2 — Verifikasi Version Restore
+### Prioritas 1 — Verifikasi Version Restore
 - Uji restore sebagai Editor.
 - Uji restore sebagai Admin/Super Admin.
 - Pastikan Penulis tidak dapat restore.
 - Pastikan snapshot dan `version_restored` tercatat setelah restore.
 
-### Prioritas 3 — Penyempurnaan Activity & User Management
-- Samakan `KryznaAuth` pada halaman activity/users yang masih menggunakan pemeriksaan role lokal.
-- Audit actor visibility agar tidak bergantung pada SELECT `admin_users` yang tidak dimiliki semua role.
-- Rapikan label/action agar konsisten dengan event yang benar-benar dicatat.
-
-### Prioritas 4 — Autosave & Draft Recovery
+### Prioritas 2 — Autosave & Draft Recovery
 - Uji recovery saat refresh/tab tertutup.
 - Uji draft baru dan draft edit materi lama.
 - Tambahkan indikator autosave yang tidak menimpa pesan hasil simpan server.
 - Pertimbangkan server-side draft recovery jika dibutuhkan lintas perangkat/browser.
 
-### Prioritas 5 — Public content
+### Prioritas 3 — Audit Activity & User Management
+- Audit actor visibility agar tidak bergantung pada SELECT `admin_users` yang tidak dimiliki semua role.
+- Rapikan label/action agar konsisten dengan event yang benar-benar dicatat.
+- Audit permission terhadap setiap action backend RPC.
+
+### Prioritas 4 — Public content
 - Pastikan query Website Publik dan Detail Materi secara eksplisit menggunakan `status='published'`.
 - Verifikasi sanitasi HTML/Markdown.
 
-### Prioritas 6 — Security audit
+### Prioritas 5 — Security audit
 - Audit ulang advisory `SECURITY DEFINER`.
 - Audit `search_path` semua fungsi.
 - Audit RLS dan index.
@@ -175,7 +174,7 @@ Autosave sengaja bersifat lokal agar setiap ketikan tidak membuat row/version ba
 ## 🔐 Catatan keamanan
 RLS tetap menjadi lapisan enforcement utama. `KryznaAuth` digunakan untuk UX dan guard halaman, sedangkan akses final harus ditegakkan oleh database/RLS/RPC.
 
-`get_my_permissions()` dibatasi agar hanya role `authenticated` yang dapat mengeksekusinya; `anon` sudah diverifikasi tidak memiliki EXECUTE.
+`get_my_permissions()` sudah diverifikasi: `anon` tidak memiliki EXECUTE, sedangkan `authenticated` memiliki EXECUTE.
 
 ## 🧭 Aturan kerja
 - Fetch file/schema dan gunakan SHA terbaru sebelum update.
@@ -186,13 +185,12 @@ RLS tetap menjadi lapisan enforcement utama. `KryznaAuth` digunakan untuk UX dan
 
 ## ▶️ Titik lanjut sesi berikutnya
 
-1. Integrasikan `requirePermission(...)` ke seluruh halaman Admin/Content.
-2. Pengujian browser untuk Version Restore.
-3. Pengujian Autosave & Draft Recovery.
-4. Audit Activity Log dan Kelola Pengguna.
-5. Pastikan Website Publik hanya menampilkan `published`.
-6. Audit final UI, workflow, dan keamanan.
+1. Uji browser Version Restore.
+2. Uji Autosave & Draft Recovery.
+3. Audit Activity Log dan Kelola Pengguna.
+4. Pastikan Website Publik hanya menampilkan `published`.
+5. Audit final UI, workflow, dan keamanan.
 
 ---
 
-**Catatan sesi:** Progres 17 September 2026 disimpan di dokumen ini agar pekerjaan berikutnya dapat dilanjutkan tanpa kehilangan konteks.
+**Catatan sesi:** Pada 17 September 2026, Central Permission telah diterapkan sampai ke halaman Content dan Administrasi utama. Database/RLS/RPC tetap menjadi lapisan keamanan final.
