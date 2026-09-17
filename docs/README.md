@@ -91,8 +91,6 @@ Rencana isi:
 
 ## 🧭 Urutan Membaca
 
-Untuk melanjutkan pengembangan proyek, gunakan urutan berikut:
-
 ```text
 1. docs/README.md
        ↓
@@ -118,13 +116,11 @@ Untuk melanjutkan pengembangan proyek, gunakan urutan berikut:
 
 ## 🔄 Titik Lanjut Saat Ini
 
-Prioritas pengembangan yang tercatat saat ini:
-
-1. Central Permission pada `KryznaAuth`.
+1. Implementasi mapping role → permission dan central permission pada `KryznaAuth`.
 2. Integrasi permission ke halaman Admin/Content.
-3. Verifikasi mekanisme restore Riwayat Versi.
-4. Autosave dan Draft Recovery.
-5. Audit navigasi dan konsistensi UI.
-6. Audit keamanan frontend dan Supabase/RLS.
+3. Uji browser untuk Version Restore.
+4. Uji Autosave & Draft Recovery.
+5. Audit Activity Log dan Kelola Pengguna.
+6. Audit navigasi, workflow, dan keamanan Supabase/RLS.
 
 Dokumen status utama: [PROJECT-STATUS.md](./PROJECT-STATUS.md)
