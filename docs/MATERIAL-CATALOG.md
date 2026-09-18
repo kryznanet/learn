@@ -18,7 +18,7 @@ Dokumen ini mencatat penambahan materi pembelajaran yang dilakukan langsung pada
 
 ## Cakupan materi saat ini
 
-Katalog materi kini mencakup dasar IP/MAC, IPv4, subnetting, DHCP, DNS, VLAN, Ethernet/switching, router, NAT, ARP, Wi-Fi, TCP/UDP, HTTP/HTTPS, firewall/port, traceroute, ping, crimping kabel LAN, pengecekan IP Windows, serta troubleshooting jaringan.
+Katalog menggunakan empat kategori publik yang konsisten: **Dasar**, **Intermediate**, **Advanced**, dan **Tutorial**.
 
 ## Catatan integritas data
 
