@@ -86,7 +86,9 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Added public smoke tests for homepage and admin login.
 - Added authenticated editor reachability test, gated by KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD.
 - Added GitHub Actions workflow `.github/workflows/browser-e2e.yml` to install Chromium and upload reports.
-- Authenticated Version Restore and Autosave/Draft Recovery scenarios remain pending until dedicated E2E credentials are configured and the workflow run is verified.
+- Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are now configured.
+- A new workflow run is required to verify the authenticated test with those secrets; the previous successful run predates secret configuration.
+- Authenticated Version Restore and Autosave/Draft Recovery scenarios remain pending.
 
 ### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
@@ -126,7 +128,7 @@ Temuan yang masih pending:
 3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
-4. Configure dedicated E2E account secrets and verify the first GitHub Actions Browser E2E run.
+4. Verify a new GitHub Actions Browser E2E run with the configured dedicated E2E account secrets.
 5. Uji Version Restore dari UI sampai database.
 6. Uji Autosave & Draft Recovery.
 
@@ -138,7 +140,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **verifikasi workflow Browser E2E**. Runtime Chromium dan harness sekarang tersedia di GitHub Actions; status authenticated E2E tetap `Needs Verification` sampai secrets E2E dikonfigurasi dan workflow menghasilkan hasil test nyata.
+Mulai dengan **verifikasi workflow Browser E2E**. Runtime Chromium, harness, dan dedicated E2E secrets sudah tersedia; status authenticated E2E tetap `Needs Verification` sampai workflow baru benar-benar menjalankan test dengan secrets tersebut.
 
 ## 🔁 Siklus wajib setiap sesi
 
