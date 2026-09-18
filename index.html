@@ -712,6 +712,17 @@
       );
     }
 
+    function categoryLabel(category) {
+      const value = String(category || 'Umum').trim();
+      const labels = {
+        Dasar: 'Materi · Dasar',
+        Intermediate: 'Materi · Menengah',
+        Advanced: 'Materi · Lanjutan',
+        Tutorial: 'Tutorial'
+      };
+      return labels[value] || 'Materi · ' + value;
+    }
+
     function buildCategories() {
       const categories = [
         ...new Map(
@@ -734,7 +745,7 @@
           '" data-cat="' +
           esc(category) +
           '" type="button">' +
-          esc(category) +
+          esc(categoryLabel(category)) +
           '</button>'
         )
       ].join('');
@@ -872,7 +883,7 @@
         .map(
           (item) =>
             '<article class="card"><div><span class="badge">' +
-            esc(item.kategori || 'Umum') +
+            esc(categoryLabel(item.kategori)) +
             '</span><h3>' +
             esc(item.judul) +
             '</h3><p>' +
