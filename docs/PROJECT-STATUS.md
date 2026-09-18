@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database terverifikasi dan integrasi autosave/draft recovery sudah diperbaiki. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
+**Status sesi:** Security hardening database terverifikasi dan integrasi autosave/draft recovery sudah diperbaiki. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
 
 ## 🔁 Aturan branch aktif
 
@@ -71,7 +71,7 @@ Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logg
 RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan public read dibatasi pada file materi `published`.
 
 ### 6. RBAC terbaru
-`system_activity_logs` sekarang dapat dibaca Admin dan Super Admin sesuai `system.view_logs`. `admin_users` sekarang dapat dibaca dan diperbarui Admin/Super Admin sesuai pembagian user management; perubahan role dan penambahan user tetap Super Admin-only melalui jalur RPC.
+`system_activity_logs` sekarang dapat dibaca Admin dan Super Admin sesuai `system.view_logs`. `admin_users` sekarang dapat dibaca dan diperbarui Admin/Super Admin sesuai pembagian user management; perubahan role dan penambahan user tetap Super Admin-only melalui jalur RPC. Direct INSERT/UPDATE/DELETE ke `user_roles` juga sekarang hanya dapat dilakukan oleh `super_admin`; Admin tetap dapat membaca assignment role.
 
 ### 7. Edge Functions
 `create-staff` aktif version 3 dan source repo parity dengan deployment. Role `editor` sudah didukung. `swift-api` aktif version 1 tetapi tidak memiliki source counterpart di branch; tidak diubah dan tidak dihapus.
@@ -81,6 +81,8 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
 - `trg_snapshot_materi_version` terverifikasi tetap `AFTER INSERT OR UPDATE` pada `public.materi`.
 - Pengujian transaksional insert/update menghasilkan `2` snapshot `materi_versions` dan di-rollback tanpa meninggalkan data uji.
+- `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` tidak lagi executable oleh `PUBLIC`, `anon`, atau `authenticated`.
+- Policy `user_roles` untuk direct role management diperketat dari Admin/Super Admin menjadi Super Admin-only.
 
 ## 🔐 Security Advisor checkpoint — 18 September 2026
 
@@ -95,16 +97,12 @@ Temuan yang masih pending:
 
 ## 🛑 Checkpoint 18 September 2026
 
-- Database migrations `20260918010522_harden_trigger_function_privileges_20260918`, `20260918010535_restrict_trigger_function_execute_20260918`, dan `20260918010830_restrict_internal_security_definer_helpers` berhasil diterapkan.
-- Database diverifikasi setelah perubahan.
-- Trigger behavior diverifikasi dengan transactional insert/update test.
-- `docs/SECURITY.md`, `docs/DATABASE.md`, dan `docs/CHANGELOG.md` diperbarui.
-- `can_manage_materi`, `can_delete_materi`, dan `get_my_role` diverifikasi tidak lagi executable oleh `authenticated`/`anon`/`public`.
-- Autosave/draft recovery integration diperbaiki: editor memuat `shared/draft-recovery.js` dan menunda inisialisasi sampai session serta materi siap.
-- Security Advisor direrun setelah checkpoint dan tetap menunjukkan 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
+- Database migrations sebelumnya berhasil diterapkan dan diverifikasi.
+- Migration `20260918012000_restrict_user_role_management_to_super_admin_20260918` diterapkan ke Supabase dan diverifikasi.
+- Policy hasil akhir `Super admins manage user roles` terverifikasi `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
+- Security Advisor direrun setelah perubahan; warning tetap 7 application SECURITY DEFINER + 1 leaked-password.
+- `docs/RBAC.md`, `docs/SECURITY.md`, `docs/DATABASE.md`, `docs/CHANGELOG.md`, dan file migration diperbarui melalui commit terpisah dan diverifikasi.
 - Browser E2E belum dapat dinyatakan lulus karena tidak ada browser test runner/runtime di repository connection.
-- Audit Version Restore statis + database: RPC `restore_materi_version(uuid)` terverifikasi `SECURITY DEFINER` dengan `search_path=public`, authorization backend membatasi role ke `editor/admin/super_admin`, dan snapshot/activity logging berjalan melalui jalur restore.
-- Ditemukan mismatch permission UI: tombol Restore sebelumnya memakai `content.update` sehingga penulis dapat melihat tombol meskipun RPC menolak. UI diperbaiki menggunakan `content.review`, selaras dengan role yang boleh restore.
 
 ## ⚠️ Pekerjaan selanjutnya
 
