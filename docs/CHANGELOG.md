@@ -1,8 +1,13 @@
+## 18 September 2026 — Browser E2E draft recovery verified
+- Browser E2E run #43 (`35298946197`) succeeded on `18-Sep-2026` at commit `2ec49859a5fffd793a721d257eaac0b122fd31b8`.
+- New-material and existing-material Draft Recovery tests now wait for editor readiness and verify the persisted localStorage payload before reload/recovery.
+- Draft Recovery CI verification is closed for the covered flows.
+
 ## 18 September 2026 — Browser E2E draft recovery fix
 - Browser E2E run #35 (`35298200046`) exposed two timing failures in Draft Recovery coverage: interactions could occur before editor boot/listeners were ready, and existing-material `#id` could be checked before asynchronous material loading completed.
 - `content/editor.html` now exposes `window.__kryznaEditorReady` after boot and Draft Recovery initialization.
 - `tests/e2e/authenticated.spec.js` waits for the readiness signal before autosave/recovery interactions.
-- CI verification remains pending until the new run completes successfully.
+- GitHub Actions Browser E2E run #43 (`35298946197`) on the updated test commit completed successfully; Draft Recovery verification is now closed for the covered new/existing material reload flows.
 
 # Changelog Kryzna Learn
 
