@@ -3,7 +3,7 @@
 ## 18 September 2026
 
 - Fixed RLS on `materi` for authenticated content roles. The editor uses `UPDATE ... SELECT`; when a draft/review row was changed to a non-published status, the existing public-only SELECT policy could reject the returned new row with an RLS error.
-- Added migration `20260918012300_allow_authenticated_content_users_to_view_materi_20260918`. Authenticated `penulis`, `editor`, `admin`, and `super_admin` can now read material rows; public/anon remain limited to published material.
+- Added migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918`. Authenticated `penulis`, `editor`, `admin`, and `super_admin` can now read material rows; public/anon remain limited to published material.
 - Restricted direct `user_roles` INSERT/UPDATE/DELETE to `super_admin` through RLS, while retaining Admin/Super Admin read access. This aligns database enforcement with the RBAC rule that role changes remain Super Admin-only. Applied migration: `20260918011836_restrict_user_role_management_to_super_admin_20260918`.
 - Version Restore UI permission was aligned from `content.update` to `content.review`, matching the backend RPC authorization for `editor/admin/super_admin` and preventing a misleading Restore action for `penulis`.
 - Integrated `shared/draft-recovery.js` into the material editor and deferred its initialization until the authenticated session/material state is ready, preventing existing-material drafts from being keyed as a new material.
