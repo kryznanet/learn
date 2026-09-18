@@ -76,7 +76,12 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 ### 7. Edge Functions
 `create-staff` aktif version 3 dan source repo parity dengan deployment. Role `editor` sudah didukung. `swift-api` aktif version 1, JWT verification aktif, tetapi tidak memiliki source counterpart di branch. Deployment source version 1 berhasil diaudit; tidak terlihat akses database/Storage Kryzna Learn. Consumer eksternal belum dapat dibuktikan tidak ada, sehingga function tidak diubah/dihapus.
 
-### 8. Security hardening database — 18 September
+### 8. Public query & sanitization audit — 18 September 2026
+- Public index queries only `materi` rows with `status = 'published'` and escapes dynamic text before rendering.
+- Public material detail also requires `status = 'published'` and sanitizes rendered Markdown/HTML before `innerHTML`.
+- Sanitizer hardening removes inline `style`/event attributes, rejects unsafe URL schemes, and uses `noopener noreferrer` for new-tab links.
+
+### 9. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
 - `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
 - `trg_snapshot_materi_version` terverifikasi tetap `AFTER INSERT OR UPDATE` pada `public.materi`.
