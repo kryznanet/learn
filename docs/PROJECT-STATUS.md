@@ -88,7 +88,8 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Added GitHub Actions workflow `.github/workflows/browser-e2e.yml` to install Chromium and upload reports.
 - Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are configured.
 - GitHub Actions Browser E2E run #6 (`35296715443`) completed successfully with all 3 tests passed, including authenticated Super Admin editor reachability.
-- Authenticated Version Restore and Autosave/Draft Recovery scenarios remain pending.
+- Authenticated version-history UI coverage is now verified; destructive Restore execution remains pending to avoid mutating production content in CI.
+- Authenticated Autosave/Draft Recovery scenarios remain pending.
 
 ### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
@@ -129,17 +130,18 @@ Temuan yang masih pending:
 
 ### Prioritas 2 — Browser E2E
 4. Version Restore E2E dari UI sampai database.
-5. Uji Autosave & Draft Recovery.
+5. Uji Restore execution dengan data E2E terisolasi.
+6. Uji Autosave & Draft Recovery.
 
 ### Prioritas 3 — Final audit
-7. Audit final query halaman publik dan sanitasi.
-8. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
-9. Audit final formatting seluruh repo.
-10. Review consumer eksternal `swift-api` sebelum keputusan retirement.
+8. Audit final query halaman publik dan sanitasi.
+9. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
+10. Audit final formatting seluruh repo.
+11. Review consumer eksternal `swift-api` sebelum keputusan retirement.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **Browser E2E Version Restore**. Harness, runtime Chromium, dedicated E2E secrets, dan authenticated editor reachability sudah terverifikasi melalui GitHub Actions run #6.
+Mulai dengan **Restore execution E2E yang terisolasi**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, dan version-history UI coverage sudah terverifikasi.
 
 ## 🔁 Siklus wajib setiap sesi
 
