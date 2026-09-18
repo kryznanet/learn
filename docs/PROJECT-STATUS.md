@@ -183,3 +183,10 @@ verifikasi dokumentasi
  ↓
 lanjut
 ```
+
+
+## Final SECURITY DEFINER / index audit — 18 September 2026
+
+Final read-only audit completed for application SECURITY DEFINER functions and core public indexes/constraints. All remaining SECURITY DEFINER functions have explicit search_path; client-exposed application RPCs are limited to authenticated, while internal/trigger helpers have EXECUTE revoked from API roles. The remaining seven Security Advisor application warnings are therefore documented as intentional application RPC warnings, subject to periodic authorization review. Core primary keys, foreign keys, workflow checks, role uniqueness, material slug uniqueness, version uniqueness, and version-history indexes were verified live. No additional database hardening change was required at this checkpoint.
+
+Repository hygiene spot-check found no remaining TODO, FIXME, or obvious debug console.log/alert() matches in the searched repository paths. No formatting change was made because no concrete repository-wide formatting defect was identified by this non-mutating audit.
