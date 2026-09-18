@@ -1,6 +1,6 @@
 # 📐 Aturan Penulisan Kode — Kryzna Learn
 
-**Branch acuan:** `17-Sep-2026`  
+**Branch acuan:** branch pengembangan yang telah diverifikasi pada checkpoint aktif  
 **Tujuan:** membuat kode mudah dibaca, ditinjau, diuji, dan diperbaiki tanpa mengubah perilaku aplikasi secara tidak sengaja.
 
 ---
