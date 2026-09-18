@@ -315,3 +315,12 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Verifikasi live setelah perubahan: **58 materi published** tetap terdiri dari Dasar 22, Intermediate 20, Advanced 12, Tutorial 4; tidak ada perubahan schema atau status publikasi.
 - Verifikasi panjang konten: Intermediate sekitar 1.9–2.0 ribu karakter rata-rata, Advanced sekitar 3.1 ribu, Tutorial sekitar 1.9 ribu; kualitas dinilai berdasarkan relevansi teknis, bukan panjang semata.
 - Status: **Needs Verification** — perlu review pedagogis akhir dan pengecekan UI/rendering materi sebelum checkpoint kualitas ditutup.
+
+
+## Verifikasi UI materi — 18 September 2026
+
+- Review index.html menemukan jalur Tutorial sebelumnya hanya menuju anchor kosong sehingga tidak menerapkan filter katalog.
+- Perbaikan UI membuat kartu Tutorial pada learning path menggunakan mekanisme filter kategori yang sama dengan Dasar, Intermediate, dan Advanced.
+- Review materi/view.html mengonfirmasi halaman materi mengambil hanya status published, menampilkan konten HTML/Markdown melalui sanitasi client-side, dan menyediakan tampilan dokumen asli bila tersedia.
+- Commit UI: b69a0c32bc0e01109c0171c0cc13e4e911901fa8.
+- Status: Needs Verification untuk browser/E2E runtime; verifikasi source-level selesai, tetapi eksekusi browser belum tersedia pada checkpoint ini.
