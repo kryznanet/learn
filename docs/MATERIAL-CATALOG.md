@@ -49,3 +49,15 @@ Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. U
 22. **OSPF Dasar dan Routing Dinamis** — neighbor, area, cost, topology, dan troubleshooting.
 23. **Network Security Dasar dan Hardening** — least privilege, segmentasi, patching, MFA, logging, defense in depth.
 24. **Network Automation Dasar dengan API dan Script** — inventory, API, idempotensi, validasi, secret management, dan rollout.
+
+
+## Materi advanced networking — 18 September 2026
+
+25. **BGP Dasar dan Konsep Autonomous System**
+26. **MPLS dan Konsep Label Switching**
+27. **High Availability dan Redundansi Jaringan**
+28. **IDS IPS dan Network Detection**
+29. **Zero Trust untuk Infrastruktur Jaringan**
+30. **SD-WAN dan Software Defined Networking**
+31. **Cloud Networking Dasar dan Hybrid Connectivity**
+32. **Incident Response untuk Insiden Jaringan**
