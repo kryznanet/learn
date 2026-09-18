@@ -64,7 +64,7 @@ Do not use a personal password in source code or commit it to the repository. Pr
 - [x] Restore RPC berhasil diverifikasi secara transaksional dengan identity Super Admin; material uji dan snapshot di-rollback.
 - [x] Restore hanya role yang berwenang.
 - [x] Browser E2E: Super Admin dapat membuka riwayat versi dan melihat kontrol Restore.
-- [ ] Browser E2E: Restore execution dari UI sampai database pada environment terisolasi.
+- [ ] Browser E2E: Restore execution dari UI sampai database pada environment terisolasi (blocked until an isolated Supabase environment is available).
 - [ ] Restore membuat snapshot baru.
 - [ ] Activity log restore tercatat.
 
@@ -98,7 +98,7 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 - The new-draft autosave test filled the form before editor boot had attached the draft-recovery input listeners, so `#msg` remained empty.
 - The existing-material recovery test asserted `#id` immediately after navigation before the asynchronous material load completed, so the field was still empty.
 - Fix: `content/editor.html` now exposes `window.__kryznaEditorReady` after session/material loading and draft-recovery initialization; authenticated E2E waits for this signal before interacting with the editor.
-- The fix is committed on `18-Sep-2026`; a new CI run must pass before marking Draft Recovery verified.
+- The fix is committed on `18-Sep-2026`; run #43 (`35298946197`) subsequently passed, so Draft Recovery is verified for the covered flows.
 
 
 ## Browser E2E Draft Recovery verification — 18 September 2026
