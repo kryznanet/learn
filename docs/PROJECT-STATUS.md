@@ -116,6 +116,8 @@ Temuan yang masih pending:
 ## 🛑 Checkpoint 18 September 2026
 
 ### Final database security audit — 18 September 2026
+- Final jalur `materi` audit menemukan dan memperbaiki bypass workflow: `penulis` sebelumnya dapat menulis status non-draft melalui direct API karena `content.update` RLS belum membatasi nilai `status`. RLS kini membatasi `penulis` ke authored draft dan memastikan semua insert memiliki `author_id = auth.uid()`; `editor` dapat mengelola authored workflow, Admin/Super Admin tetap lintas author.
+- Applied migrations `20260918025136_enforce_materi_status_permissions_20260918` dan `20260918025144_tighten_materi_insert_author_20260918`; live policy verification berhasil.
 - Audited all 12 public `SECURITY DEFINER` functions; all have explicit `search_path`. Only the 7 application RPCs remain executable by `authenticated`; internal/trigger-only functions are not executable by API roles.
 - Audited RLS on all 10 core public tables: RLS is enabled throughout and public material visibility remains published-only.
 - Audited Storage policies for `materi-files` and `avatars`, core triggers, API table grants, and public indexes. No additional concrete security defect requiring code/schema change was identified.
@@ -152,9 +154,9 @@ Temuan yang masih pending:
 
 RBAC staff mutation telah diselaraskan: Admin hanya `users.read`, sedangkan perubahan profil/status/role staf tetap khusus Super Admin melalui `update_staff()`. Live verification sudah dilakukan.
 
-Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production.
+Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production. Final `materi` workflow audit juga memperketat RLS agar permission status tidak dapat dibypass lewat direct API.
 
-Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
+Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 
