@@ -1,11 +1,11 @@
 # Edge Functions Kryzna Learn
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 | Function | Deployment | JWT | Source repo |
 |---|---:|---|---|
 | `create-staff` | v3 ACTIVE | `true` | `supabase/functions/create-staff/index.ts` |
-| `swift-api` | v1 ACTIVE | `true` | Tidak ada di branch `17-Sep-2026` |
+| `swift-api` | v1 ACTIVE | `true` | Tidak ada di branch `18-Sep-2026` |
 
 ## create-staff
 
@@ -15,7 +15,7 @@ Source repo dan deployment aktif sudah diverifikasi parity setelah deployment ve
 
 ## swift-api
 
-Merupakan endpoint demo/legacy yang aktif di Supabase tetapi tidak memiliki counterpart source di branch ini. Function tidak menggunakan data/Storage Kryzna Learn. Detail audit berada di `SWIFT-API-AUDIT.md`.
+Merupakan endpoint demo/legacy yang aktif di Supabase tetapi tidak memiliki counterpart source di branch ini. Audit deployment v1 menunjukkan JWT verification aktif dan tidak terlihat akses database/Storage Kryzna Learn. Consumer eksternal belum dapat dibuktikan tidak ada; jangan hapus sebelum diverifikasi. Detail audit berada di `SWIFT-API-AUDIT.md`.
 
 Jangan menghapus function aktif sebelum consumer eksternal dipastikan tidak ada.
 
