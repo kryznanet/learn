@@ -68,6 +68,53 @@ test.describe('Kryzna Learn authenticated editor', () => {
     });
   });
 
+  test('super admin can recover a draft for an existing material without persisting it', async ({ page }) => {
+    await login(page);
+
+    await page.goto('/content/materials.html');
+    const material = page.locator('article.card').filter({ hasText: 'Test 12' }).first();
+    await expect(material).toBeVisible();
+
+    await material.getByRole('link', { name: 'Tulis / Edit' }).click();
+    await expect(page.locator('#form')).toBeVisible();
+
+    const materialId = await page.locator('#id').inputValue();
+    expect(materialId).not.toBe('');
+
+    await page.locator('#judul').fill('E2E Existing Material Draft Probe');
+    await page.locator('#deskripsi').fill('Draft existing material untuk recovery.');
+    await page.locator('#konten').fill('Isi draft existing material yang tidak dikirim ke database.');
+
+    await expect
+      .poll(async () => page.locator('#msg').textContent(), { timeout: 5_000 })
+      .toContain('Draft tersimpan otomatis');
+
+    const draftKey = await page.evaluate((id) => {
+      const prefix = 'kryzna-learn:draft:';
+      return Object.keys(localStorage).find(
+        (key) => key.startsWith(prefix) && key.endsWith(':' + id)
+      ) || null;
+    }, materialId);
+
+    expect(draftKey).toBeTruthy();
+
+    await page.reload();
+    page.once('dialog', async (dialog) => {
+      expect(dialog.message()).toContain('Ditemukan draft lokal');
+      await dialog.accept();
+    });
+
+    await expect(page.locator('#judul')).toHaveValue('E2E Existing Material Draft Probe');
+    await expect(page.locator('#deskripsi')).toHaveValue('Draft existing material untuk recovery.');
+    await expect(page.locator('#konten')).toContainText('Isi draft existing material yang tidak dikirim ke database.');
+
+    await page.evaluate(() => {
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith('kryzna-learn:draft:'))
+        .forEach((key) => localStorage.removeItem(key));
+    });
+  });
+
   test('super admin can open material version history and sees restore controls', async ({ page }) => {
     await login(page);
 
