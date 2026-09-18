@@ -30,6 +30,7 @@ test.describe('Kryzna Learn authenticated editor', () => {
 
     await page.goto('/content/editor.html');
     await expect(page.locator('#form')).toBeVisible();
+    await page.waitForFunction(() => window.__kryznaEditorReady === true);
 
     await page.locator('#judul').fill('E2E Draft Recovery Probe');
     await page.locator('#deskripsi').fill('Draft lokal untuk verifikasi Browser E2E.');
@@ -77,6 +78,7 @@ test.describe('Kryzna Learn authenticated editor', () => {
 
     await material.getByRole('link', { name: 'Tulis / Edit' }).click();
     await expect(page.locator('#form')).toBeVisible();
+    await page.waitForFunction(() => window.__kryznaEditorReady === true);
 
     const materialId = await page.locator('#id').inputValue();
     expect(materialId).not.toBe('');
