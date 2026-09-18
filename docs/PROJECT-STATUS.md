@@ -236,3 +236,12 @@ Prepare a reviewed, complete local schema baseline from the existing live schema
 
 ### Checkpoint berikutnya
 Generate the authoritative baseline using the supported Supabase CLI/database-pull workflow in a machine with Docker + Supabase CLI, review it against the captured live schema, then add supabase/config.toml with PostgreSQL major version 17 and verify supabase db reset locally. Only after that enable Restore UI-to-database E2E against local Supabase.
+
+
+## Pengayaan materi — 18 September 2026
+
+- Ditambahkan 8 materi pembelajaran jaringan yang sebelumnya belum tersedia: Model OSI, TCP/UDP, NAT/Port Forwarding, ARP, Ethernet/Switching, Wi-Fi, HTTP/HTTPS, dan Troubleshooting Berlapis.
+- Verifikasi live `public.materi` mengonfirmasi seluruh 8 slug baru berstatus `published` dan memiliki konten non-kosong.
+- Tidak ada materi lama yang ditimpa; penambahan hanya dilakukan untuk slug yang belum ada.
+- Katalog materi dicatat di `docs/MATERIAL-CATALOG.md`.
+- Status local Supabase baseline tetap **Blocked**; pengayaan data ini tidak menggantikan kebutuhan baseline migration yang reproducible.
