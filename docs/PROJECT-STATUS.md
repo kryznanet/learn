@@ -150,6 +150,8 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
+Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production.
+
 Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
