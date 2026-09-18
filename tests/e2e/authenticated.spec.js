@@ -25,6 +25,33 @@ test.describe('Kryzna Learn authenticated editor', () => {
     await expect(page.locator('#konten')).toBeEditable();
   });
 
+  test('super admin can autosave a new editor draft locally without persisting it', async ({ page }) => {
+    await login(page);
+
+    await page.goto('/content/editor.html');
+    await expect(page.locator('#form')).toBeVisible();
+
+    await page.locator('#judul').fill('E2E Draft Recovery Probe');
+    await page.locator('#deskripsi').fill('Draft lokal untuk verifikasi Browser E2E.');
+    await page.locator('#konten').fill('Isi draft E2E yang tidak dikirim ke database.');
+
+    await expect
+      .poll(async () => page.locator('#msg').textContent(), { timeout: 5_000 })
+      .toContain('Draft tersimpan otomatis');
+
+    const draft = await page.evaluate(() => {
+      const userId = window.__kryznaE2EUserId || null;
+      const keys = Object.keys(localStorage);
+      const key = keys.find((item) => item.startsWith('kryzna-learn:draft:') && item.endsWith(':new'));
+      return key ? JSON.parse(localStorage.getItem(key)) : null;
+    });
+
+    expect(draft?.judul).toBe('E2E Draft Recovery Probe');
+    expect(draft?.deskripsi).toBe('Draft lokal untuk verifikasi Browser E2E.');
+    expect(draft?.konten).toContain('Isi draft E2E yang tidak dikirim ke database.');
+    expect(draft?.savedAt).toBeTruthy();
+  });
+
   test('super admin can open material version history and sees restore controls', async ({ page }) => {
     await login(page);
 
