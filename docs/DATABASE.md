@@ -1,6 +1,6 @@
 # Database Kryzna Learn
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 ## Tabel inti
 
@@ -22,7 +22,9 @@ Status yang valid: `draft`, `review`, `published`, `archived`.
 
 ## Version history
 
-`materi_versions` memakai unique `(materi_id, version_number)` dan index berdasarkan material/version. Trigger snapshot berjalan setelah insert/update `materi`.
+`materi_versions` memakai unique `(materi_id, version_number)` dan index berdasarkan material/version. Trigger `trg_snapshot_materi_version` berjalan setelah insert/update `materi`.
+
+`snapshot_materi_version()` adalah `SECURITY DEFINER` trigger-only function dengan `search_path = public`. `EXECUTE` untuk `PUBLIC`, `anon`, dan `authenticated` telah dicabut. Trigger tetap dapat menjalankannya karena privilege trigger execution tidak bergantung pada pemanggilan RPC oleh role API.
 
 ## RPC penting
 
@@ -31,7 +33,7 @@ Status yang valid: `draft`, `review`, `published`, `archived`.
 - `add_staff_by_email(...)` — jalur penambahan staf terproteksi.
 - `update_staff(...)` — perubahan staf terproteksi.
 - `restore_materi_version(...)` — restore versi terproteksi.
-- `snapshot_materi_version()` — trigger-only function.
+- `snapshot_materi_version()` — trigger-only function; tidak diekspos sebagai RPC publik.
 
 ## RLS
 
@@ -44,3 +46,11 @@ Workflow dan version history memiliki index/constraint yang mendukung pencarian 
 ## Migration discipline
 
 Perubahan schema dilakukan melalui migration dan diverifikasi dengan query setelah penerapan. Dokumentasikan perubahan signifikan di `PROJECT-STATUS.md`.
+
+### Security hardening — 18 September 2026
+
+Migration `20260918010522_harden_trigger_function_privileges_20260918` menetapkan `search_path = public` pada `set_materi_updated_at()` dan mencabut `EXECUTE` eksplisit untuk role API pada `snapshot_materi_version()`.
+
+Migration `20260918010535_restrict_trigger_function_execute_20260918` mencabut `EXECUTE` dari `PUBLIC`, `anon`, dan `authenticated` pada `snapshot_materi_version()`.
+
+Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback.
