@@ -65,7 +65,7 @@ Kryzna Learn
 Database memiliki `roles`, `permissions`, `user_roles`, dan `role_permissions`. Mapping tersedia untuk `super_admin`, `admin`, `editor`, dan `penulis`; `viewer` dipertahankan sebagai legacy dengan `content.read`.
 
 ### 4. Workflow dan version history
-Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. `shared/draft-recovery.js` sekarang dimuat oleh `content/editor.html` dan diinisialisasi setelah session/materi siap agar key draft tidak salah untuk materi existing. Browser E2E Restore execution dan Draft Recovery CI masih pending.
+Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. `shared/draft-recovery.js` sekarang dimuat oleh `content/editor.html` dan diinisialisasi setelah session/materi siap agar key draft tidak salah untuk materi existing. Browser E2E Restore execution dan Draft Recovery CI masih pending; run #35 gagal karena test timing sebelum editor boot selesai dan sudah diperbaiki dengan readiness signal.
 
 ### 5. Storage dan RLS
 RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan public read dibatasi pada file materi `published`.
@@ -90,7 +90,7 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - GitHub Actions Browser E2E run #6 (`35296715443`) completed successfully with all 3 tests passed, including authenticated Super Admin editor reachability.
 - Authenticated version-history UI coverage is verified; destructive Restore execution remains pending because the connected Supabase project has no isolated staging/branch environment.
 - `restore_materi_version` has been verified transactionally at the database/RPC layer with the dedicated Super Admin identity; the temporary material, snapshots, and restore mutation were rolled back completely.
-- Authenticated Autosave/Draft Recovery: autosave-to-localStorage and recovery/reload tests are present, including existing-material recovery; CI verification of the latest test commit is pending until the GitHub Actions run completes. Cleanup remains pending.
+- Authenticated Autosave/Draft Recovery: autosave-to-localStorage and recovery/reload tests are present, including existing-material recovery. CI run #35 (`35298200046`) completed with 4 passed and 2 failed due to editor boot timing; readiness synchronization was added in the editor and E2E tests. A new CI run is required before marking Draft Recovery verified. Cleanup remains pending.
 
 ### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
@@ -128,7 +128,7 @@ Temuan yang masih pending:
 - Policy hasil akhir `Super admins manage user roles` terverifikasi `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
 - Security Advisor direrun setelah perubahan; warning tetap 7 application SECURITY DEFINER + 1 leaked-password.
 - `docs/RBAC.md`, `docs/SECURITY.md`, `docs/DATABASE.md`, `docs/CHANGELOG.md`, dan file migration diperbarui melalui commit terpisah dan diverifikasi.
-- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E harness dan authenticated editor reachability sudah terverifikasi lulus melalui GitHub Actions run #6; Version Restore execution UI-to-database and Draft Recovery CI verification masih pending.
+- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E harness dan authenticated editor reachability sudah terverifikasi lulus melalui GitHub Actions run #6. Version Restore execution UI-to-database tetap pending; Draft Recovery CI run #35 gagal karena timing dan telah diperbaiki, menunggu verifikasi CI berikutnya.
 
 ## ⚠️ Pekerjaan selanjutnya
 
@@ -150,7 +150,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **environment terisolasi untuk Restore execution E2E**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, version-history UI, autosave localStorage, dan recovery/reload test sudah tersedia; yang tersisa adalah verifikasi CI recovery serta eksekusi Restore UI-to-database tanpa menyentuh produksi.
+Mulai dengan **verifikasi CI Draft Recovery setelah readiness fix**, lalu lanjut ke environment terisolasi untuk Restore execution E2E. Jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 
