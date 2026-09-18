@@ -162,7 +162,7 @@ RBAC staff mutation telah diselaraskan: Admin hanya `users.read`, sedangkan peru
 
 Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production. Final `materi` workflow audit juga memperketat RLS agar permission status tidak dapat dibypass lewat direct API. Final source audit juga menemukan `admin/import.html` belum mengirim `author_id`, sehingga kini diselaraskan dengan RLS insert.
 
-Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan; jalur import juga sudah diselaraskan dengan author ownership RLS. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
+Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Review consumer `swift-api` pada repository/GitHub/public sources selesai tanpa menemukan consumer yang relevan; consumer eksternal di luar sumber tersebut tetap **Needs Verification**. Final formatting/repository audit non-mutating selesai tanpa defect baru. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan; jalur import juga sudah diselaraskan dengan author ownership RLS. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 
@@ -197,3 +197,12 @@ lanjut
 Final read-only audit completed for application SECURITY DEFINER functions and core public indexes/constraints. All remaining SECURITY DEFINER functions have explicit search_path; client-exposed application RPCs are limited to authenticated, while internal/trigger helpers have EXECUTE revoked from API roles. The remaining seven Security Advisor application warnings are therefore documented as intentional application RPC warnings, subject to periodic authorization review. Core primary keys, foreign keys, workflow checks, role uniqueness, material slug uniqueness, version uniqueness, and version-history indexes were verified live. No additional database hardening change was required at this checkpoint.
 
 Repository hygiene spot-check found no remaining TODO, FIXME, or obvious debug console.log/alert() matches in the searched repository paths. No formatting change was made because no concrete repository-wide formatting defect was identified by this non-mutating audit.
+
+
+## Checkpoint penutupan security/hardening — 18 September 2026
+
+- Final repository/formatting audit: **Verified**, non-mutating; tidak ditemukan TODO/FIXME atau debug pattern yang memerlukan perubahan.
+- `swift-api` consumer review: **Needs Verification**; tidak ditemukan consumer relevan pada repository, connected GitHub search, atau public web sources. Function tetap ACTIVE.
+- Security/hardening area yang dapat diverifikasi telah ditutup. Residual items tetap tercatat: 7 intentional application SECURITY DEFINER warnings, leaked-password plan limitation, dan Restore UI-to-database E2E blocked tanpa isolated staging.
+- Commit audit dokumentasi `swift-api`: `32fc52f0b8296d60de5b903c20a7f26563325b0b`.
+- Checkpoint berikutnya: hanya pekerjaan residual di atas atau perubahan baru yang diminta; jangan mengulang audit yang sudah terverifikasi.
