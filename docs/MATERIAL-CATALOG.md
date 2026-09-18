@@ -37,3 +37,15 @@ Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. U
 14. **Firewall dan Access Control List** — rule, stateful filtering, ACL, dan least privilege.
 15. **VPN dan Konsep Tunneling** — remote access, site-to-site, endpoint, route, dan troubleshooting.
 16. **Monitoring Jaringan dan Analisis Log** — latency, packet loss, throughput, interface error, dan korelasi log.
+
+
+## Materi intermediate networking
+
+17. **Subnetting Lanjutan dan VLSM** — perancangan prefix berbeda dan efisiensi alamat.
+18. **STP dan RSTP pada Jaringan Switching** — root bridge, port role, loop prevention, dan konvergensi.
+19. **Link Aggregation dan LACP** — logical bundle, redundansi, kapasitas agregat, dan troubleshooting.
+20. **QoS dan Manajemen Traffic Jaringan** — classification, marking, queueing, shaping/policing, dan metrik.
+21. **Wireshark dan Analisis Packet Capture** — capture, filter, stream, latency, retransmission, dan privasi.
+22. **OSPF Dasar dan Routing Dinamis** — neighbor, area, cost, topology, dan troubleshooting.
+23. **Network Security Dasar dan Hardening** — least privilege, segmentasi, patching, MFA, logging, defense in depth.
+24. **Network Automation Dasar dengan API dan Script** — inventory, API, idempotensi, validasi, secret management, dan rollout.
