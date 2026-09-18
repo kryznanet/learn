@@ -99,7 +99,7 @@ Temuan yang masih pending:
 ## 🛑 Checkpoint 18 September 2026
 
 - Database migrations sebelumnya berhasil diterapkan dan diverifikasi.
-- Migration `20260918012300_allow_authenticated_content_users_to_view_materi_20260918` diterapkan ke Supabase dan policy SELECT `materi` diverifikasi.
+- Migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918` diterapkan ke Supabase dan policy SELECT `materi` diverifikasi.
 - Migration `20260918011836_restrict_user_role_management_to_super_admin_20260918` diterapkan ke Supabase dan diverifikasi.
 - Policy hasil akhir `Super admins manage user roles` terverifikasi `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
 - Security Advisor direrun setelah perubahan; warning tetap 7 application SECURITY DEFINER + 1 leaked-password.
