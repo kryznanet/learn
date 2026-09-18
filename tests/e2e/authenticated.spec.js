@@ -160,12 +160,13 @@ test.describe('Kryzna Learn authenticated editor', () => {
     await login(page);
 
     await page.goto('/content/materials.html');
-    const material = page.locator('article.card').filter({ hasText: 'Test 12' }).first();
+    const material = page.locator('article.card').first();
     await expect(material).toBeVisible();
+    const materialTitle = (await material.locator('h3').innerText()).trim();
 
     await material.getByRole('link', { name: 'Riwayat Versi' }).click();
     await expect(page).toHaveURL(/\/content\/versions\.html\?id=/);
-    await expect(page.locator('#heading')).toContainText('Riwayat Versi: Test 12');
+    await expect(page.locator('#heading')).toContainText('Riwayat Versi: ' + materialTitle);
     await expect(page.getByRole('button', { name: 'Pulihkan' }).first()).toBeVisible();
   });
 });
