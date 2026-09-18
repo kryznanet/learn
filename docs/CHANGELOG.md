@@ -120,3 +120,11 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menemukan mismatch source/database contract pada `update_staff()`: function masih menerima actor `admin` untuk perubahan profil/active state, sementara RBAC Admin sudah dicabut `users.update` dan `users.disable`.
 - Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` memperketat authorization internal menjadi Super Admin-only.
 - Live database diverifikasi: `update_staff()` tetap executable untuk `authenticated` sebagai jalur aplikasi, tetapi memiliki guard `actor_role <> 'super_admin'`; `anon` tidak memiliki EXECUTE.
+
+
+## 18 September 2026 — Pendalaman pedagogis seluruh materi published
+
+- Memperbarui seluruh 58 materi published dengan konten yang lebih spesifik per topik, dimulai dari Dasar dan dilanjutkan ke Intermediate, Advanced, serta Tutorial.
+- Menambahkan contoh kasus, bukti verifikasi, troubleshooting, latihan, dan checklist yang relevan dengan domain masing-masing materi.
+- Verifikasi live: 58 published tetap terdiri dari Dasar 22, Intermediate 20, Advanced 12, Tutorial 4.
+- Tidak ada perubahan schema, RLS, RBAC, atau status publikasi.
