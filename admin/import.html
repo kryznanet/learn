@@ -288,7 +288,8 @@
           file_url: url,
           file_path: path,
           file_name: file.name,
-          file_type: file.type || 'application/octet-stream'
+          file_type: file.type || 'application/octet-stream',
+          author_id: user.id
         };
 
         const insert = await db
