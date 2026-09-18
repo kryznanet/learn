@@ -1,5 +1,27 @@
 # Testing Kryzna Learn
 
+## Browser E2E — Playwright
+
+The repository now includes a Chromium browser test harness:
+
+- package.json provides npm run test:e2e.
+- playwright.config.js runs Chromium tests and starts a local Python HTTP server when BASE_URL is not provided.
+- tests/e2e/public.spec.js covers public homepage and admin-login smoke checks.
+- tests/e2e/authenticated.spec.js covers authenticated editor reachability when KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD are configured.
+- .github/workflows/browser-e2e.yml installs Chromium with dependencies and uploads Playwright reports/traces as workflow artifacts.
+- Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
+
+GitHub Actions setup:
+
+1. Repository Settings → Secrets and variables → Actions.
+2. Add KRYZNA_E2E_EMAIL for a dedicated E2E account.
+3. Add KRYZNA_E2E_PASSWORD for that account.
+4. Push to 18-Sep-2026 or run the workflow manually.
+5. Review the playwright-report artifact after the run.
+
+Do not use a personal password in source code or commit it to the repository. Prefer a dedicated test account with only the permissions required by the E2E scenarios.
+
+
 **Tanggal:** 18 September 2026
 
 ## Public content sanitization regression — 18 September 2026
