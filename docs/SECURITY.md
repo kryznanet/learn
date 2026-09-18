@@ -63,3 +63,12 @@ Leaked Password Protection Supabase masih disabled dan menjadi pekerjaan securit
 ### Direct staff-update hardening — 18 September 2026
 
 Migration `restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi `pg_policies` menunjukkan tabel hanya memiliki policy SELECT untuk authenticated; jalur perubahan staf tetap melalui `update_staff(...)`.
+
+
+### API table privilege hardening — 18 September 2026
+
+- API table grants were reduced to least privilege in migrations `20260918020624_restrict_api_table_privileges_20260918`, `20260918020632_tighten_api_table_dml_privileges_20260918`, and `20260918020637_restore_rbac_write_privileges_20260918`.
+- `anon` can SELECT only `public.materi`; other public tables no longer have API table privileges for `anon`.
+- `authenticated` retains only DML privileges required by existing RLS policies; unused `REFERENCES`, `TRIGGER`, and `TRUNCATE` privileges were removed.
+- `user_roles` and `role_permissions` retain authenticated INSERT/UPDATE/DELETE privileges because their Super Admin-only RLS policies intentionally provide those write paths.
+- Final verification confirmed RLS remains enabled on all core public tables and no `anon` write privilege remains on the audited tables.
