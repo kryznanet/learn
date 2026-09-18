@@ -54,5 +54,11 @@
     window.addEventListener('beforeunload',()=>{clearTimeout(timer);saveLocal()});
     if(window.supabaseClient) setupUser();
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+  window.KryznaDraftRecovery = { init };
+
+  if(document.readyState==='loading') {
+    document.addEventListener('DOMContentLoaded',()=>init());
+  } else if(window.__KRYZNA_AUTO_INIT_DRAFT_RECOVERY__) {
+    init();
+  }
 })();
