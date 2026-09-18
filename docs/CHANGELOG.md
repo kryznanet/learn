@@ -1,3 +1,8 @@
+## 18 September 2026 — Documentation consistency audit
+- Memverifikasi `docs/ARCHITECTURE.md`, `docs/RBAC.md`, `docs/LEGACY.md`, `docs/TESTING.md`, dan `docs/PROJECT-STATUS.md` terhadap struktur repository dan checkpoint aktif.
+- Memperbaiki metadata branch/tanggal pada `docs/ARCHITECTURE.md` yang masih menunjuk checkpoint `17-Sep-2026`; arsitektur kini mengikuti branch aktif yang diverifikasi.
+- Tidak ditemukan perubahan behavior aplikasi dari audit konsistensi ini.
+
 ## 18 September 2026 — Swift API consumer re-audit
 - Re-verifikasi deployment `swift-api` langsung pada Supabase: ACTIVE v1, `verify_jwt=true`, source hash tetap `6ccb86e9607420d75fcd790e0cd86de168ef8ec12ed4724f0cb496be59646a2e`.
 - Source deployment hanya menangani payload `name` dan tidak menunjukkan akses database/Storage Kryzna Learn.

@@ -1,7 +1,7 @@
 # Arsitektur Kryzna Learn
 
-**Tanggal:** 17 September 2026  
-**Branch:** `17-Sep-2026`
+**Tanggal checkpoint:** 18 September 2026  
+**Branch aktif:** `18-Sep-2026`
 
 ## Tujuan
 

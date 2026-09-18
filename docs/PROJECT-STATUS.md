@@ -150,6 +150,10 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
+Audit konsistensi dokumentasi menemukan dan memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md`. Repository audit tetap non-mutating untuk area lain; tidak ada behavior aplikasi yang diubah.
+
+## 🧭 Titik lanjut sesi berikutnya
+
 Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
