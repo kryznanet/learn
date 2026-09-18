@@ -82,6 +82,8 @@ Tiga migration privilege memperkecil grant API tanpa mengubah RLS policy semanti
 
 ### RBAC staff mutation alignment — 18 September 2026
 
+Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` menyelaraskan authorization internal `update_staff()` dengan RBAC: hanya `super_admin` yang dapat mengubah profil, role, atau active state staf. Ini menutup mismatch sebelumnya ketika function masih menerima actor `admin` walaupun permission `users.update`/`users.disable` sudah dicabut dari role Admin.
+
 Migration `20260918024839_restrict_admin_staff_mutation_permissions_20260918` mencabut `users.update` dan `users.disable` dari role `admin`. Admin tetap memiliki `users.read`; perubahan profil/status/role staf hanya melalui jalur Super Admin `update_staff()`. Verifikasi live RBAC menunjukkan role `admin` tidak memiliki `roles.manage`.
 
 

@@ -150,6 +150,12 @@ Temuan yang masih pending:
 10. Audit final formatting seluruh repo — formatting guidance dan legacy config audit sudah ditindaklanjuti pada checkpoint ini.
 11. Review consumer eksternal `swift-api` sebelum keputusan retirement; audit deployment/source sudah diulang dan tetap tidak menemukan consumer repo, tetapi consumer eksternal belum dapat dibuktikan.
 
+## 🔎 Source → database contract audit — 18 September 2026
+
+Audit final menemukan satu mismatch authorization pada `update_staff()`: role `admin` masih diterima di dalam function untuk perubahan profil/active state, walaupun permission `users.update` dan `users.disable` sudah dicabut dari mapping Admin. Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` memperbaiki guard menjadi Super Admin-only. Live function definition dan EXECUTE privilege sudah diverifikasi.
+
+Storage, content activity logs, version history, system activity logs, dan RPC application paths telah diaudit terhadap source dan live RLS/grants. Tidak ditemukan mismatch authorization tambahan yang memerlukan perubahan pada checkpoint ini. Temuan konsistensi Storage import tetap dicatat sebagai reliability concern: upload file terjadi sebelum INSERT `materi`, sehingga kegagalan INSERT dapat meninggalkan orphan file; belum diubah karena memerlukan desain cleanup yang aman.
+
 ## 🧭 Titik lanjut sesi berikutnya
 
 RBAC staff mutation telah diselaraskan: Admin hanya `users.read`, sedangkan perubahan profil/status/role staf tetap khusus Super Admin melalui `update_staff()`. Live verification sudah dilakukan.

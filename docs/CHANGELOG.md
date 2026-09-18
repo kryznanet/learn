@@ -108,3 +108,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Audited RLS: all 10 core public tables have RLS enabled. Public/anon material access remains published-only.
 - Hardened API table grants with migrations `20260918020624_restrict_api_table_privileges_20260918`, `20260918020632_tighten_api_table_dml_privileges_20260918`, and `20260918020637_restore_rbac_write_privileges_20260918`.
 - Verified Storage policies for `materi-files` and `avatars`, core triggers, and final public indexes. No additional concrete security defect was identified in these areas.
+
+
+## 18 September 2026 — Staff update RPC hardening
+
+- Menemukan mismatch source/database contract pada `update_staff()`: function masih menerima actor `admin` untuk perubahan profil/active state, sementara RBAC Admin sudah dicabut `users.update` dan `users.disable`.
+- Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` memperketat authorization internal menjadi Super Admin-only.
+- Live database diverifikasi: `update_staff()` tetap executable untuk `authenticated` sebagai jalur aplikasi, tetapi memiliki guard `actor_role <> 'super_admin'`; `anon` tidak memiliki EXECUTE.

@@ -60,6 +60,10 @@ Leaked Password Protection Supabase masih disabled dan menjadi pekerjaan securit
 - [x] Security Advisor dijalankan setelah hardening.
 
 
+### Staff RPC authorization hardening — 18 September 2026
+
+Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` memperketat authorization internal `update_staff()` menjadi Super Admin-only. Ini memastikan pencabutan permission `users.update` dan `users.disable` pada role Admin tidak dapat dilewati dengan memanggil RPC secara langsung.
+
 ### Direct staff-update hardening — 18 September 2026
 
 Migration `restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi `pg_policies` menunjukkan tabel hanya memiliki policy SELECT untuk authenticated; jalur perubahan staf tetap melalui `update_staff(...)`.
