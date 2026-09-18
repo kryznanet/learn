@@ -297,3 +297,12 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Verifikasi live `public.materi`: **Dasar 24**, **Intermediate 20**, **Advanced 12**, **Tutorial 4**; seluruh konten memiliki panjang sekitar 4.5–4.8 ribu karakter setelah pendalaman.
 - Tidak ada perubahan schema, RLS, status publikasi, atau jumlah materi.
 - Catatan: dua entri berjudul **Test** dan **Test 12** masih memiliki nama placeholder; kontennya sekarang menjelaskan materi pengantar sementara. Keduanya sebaiknya divalidasi/diarsipkan pada cleanup katalog berikutnya.
+
+
+## Review kualitas materi — 18 September 2026
+
+- Pendalaman konten dilanjutkan dengan isi yang lebih spesifik per topik, termasuk konsep teknis, contoh penerapan, alur kerja, troubleshooting, dan latihan.
+- Verifikasi live saat checkpoint: **58 materi published** terdiri dari Dasar 22, Intermediate 20, Advanced 12, Tutorial 4.
+- Dua entri placeholder **Test** dan **Test 12** terverifikasi berstatus `archived`, sehingga tidak termasuk katalog published.
+- Konten published yang diperbarui memiliki panjang sekitar 3.0–3.5 ribu karakter dan telah diperiksa memiliki bagian konsep dan troubleshooting.
+- Status: **Needs Verification** untuk review pedagogis lanjutan; struktur teknis sudah diperbaiki, tetapi contoh dan latihan masih perlu diperdalam per materi pada iterasi berikutnya.
