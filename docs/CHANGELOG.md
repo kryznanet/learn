@@ -55,3 +55,11 @@
 Setiap perubahan signifikan pada schema, RBAC, security, Edge Function, atau behavior utama harus ditambahkan ke changelog dan `PROJECT-STATUS.md`.
 
 Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**.
+
+
+## 18 September 2026 — Final database privilege audit
+
+- Audited all public-schema `SECURITY DEFINER` functions: 12 functions found; only the 7 application RPCs remain executable by `authenticated`, while internal/trigger-only helpers are not executable by API roles. All audited SECURITY DEFINER functions have explicit `search_path` configuration.
+- Audited RLS: all 10 core public tables have RLS enabled. Public/anon material access remains published-only.
+- Hardened API table grants with migrations `20260918020624_restrict_api_table_privileges_20260918`, `20260918020632_tighten_api_table_dml_privileges_20260918`, and `20260918020637_restore_rbac_write_privileges_20260918`.
+- Verified Storage policies for `materi-files` and `avatars`, core triggers, and final public indexes. No additional concrete security defect was identified in these areas.
