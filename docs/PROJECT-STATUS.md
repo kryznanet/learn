@@ -1,8 +1,8 @@
 # 📌 Status Proyek — Kryzna Learn
 
-**Tanggal checkpoint:** 17 September 2026  
-**Branch aktif saat checkpoint:** `17-Sep-2026`  
-**Status sesi:** Aturan branch dinamis dan workflow pengembangan sudah diselaraskan di repository. Tidak ada perubahan behavior aplikasi. Pekerjaan berikutnya tetap security hardening database.
+**Tanggal checkpoint:** 18 September 2026  
+**Branch aktif saat checkpoint:** `18-Sep-2026`  
+**Status sesi:** Security hardening database tahap trigger selesai dan terverifikasi. `snapshot_materi_version()` tidak lagi executable oleh role API/public, `set_materi_updated_at()` memiliki `search_path` eksplisit, dan trigger snapshot tetap bekerja. Pekerjaan berikutnya adalah evaluasi Leaked Password Protection dan review SECURITY DEFINER RPC yang masih diekspos ke authenticated sebelum masuk Browser E2E.
 
 ## 🔁 Aturan branch aktif
 
@@ -35,7 +35,7 @@ Dokumentasi sekarang mencakup:
 
 `PROJECT-STATUS.md` tetap menjadi sumber checkpoint/progres, sedangkan dokumen teknis menjadi sumber detail implementasi.
 
-## ✅ Progres terbaru — 17 September 2026
+## ✅ Progres terbaru — 18 September 2026
 
 ### 1. Struktur UI dan dokumentasi
 Struktur aplikasi menggunakan tiga area utama:
@@ -76,46 +76,51 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 ### 7. Edge Functions
 `create-staff` aktif version 3 dan source repo parity dengan deployment. Role `editor` sudah didukung. `swift-api` aktif version 1 tetapi tidak memiliki source counterpart di branch; tidak diubah dan tidak dihapus.
 
-### 8. Aturan workflow pengembangan
-`docs/DEVELOPMENT.md` sekarang menetapkan branch dinamis: verifikasi branch aktif sebelum pekerjaan, gunakan `PROJECT-STATUS.md` sebagai checkpoint, dan jangan mengunci nama branch berdasarkan sesi/tanggal sebelumnya. Siklus perubahan tetap **ubah → commit → verifikasi → update dokumentasi & progres → verifikasi dokumentasi → lanjut**.
+### 8. Security hardening database — 18 September
+- `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
+- `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
+- `trg_snapshot_materi_version` terverifikasi tetap `AFTER INSERT OR UPDATE` pada `public.materi`.
+- Pengujian transaksional insert/update menghasilkan `2` snapshot `materi_versions` dan di-rollback tanpa meninggalkan data uji.
 
-## 🔐 Security Advisor checkpoint
+## 🔐 Security Advisor checkpoint — 18 September 2026
 
-Temuan yang masih dicatat:
-- `set_materi_updated_at()` memiliki mutable `search_path`.
-- `snapshot_materi_version()` adalah `SECURITY DEFINER` yang masih executable oleh anon/authenticated dan perlu dibatasi karena trigger-only.
-- SECURITY DEFINER RPC yang menjadi jalur aplikasi tetap perlu ditinjau satu per satu berdasarkan kebutuhan execute/authorization.
+Temuan yang sudah terselesaikan:
+- `function_search_path_mutable` untuk `set_materi_updated_at()`.
+- `anon_security_definer_function_executable` untuk `snapshot_materi_version()`.
+- `authenticated_security_definer_function_executable` untuk `snapshot_materi_version()`.
+
+Temuan yang masih pending:
+- 10 application `SECURITY DEFINER` RPC masih executable oleh `authenticated`; perlu review per fungsi terhadap kebutuhan jalur aplikasi dan authorization internal.
 - Leaked Password Protection Supabase masih disabled.
 
-## 🛑 Checkpoint dokumentasi — 17 September 2026
+## 🛑 Checkpoint 18 September 2026
 
-- `docs/DEVELOPMENT.md` diperbarui untuk aturan branch dinamis.
-- `docs/CHANGELOG.md` mencatat perubahan aturan branch.
-- `docs/PROJECT-STATUS.md` diperbarui untuk menjadikan aturan branch dinamis sebagai bagian dari project source of truth.
-- Commit dokumentasi terakhir untuk checkpoint ini: `8c4b6c13684b853b6b7a350c925c96bb8dd1984a`.
-- Tidak ada perubahan behavior aplikasi.
+- Database migrations `20260918010522_harden_trigger_function_privileges_20260918` dan `20260918010535_restrict_trigger_function_execute_20260918` berhasil diterapkan.
+- Database diverifikasi setelah perubahan.
+- Trigger behavior diverifikasi dengan transactional insert/update test.
+- `docs/SECURITY.md`, `docs/DATABASE.md`, dan `docs/CHANGELOG.md` diperbarui.
+- Tidak ada perubahan behavior UI pada checkpoint ini.
 
 ## ⚠️ Pekerjaan selanjutnya
 
-### Prioritas 1 — Security hardening database
-1. Hardening `snapshot_materi_version()` — revoke `EXECUTE` untuk anon/authenticated tanpa memutus trigger.
-2. Hardening `set_materi_updated_at()` dengan `search_path` eksplisit.
-3. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
-4. Jalankan ulang Security Advisor dan dokumentasikan hasil terbaru.
+### Prioritas 1 — Security/Auth
+1. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
+2. Audit 10 application `SECURITY DEFINER` RPC yang masih executable oleh `authenticated`, termasuk authorization internal dan kebutuhan EXECUTE.
+3. Rerun Security Advisor setelah seluruh hardening terkait selesai.
 
 ### Prioritas 2 — Browser E2E
-5. Uji Version Restore dari UI sampai database.
-6. Uji Autosave & Draft Recovery.
+4. Uji Version Restore dari UI sampai database.
+5. Uji Autosave & Draft Recovery.
 
 ### Prioritas 3 — Final audit
-7. Audit final query halaman publik dan sanitasi.
-8. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
-9. Audit final formatting seluruh repo.
-10. Review consumer eksternal `swift-api` sebelum keputusan retirement.
+6. Audit final query halaman publik dan sanitasi.
+7. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
+8. Audit final formatting seluruh repo.
+9. Review consumer eksternal `swift-api` sebelum keputusan retirement.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **verifikasi branch aktif terbaru**, baca `docs/PROJECT-STATUS.md`, lalu lanjut langsung dari **audit dan hardening `snapshot_materi_version()`**. Pastikan trigger insert/update tetap bekerja setelah pembatasan `EXECUTE`. Lanjutkan dengan `search_path` `set_materi_updated_at()`, rerun Security Advisor, lalu dokumentasikan hasil sebelum masuk ke E2E.
+Mulai dengan **evaluasi Leaked Password Protection dan audit 10 application SECURITY DEFINER RPC**, lalu rerun Security Advisor. Setelah security/auth checkpoint selesai, lanjut ke Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ## 🔁 Siklus wajib setiap sesi
 
