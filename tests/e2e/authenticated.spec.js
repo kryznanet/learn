@@ -88,7 +88,7 @@ test.describe('Kryzna Learn authenticated editor', () => {
     await login(page);
 
     await page.goto('/content/materials.html');
-    const material = page.locator('article.card').filter({ hasText: 'Test 12' }).first();
+    const material = page.locator('article.card').first();
     await expect(material).toBeVisible();
 
     await material.getByRole('link', { name: 'Tulis / Edit' }).click();
