@@ -259,18 +259,17 @@
           if (
             /^on/i.test(name) ||
             name === 'srcdoc' ||
+            name === 'style' ||
             ((name === 'href' || name === 'src') &&
-              /^\s*(javascript:|data:text\/html)/i.test(value)) ||
-            (name === 'style' &&
-              /expression\s*\(|javascript\s*:|behavior\s*:|binding\s*:/i.test(
-                value
-              ))
+              !/^\s*(?:https?:|\/|#|mailto:)/i.test(value)) ||
+            ((name === 'href' || name === 'src') &&
+              /^\s*(?:javascript:|data:|vbscript:|file:)/i.test(value))
           ) {
             element.removeAttribute(attribute.name);
           }
 
           if (name === 'target') {
-            element.setAttribute('rel', 'noopener');
+            element.setAttribute('rel', 'noopener noreferrer');
           }
         });
       });
