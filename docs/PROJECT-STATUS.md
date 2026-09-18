@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database tahap trigger selesai dan terverifikasi. `snapshot_materi_version()` tidak lagi executable oleh role API/public, `set_materi_updated_at()` memiliki `search_path` eksplisit, dan trigger snapshot tetap bekerja. Pekerjaan berikutnya adalah evaluasi Leaked Password Protection dan review SECURITY DEFINER RPC yang masih diekspos ke authenticated sebelum masuk Browser E2E.
+**Status sesi:** Security hardening database berlanjut dan terverifikasi. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Pekerjaan berikutnya adalah evaluasi Leaked Password Protection sebelum Browser E2E.
 
 ## 🔁 Aturan branch aktif
 
@@ -90,23 +90,24 @@ Temuan yang sudah terselesaikan:
 - `authenticated_security_definer_function_executable` untuk `snapshot_materi_version()`.
 
 Temuan yang masih pending:
-- 10 application `SECURITY DEFINER` RPC masih executable oleh `authenticated`; perlu review per fungsi terhadap kebutuhan jalur aplikasi dan authorization internal.
+- 7 application `SECURITY DEFINER` RPC masih executable oleh `authenticated`: `add_staff_by_email`, `can_manage_users`, `current_admin_role`, `get_my_permissions`, `list_staff`, `restore_materi_version`, dan `update_staff`. Ketujuhnya sudah direview secara fungsi; masing-masing memiliki kebutuhan jalur aplikasi atau authorization/RLS internal. Warning Security Advisor tetap tercatat karena linter menandai EXECUTE pada SECURITY DEFINER.
 - Leaked Password Protection Supabase masih disabled.
 
 ## 🛑 Checkpoint 18 September 2026
 
-- Database migrations `20260918010522_harden_trigger_function_privileges_20260918` dan `20260918010535_restrict_trigger_function_execute_20260918` berhasil diterapkan.
+- Database migrations `20260918010522_harden_trigger_function_privileges_20260918`, `20260918010535_restrict_trigger_function_execute_20260918`, dan `20260918010830_restrict_internal_security_definer_helpers` berhasil diterapkan.
 - Database diverifikasi setelah perubahan.
 - Trigger behavior diverifikasi dengan transactional insert/update test.
 - `docs/SECURITY.md`, `docs/DATABASE.md`, dan `docs/CHANGELOG.md` diperbarui.
+- `can_manage_materi`, `can_delete_materi`, dan `get_my_role` diverifikasi tidak lagi executable oleh `authenticated`/`anon`/`public`.
 - Tidak ada perubahan behavior UI pada checkpoint ini.
 
 ## ⚠️ Pekerjaan selanjutnya
 
 ### Prioritas 1 — Security/Auth
 1. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
-2. Audit 10 application `SECURITY DEFINER` RPC yang masih executable oleh `authenticated`, termasuk authorization internal dan kebutuhan EXECUTE.
-3. Rerun Security Advisor setelah seluruh hardening terkait selesai.
+2. Rerun Security Advisor setelah perubahan Auth.
+3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
 4. Uji Version Restore dari UI sampai database.
@@ -120,7 +121,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **evaluasi Leaked Password Protection dan audit 10 application SECURITY DEFINER RPC**, lalu rerun Security Advisor. Setelah security/auth checkpoint selesai, lanjut ke Browser E2E Version Restore dan Autosave/Draft Recovery.
+Mulai dengan **evaluasi Leaked Password Protection**, lalu rerun Security Advisor. Jika security/auth checkpoint selesai, lanjut ke Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ## 🔁 Siklus wajib setiap sesi
 
