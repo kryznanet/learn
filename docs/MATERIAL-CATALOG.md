@@ -61,3 +61,19 @@ Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. U
 30. **SD-WAN dan Software Defined Networking**
 31. **Cloud Networking Dasar dan Hybrid Connectivity**
 32. **Incident Response untuk Insiden Jaringan**
+
+
+## Materi pelengkap jalur belajar — 18 September 2026
+
+33. **IP Address dan Subnet Mask Dasar** — IPv4, subnet mask, network address, host, dan broadcast.
+34. **Default Gateway dan Alur Paket** — keputusan pengiriman lokal dan penggunaan gateway.
+35. **Private IP dan Public IP** — rentang private IPv4 dan hubungan dengan NAT.
+36. **CIDR dan Perhitungan Subnet Dasar** — prefix CIDR dan ukuran subnet.
+37. **Static Routing dan Routing Table** — static route, next hop, default route, dan routing table.
+38. **DNS Record A AAAA CNAME MX dan TXT** — record DNS dan troubleshooting resolusi.
+39. **Port Socket dan Layanan Jaringan** — IP, port, socket, TCP/UDP, dan layanan umum.
+40. **Proxy dan Reverse Proxy** — forward proxy, reverse proxy, TLS termination, routing, dan caching.
+41. **OSPF Multi-Area dan Area Design** — area, backbone, ABR, dan pertimbangan desain.
+42. **VRRP HSRP dan Gateway Redundancy** — virtual gateway dan high availability.
+43. **PKI TLS dan Sertifikat Digital** — CA, trust chain, sertifikat, dan TLS.
+44. **SIEM dan Centralized Network Logging** — log terpusat, korelasi event, dan alert.
