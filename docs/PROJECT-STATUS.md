@@ -142,7 +142,7 @@ Temuan yang masih pending:
 ### Prioritas 2 — Browser E2E
 4. Version Restore E2E dari UI sampai database pada environment terisolasi.
 5. Sediakan/konfirmasi environment Supabase staging atau branch untuk Restore execution E2E; jangan gunakan produksi.
-6. Draft Recovery/reload CI sudah diverifikasi pada run #43; lanjutkan cleanup dan evaluasi recovery existing-material.
+6. Draft Recovery/reload CI sudah diverifikasi pada run #43; cleanup ketergantungan fixture existing-material sudah dilakukan. CI untuk commit cleanup ini masih `Needs Verification`.
 
 ### Prioritas 3 — Final audit
 8. Audit final query halaman publik dan sanitasi.
@@ -184,6 +184,13 @@ verifikasi dokumentasi
 lanjut
 ```
 
+
+## Draft Recovery E2E fixture cleanup — 18 September 2026
+
+- Existing-material Draft Recovery dan Version History Browser E2E tidak lagi bergantung pada judul fixture `Test 12`.
+- Test memilih materi pertama yang tersedia dan mengambil judul aktual dari UI sebelum assertion.
+- Commit test terverifikasi: `54d291161fd6318923876e165ef7c0f960f2939a`.
+- Ini menyelesaikan cleanup ketergantungan fixture; tidak mengubah data production dan tidak menjalankan Restore mutation.
 
 ## Final SECURITY DEFINER / index audit — 18 September 2026
 
