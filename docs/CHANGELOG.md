@@ -2,6 +2,9 @@
 
 ## 18 September 2026
 
+- Integrated `shared/draft-recovery.js` into the material editor and deferred its initialization until the authenticated session/material state is ready, preventing existing-material drafts from being keyed as a new material.
+- Browser E2E for autosave/draft recovery remains pending because no browser test runner/runtime is present in the repository connection.
+
 - Restricted internal SECURITY DEFINER helpers `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, and `get_my_role(uuid)` by revoking EXECUTE from `PUBLIC`, `anon`, and `authenticated`.
 - Verified the remaining Security Advisor application warning count is 7; these are application/RLS functions with authenticated execution and internal authorization requirements.
 
