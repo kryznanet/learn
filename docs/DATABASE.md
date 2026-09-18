@@ -65,6 +65,6 @@ Migration `20260918010830_restrict_internal_security_definer_helpers` mencabut `
 
 Migration `20260918011836_restrict_user_role_management_to_super_admin_20260918` mengganti policy `Admins manage user roles` menjadi `Super admins manage user roles`, sehingga direct write ke `user_roles` hanya dapat dilakukan oleh `super_admin`.
 
-Migration `20260918012300_allow_authenticated_content_users_to_view_materi_20260918` menambahkan SELECT RLS untuk authenticated content roles. Public read tetap dibatasi pada materi published.
+Migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918` menambahkan SELECT RLS untuk authenticated content roles. Public read tetap dibatasi pada materi published.
 
 Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`. Policy SELECT baru pada `materi` juga terverifikasi sebagai `FOR SELECT TO authenticated` untuk role content.
