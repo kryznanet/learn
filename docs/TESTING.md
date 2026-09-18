@@ -73,10 +73,11 @@ Do not use a personal password in source code or commit it to the repository. Pr
 Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
 
 - [x] Browser E2E: draft lokal tersimpan setelah perubahan.
-- [ ] Browser E2E: draft dipulihkan setelah reload — test new/existing material sudah ditambahkan; verifikasi CI commit terbaru masih menunggu workflow selesai.
-- [ ] Browser E2E: user mendapat konfirmasi recovery — dicakup oleh test yang sama, menunggu verifikasi CI.
+- [ ] Browser E2E: draft dipulihkan setelah reload — test new/existing material sudah ditambahkan; run #35 gagal karena test mulai sebelum editor selesai boot.
+- [ ] Browser E2E: user mendapat konfirmasi recovery — dicakup oleh test yang sama; perbaikan menambahkan readiness signal editor, menunggu CI baru.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
-- [x] Browser E2E: test recovery untuk materi existing sudah ditambahkan; verifikasi CI masih pending.
+- [x] Browser E2E: test recovery untuk materi existing sudah ditambahkan.
+- [ ] Browser E2E: verifikasi CI setelah perbaikan readiness editor.
 
 ## Storage
 
@@ -90,3 +91,11 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 - [ ] SECURITY DEFINER memiliki authorization yang sesuai.
 - [ ] Security Advisor diperiksa setelah migration.
 - [ ] Secret/service-role key tidak ada di browser/source.
+
+
+## Browser E2E failure diagnosis — 18 September 2026
+- Run #35 (`35298200046`) completed with failure: 4 tests passed and 2 failed.
+- The new-draft autosave test filled the form before editor boot had attached the draft-recovery input listeners, so `#msg` remained empty.
+- The existing-material recovery test asserted `#id` immediately after navigation before the asynchronous material load completed, so the field was still empty.
+- Fix: `content/editor.html` now exposes `window.__kryznaEditorReady` after session/material loading and draft-recovery initialization; authenticated E2E waits for this signal before interacting with the editor.
+- The fix is committed on `18-Sep-2026`; a new CI run must pass before marking Draft Recovery verified.
