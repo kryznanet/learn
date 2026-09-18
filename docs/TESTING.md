@@ -30,6 +30,7 @@
 - [ ] Search/filter.
 - [ ] Slug otomatis.
 - [ ] Public hanya melihat published.
+- [ ] Regression: authenticated content role dapat UPDATE materi ke `review` menggunakan editor yang memakai `UPDATE ... SELECT`.
 
 ## Versioning
 
