@@ -69,9 +69,9 @@ Do not use a personal password in source code or commit it to the repository. Pr
 
 ## Autosave
 
-Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar.
+Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E juga memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
 
-- [ ] Browser E2E: draft lokal tersimpan setelah perubahan.
+- [x] Browser E2E: draft lokal tersimpan setelah perubahan.\n- [ ] Browser E2E: draft dipulihkan setelah reload.
 - [ ] Browser E2E: draft dipulihkan setelah reload.
 - [ ] Browser E2E: user mendapat konfirmasi recovery.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
