@@ -271,3 +271,12 @@ Delapan materi advanced telah ditambahkan dan diverifikasi berstatus `published`
 ## Perapian kategori & kartu materi — 18 September 2026
 
 Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, `Intermediate`, `Advanced`, dan `Tutorial`. Label sumber data “Supabase” pada kartu materi di halaman publik dihapus; kartu sekarang menampilkan kategori, judul, deskripsi, dan tautan **Baca materi →**.
+
+
+## Pengayaan jalur belajar tambahan — 18 September 2026
+
+- Ditambahkan 12 materi pelengkap untuk menutup celah konsep dari dasar hingga lanjutan: IP/subnet mask, default gateway, private/public IP, CIDR, static routing, DNS record, port/socket, proxy/reverse proxy, OSPF multi-area, gateway redundancy, PKI/TLS, dan SIEM/centralized logging.
+- Verifikasi live `public.materi` setelah penambahan: **Dasar 24**, **Intermediate 20**, **Advanced 12**, **Tutorial 4**; total **60 materi published**.
+- Konten baru berstatus `published`, menggunakan author materi yang sudah ada, dan tidak mengubah kategori/data materi lama.
+- Katalog diperbarui pada `docs/MATERIAL-CATALOG.md`.
+- Jalur belajar kini lebih lengkap untuk urutan konsep: addressing → subnetting → switching/routing → layanan jaringan → security → operasi jaringan.
