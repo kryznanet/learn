@@ -274,6 +274,8 @@
     let currentUser = null;
     let currentStatus = 'draft';
 
+    window.__kryznaEditorReady = false;
+
     function has(permission) {
       return KryznaAuth.hasPermission(permission, session?.permissions);
     }
@@ -596,6 +598,7 @@
       $('history').hidden = false;
       currentUser = session.user;
       window.KryznaDraftRecovery?.init();
+      window.__kryznaEditorReady = true;
     }
 
     boot();
