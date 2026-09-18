@@ -1,6 +1,6 @@
 # RBAC Kryzna Learn
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 ## Role
 
@@ -39,6 +39,8 @@ UI → shared/auth.js → permission UX
 ## User management
 
 Admin dapat membaca dan memperbarui profil/status staf melalui policy yang diselaraskan. Perubahan role dan pembuatan user melalui jalur administratif tetap memerlukan Super Admin.
+
+Direct write ke `user_roles` sekarang juga dibatasi oleh RLS: hanya `super_admin` yang dapat INSERT/UPDATE/DELETE assignment role. Admin tetap dapat SELECT assignment untuk kebutuhan administrasi, tetapi tidak dapat mengubah role secara langsung.
 
 ## Catatan legacy
 
