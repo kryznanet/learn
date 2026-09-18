@@ -221,3 +221,18 @@ Repository hygiene spot-check found no remaining TODO, FIXME, or obvious debug c
 
 ### Next checkpoint
 Prepare a reviewed, complete local schema baseline from the existing live schema/migration history, add `supabase/config.toml`, then verify local migrations before enabling Restore E2E. Do not connect Restore execution to production.
+
+
+## Live schema baseline audit — 18 September 2026
+
+- Branch 18-Sep-2026 and repository were reverified before the audit.
+- Connected Supabase was inspected read-only; no production migration/data mutation, branch creation, or paid resource was performed.
+- Live PostgreSQL is 17.6.1.
+- Catalog verification found 10 application tables with RLS, current constraints/indexes, 14 public application functions, material/version/activity triggers, two Storage buckets, and 4 roles + 17 permissions + 41 role-permission mappings.
+- Function definitions for the current application/RLS paths were captured read-only, including the 7 intentional application SECURITY DEFINER RPCs and trigger/helper functions.
+- The result is sufficient to design the local baseline, but not sufficient to safely hand-author a complete migration because the branch is missing the 16–17 September migration history and Supabase-managed Auth/Storage dependencies.
+- Supabase CLI/Docker is not available in this execution environment, so supabase db pull and local db reset were not claimed or simulated.
+- Status: **Blocked — authoritative local baseline generation/validation requires Supabase CLI + Docker runtime.**
+
+### Checkpoint berikutnya
+Generate the authoritative baseline using the supported Supabase CLI/database-pull workflow in a machine with Docker + Supabase CLI, review it against the captured live schema, then add supabase/config.toml with PostgreSQL major version 17 and verify supabase db reset locally. Only after that enable Restore UI-to-database E2E against local Supabase.
