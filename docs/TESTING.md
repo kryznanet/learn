@@ -10,6 +10,7 @@ The repository now includes a Chromium browser test harness:
 - tests/e2e/authenticated.spec.js covers authenticated editor reachability when KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD are configured.
 - .github/workflows/browser-e2e.yml installs Chromium with dependencies and uploads Playwright reports/traces as workflow artifacts.
 - Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
+- Verified 18 September 2026: GitHub Actions Browser E2E ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
 
 GitHub Actions setup:
 
