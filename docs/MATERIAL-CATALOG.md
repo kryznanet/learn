@@ -25,3 +25,15 @@ Katalog materi kini mencakup dasar IP/MAC, IPv4, subnetting, DHCP, DNS, VLAN, Et
 Penambahan diverifikasi dengan query terhadap `public.materi`: seluruh delapan slug baru ditemukan dengan status `published` dan konten non-kosong. Tidak ada materi lama yang ditimpa; insert menggunakan pemeriksaan slug agar tidak membuat duplikasi.
 
 Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. Untuk reproducibility database dari nol, baseline migration tetap mengikuti checkpoint local Supabase pada `PROJECT-STATUS.md`.
+
+
+## Materi lanjutan
+
+9. **IPv6 dan Dasar Pengalamatan** — alamat, prefix, jenis alamat, dan troubleshooting.
+10. **VLAN dan Inter-VLAN Routing** — segmentasi, access/trunk, gateway, dan routing antar-VLAN.
+11. **Routing dan Routing Table** — connected/static route, next-hop, dan longest prefix match.
+12. **DHCP Lanjutan dan DHCP Relay** — lease, scope, reservation, dan relay antar-subnet.
+13. **DNS Lanjutan dan DNS Troubleshooting** — record, resolver, cache, TTL, dan diagnosis.
+14. **Firewall dan Access Control List** — rule, stateful filtering, ACL, dan least privilege.
+15. **VPN dan Konsep Tunneling** — remote access, site-to-site, endpoint, route, dan troubleshooting.
+16. **Monitoring Jaringan dan Analisis Log** — latency, packet loss, throughput, interface error, dan korelasi log.
