@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sekarang sudah ditambahkan; eksekusi CI terpasang, tetapi test authenticated memerlukan secrets E2E dan belum dianggap lulus sampai workflow benar-benar menghasilkan hasil terverifikasi. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
+**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sudah ditambahkan dan workflow CI terverifikasi sukses, termasuk authenticated Super Admin editor test dengan dedicated E2E secrets. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
 
 ## 🔁 Aturan branch aktif
 
@@ -86,8 +86,8 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Added public smoke tests for homepage and admin login.
 - Added authenticated editor reachability test, gated by KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD.
 - Added GitHub Actions workflow `.github/workflows/browser-e2e.yml` to install Chromium and upload reports.
-- Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are now configured.
-- A new workflow run is required to verify the authenticated test with those secrets; the previous successful run predates secret configuration.
+- Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are configured.
+- GitHub Actions Browser E2E run #6 (`35296715443`) completed successfully with all 3 tests passed, including authenticated Super Admin editor reachability.
 - Authenticated Version Restore and Autosave/Draft Recovery scenarios remain pending.
 
 ### 10. Security hardening database — 18 September
@@ -118,7 +118,7 @@ Temuan yang masih pending:
 - Policy hasil akhir `Super admins manage user roles` terverifikasi `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
 - Security Advisor direrun setelah perubahan; warning tetap 7 application SECURITY DEFINER + 1 leaked-password.
 - `docs/RBAC.md`, `docs/SECURITY.md`, `docs/DATABASE.md`, `docs/CHANGELOG.md`, dan file migration diperbarui melalui commit terpisah dan diverifikasi.
-- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E belum dapat dinyatakan lulus karena tidak ada browser test runner/runtime di repository connection.
+- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E harness dan authenticated editor reachability sudah terverifikasi lulus melalui GitHub Actions run #6; Version Restore dan Autosave/Draft Recovery masih pending.
 
 ## ⚠️ Pekerjaan selanjutnya
 
@@ -128,9 +128,8 @@ Temuan yang masih pending:
 3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
-4. Verify a new GitHub Actions Browser E2E run with the configured dedicated E2E account secrets.
-5. Uji Version Restore dari UI sampai database.
-6. Uji Autosave & Draft Recovery.
+4. Version Restore E2E dari UI sampai database.
+5. Uji Autosave & Draft Recovery.
 
 ### Prioritas 3 — Final audit
 7. Audit final query halaman publik dan sanitasi.
@@ -140,7 +139,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **verifikasi workflow Browser E2E**. Runtime Chromium, harness, dan dedicated E2E secrets sudah tersedia; status authenticated E2E tetap `Needs Verification` sampai workflow baru benar-benar menjalankan test dengan secrets tersebut.
+Mulai dengan **Browser E2E Version Restore**. Harness, runtime Chromium, dedicated E2E secrets, dan authenticated editor reachability sudah terverifikasi melalui GitHub Actions run #6.
 
 ## 🔁 Siklus wajib setiap sesi
 
