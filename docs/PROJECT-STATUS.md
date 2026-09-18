@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database berlanjut dan terverifikasi. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Pekerjaan berikutnya adalah evaluasi Leaked Password Protection sebelum Browser E2E.
+**Status sesi:** Security hardening database terverifikasi dan integrasi autosave/draft recovery sudah diperbaiki. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
 
 ## 🔁 Aturan branch aktif
 
@@ -65,7 +65,7 @@ Kryzna Learn
 Database memiliki `roles`, `permissions`, `user_roles`, dan `role_permissions`. Mapping tersedia untuk `super_admin`, `admin`, `editor`, dan `penulis`; `viewer` dipertahankan sebagai legacy dengan `content.read`.
 
 ### 4. Workflow dan version history
-Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. Browser E2E restore/autosave masih pending.
+Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. `shared/draft-recovery.js` sekarang dimuat oleh `content/editor.html` dan diinisialisasi setelah session/materi siap agar key draft tidak salah untuk materi existing. Browser E2E restore/autosave masih pending.
 
 ### 5. Storage dan RLS
 RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan public read dibatasi pada file materi `published`.
@@ -100,13 +100,15 @@ Temuan yang masih pending:
 - Trigger behavior diverifikasi dengan transactional insert/update test.
 - `docs/SECURITY.md`, `docs/DATABASE.md`, dan `docs/CHANGELOG.md` diperbarui.
 - `can_manage_materi`, `can_delete_materi`, dan `get_my_role` diverifikasi tidak lagi executable oleh `authenticated`/`anon`/`public`.
-- Tidak ada perubahan behavior UI pada checkpoint ini.
+- Autosave/draft recovery integration diperbaiki: editor memuat `shared/draft-recovery.js` dan menunda inisialisasi sampai session serta materi siap.
+- Security Advisor direrun setelah checkpoint dan tetap menunjukkan 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
+- Browser E2E belum dapat dinyatakan lulus karena tidak ada browser test runner/runtime di repository connection.
 
 ## ⚠️ Pekerjaan selanjutnya
 
 ### Prioritas 1 — Security/Auth
-1. Evaluasi dan, bila sesuai, aktifkan Leaked Password Protection.
-2. Rerun Security Advisor setelah perubahan Auth.
+1. Leaked Password Protection: tetap `Pending/Accepted Plan Limitation` pada Free plan; tidak ada upgrade/pay yang dilakukan.
+2. Security Advisor: sudah direrun; 7 application SECURITY DEFINER warnings dan 1 leaked-password warning tetap tercatat.
 3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
@@ -121,7 +123,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **evaluasi Leaked Password Protection**, lalu rerun Security Advisor. Jika security/auth checkpoint selesai, lanjut ke Browser E2E Version Restore dan Autosave/Draft Recovery.
+Mulai dengan **Browser E2E Version Restore dan Autosave/Draft Recovery**. Sebelum mengklaim lulus, diperlukan browser runtime/test runner nyata. Jika runtime belum tersedia, pertahankan status `Needs Verification` dan lanjutkan audit final yang bisa diverifikasi statis/database.
 
 ## 🔁 Siklus wajib setiap sesi
 
