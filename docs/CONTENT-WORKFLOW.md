@@ -55,3 +55,8 @@ Delapan materi intermediate telah ditambahkan dan diverifikasi: subnetting/VLSM,
 ## Materi advanced networking — 18 September 2026
 
 Delapan materi advanced telah ditambahkan dan diverifikasi berstatus `published` dengan konten non-kosong: BGP, MPLS, high availability, IDS/IPS, Zero Trust, SD-WAN, cloud networking, dan incident response.
+
+
+## Standar kedalaman materi — 18 September 2026
+
+Materi published menggunakan struktur pembelajaran yang lebih lengkap: tujuan pembelajaran, konteks, konsep inti, cara kerja, contoh kasus, parameter dan bukti verifikasi, troubleshooting, kesalahan umum, latihan pemahaman, checklist penguasaan, serta ringkasan. Konten perlu menjelaskan hubungan antar-konsep dan langkah analisis, bukan hanya memberikan definisi singkat.
