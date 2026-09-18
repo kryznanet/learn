@@ -164,6 +164,12 @@ Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHI
 
 Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Review consumer `swift-api` pada repository/GitHub/public sources selesai tanpa menemukan consumer yang relevan; consumer eksternal di luar sumber tersebut tetap **Needs Verification**. Final formatting/repository audit non-mutating selesai tanpa defect baru. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan; jalur import juga sudah diselaraskan dengan author ownership RLS. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
+## Label kategori UI — 18 September 2026
+
+- Label kartu publik: **Materi · Dasar**, **Materi · Menengah**, **Materi · Lanjutan**.
+- Kategori **Tutorial** tetap ditampilkan sebagai **Tutorial**.
+- Perubahan hanya pada label presentasi; kategori sumber tetap tidak berubah.
+
 ## 🔁 Siklus wajib setiap sesi
 
 ```text
