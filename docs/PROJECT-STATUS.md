@@ -245,3 +245,8 @@ Generate the authoritative baseline using the supported Supabase CLI/database-pu
 - Tidak ada materi lama yang ditimpa; penambahan hanya dilakukan untuk slug yang belum ada.
 - Katalog materi dicatat di `docs/MATERIAL-CATALOG.md`.
 - Status local Supabase baseline tetap **Blocked**; pengayaan data ini tidak menggantikan kebutuhan baseline migration yang reproducible.
+
+
+## Materi lanjutan — 18 September 2026
+
+Delapan materi lanjutan jaringan telah ditambahkan: IPv6, VLAN dan inter-VLAN routing, routing table, DHCP relay, DNS troubleshooting, firewall/ACL, VPN/tunneling, serta monitoring/log. Seluruh materi berstatus `published` dan diverifikasi pada `public.materi` dengan konten non-kosong.
