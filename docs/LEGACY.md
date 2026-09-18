@@ -1,14 +1,14 @@
 # Legacy & Cleanup Inventory
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 ## `swift-api`
 
-Deployment Supabase masih ACTIVE v1, tetapi tidak memiliki source counterpart pada branch `17-Sep-2026`. Function diaudit sebagai demo/legacy. Jangan hapus sebelum consumer eksternal dipastikan tidak ada.
+Deployment Supabase masih ACTIVE v1, tetapi tidak memiliki source counterpart pada branch aktif. Function diaudit sebagai demo/legacy. Jangan hapus sebelum consumer eksternal dipastikan tidak ada.
 
 ## `supabase-config-legacy.js`
 
-Masih ada di repository. Sebelum dihapus, cari seluruh referensi runtime/build dan pastikan tidak dibutuhkan.
+**Status: removed — 18 September 2026.** Audit referensi runtime/build pada halaman aplikasi, shared code, test, workflow, dan konfigurasi repository tidak menemukan consumer. Konfigurasi browser aktif tetap menggunakan `supabase-config.js`.
 
 ## Legacy helper RPC
 

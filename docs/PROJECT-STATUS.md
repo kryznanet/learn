@@ -145,12 +145,12 @@ Temuan yang masih pending:
 ### Prioritas 3 — Final audit
 8. Audit final query halaman publik dan sanitasi.
 9. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
-10. Audit final formatting seluruh repo.
+10. Audit final formatting seluruh repo — formatting guidance dan legacy config audit sudah ditindaklanjuti pada checkpoint ini.
 11. Review consumer eksternal `swift-api` sebelum keputusan retirement.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **environment terisolasi untuk Restore execution E2E**. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
+Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Lanjutkan audit non-mutating: review consumer eksternal `swift-api`, evaluasi cleanup legacy yang masih tersisa, dan final formatting/repository audit. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 

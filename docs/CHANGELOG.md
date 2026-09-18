@@ -1,3 +1,9 @@
+## 18 September 2026 — Final repository cleanup audit
+- Memverifikasi branch `18-Sep-2026` dan melakukan audit referensi runtime/build untuk `supabase-config-legacy.js`; tidak ditemukan referensi pada halaman aplikasi, shared code, test, workflow, atau konfigurasi yang diaudit.
+- Menghapus `supabase-config-legacy.js` karena tidak lagi memiliki consumer terverifikasi. `supabase-config.js` tetap menjadi konfigurasi browser aktif.
+- Memperbarui `docs/CODE-STYLE.md` agar tidak mengunci branch acuan ke tanggal lama; aturan sekarang mengikuti branch yang diverifikasi pada checkpoint aktif.
+- Restore Browser E2E UI-to-database tetap pending karena tidak ada environment Supabase terisolasi yang disetujui.
+
 ## 18 September 2026 — Browser E2E draft recovery verified
 - Browser E2E run #43 (`35298946197`) succeeded on `18-Sep-2026` at commit `2ec49859a5fffd793a721d257eaac0b122fd31b8`.
 - New-material and existing-material Draft Recovery tests now wait for editor readiness and verify the persisted localStorage payload before reload/recovery.
