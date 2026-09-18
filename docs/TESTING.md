@@ -2,6 +2,9 @@
 
 **Tanggal:** 18 September 2026
 
+## Public content sanitization regression — 18 September 2026
+- Publish material content containing HTML/event-handler attributes and unsafe URL schemes; verify unsafe attributes/URLs are removed and safe HTTP(S)/relative links remain.
+
 ## Authentication
 
 - [ ] Login valid.
