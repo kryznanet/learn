@@ -10,33 +10,33 @@
 - SECURITY DEFINER harus memiliki `search_path` eksplisit dan authorization yang jelas.
 - Privileged Auth API menggunakan Edge Function.
 
-## Public content
-
-Public hanya boleh membaca materi berstatus `published`. Detail materi juga melakukan filter `published`; RLS menjadi lapisan enforcement kedua.
-
-## Storage
-
-Bucket `materi-files` menggunakan policy RBAC untuk upload/update/delete. Public read dibatasi pada file yang terhubung ke materi `published`.
-
-## Audit log
-
-`content_activity_logs` mencatat aktivitas materi. `system_activity_logs` mencatat aktivitas administratif/sistem. Akses dibatasi melalui RBAC/RLS.
-
 ## SECURITY DEFINER checkpoint
 
-RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticated` jika memiliki authorization internal. Function yang hanya dipanggil sebagai trigger tidak boleh diekspos ke anon/authenticated.
+RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticated` jika memiliki authorization internal. Function internal/legacy yang tidak diperlukan sebagai RPC langsung harus dicabut dari role API.
 
 ### Hardening 18 September 2026
 
-- `snapshot_materi_version()` sekarang tetap `SECURITY DEFINER` dan memiliki `search_path = public`, tetapi `EXECUTE` telah dicabut dari `PUBLIC`, `anon`, dan `authenticated` karena function hanya digunakan oleh trigger.
-- `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
-- Trigger `trg_snapshot_materi_version` pada `materi` tetap aktif untuk `AFTER INSERT OR UPDATE`.
-- Pengujian transaksional insert/update menghasilkan dua snapshot versi dan kemudian di-rollback, sehingga tidak meninggalkan data uji.
+- `snapshot_materi_version()` tetap `SECURITY DEFINER` dengan `search_path = public`, tetapi `EXECUTE` dicabut dari `PUBLIC`, `anon`, dan `authenticated`.
+- `set_materi_updated_at()` memiliki `search_path = public` eksplisit.
+- Trigger `trg_snapshot_materi_version` tetap aktif untuk `AFTER INSERT OR UPDATE`.
+- Pengujian transaksional insert/update menghasilkan dua snapshot versi dan di-rollback.
+- `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` dicabut dari `PUBLIC`, `anon`, dan `authenticated` karena tidak diperlukan sebagai RPC langsung.
 
 ## Remaining Security Advisor findings
 
-- Beberapa application RPC `SECURITY DEFINER` masih executable oleh `authenticated`; masing-masing perlu review authorization dan kebutuhan API sebelum privilege diubah.
-- Leaked Password Protection Supabase masih disabled dan perlu dievaluasi/diaktifkan melalui konfigurasi Auth.
+Security Advisor sekarang menyisakan **7** application `SECURITY DEFINER` RPC:
+
+- `add_staff_by_email(...)`
+- `can_manage_users(uuid)`
+- `current_admin_role()`
+- `get_my_permissions()`
+- `list_staff()`
+- `restore_materi_version(uuid)`
+- `update_staff(...)`
+
+Ketujuh function hanya executable oleh `authenticated`; `anon` tidak memiliki `EXECUTE`. Function aplikasi memiliki authorization internal. Security Advisor menandai keberadaan `EXECUTE` pada SECURITY DEFINER sebagai warning, sehingga warning tersebut perlu dibaca bersama authorization internal dan kebutuhan jalur aplikasi.
+
+Leaked Password Protection Supabase masih disabled dan menjadi pekerjaan security/auth berikutnya.
 
 ## Security review checklist
 
@@ -45,6 +45,7 @@ RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticate
 - [x] Storage write hanya role yang berwenang.
 - [x] SECURITY DEFINER yang di-hardening memakai search_path aman.
 - [x] Trigger-only function tidak executable publik.
+- [x] Internal SECURITY DEFINER helpers yang tidak diperlukan client tidak executable publik.
 - [x] Edge Function secret tidak bocor ke client.
 - [ ] Auth password protection ditinjau/diaktifkan.
 - [x] Security Advisor dijalankan setelah hardening.
