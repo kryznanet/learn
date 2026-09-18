@@ -50,3 +50,8 @@ Delapan materi lanjutan jaringan telah ditambahkan: IPv6, VLAN dan inter-VLAN ro
 ## Materi intermediate networking — 18 September 2026
 
 Delapan materi intermediate telah ditambahkan dan diverifikasi: subnetting/VLSM, STP/RSTP, Link Aggregation/LACP, QoS, Wireshark/packet capture, OSPF, network security hardening, serta network automation API/script. Seluruh materi berstatus `published` dan memiliki konten non-kosong.
+
+
+## Materi advanced networking — 18 September 2026
+
+Delapan materi advanced telah ditambahkan dan diverifikasi berstatus `published` dengan konten non-kosong: BGP, MPLS, high availability, IDS/IPS, Zero Trust, SD-WAN, cloud networking, dan incident response.
