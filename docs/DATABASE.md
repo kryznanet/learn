@@ -26,7 +26,7 @@ Ini juga diperlukan oleh editor karena `content/editor.html` menggunakan `UPDATE
 
 ## Version history
 
-`materi_versions` memakai unique `(materi_id, version_number)` dan index berdasarkan material/version. Trigger `trg_snapshot_materi_version` berjalan setelah insert/update `materi`.
+`materi_versions` memakai unique (`materi_id`, `version_number`) dan index berdasarkan material/version. Trigger `trg_snapshot_materi_version` berjalan setelah insert/update `materi`.
 
 `snapshot_materi_version()` adalah `SECURITY DEFINER` trigger-only function dengan `search_path = public`. `EXECUTE` untuk `PUBLIC`, `anon`, dan `authenticated` telah dicabut. Trigger tetap dapat menjalankannya karena privilege trigger execution tidak bergantung pada pemanggilan RPC oleh role API.
 
@@ -69,16 +69,13 @@ Migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260
 
 Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`. Policy SELECT baru pada `materi` juga terverifikasi sebagai `FOR SELECT TO authenticated` untuk role content.
 
-
 ### Staff update hardening — 18 September 2026
 
 Migration `20260918020413_restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi database menunjukkan migration tercatat dan `pg_policies` tidak lagi memiliki policy UPDATE pada tabel tersebut.
 
-
 ### API table privileges — 18 September 2026
 
 Tiga migration privilege memperkecil grant API tanpa mengubah RLS policy semantics. `anon` hanya mempertahankan SELECT pada `materi` untuk public published-content path. `authenticated` mempertahankan privilege yang dibutuhkan oleh policy RLS dan jalur aplikasi; privilege `REFERENCES`, `TRIGGER`, `TRUNCATE`, serta DML tanpa policy terkait telah dicabut. `user_roles` dan `role_permissions` mempertahankan DML karena policy `FOR ALL` Super Admin memang merupakan jalur administrasi yang sah.
-
 
 ### RBAC staff mutation alignment — 18 September 2026
 
@@ -86,14 +83,29 @@ Migration `20260918030000_restrict_update_staff_to_super_admin_20260918` menyela
 
 Migration `20260918024839_restrict_admin_staff_mutation_permissions_20260918` mencabut `users.update` dan `users.disable` dari role `admin`. Admin tetap memiliki `users.read`; perubahan profil/status/role staf hanya melalui jalur Super Admin `update_staff()`. Verifikasi live RBAC menunjukkan role `admin` tidak memiliki `roles.manage`.
 
-
 ### Material workflow status enforcement — 18 September 2026
 
 Migrations `20260918025136_enforce_materi_status_permissions_20260918` and `20260918025144_tighten_materi_insert_author_20260918` enforce workflow status boundaries at the `materi` RLS layer. `penulis` can only insert/update their own material while it remains `draft`; `editor` can insert/update their own material across workflow statuses; `admin` and `super_admin` can manage material across workflow statuses. All content-role inserts still require `author_id = auth.uid()`. This prevents a caller with only `content.create`/`content.update` from bypassing missing `content.review`, `content.publish`, or `content.archive` permissions by writing `status` directly through the API.
 
+## Live schema baseline audit — 18 September 2026
+
+A read-only catalog audit of the connected project verified the current public schema before any local baseline write:
+
+- PostgreSQL engine: **17.6.1**.
+- Ten application tables have RLS enabled: `admin_users`, `activity_logs`, `content_activity_logs`, `materi`, `materi_versions`, `permissions`, `role_permissions`, `roles`, `system_activity_logs`, and `user_roles`.
+- Core primary keys, foreign keys, workflow check constraint, role/permission uniqueness, material slug uniqueness, and version uniqueness were verified.
+- Core public indexes include material author/status/slug indexes, version lookup indexes, and activity-log user lookup.
+- Current live application functions include 14 public functions, including 7 application `SECURITY DEFINER` RPCs plus trigger/helper functions.
+- Current live triggers include material updated-at, material activity, version snapshot, and Supabase Storage maintenance/protection triggers.
+- Storage currently contains `avatars` (5 MiB, JPEG/PNG/WebP) and `materi-files` (25 MiB, restricted document/text/image MIME set).
+- Live role/permission seed currently contains 4 roles and 17 permissions with 41 role-permission mappings.
+
+The audit also confirmed why a hand-written baseline should not be committed yet: the local migration directory still lacks the earlier 16–17 September migration sequence that established these objects, and Storage/Auth are Supabase-managed schemas with dependencies that should be reproduced through the supported CLI/database pull workflow rather than guessed SQL. The repository's legacy root SQL files are incomplete historical bootstrap scripts and do not contain the current function/RLS/grant state.
+
+**Conclusion:** schema capture is complete enough to design the baseline, but an authoritative reproducible migration must still be generated/validated by Supabase CLI against the live schema. This environment does not have the Supabase CLI/Docker runtime required to run `supabase db pull`/local reset, so no local reset is claimed.
 
 ## Local Supabase / reproducible test environment — 18 September 2026
 
 Local Supabase is the no-cost path for isolated Restore E2E. The repository already contains versioned migrations, but the current repository migration directory is **not yet a complete baseline** for recreating the live database: the connected project currently records earlier migrations from 16–17 September that are not present in `supabase/migrations/` on this branch. The live database also reports PostgreSQL 17.6.
 
-Do not run the current hardening-only migrations against a fresh local database before a complete baseline migration is added. The legacy root SQL files are explicitly non-authoritative and must not be treated as that baseline. The next implementation step is to capture/review a complete schema baseline from the live project in a read-only manner, then verify local reset before wiring Restore E2E to local Supabase.
+Do not run the current hardening-only migrations against a fresh local database before a complete baseline migration is added. The legacy root SQL files are explicitly non-authoritative and must not be treated as that baseline. The next implementation step is to generate/review the authoritative baseline with Supabase CLI, then verify local reset before wiring Restore E2E to local Supabase.
