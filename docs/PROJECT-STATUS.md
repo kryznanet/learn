@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sudah ditambahkan dan workflow CI terverifikasi sukses, termasuk authenticated Super Admin editor test dengan dedicated E2E secrets. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free.
+**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sudah ditambahkan dan workflow CI terverifikasi sukses, termasuk authenticated Super Admin editor test dan Draft Recovery dengan dedicated E2E secrets. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free.
 
 ## 🔁 Aturan branch aktif
 
@@ -135,7 +135,7 @@ Temuan yang masih pending:
 ### Prioritas 1 — Security/Auth
 1. Leaked Password Protection: tetap `Pending/Accepted Plan Limitation` pada Free plan; tidak ada upgrade/pay yang dilakukan.
 2. Security Advisor: sudah direrun; 7 application SECURITY DEFINER warnings dan 1 leaked-password warning tetap tercatat.
-3. Lanjut Browser E2E Version Restore execution terisolasi dan verifikasi Draft Recovery.
+3. Lanjut Browser E2E Version Restore execution terisolasi.
 
 ### Prioritas 2 — Browser E2E
 4. Version Restore E2E dari UI sampai database pada environment terisolasi.
@@ -150,7 +150,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **verifikasi CI Draft Recovery setelah readiness fix**, lalu lanjut ke environment terisolasi untuk Restore execution E2E. Jangan gunakan produksi untuk Restore UI-to-database.
+Mulai dengan **environment terisolasi untuk Restore execution E2E**. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 
