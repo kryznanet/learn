@@ -594,6 +594,7 @@
       $('submitReview').hidden = !has('content.review');
       $('history').hidden = false;
       currentUser = session.user;
+      window.KryznaDraftRecovery?.init();
     }
 
     boot();
