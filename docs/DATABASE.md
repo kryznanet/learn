@@ -53,4 +53,6 @@ Migration `20260918010522_harden_trigger_function_privileges_20260918` menetapka
 
 Migration `20260918010535_restrict_trigger_function_execute_20260918` mencabut `EXECUTE` dari `PUBLIC`, `anon`, dan `authenticated` pada `snapshot_materi_version()`.
 
+Migration `20260918010830_restrict_internal_security_definer_helpers` mencabut `EXECUTE` dari `PUBLIC`, `anon`, dan `authenticated` pada `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` karena ketiganya tidak diperlukan sebagai RPC langsung.
+
 Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback.
