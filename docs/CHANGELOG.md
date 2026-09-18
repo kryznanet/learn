@@ -2,6 +2,9 @@
 
 ## 18 September 2026
 
+- Restricted internal SECURITY DEFINER helpers `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, and `get_my_role(uuid)` by revoking EXECUTE from `PUBLIC`, `anon`, and `authenticated`.
+- Verified the remaining Security Advisor application warning count is 7; these are application/RLS functions with authenticated execution and internal authorization requirements.
+
 - Hardened trigger-only `snapshot_materi_version()` by revoking `EXECUTE` from `PUBLIC`, `anon`, and `authenticated`.
 - Set explicit `search_path = public` on `set_materi_updated_at()`.
 - Verified `trg_snapshot_materi_version` remains attached to `materi` for `AFTER INSERT OR UPDATE`.
