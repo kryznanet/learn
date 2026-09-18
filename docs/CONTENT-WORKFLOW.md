@@ -60,3 +60,8 @@ Delapan materi advanced telah ditambahkan dan diverifikasi berstatus `published`
 ## Standar kedalaman materi — 18 September 2026
 
 Materi published menggunakan struktur pembelajaran yang lebih lengkap: tujuan pembelajaran, konteks, konsep inti, cara kerja, contoh kasus, parameter dan bukti verifikasi, troubleshooting, kesalahan umum, latihan pemahaman, checklist penguasaan, serta ringkasan. Konten perlu menjelaskan hubungan antar-konsep dan langkah analisis, bukan hanya memberikan definisi singkat.
+
+
+## Pendalaman pedagogis seluruh materi — 18 September 2026
+
+Seluruh 58 materi published telah diperbarui dari kategori Dasar sampai Tutorial. Setiap materi sekarang mengaitkan konsep dengan contoh kasus spesifik, parameter/bukti verifikasi, troubleshooting berbasis hipotesis, kesalahan umum, dan latihan yang sesuai topik. Verifikasi live mempertahankan 58 published (Dasar 22, Intermediate 20, Advanced 12, Tutorial 4). Perubahan hanya pada konten materi dan timestamp pembaruan; workflow status, schema, RLS, dan RBAC tidak berubah.
