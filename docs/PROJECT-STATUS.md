@@ -89,7 +89,7 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are configured.
 - GitHub Actions Browser E2E run #6 (`35296715443`) completed successfully with all 3 tests passed, including authenticated Super Admin editor reachability.
 - Authenticated version-history UI coverage is now verified; destructive Restore execution remains pending to avoid mutating production content in CI.
-- Authenticated Autosave/Draft Recovery scenarios remain pending.
+- Authenticated Autosave/Draft Recovery: autosave-to-localStorage scenario is now covered by Browser E2E without database mutation; recovery/reload and cleanup scenarios remain pending.
 
 ### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
@@ -131,7 +131,7 @@ Temuan yang masih pending:
 ### Prioritas 2 — Browser E2E
 4. Version Restore E2E dari UI sampai database.
 5. Uji Restore execution dengan data E2E terisolasi.
-6. Uji Autosave & Draft Recovery.
+6. Uji Autosave & Draft Recovery (autosave local sudah tercover; recovery/reload dan cleanup masih pending).
 
 ### Prioritas 3 — Final audit
 8. Audit final query halaman publik dan sanitasi.
@@ -141,7 +141,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **Restore execution E2E yang terisolasi**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, dan version-history UI coverage sudah terverifikasi.
+Mulai dengan **strategi Restore execution E2E yang terisolasi**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, version-history UI, dan autosave localStorage sudah tercover; Restore destructive dan recovery/reload masih pending.
 
 ## 🔁 Siklus wajib setiap sesi
 
