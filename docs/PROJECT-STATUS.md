@@ -306,3 +306,12 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Dua entri placeholder **Test** dan **Test 12** terverifikasi berstatus `archived`, sehingga tidak termasuk katalog published.
 - Konten published yang diperbarui memiliki panjang sekitar 3.0–3.5 ribu karakter dan telah diperiksa memiliki bagian konsep dan troubleshooting.
 - Status: **Needs Verification** untuk review pedagogis lanjutan; struktur teknis sudah diperbaiki, tetapi contoh dan latihan masih perlu diperdalam per materi pada iterasi berikutnya.
+
+
+## Pendalaman topik Intermediate/Advanced/Tutorial — 18 September 2026
+
+- Seluruh **36 materi published** pada kategori Intermediate (20), Advanced (12), dan Tutorial (4) diperbarui dengan pembahasan topik-spesifik.
+- Contoh teknis kini mencakup addressing/routing, DNS/DHCP, VLAN/STP/LACP, QoS/VPN, OSPF/BGP, PKI/TLS, SIEM/IDS, automation, serta prosedur diagnostik pada tutorial.
+- Verifikasi live setelah perubahan: **58 materi published** tetap terdiri dari Dasar 22, Intermediate 20, Advanced 12, Tutorial 4; tidak ada perubahan schema atau status publikasi.
+- Verifikasi panjang konten: Intermediate sekitar 1.9–2.0 ribu karakter rata-rata, Advanced sekitar 3.1 ribu, Tutorial sekitar 1.9 ribu; kualitas dinilai berdasarkan relevansi teknis, bukan panjang semata.
+- Status: **Needs Verification** — perlu review pedagogis akhir dan pengecekan UI/rendering materi sebelum checkpoint kualitas ditutup.
