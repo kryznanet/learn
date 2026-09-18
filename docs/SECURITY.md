@@ -28,6 +28,7 @@ RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticate
 - Pengujian transaksional insert/update menghasilkan dua snapshot versi dan di-rollback.
 - `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` dicabut dari `PUBLIC`, `anon`, dan `authenticated` karena tidak diperlukan sebagai RPC langsung.
 - Direct write ke `user_roles` dibatasi RLS kepada `super_admin`; Admin hanya memiliki akses baca assignment role.
+- Direct UPDATE ke `admin_users` melalui PostgREST dicabut. Perubahan profil, role, dan active state harus melewati `update_staff()` agar authorization dan sinkronisasi `admin_users`/`user_roles` tidak dapat dilewati.
 
 ## Remaining Security Advisor findings
 
@@ -57,3 +58,8 @@ Leaked Password Protection Supabase masih disabled dan menjadi pekerjaan securit
 - [x] Edge Function secret tidak bocor ke client.
 - [ ] Auth password protection ditinjau/diaktifkan.
 - [x] Security Advisor dijalankan setelah hardening.
+
+
+### Direct staff-update hardening — 18 September 2026
+
+Migration `restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi `pg_policies` menunjukkan tabel hanya memiliki policy SELECT untuk authenticated; jalur perubahan staf tetap melalui `update_staff(...)`.
