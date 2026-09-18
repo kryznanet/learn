@@ -324,3 +324,12 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Review materi/view.html mengonfirmasi halaman materi mengambil hanya status published, menampilkan konten HTML/Markdown melalui sanitasi client-side, dan menyediakan tampilan dokumen asli bila tersedia.
 - Commit UI: b69a0c32bc0e01109c0171c0cc13e4e911901fa8.
 - Status: Needs Verification untuk browser/E2E runtime; verifikasi source-level selesai, tetapi eksekusi browser belum tersedia pada checkpoint ini.
+
+
+## Pendalaman pedagogis seluruh materi published — 18 September 2026
+
+- Seluruh **58 materi published** diperbarui mulai dari kategori **Dasar**, kemudian Intermediate, Advanced, dan Tutorial.
+- Konten tidak lagi hanya mengulang template umum: setiap materi diberi fokus konsep, contoh kasus, bukti/perintah verifikasi, skenario troubleshooting, dan latihan yang terkait langsung dengan topiknya.
+- Verifikasi live setelah perubahan: **Dasar 22, Intermediate 20, Advanced 12, Tutorial 4 = 58 published**; seluruh konten non-kosong.
+- Contoh spesifik mencakup subnet /26, DORA DHCP, DNS resolution, MAC learning, NAT/PAT, VLAN 802.1Q, IPv6 SLAAC, OSPF adjacency, BGP path selection, IPsec SA, PKI/TLS, SIEM correlation, serta prosedur Windows ping/tracert.
+- Status kualitas: **Needs Verification** untuk browser/rendering dan review pedagogis akhir. Tidak ada perubahan schema, RLS, status publikasi, atau jumlah materi.
