@@ -38,7 +38,7 @@ UI → shared/auth.js → permission UX
 
 ## User management
 
-Admin dapat membaca dan memperbarui profil/status staf melalui policy yang diselaraskan. Perubahan role dan pembuatan user melalui jalur administratif tetap memerlukan Super Admin.
+Admin dapat membaca data staf sesuai policy. Perubahan profil/status/role staf melalui jalur administratif harus melewati `update_staff()`; direct UPDATE pada `admin_users` telah dicabut. Perubahan role dan pembuatan user tetap memerlukan Super Admin sesuai authorization RPC.
 
 Direct write ke `user_roles` sekarang juga dibatasi oleh RLS: hanya `super_admin` yang dapat INSERT/UPDATE/DELETE assignment role. Admin tetap dapat SELECT assignment untuk kebutuhan administrasi, tetapi tidak dapat mengubah role secara langsung.
 
