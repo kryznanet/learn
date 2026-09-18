@@ -115,6 +115,13 @@ Temuan yang masih pending:
 
 ## 🛑 Checkpoint 18 September 2026
 
+### Final database security audit — 18 September 2026
+- Audited all 12 public `SECURITY DEFINER` functions; all have explicit `search_path`. Only the 7 application RPCs remain executable by `authenticated`; internal/trigger-only functions are not executable by API roles.
+- Audited RLS on all 10 core public tables: RLS is enabled throughout and public material visibility remains published-only.
+- Audited Storage policies for `materi-files` and `avatars`, core triggers, API table grants, and public indexes. No additional concrete security defect requiring code/schema change was identified.
+- API grant hardening applied through migrations `20260918020624_restrict_api_table_privileges_20260918`, `20260918020632_tighten_api_table_dml_privileges_20260918`, and `20260918020637_restore_rbac_write_privileges_20260918` and verified directly in Supabase.
+
+
 - Database migrations sebelumnya berhasil diterapkan dan diverifikasi.
 - Migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918` diterapkan ke Supabase dan policy SELECT `materi` diverifikasi.
 - Migration `20260918011836_restrict_user_role_management_to_super_admin_20260918` diterapkan ke Supabase dan diverifikasi.
