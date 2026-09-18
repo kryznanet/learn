@@ -1,6 +1,6 @@
 # Security Kryzna Learn
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 ## Prinsip
 
@@ -24,20 +24,27 @@ Bucket `materi-files` menggunakan policy RBAC untuk upload/update/delete. Public
 
 ## SECURITY DEFINER checkpoint
 
-RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticated` jika memiliki authorization internal. Function yang hanya dipanggil sebagai trigger seharusnya tidak diekspos ke anon/authenticated.
+RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticated` jika memiliki authorization internal. Function yang hanya dipanggil sebagai trigger tidak boleh diekspos ke anon/authenticated.
 
-Temuan terakhir yang perlu dikerjakan:
-- `snapshot_materi_version()` masih executable dan perlu revoke EXECUTE untuk role publik.
-- `set_materi_updated_at()` perlu `search_path` eksplisit.
-- Leaked Password Protection Supabase masih disabled dan perlu evaluasi.
+### Hardening 18 September 2026
+
+- `snapshot_materi_version()` sekarang tetap `SECURITY DEFINER` dan memiliki `search_path = public`, tetapi `EXECUTE` telah dicabut dari `PUBLIC`, `anon`, dan `authenticated` karena function hanya digunakan oleh trigger.
+- `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
+- Trigger `trg_snapshot_materi_version` pada `materi` tetap aktif untuk `AFTER INSERT OR UPDATE`.
+- Pengujian transaksional insert/update menghasilkan dua snapshot versi dan kemudian di-rollback, sehingga tidak meninggalkan data uji.
+
+## Remaining Security Advisor findings
+
+- Beberapa application RPC `SECURITY DEFINER` masih executable oleh `authenticated`; masing-masing perlu review authorization dan kebutuhan API sebelum privilege diubah.
+- Leaked Password Protection Supabase masih disabled dan perlu dievaluasi/diaktifkan melalui konfigurasi Auth.
 
 ## Security review checklist
 
-- [ ] RLS aktif pada tabel sensitif.
-- [ ] Public SELECT hanya pada data yang memang publik.
-- [ ] Storage write hanya role yang berwenang.
-- [ ] SECURITY DEFINER memakai search_path aman.
-- [ ] Trigger-only function tidak executable publik.
-- [ ] Edge Function secret tidak bocor ke client.
-- [ ] Auth password protection ditinjau.
-- [ ] Security Advisor dijalankan setelah hardening.
+- [x] RLS aktif pada tabel sensitif.
+- [x] Public SELECT hanya pada data yang memang publik.
+- [x] Storage write hanya role yang berwenang.
+- [x] SECURITY DEFINER yang di-hardening memakai search_path aman.
+- [x] Trigger-only function tidak executable publik.
+- [x] Edge Function secret tidak bocor ke client.
+- [ ] Auth password protection ditinjau/diaktifkan.
+- [x] Security Advisor dijalankan setelah hardening.
