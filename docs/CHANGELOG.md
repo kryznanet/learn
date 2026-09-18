@@ -1,3 +1,10 @@
+## 18 September 2026 — Material workflow status enforcement
+- Audit jalur `materi` menemukan bahwa permission UI untuk review/publish/archive belum sepenuhnya menjadi security boundary di database: role `penulis` masih dapat menulis `status` non-draft melalui direct API selama memiliki `content.update`.
+- Diperketat RLS `materi` melalui migrations `20260918025136_enforce_materi_status_permissions_20260918` dan `20260918025144_tighten_materi_insert_author_20260918`.
+- `penulis` sekarang hanya dapat insert/update materi miliknya sendiri dengan `status='draft'`; `editor` dapat mengelola materi miliknya sendiri di seluruh workflow; `admin`/`super_admin` tetap dapat mengelola lintas author.
+- Semua content-role insert tetap wajib `author_id = auth.uid()`.
+- Live Supabase policy verification setelah migration berhasil.
+
 ## 18 September 2026 — RBAC staff mutation alignment
 - Menyamakan permission RBAC dengan enforcement backend: `admin` hanya dapat membaca staf; perubahan profil/status/role staf khusus Super Admin.
 - Mencabut `users.update` dan `users.disable` dari role `admin`.
