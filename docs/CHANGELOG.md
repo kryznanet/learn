@@ -2,6 +2,7 @@
 
 ## 18 September 2026
 
+- Version Restore UI permission was aligned from `content.update` to `content.review`, matching the backend RPC authorization for `editor/admin/super_admin` and preventing a misleading Restore action for `penulis`.
 - Integrated `shared/draft-recovery.js` into the material editor and deferred its initialization until the authenticated session/material state is ready, preventing existing-material drafts from being keyed as a new material.
 - Browser E2E for autosave/draft recovery remains pending because no browser test runner/runtime is present in the repository connection.
 
