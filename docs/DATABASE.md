@@ -68,3 +68,8 @@ Migration `20260918011836_restrict_user_role_management_to_super_admin_20260918`
 Migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918` menambahkan SELECT RLS untuk authenticated content roles. Public read tetap dibatasi pada materi published.
 
 Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`. Policy SELECT baru pada `materi` juga terverifikasi sebagai `FOR SELECT TO authenticated` untuk role content.
+
+
+### Staff update hardening — 18 September 2026
+
+Migration `20260918020413_restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi database menunjukkan migration tercatat dan `pg_policies` tidak lagi memiliki policy UPDATE pada tabel tersebut.
