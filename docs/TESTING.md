@@ -77,6 +77,7 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 - [x] Browser E2E: user mendapat konfirmasi recovery — verified by the reload/recovery flow in Browser E2E run #43.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
 - [x] Browser E2E: test recovery untuk materi existing sudah ditambahkan.
+- [x] Browser E2E: existing-material recovery test tidak lagi bergantung pada judul fixture `Test 12`; test memilih materi pertama yang tersedia dan membaca judul aktual sebelum verifikasi.
 - [x] Browser E2E: verifikasi CI setelah perbaikan readiness editor — run #43 (`35298946197`) succeeded.
 
 ## Storage
