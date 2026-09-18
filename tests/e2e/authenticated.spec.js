@@ -50,6 +50,22 @@ test.describe('Kryzna Learn authenticated editor', () => {
     expect(draft?.deskripsi).toBe('Draft lokal untuk verifikasi Browser E2E.');
     expect(draft?.konten).toContain('Isi draft E2E yang tidak dikirim ke database.');
     expect(draft?.savedAt).toBeTruthy();
+
+    await page.reload();
+    page.once('dialog', async (dialog) => {
+      expect(dialog.message()).toContain('Ditemukan draft lokal');
+      await dialog.accept();
+    });
+
+    await expect(page.locator('#judul')).toHaveValue('E2E Draft Recovery Probe');
+    await expect(page.locator('#deskripsi')).toHaveValue('Draft lokal untuk verifikasi Browser E2E.');
+    await expect(page.locator('#konten')).toContainText('Isi draft E2E yang tidak dikirim ke database.');
+
+    await page.evaluate(() => {
+      Object.keys(localStorage)
+        .filter((key) => key.startsWith('kryzna-learn:draft:'))
+        .forEach((key) => localStorage.removeItem(key));
+    });
   });
 
   test('super admin can open material version history and sees restore controls', async ({ page }) => {
