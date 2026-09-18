@@ -73,3 +73,8 @@ Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=f
 ### Staff update hardening — 18 September 2026
 
 Migration `20260918020413_restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE langsung pada `admin_users`. Verifikasi database menunjukkan migration tercatat dan `pg_policies` tidak lagi memiliki policy UPDATE pada tabel tersebut.
+
+
+### API table privileges — 18 September 2026
+
+Tiga migration privilege memperkecil grant API tanpa mengubah RLS policy semantics. `anon` hanya mempertahankan SELECT pada `materi` untuk public published-content path. `authenticated` mempertahankan privilege yang dibutuhkan oleh policy RLS dan jalur aplikasi; privilege `REFERENCES`, `TRIGGER`, `TRUNCATE`, serta DML tanpa policy terkait telah dicabut. `user_roles` dan `role_permissions` mempertahankan DML karena policy `FOR ALL` Super Admin memang merupakan jalur administrasi yang sah.
