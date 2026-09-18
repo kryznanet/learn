@@ -99,6 +99,7 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Pengujian transaksional insert/update menghasilkan `2` snapshot `materi_versions` dan di-rollback tanpa meninggalkan data uji.
 - `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` tidak lagi executable oleh `PUBLIC`, `anon`, atau `authenticated`.
 - Policy `user_roles` untuk direct role management diperketat dari Admin/Super Admin menjadi Super Admin-only.
+- Direct UPDATE policy pada `admin_users` dicabut; perubahan staf sekarang harus melalui `update_staff()` yang memiliki authorization internal.
 - Policy SELECT `materi` ditambahkan untuk authenticated content roles agar editor dapat membaca draft/review/archived dan menggunakan `UPDATE ... SELECT` tanpa ditolak RLS.
 
 ## 🔐 Security Advisor checkpoint — 18 September 2026
