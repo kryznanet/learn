@@ -280,3 +280,11 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Konten baru berstatus `published`, menggunakan author materi yang sudah ada, dan tidak mengubah kategori/data materi lama.
 - Katalog diperbarui pada `docs/MATERIAL-CATALOG.md`.
 - Jalur belajar kini lebih lengkap untuk urutan konsep: addressing → subnetting → switching/routing → layanan jaringan → security → operasi jaringan.
+
+
+## Jalur belajar publik — 18 September 2026
+
+- Beranda publik sekarang menampilkan jalur belajar empat tahap: **Materi · Dasar → Materi · Menengah → Materi · Lanjutan → Tutorial**.
+- Tahap Dasar, Menengah, dan Lanjutan dapat dipilih langsung untuk memfilter katalog materi berdasarkan kategori.
+- Deskripsi tiap tahap menjelaskan fokus pembelajaran agar pengguna tidak hanya melihat daftar materi, tetapi memahami urutan belajar yang disarankan.
+- Perubahan hanya pada UI; tidak mengubah schema, RLS, atau data materi.
