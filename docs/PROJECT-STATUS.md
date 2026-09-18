@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
+**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sekarang sudah ditambahkan; eksekusi CI terpasang, tetapi test authenticated memerlukan secrets E2E dan belum dianggap lulus sampai workflow benar-benar menghasilkan hasil terverifikasi. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
 
 ## 🔁 Aturan branch aktif
 
@@ -81,7 +81,14 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Public material detail also requires `status = 'published'` and sanitizes rendered Markdown/HTML before `innerHTML`.
 - Sanitizer hardening removes inline `style`/event attributes, rejects unsafe URL schemes, and uses `noopener noreferrer` for new-tab links.
 
-### 9. Security hardening database — 18 September
+### 9. Browser E2E harness — 18 September 2026
+- Added Playwright 1.55.0 with Chromium project configuration.
+- Added public smoke tests for homepage and admin login.
+- Added authenticated editor reachability test, gated by KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD.
+- Added GitHub Actions workflow `.github/workflows/browser-e2e.yml` to install Chromium and upload reports.
+- Authenticated Version Restore and Autosave/Draft Recovery scenarios remain pending until dedicated E2E credentials are configured and the workflow run is verified.
+
+### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
 - `set_materi_updated_at()` sekarang memiliki `search_path = public` eksplisit.
 - `trg_snapshot_materi_version` terverifikasi tetap `AFTER INSERT OR UPDATE` pada `public.materi`.
@@ -119,18 +126,19 @@ Temuan yang masih pending:
 3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
-4. Uji Version Restore dari UI sampai database.
-5. Uji Autosave & Draft Recovery.
+4. Configure dedicated E2E account secrets and verify the first GitHub Actions Browser E2E run.
+5. Uji Version Restore dari UI sampai database.
+6. Uji Autosave & Draft Recovery.
 
 ### Prioritas 3 — Final audit
-6. Audit final query halaman publik dan sanitasi.
-7. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
-8. Audit final formatting seluruh repo.
-9. Review consumer eksternal `swift-api` sebelum keputusan retirement.
+7. Audit final query halaman publik dan sanitasi.
+8. Audit final seluruh `SECURITY DEFINER`, RLS, Storage policy, privilege, dan index.
+9. Audit final formatting seluruh repo.
+10. Review consumer eksternal `swift-api` sebelum keputusan retirement.
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **Browser E2E Version Restore dan Autosave/Draft Recovery**. Sebelum mengklaim lulus, diperlukan browser runtime/test runner nyata. Jika runtime belum tersedia, pertahankan status `Needs Verification` dan lanjutkan audit final yang bisa diverifikasi statis/database.
+Mulai dengan **verifikasi workflow Browser E2E**. Runtime Chromium dan harness sekarang tersedia di GitHub Actions; status authenticated E2E tetap `Needs Verification` sampai secrets E2E dikonfigurasi dan workflow menghasilkan hasil test nyata.
 
 ## 🔁 Siklus wajib setiap sesi
 
