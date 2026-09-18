@@ -1,5 +1,13 @@
 # Changelog Kryzna Learn
 
+## 18 September 2026
+
+- Hardened trigger-only `snapshot_materi_version()` by revoking `EXECUTE` from `PUBLIC`, `anon`, and `authenticated`.
+- Set explicit `search_path = public` on `set_materi_updated_at()`.
+- Verified `trg_snapshot_materi_version` remains attached to `materi` for `AFTER INSERT OR UPDATE`.
+- Verified trigger behavior with a transactional insert/update test; two version snapshots were produced and the transaction was rolled back.
+- Reran Supabase Security Advisor: the `snapshot_materi_version()` and mutable-search-path findings are cleared. Remaining findings are the intended review of application `SECURITY DEFINER` RPCs and disabled Leaked Password Protection.
+
 ## 17 September 2026
 
 - Merapikan formatting Content/Admin.
