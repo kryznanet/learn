@@ -39,6 +39,8 @@ Status yang valid: `draft`, `review`, `published`, `archived`.
 
 RLS aktif pada tabel inti. Policy harus selalu dipandang bersama dengan permission mapping dan authorization RPC.
 
+`user_roles` menggunakan dua lapis enforcement: authenticated users dapat membaca assignment sendiri, Admin/Super Admin dapat membaca assignment staf, sedangkan INSERT/UPDATE/DELETE assignment role hanya diizinkan untuk `super_admin`. Ini menjaga pembagian user administration agar Admin tidak dapat mengubah role secara langsung.
+
 ## Index / constraint
 
 Workflow dan version history memiliki index/constraint yang mendukung pencarian status serta version lookup. Review index final tetap menjadi bagian audit database berikutnya.
@@ -55,4 +57,6 @@ Migration `20260918010535_restrict_trigger_function_execute_20260918` mencabut `
 
 Migration `20260918010830_restrict_internal_security_definer_helpers` mencabut `EXECUTE` dari `PUBLIC`, `anon`, dan `authenticated` pada `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` karena ketiganya tidak diperlukan sebagai RPC langsung.
 
-Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback.
+Migration `20260918012000_restrict_user_role_management_to_super_admin_20260918` mengganti policy `Admins manage user roles` menjadi `Super admins manage user roles`, sehingga direct write ke `user_roles` hanya dapat dilakukan oleh `super_admin`.
+
+Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
