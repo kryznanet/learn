@@ -63,6 +63,7 @@ Do not use a personal password in source code or commit it to the repository. Pr
 - [ ] Snapshot dibuat saat insert/update.
 - [ ] Riwayat versi tampil.
 - [ ] Restore hanya role yang berwenang.
+- [x] Browser E2E: Super Admin dapat membuka riwayat versi dan melihat kontrol Restore.
 - [ ] Restore membuat snapshot baru.
 - [ ] Activity log restore tercatat.
 
