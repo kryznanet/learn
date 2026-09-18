@@ -22,7 +22,7 @@ Status yang valid: `draft`, `review`, `published`, `archived`.
 
 Authenticated content roles (`penulis`, `editor`, `admin`, `super_admin`) sekarang memiliki SELECT RLS pada `materi` agar dapat membaca draft/review/archived sesuai kebutuhan aplikasi. Public tetap hanya dapat SELECT materi dengan status `published`.
 
-Ini juga diperlukan oleh editor karena `content/editor.html` menggunakan `UPDATE ... SELECT`. PostgreSQL menerapkan SELECT policy pada DML yang menggunakan `RETURNING`; tanpa policy SELECT yang cocok, update yang mengubah materi menjadi non-published dapat gagal dengan pesan RLS pada row baru. citeturn0search0turn0search1
+Ini juga diperlukan oleh editor karena `content/editor.html` menggunakan `UPDATE ... SELECT`. PostgreSQL menerapkan SELECT policy pada DML yang menggunakan `RETURNING`; tanpa policy SELECT yang cocok, update yang mengubah materi menjadi non-published dapat gagal dengan pesan RLS pada row baru.
 
 ## Version history
 
