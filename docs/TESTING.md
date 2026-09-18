@@ -113,3 +113,10 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 Restore UI-to-database E2E remains **Blocked** for the free local path until the repository has a complete reproducible database baseline. The branch currently tracks hardening migrations from 18 September, while the connected project migration history also contains required schema/RBAC/storage migrations from 16–17 September that are absent from this branch's `supabase/migrations/` directory.
 
 A local supabase/config.toml should be added only after the baseline is established. Do not point Browser E2E at production for Restore execution, and do not use the legacy root SQL bootstrap files as a substitute for the current live schema.
+
+
+## Live schema baseline audit — 18 September 2026
+
+Read-only Supabase catalog inspection verified the live baseline inputs needed for Restore E2E isolation: PostgreSQL 17.6.1, ten application tables with RLS enabled, current PK/FK/check/unique constraints, core indexes, 14 public application functions, material/version/activity triggers, two Storage buckets, and the current four-role/17-permission/41-mapping RBAC seed. No production mutation was performed.
+
+The baseline is **not yet executable locally**. The branch lacks the earlier 16–17 September migration sequence, and Supabase-managed Auth/Storage dependencies should be reproduced through the supported CLI/database-pull workflow rather than hand-authored from catalog output. Local reset remains unverified because this environment has no Supabase CLI/Docker runtime.
