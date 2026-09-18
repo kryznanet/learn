@@ -103,6 +103,8 @@ Temuan yang masih pending:
 - Autosave/draft recovery integration diperbaiki: editor memuat `shared/draft-recovery.js` dan menunda inisialisasi sampai session serta materi siap.
 - Security Advisor direrun setelah checkpoint dan tetap menunjukkan 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
 - Browser E2E belum dapat dinyatakan lulus karena tidak ada browser test runner/runtime di repository connection.
+- Audit Version Restore statis + database: RPC `restore_materi_version(uuid)` terverifikasi `SECURITY DEFINER` dengan `search_path=public`, authorization backend membatasi role ke `editor/admin/super_admin`, dan snapshot/activity logging berjalan melalui jalur restore.
+- Ditemukan mismatch permission UI: tombol Restore sebelumnya memakai `content.update` sehingga penulis dapat melihat tombol meskipun RPC menolak. UI diperbaiki menggunakan `content.review`, selaras dengan role yang boleh restore.
 
 ## ⚠️ Pekerjaan selanjutnya
 
