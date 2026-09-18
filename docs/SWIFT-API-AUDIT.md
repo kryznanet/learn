@@ -47,18 +47,20 @@ Belum ada bukti dari repository bahwa `swift-api` dipanggil oleh aplikasi Kryzna
 
 ## Keputusan audit
 
-**Status: Pending / Needs Verification.**
+**Status: Needs Verification.** Repository/GitHub/public-source review completed; external consumer ownership remains unverified.
 
 Tidak ada perubahan atau penghapusan terhadap `swift-api` pada checkpoint ini.
 
 Langkah sebelum retirement:
 
 1. Identifikasi consumer eksternal yang menggunakan endpoint.
-2. Pastikan tidak ada dependency deployment, automation, atau dokumentasi eksternal.
+2. Konfirmasi tidak ada dependency deployment, automation, atau dokumentasi eksternal di luar sumber yang telah diaudit.
 3. Jika tidak ada consumer, siapkan retirement plan dan rollback path.
 4. Setelah retirement dilakukan, verifikasi function tidak lagi ACTIVE dan catat hasilnya.
 
 ## Evidence
+
+- Read-only GitHub/public-source consumer review on 18 September 2026 found no relevant Kryzna Learn consumer reference.
 
 - Supabase Edge Function inventory: `swift-api`, ACTIVE, version 1, JWT verification enabled.
 - Deployment source `index.ts` berhasil diambil dari Supabase.
