@@ -78,3 +78,8 @@ Migration `20260918020413_restrict_direct_admin_users_updates_20260918` mencabut
 ### API table privileges — 18 September 2026
 
 Tiga migration privilege memperkecil grant API tanpa mengubah RLS policy semantics. `anon` hanya mempertahankan SELECT pada `materi` untuk public published-content path. `authenticated` mempertahankan privilege yang dibutuhkan oleh policy RLS dan jalur aplikasi; privilege `REFERENCES`, `TRIGGER`, `TRUNCATE`, serta DML tanpa policy terkait telah dicabut. `user_roles` dan `role_permissions` mempertahankan DML karena policy `FOR ALL` Super Admin memang merupakan jalur administrasi yang sah.
+
+
+### RBAC staff mutation alignment — 18 September 2026
+
+Migration `20260918024839_restrict_admin_staff_mutation_permissions_20260918` mencabut `users.update` dan `users.disable` dari role `admin`. Admin tetap memiliki `users.read`; perubahan profil/status/role staf hanya melalui jalur Super Admin `update_staff()`. Verifikasi live RBAC menunjukkan role `admin` tidak memiliki `roles.manage`.

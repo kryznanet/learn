@@ -279,8 +279,9 @@
           ['viewer', 'Viewer']
         ];
 
-        const roleDisabled = !can('roles.manage');
-        const activeDisabled = !can('users.disable');
+        const canManageStaff = can('roles.manage');
+        const roleDisabled = !canManageStaff;
+        const activeDisabled = !canManageStaff;
 
         return `
           <article class="item">
@@ -299,6 +300,7 @@
                 id="n-${item.user_id}"
                 value="${esc(item.display_name || '')}"
                 placeholder="Nama"
+                ${!canManageStaff ? 'readonly' : ''}
               >
 
               <select id="r-${item.user_id}" ${roleDisabled ? 'disabled' : ''}>
@@ -326,7 +328,7 @@
               class="btn primary"
               style="margin-top: 10px"
               onclick="saveStaff('${item.user_id}')"
-              ${!can('users.update') && !can('roles.manage') && !can('users.disable') ? 'disabled' : ''}
+              ${!canManageStaff ? 'disabled' : ''}
             >
               Simpan
             </button>
@@ -338,8 +340,8 @@
     $('search').oninput = render;
 
     window.saveStaff = async (id) => {
-      if (!can('users.update') && !can('roles.manage') && !can('users.disable')) {
-        alert('Anda tidak memiliki permission untuk mengubah pengguna.');
+      if (!can('roles.manage')) {
+        alert('Hanya Super Admin yang dapat mengubah data staf.');
         return;
       }
 
@@ -347,27 +349,8 @@
       if (!target) return;
 
       const name = $('n-' + id).value.trim();
-      const role = can('roles.manage')
-        ? $('r-' + id).value
-        : target.role;
-      const active = can('users.disable')
-        ? $('a-' + id).value === 'true'
-        : target.active;
-
-      if (name !== target.display_name && !can('users.update')) {
-        alert('Anda tidak memiliki permission users.update.');
-        return;
-      }
-
-      if (role !== target.role && !can('roles.manage')) {
-        alert('Anda tidak memiliki permission roles.manage.');
-        return;
-      }
-
-      if (active !== target.active && !can('users.disable')) {
-        alert('Anda tidak memiliki permission users.disable.');
-        return;
-      }
+      const role = $('r-' + id).value;
+      const active = $('a-' + id).value === 'true';
 
       const { error } = await db.rpc('update_staff', {
         p_user_id: id,

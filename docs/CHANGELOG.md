@@ -1,3 +1,9 @@
+## 18 September 2026 — RBAC staff mutation alignment
+- Menyamakan permission RBAC dengan enforcement backend: `admin` hanya dapat membaca staf; perubahan profil/status/role staf khusus Super Admin.
+- Mencabut `users.update` dan `users.disable` dari role `admin`.
+- UI `admin/users.html` sekarang read-only untuk Admin dan hanya Super Admin yang dapat menyimpan perubahan staf.
+- Live database verification mengonfirmasi mapping permission dan migration `20260918024839`.
+
 ## 18 September 2026 — Documentation consistency audit
 - Memverifikasi `docs/ARCHITECTURE.md`, `docs/RBAC.md`, `docs/LEGACY.md`, `docs/TESTING.md`, dan `docs/PROJECT-STATUS.md` terhadap struktur repository dan checkpoint aktif.
 - Memperbaiki metadata branch/tanggal pada `docs/ARCHITECTURE.md` yang masih menunjuk checkpoint `17-Sep-2026`; arsitektur kini mengikuti branch aktif yang diverifikasi.

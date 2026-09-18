@@ -19,7 +19,7 @@
 ## Mapping
 
 - `super_admin`: seluruh permission.
-- `admin`: permission content penuh sesuai matrix aplikasi, user read/update/disable, dan `system.view_logs`; role management tetap Super Admin.
+- `admin`: permission content penuh sesuai matrix aplikasi, `users.read`, dan `system.view_logs`; perubahan profil/status/role staf tetap khusus Super Admin melalui `update_staff()`.
 - `editor`: content read/create/update/review/publish/archive/manage_categories/view_logs.
 - `penulis`: content read/create/update/view_logs.
 - `viewer`: content.read.
