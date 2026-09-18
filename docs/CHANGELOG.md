@@ -2,6 +2,8 @@
 
 ## 18 September 2026
 
+- Hardened `admin_users` RLS by removing direct authenticated UPDATE policies. Staff profile, role, and active-state changes now rely on the protected `update_staff(...)` RPC, preventing direct role/privilege changes through PostgREST.
+
 - Verified `restore_materi_version` end-to-end at the database/RPC layer in a transaction using the dedicated Super Admin identity. The probe created the material and snapshots, restored the original version, produced the expected new snapshot, and rolled back all test data; no production material was modified.
 - Confirmed a safe Browser E2E Restore execution path requires an isolated Supabase environment; the connected project currently has no Supabase branch/staging database. Production Restore execution therefore remains pending.
 
