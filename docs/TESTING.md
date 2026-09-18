@@ -73,11 +73,11 @@ Do not use a personal password in source code or commit it to the repository. Pr
 Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
 
 - [x] Browser E2E: draft lokal tersimpan setelah perubahan.
-- [ ] Browser E2E: draft dipulihkan setelah reload — test new/existing material sudah ditambahkan; run #35 gagal karena test mulai sebelum editor selesai boot.
-- [ ] Browser E2E: user mendapat konfirmasi recovery — dicakup oleh test yang sama; perbaikan menambahkan readiness signal editor, menunggu CI baru.
+- [x] Browser E2E: draft dipulihkan setelah reload — verified in GitHub Actions Browser E2E run #43 for new and existing material.
+- [x] Browser E2E: user mendapat konfirmasi recovery — verified by the reload/recovery flow in Browser E2E run #43.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
 - [x] Browser E2E: test recovery untuk materi existing sudah ditambahkan.
-- [ ] Browser E2E: verifikasi CI setelah perbaikan readiness editor.
+- [x] Browser E2E: verifikasi CI setelah perbaikan readiness editor — run #43 (`35298946197`) succeeded.
 
 ## Storage
 
@@ -99,3 +99,9 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 - The existing-material recovery test asserted `#id` immediately after navigation before the asynchronous material load completed, so the field was still empty.
 - Fix: `content/editor.html` now exposes `window.__kryznaEditorReady` after session/material loading and draft-recovery initialization; authenticated E2E waits for this signal before interacting with the editor.
 - The fix is committed on `18-Sep-2026`; a new CI run must pass before marking Draft Recovery verified.
+
+
+## Browser E2E Draft Recovery verification — 18 September 2026
+- Run #43 (`35298946197`) on commit `2ec49859a5fffd793a721d257eaac0b122fd31b8` completed successfully.
+- The Playwright job completed successfully, including the Browser E2E test step and report upload.
+- The authenticated suite verifies new-material autosave/recovery and existing-material draft recovery after reload.
