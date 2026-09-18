@@ -216,7 +216,7 @@
 
       versions = data || [];
       const canRestore = KryznaAuth.hasPermission(
-        'content.update',
+        'content.review',
         session.permissions
       );
 
@@ -248,7 +248,7 @@
     }
 
     async function restore(id, versionNumber) {
-      if (!KryznaAuth.hasPermission('content.update', session.permissions)) {
+      if (!KryznaAuth.hasPermission('content.review', session.permissions)) {
         alert('Anda tidak memiliki permission untuk memulihkan versi.');
         return;
       }
