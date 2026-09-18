@@ -1,3 +1,6 @@
+-- LEGACY BOOTSTRAP — NOT AUTHORITATIVE FOR THE CURRENT DATABASE.
+-- Do not rerun against the current Supabase project; current security/RLS/RBAC is managed by supabase/migrations/.
+-- This historical script contains older grants/policies and is retained for reference only.
 -- KRYZNA LEARN - ROLE BASED ACCESS CONTROL
 -- Jalankan SETELAH supabase-schema.sql dan migration materi/storage yang sudah ada.
 -- Role yang tersedia:

@@ -1,3 +1,6 @@
+-- LEGACY DATA/SCHEMA SCRIPT — NOT AUTHORITATIVE FOR THE CURRENT DATABASE.
+-- Do not rerun against the current Supabase project; use the versioned migrations instead.
+-- Retained as historical content migration/reference only.
 -- KRYZNA LEARN - EXTEND MATERI UNTUK MENYIMPAN ISI LENGKAP
 -- Jalankan sekali di Supabase SQL Editor.
 

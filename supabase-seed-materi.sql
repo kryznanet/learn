@@ -1,3 +1,6 @@
+-- LEGACY DATA SEED — NOT AUTHORITATIVE FOR THE CURRENT DATABASE.
+-- Do not rerun against the current Supabase project unless explicitly intended as a historical data import.
+-- Current schema/security is managed by versioned migrations.
 -- KRYZNA LEARN - IMPORT 8 MATERI LAMA KE SUPABASE
 -- Jalankan SETELAH supabase-schema.sql dan supabase-content-migration.sql.
 

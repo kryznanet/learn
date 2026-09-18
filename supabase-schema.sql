@@ -1,3 +1,6 @@
+-- LEGACY BOOTSTRAP — NOT AUTHORITATIVE FOR THE CURRENT DATABASE.
+-- Do not rerun against the current Supabase project; current security/RLS is managed by supabase/migrations/.
+-- This file is retained as historical bootstrap/reference only.
 -- KRYZNA LEARN - DATABASE + SECURITY
 -- Jalankan seluruh script ini di Supabase SQL Editor.
 

@@ -1,3 +1,6 @@
+-- LEGACY STORAGE SCRIPT — NOT AUTHORITATIVE FOR THE CURRENT DATABASE.
+-- Do not rerun against the current Supabase project; current Storage policy is managed by versioned migrations/configuration.
+-- This historical script may contain older bucket/policy behavior and is retained for reference only.
 -- KRYZNA LEARN - FILE STORAGE FOR ORIGINAL WORD/PDF
 -- Jalankan SETELAH supabase-schema.sql dan migration materi yang sudah ada.
 

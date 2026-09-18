@@ -2,6 +2,10 @@
 
 **Tanggal:** 18 September 2026
 
+## Historical root SQL scripts
+
+`supabase-schema.sql`, `supabase-rbac.sql`, `supabase-content-migration.sql`, `supabase-storage.sql`, dan `supabase-seed-materi.sql` adalah script bootstrap/data lama. Script tersebut **bukan sumber kebenaran database saat ini** dan diberi penanda agar tidak dijalankan ulang terhadap production; schema/security/RLS saat ini dikelola melalui `supabase/migrations/`.
+
 ## `swift-api`
 
 Deployment Supabase masih ACTIVE v1, tetapi tidak memiliki source counterpart pada branch aktif. Function diaudit sebagai demo/legacy. Jangan hapus sebelum consumer eksternal dipastikan tidak ada.
