@@ -1,6 +1,6 @@
 # Changelog Kryzna Learn
 
-## 18 September 2026
+## 18 September 2026\n\n- Menambahkan `docs/SWIFT-API-AUDIT.md` berdasarkan audit langsung deployment `swift-api` v1. Deployment tetap ACTIVE dengan JWT verification; source repo counterpart belum ditemukan dan consumer eksternal masih perlu diverifikasi sebelum retirement.
 
 - Fixed RLS on `materi` for authenticated content roles. The editor uses `UPDATE ... SELECT`; when a draft/review row was changed to a non-published status, the existing public-only SELECT policy could reject the returned new row with an RLS error.
 - Added migration `20260918012129_allow_authenticated_content_users_to_view_materi_20260918`. Authenticated `penulis`, `editor`, `admin`, and `super_admin` can now read material rows; public/anon remain limited to published material.
