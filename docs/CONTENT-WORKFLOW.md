@@ -35,3 +35,8 @@ Perubahan tersimpan sebagai snapshot di `materi_versions`. Restore menggunakan R
 ## Activity log
 
 Perubahan status dan aktivitas editor dicatat pada `content_activity_logs` dengan metadata transisi jika tersedia.
+
+
+## Pengayaan materi — 18 September 2026
+
+Delapan materi jaringan baru telah ditambahkan untuk menutup topik yang sebelumnya belum tersedia secara memadai: Model OSI, TCP/UDP, NAT, ARP, Ethernet/switching, Wi-Fi, HTTP/HTTPS, dan troubleshooting berlapis. Semua materi berstatus `published`, memiliki deskripsi, kategori, slug unik, author, dan konten pembelajaran. Rincian katalog dicatat di `docs/MATERIAL-CATALOG.md`.
