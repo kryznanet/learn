@@ -20,6 +20,10 @@ Kolom penting meliputi `id`, `judul`, `deskripsi_singkat`, `link_halaman`, `kate
 
 Status yang valid: `draft`, `review`, `published`, `archived`.
 
+Authenticated content roles (`penulis`, `editor`, `admin`, `super_admin`) sekarang memiliki SELECT RLS pada `materi` agar dapat membaca draft/review/archived sesuai kebutuhan aplikasi. Public tetap hanya dapat SELECT materi dengan status `published`.
+
+Ini juga diperlukan oleh editor karena `content/editor.html` menggunakan `UPDATE ... SELECT`. PostgreSQL menerapkan SELECT policy pada DML yang menggunakan `RETURNING`; tanpa policy SELECT yang cocok, update yang mengubah materi menjadi non-published dapat gagal dengan pesan RLS pada row baru. citeturn0search0turn0search1
+
 ## Version history
 
 `materi_versions` memakai unique `(materi_id, version_number)` dan index berdasarkan material/version. Trigger `trg_snapshot_materi_version` berjalan setelah insert/update `materi`.
@@ -38,6 +42,8 @@ Status yang valid: `draft`, `review`, `published`, `archived`.
 ## RLS
 
 RLS aktif pada tabel inti. Policy harus selalu dipandang bersama dengan permission mapping dan authorization RPC.
+
+`materi` memiliki SELECT policy terpisah untuk authenticated content roles. Policy ini tidak berlaku untuk `anon`; public policy tetap membatasi anon/public pada `status='published'`.
 
 `user_roles` menggunakan dua lapis enforcement: authenticated users dapat membaca assignment sendiri, Admin/Super Admin dapat membaca assignment staf, sedangkan INSERT/UPDATE/DELETE assignment role hanya diizinkan untuk `super_admin`. Ini menjaga pembagian user administration agar Admin tidak dapat mengubah role secara langsung.
 
@@ -59,4 +65,6 @@ Migration `20260918010830_restrict_internal_security_definer_helpers` mencabut `
 
 Migration `20260918011836_restrict_user_role_management_to_super_admin_20260918` mengganti policy `Admins manage user roles` menjadi `Super admins manage user roles`, sehingga direct write ke `user_roles` hanya dapat dilakukan oleh `super_admin`.
 
-Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
+Migration `20260918012300_allow_authenticated_content_users_to_view_materi_20260918` menambahkan SELECT RLS untuk authenticated content roles. Public read tetap dibatasi pada materi published.
+
+Verifikasi database mengonfirmasi `anon_execute=false`, `authenticated_execute=false`, dan `public_execute=false` untuk `snapshot_materi_version()`. Pengujian transaksional insert/update pada `materi` menghasilkan dua `materi_versions` lalu di-rollback. Setelah migration user-role, policy `Super admins manage user roles` terverifikasi sebagai `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`. Policy SELECT baru pada `materi` juga terverifikasi sebagai `FOR SELECT TO authenticated` untuk role content.
