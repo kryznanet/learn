@@ -83,3 +83,8 @@ Tiga migration privilege memperkecil grant API tanpa mengubah RLS policy semanti
 ### RBAC staff mutation alignment — 18 September 2026
 
 Migration `20260918024839_restrict_admin_staff_mutation_permissions_20260918` mencabut `users.update` dan `users.disable` dari role `admin`. Admin tetap memiliki `users.read`; perubahan profil/status/role staf hanya melalui jalur Super Admin `update_staff()`. Verifikasi live RBAC menunjukkan role `admin` tidak memiliki `roles.manage`.
+
+
+### Material workflow status enforcement — 18 September 2026
+
+Migrations `20260918025136_enforce_materi_status_permissions_20260918` and `20260918025144_tighten_materi_insert_author_20260918` enforce workflow status boundaries at the `materi` RLS layer. `penulis` can only insert/update their own material while it remains `draft`; `editor` can insert/update their own material across workflow statuses; `admin` and `super_admin` can manage material across workflow statuses. All content-role inserts still require `author_id = auth.uid()`. This prevents a caller with only `content.create`/`content.update` from bypassing missing `content.review`, `content.publish`, or `content.archive` permissions by writing `status` directly through the API.
