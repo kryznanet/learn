@@ -25,7 +25,7 @@
 - Restricted direct `user_roles` INSERT/UPDATE/DELETE to `super_admin` through RLS, while retaining Admin/Super Admin read access. This aligns database enforcement with the RBAC rule that role changes remain Super Admin-only. Applied migration: `20260918011836_restrict_user_role_management_to_super_admin_20260918`.
 - Version Restore UI permission was aligned from `content.update` to `content.review`, matching the backend RPC authorization for `editor/admin/super_admin` and preventing a misleading Restore action for `penulis`.
 - Integrated `shared/draft-recovery.js` into the material editor and deferred its initialization until the authenticated session/material state is ready, preventing existing-material drafts from being keyed as a new material.
-- Browser E2E for autosave/draft recovery remains pending because no browser test runner/runtime is present in the repository connection.
+- Browser E2E for autosave/draft recovery was later verified through GitHub Actions run #43 after the repository test runner was configured.
 
 - Restricted internal SECURITY DEFINER helpers `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, and `get_my_role(uuid)` by revoking EXECUTE from `PUBLIC`, `anon`, and `authenticated`.
 - Verified the remaining Security Advisor application warning count is 7; these are application/RLS functions with authenticated execution and internal authorization requirements.
