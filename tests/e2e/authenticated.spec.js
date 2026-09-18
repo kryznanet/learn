@@ -36,26 +36,36 @@ test.describe('Kryzna Learn authenticated editor', () => {
     await page.locator('#deskripsi').fill('Draft lokal untuk verifikasi Browser E2E.');
     await page.locator('#konten').fill('Isi draft E2E yang tidak dikirim ke database.');
 
-    const draft = await expect
-      .poll(
-        async () =>
-          page.evaluate(() => {
-            const key = Object.keys(localStorage).find(
-              (item) =>
-                item.startsWith('kryzna-learn:draft:') &&
-                item.endsWith(':new')
-            );
-            return key ? JSON.parse(localStorage.getItem(key)) : null;
-          }),
-        { timeout: 5_000 }
-      )
-      .toMatchObject({
-        judul: 'E2E Draft Recovery Probe',
-        deskripsi: 'Draft lokal untuk verifikasi Browser E2E.'
-      });
+    await page.waitForFunction(() => {
+      const key = Object.keys(localStorage).find(
+        (item) =>
+          item.startsWith('kryzna-learn:draft:') &&
+          item.endsWith(':new')
+      );
+      if (!key) return false;
 
-    expect(draft.konten).toContain('Isi draft E2E yang tidak dikirim ke database.');
-    expect(draft.savedAt).toBeTruthy();
+      const draft = JSON.parse(localStorage.getItem(key));
+      return (
+        draft?.judul === 'E2E Draft Recovery Probe' &&
+        draft?.deskripsi === 'Draft lokal untuk verifikasi Browser E2E.' &&
+        draft?.konten?.includes('Isi draft E2E yang tidak dikirim ke database.') &&
+        Boolean(draft?.savedAt)
+      );
+    }, null, { timeout: 5_000 });
+
+    const draft = await page.evaluate(() => {
+      const key = Object.keys(localStorage).find(
+        (item) =>
+          item.startsWith('kryzna-learn:draft:') &&
+          item.endsWith(':new')
+      );
+      return key ? JSON.parse(localStorage.getItem(key)) : null;
+    });
+
+    expect(draft?.judul).toBe('E2E Draft Recovery Probe');
+    expect(draft?.deskripsi).toBe('Draft lokal untuk verifikasi Browser E2E.');
+    expect(draft?.konten).toContain('Isi draft E2E yang tidak dikirim ke database.');
+    expect(draft?.savedAt).toBeTruthy();
 
     await page.reload();
     page.once('dialog', async (dialog) => {
@@ -98,20 +108,34 @@ test.describe('Kryzna Learn authenticated editor', () => {
     await page.locator('#deskripsi').fill('Draft existing material untuk recovery.');
     await page.locator('#konten').fill('Isi draft existing material yang tidak dikirim ke database.');
 
-    const draftKey = await expect
-      .poll(
-        async () =>
-          page.evaluate((id) => {
-            const prefix = 'kryzna-learn:draft:';
-            return (
-              Object.keys(localStorage).find(
-                (key) => key.startsWith(prefix) && key.endsWith(':' + id)
-              ) || null
-            );
-          }, materialId),
-        { timeout: 5_000 }
-      )
-      .toBeTruthy();
+    await page.waitForFunction(
+      (id) => {
+        const prefix = 'kryzna-learn:draft:';
+        const key = Object.keys(localStorage).find(
+          (item) => item.startsWith(prefix) && item.endsWith(':' + id)
+        );
+        if (!key) return false;
+
+        const draft = JSON.parse(localStorage.getItem(key));
+        return (
+          draft?.judul === 'E2E Existing Material Draft Probe' &&
+          draft?.deskripsi === 'Draft existing material untuk recovery.' &&
+          draft?.konten?.includes('Isi draft existing material yang tidak dikirim ke database.') &&
+          Boolean(draft?.savedAt)
+        );
+      },
+      materialId,
+      { timeout: 5_000 }
+    );
+
+    const draftKey = await page.evaluate((id) => {
+      const prefix = 'kryzna-learn:draft:';
+      return (
+        Object.keys(localStorage).find(
+          (key) => key.startsWith(prefix) && key.endsWith(':' + id)
+        ) || null
+      );
+    }, materialId);
 
     expect(draftKey).toBeTruthy();
 
