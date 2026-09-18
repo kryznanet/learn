@@ -45,3 +45,8 @@ Direct write ke `user_roles` sekarang juga dibatasi oleh RLS: hanya `super_admin
 ## Catatan legacy
 
 `admin_users.role` masih dipertahankan untuk kompatibilitas dan sinkronisasi. RBAC terpusat menggunakan `roles`, `user_roles`, dan `role_permissions`.
+
+
+## Workflow status enforcement
+
+Permission checks for `content.review`, `content.publish`, and `content.archive` are not UI-only. The `materi` RLS policies enforce the workflow boundary: `penulis` can only create/update authored `draft` rows; `editor` can create/update authored rows across workflow statuses; `admin` and `super_admin` retain cross-author workflow mutation. All inserts require `author_id = auth.uid()`.
