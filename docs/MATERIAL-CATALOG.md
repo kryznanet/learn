@@ -1,0 +1,27 @@
+# Katalog Materi Pembelajaran
+
+**Tanggal:** 18 September 2026  
+**Branch:** 18-Sep-2026
+
+Dokumen ini mencatat penambahan materi pembelajaran yang dilakukan langsung pada database Supabase terhubung. Konten baru berstatus `published` dan menggunakan author sistem materi yang sudah ada.
+
+## Materi yang ditambahkan
+
+1. **Model OSI dan Fungsi Setiap Layer** — tujuh layer OSI dan troubleshooting berlapis.
+2. **TCP dan UDP: Perbedaan dan Kapan Digunakan** — transport layer, reliabilitas, port, dan perbandingan TCP/UDP.
+3. **NAT dan Port Forwarding Dasar** — private/public IP, PAT, port forwarding, dan keamanan.
+4. **ARP dan Hubungan IP dengan MAC Address** — ARP request/reply, cache, dan troubleshooting.
+5. **Ethernet dan Dasar Switching** — frame, MAC address table, forwarding, flooding, dan masalah switch.
+6. **Wi-Fi Dasar: SSID, Band, Channel, dan Keamanan** — SSID, radio band, channel, access point, dan keamanan.
+7. **HTTP dan HTTPS Dasar** — request/response, method, status code, TLS, dan batasan keamanan HTTPS.
+8. **Troubleshooting Jaringan dengan Metode Berlapis** — physical, IP, gateway, routing, DNS, port, dan aplikasi.
+
+## Cakupan materi saat ini
+
+Katalog materi kini mencakup dasar IP/MAC, IPv4, subnetting, DHCP, DNS, VLAN, Ethernet/switching, router, NAT, ARP, Wi-Fi, TCP/UDP, HTTP/HTTPS, firewall/port, traceroute, ping, crimping kabel LAN, pengecekan IP Windows, serta troubleshooting jaringan.
+
+## Catatan integritas data
+
+Penambahan diverifikasi dengan query terhadap `public.materi`: seluruh delapan slug baru ditemukan dengan status `published` dan konten non-kosong. Tidak ada materi lama yang ditimpa; insert menggunakan pemeriksaan slug agar tidak membuat duplikasi.
+
+Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. Untuk reproducibility database dari nol, baseline migration tetap mengikuti checkpoint local Supabase pada `PROJECT-STATUS.md`.
