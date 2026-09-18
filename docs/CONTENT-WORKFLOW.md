@@ -40,3 +40,8 @@ Perubahan status dan aktivitas editor dicatat pada `content_activity_logs` denga
 ## Pengayaan materi — 18 September 2026
 
 Delapan materi jaringan baru telah ditambahkan untuk menutup topik yang sebelumnya belum tersedia secara memadai: Model OSI, TCP/UDP, NAT, ARP, Ethernet/switching, Wi-Fi, HTTP/HTTPS, dan troubleshooting berlapis. Semua materi berstatus `published`, memiliki deskripsi, kategori, slug unik, author, dan konten pembelajaran. Rincian katalog dicatat di `docs/MATERIAL-CATALOG.md`.
+
+
+## Materi lanjutan — 18 September 2026
+
+Delapan materi lanjutan jaringan telah ditambahkan: IPv6, VLAN dan inter-VLAN routing, routing table, DHCP relay, DNS troubleshooting, firewall/ACL, VPN/tunneling, serta monitoring/log. Seluruh materi berstatus `published` dan diverifikasi pada `public.materi` dengan konten non-kosong.
