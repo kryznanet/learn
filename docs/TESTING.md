@@ -73,10 +73,10 @@ Do not use a personal password in source code or commit it to the repository. Pr
 Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
 
 - [x] Browser E2E: draft lokal tersimpan setelah perubahan.
-- [ ] Browser E2E: draft dipulihkan setelah reload — test sudah ditambahkan, tetapi workflow CI untuk commit test terbaru belum tersedia/terverifikasi.
+- [ ] Browser E2E: draft dipulihkan setelah reload — test new/existing material sudah ditambahkan; verifikasi CI commit terbaru masih menunggu workflow selesai.
 - [ ] Browser E2E: user mendapat konfirmasi recovery — dicakup oleh test yang sama, menunggu verifikasi CI.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
-- [ ] Browser E2E: recovery untuk materi baru tidak tertukar dengan recovery materi existing.
+- [x] Browser E2E: test recovery untuk materi existing sudah ditambahkan; verifikasi CI masih pending.
 
 ## Storage
 
