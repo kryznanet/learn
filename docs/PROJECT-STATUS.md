@@ -2,7 +2,7 @@
 
 **Tanggal checkpoint:** 18 September 2026  
 **Branch aktif saat checkpoint:** `18-Sep-2026`  
-**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sudah ditambahkan dan workflow CI terverifikasi sukses, termasuk authenticated Super Admin editor test dengan dedicated E2E secrets. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free; Browser E2E masih `Needs Verification` karena repository belum memiliki browser test runner/runtime.
+**Status sesi:** Security hardening database terverifikasi, bug RLS saat mengirim edit materi ke Review sudah diperbaiki, dan integrasi autosave/draft recovery sudah diperbaiki. Harness Playwright + Chromium untuk Browser E2E sudah ditambahkan dan workflow CI terverifikasi sukses, termasuk authenticated Super Admin editor test dengan dedicated E2E secrets. Trigger-only function dan internal helper yang tidak perlu sebagai RPC sudah dibatasi; direct write `user_roles` kini juga dibatasi ke Super Admin. Tersisa 7 application `SECURITY DEFINER` RPC yang memang dipakai jalur aplikasi/RLS dan masih ditandai Security Advisor karena executable oleh `authenticated`. Leaked Password Protection tetap disabled karena keterbatasan plan Free.
 
 ## 🔁 Aturan branch aktif
 
@@ -65,7 +65,7 @@ Kryzna Learn
 Database memiliki `roles`, `permissions`, `user_roles`, dan `role_permissions`. Mapping tersedia untuk `super_admin`, `admin`, `editor`, dan `penulis`; `viewer` dipertahankan sebagai legacy dengan `content.read`.
 
 ### 4. Workflow dan version history
-Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. `shared/draft-recovery.js` sekarang dimuat oleh `content/editor.html` dan diinisialisasi setelah session/materi siap agar key draft tidak salah untuk materi existing. Browser E2E restore/autosave masih pending.
+Workflow materi, `materi_versions`, snapshot trigger, restore RPC, activity logging, autosave, dan draft recovery sudah tersedia. `shared/draft-recovery.js` sekarang dimuat oleh `content/editor.html` dan diinisialisasi setelah session/materi siap agar key draft tidak salah untuk materi existing. Browser E2E Restore execution dan Draft Recovery CI masih pending.
 
 ### 5. Storage dan RLS
 RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan public read dibatasi pada file materi `published`.
@@ -88,8 +88,9 @@ RLS tabel inti aktif. Storage `materi-files` sudah diselaraskan dengan RBAC dan 
 - Added GitHub Actions workflow `.github/workflows/browser-e2e.yml` to install Chromium and upload reports.
 - Dedicated E2E repository secrets `KRYZNA_E2E_EMAIL` and `KRYZNA_E2E_PASSWORD` are configured.
 - GitHub Actions Browser E2E run #6 (`35296715443`) completed successfully with all 3 tests passed, including authenticated Super Admin editor reachability.
-- Authenticated version-history UI coverage is now verified; destructive Restore execution remains pending to avoid mutating production content in CI.
-- Authenticated Autosave/Draft Recovery: autosave-to-localStorage scenario is now covered by Browser E2E without database mutation; recovery/reload and cleanup scenarios remain pending.
+- Authenticated version-history UI coverage is verified; destructive Restore execution remains pending because the connected Supabase project has no isolated staging/branch environment.
+- `restore_materi_version` has been verified transactionally at the database/RPC layer with the dedicated Super Admin identity; the temporary material, snapshots, and restore mutation were rolled back completely.
+- Authenticated Autosave/Draft Recovery: autosave-to-localStorage and recovery/reload tests are present; recovery CI verification is pending because commit `9ef1a8e` has no associated workflow run yet. Cleanup and existing-material recovery coverage remain pending.
 
 ### 10. Security hardening database — 18 September
 - `snapshot_materi_version()` tetap `SECURITY DEFINER` untuk kebutuhan trigger, dengan `search_path = public`, dan `EXECUTE` dicabut dari `PUBLIC`, `anon`, serta `authenticated`.
@@ -119,19 +120,19 @@ Temuan yang masih pending:
 - Policy hasil akhir `Super admins manage user roles` terverifikasi `FOR ALL TO authenticated` dengan `USING/WITH CHECK current_admin_role() = 'super_admin'`.
 - Security Advisor direrun setelah perubahan; warning tetap 7 application SECURITY DEFINER + 1 leaked-password.
 - `docs/RBAC.md`, `docs/SECURITY.md`, `docs/DATABASE.md`, `docs/CHANGELOG.md`, dan file migration diperbarui melalui commit terpisah dan diverifikasi.
-- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E harness dan authenticated editor reachability sudah terverifikasi lulus melalui GitHub Actions run #6; Version Restore dan Autosave/Draft Recovery masih pending.
+- `docs/SWIFT-API-AUDIT.md` sekarang dibuat berdasarkan audit deployment version 1 dan diverifikasi.\n- Browser E2E harness dan authenticated editor reachability sudah terverifikasi lulus melalui GitHub Actions run #6; Version Restore execution UI-to-database and Draft Recovery CI verification masih pending.
 
 ## ⚠️ Pekerjaan selanjutnya
 
 ### Prioritas 1 — Security/Auth
 1. Leaked Password Protection: tetap `Pending/Accepted Plan Limitation` pada Free plan; tidak ada upgrade/pay yang dilakukan.
 2. Security Advisor: sudah direrun; 7 application SECURITY DEFINER warnings dan 1 leaked-password warning tetap tercatat.
-3. Lanjut Browser E2E Version Restore dan Autosave/Draft Recovery.
+3. Lanjut Browser E2E Version Restore execution terisolasi dan verifikasi Draft Recovery.
 
 ### Prioritas 2 — Browser E2E
-4. Version Restore E2E dari UI sampai database.
-5. Uji Restore execution dengan data E2E terisolasi.
-6. Uji Autosave & Draft Recovery (autosave local sudah tercover; recovery/reload dan cleanup masih pending).
+4. Version Restore E2E dari UI sampai database pada environment terisolasi.
+5. Sediakan/konfirmasi environment Supabase staging atau branch untuk Restore execution E2E; jangan gunakan produksi.
+6. Verifikasi CI untuk Draft Recovery/reload, lalu lanjutkan cleanup dan recovery existing-material.
 
 ### Prioritas 3 — Final audit
 8. Audit final query halaman publik dan sanitasi.
@@ -141,7 +142,7 @@ Temuan yang masih pending:
 
 ## 🧭 Titik lanjut sesi berikutnya
 
-Mulai dengan **strategi Restore execution E2E yang terisolasi**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, version-history UI, dan autosave localStorage sudah tercover; Restore destructive dan recovery/reload masih pending.
+Mulai dengan **environment terisolasi untuk Restore execution E2E**. Harness, runtime Chromium, dedicated E2E secrets, authenticated editor reachability, version-history UI, autosave localStorage, dan recovery/reload test sudah tersedia; yang tersisa adalah verifikasi CI recovery serta eksekusi Restore UI-to-database tanpa menyentuh produksi.
 
 ## 🔁 Siklus wajib setiap sesi
 
