@@ -260,3 +260,8 @@ Delapan materi intermediate telah ditambahkan dan diverifikasi: subnetting/VLSM,
 ## Materi advanced networking — 18 September 2026
 
 Delapan materi advanced telah ditambahkan dan diverifikasi berstatus `published` dengan konten non-kosong: BGP, MPLS, high availability, IDS/IPS, Zero Trust, SD-WAN, cloud networking, dan incident response.
+
+
+## Perapian kategori & kartu materi — 18 September 2026
+
+Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, `Intermediate`, `Advanced`, dan `Tutorial`. Label sumber data “Supabase” pada kartu materi di halaman publik dihapus; kartu sekarang menampilkan kategori, judul, deskripsi, dan tautan **Baca materi →**.
