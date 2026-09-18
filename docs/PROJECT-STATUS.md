@@ -154,9 +154,9 @@ Temuan yang masih pending:
 
 RBAC staff mutation telah diselaraskan: Admin hanya `users.read`, sedangkan perubahan profil/status/role staf tetap khusus Super Admin melalui `update_staff()`. Live verification sudah dilakukan.
 
-Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production. Final `materi` workflow audit juga memperketat RLS agar permission status tidak dapat dibypass lewat direct API.
+Audit konsistensi dokumentasi memperbaiki metadata branch stale pada `docs/ARCHITECTURE.md` dan menandai lima root SQL bootstrap/data lama sebagai non-authoritative agar tidak dijalankan ulang terhadap production. Final `materi` workflow audit juga memperketat RLS agar permission status tidak dapat dibypass lewat direct API. Final source audit juga menemukan `admin/import.html` belum mengirim `author_id`, sehingga kini diselaraskan dengan RLS insert.
 
-Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
+Restore UI-to-database tetap **Blocked** karena environment terisolasi berbayar tidak disetujui. Audit `swift-api` deployment/source sudah diulang dan tetap membutuhkan verifikasi consumer eksternal. Lanjutkan final formatting/repository audit secara non-mutating. Jalur `materi` workflow permission/RLS sudah diaudit dan hardening diterapkan; jalur import juga sudah diselaraskan dengan author ownership RLS. Draft Recovery covered flows sudah terverifikasi; jangan gunakan produksi untuk Restore UI-to-database.
 
 ## 🔁 Siklus wajib setiap sesi
 
