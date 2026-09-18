@@ -1,3 +1,8 @@
+## 18 September 2026 — Draft Recovery E2E fixture cleanup
+- Menghapus ketergantungan test Browser E2E authenticated terhadap judul fixture `Test 12` untuk existing-material recovery dan version history.
+- Test sekarang memilih materi pertama yang tersedia dan membaca judul aktual dari card, sehingga coverage tidak bergantung pada seed data bernama tertentu.
+- Commit test: `54d291161fd6318923876e165ef7c0f960f2939a`.
+
 ## 18 September 2026 — Import/RLS alignment
 - Final source audit menemukan `admin/import.html` membuat row `materi` tanpa `author_id`, sementara RLS insert sekarang mewajibkan ownership `author_id = auth.uid()`.
 - Payload import diperbaiki untuk menyimpan `author_id: user.id`; perubahan diverifikasi pada commit `4d32f6b7842c93c16fed67df148e793150c9a38d`.
