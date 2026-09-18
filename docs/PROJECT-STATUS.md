@@ -288,3 +288,12 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Tahap Dasar, Menengah, dan Lanjutan dapat dipilih langsung untuk memfilter katalog materi berdasarkan kategori.
 - Deskripsi tiap tahap menjelaskan fokus pembelajaran agar pengguna tidak hanya melihat daftar materi, tetapi memahami urutan belajar yang disarankan.
 - Perubahan hanya pada UI; tidak mengubah schema, RLS, atau data materi.
+
+
+## Pendalaman seluruh materi published — 18 September 2026
+
+- Seluruh **60 materi published** diperbarui pada kolom konten agar tidak lagi berupa ringkasan satu-dua paragraf.
+- Setiap materi sekarang memiliki struktur pembelajaran: tujuan, konteks, konsep inti, cara kerja, contoh kasus, parameter/bukti yang diperiksa, troubleshooting, kesalahan umum, latihan, checklist penguasaan, dan ringkasan.
+- Verifikasi live `public.materi`: **Dasar 24**, **Intermediate 20**, **Advanced 12**, **Tutorial 4**; seluruh konten memiliki panjang sekitar 4.5–4.8 ribu karakter setelah pendalaman.
+- Tidak ada perubahan schema, RLS, status publikasi, atau jumlah materi.
+- Catatan: dua entri berjudul **Test** dan **Test 12** masih memiliki nama placeholder; kontennya sekarang menjelaskan materi pengantar sementara. Keduanya sebaiknya divalidasi/diarsipkan pada cleanup katalog berikutnya.
