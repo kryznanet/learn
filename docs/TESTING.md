@@ -10,7 +10,7 @@ The repository now includes a Chromium browser test harness:
 - tests/e2e/authenticated.spec.js covers authenticated editor reachability when KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD are configured.
 - .github/workflows/browser-e2e.yml installs Chromium with dependencies and uploads Playwright reports/traces as workflow artifacts.
 - Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
-- Verified 18 September 2026: GitHub Actions Browser E2E ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
+- Verified 18 September 2026: GitHub Actions Browser E2E run #6 ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
 
 GitHub Actions setup:
 
@@ -21,7 +21,6 @@ GitHub Actions setup:
 5. Review the playwright-report artifact after the run.
 
 Do not use a personal password in source code or commit it to the repository. Prefer a dedicated test account with only the permissions required by the E2E scenarios.
-
 
 **Tanggal:** 18 September 2026
 
@@ -61,19 +60,21 @@ Do not use a personal password in source code or commit it to the repository. Pr
 ## Versioning
 
 - [ ] Snapshot dibuat saat insert/update.
-- [ ] Riwayat versi tampil.
-- [ ] Restore hanya role yang berwenang.
+- [x] Riwayat versi tampil.
+- [x] Restore RPC berhasil diverifikasi secara transaksional dengan identity Super Admin; material uji dan snapshot di-rollback.
+- [x] Restore hanya role yang berwenang.
 - [x] Browser E2E: Super Admin dapat membuka riwayat versi dan melihat kontrol Restore.
+- [ ] Browser E2E: Restore execution dari UI sampai database pada environment terisolasi.
 - [ ] Restore membuat snapshot baru.
 - [ ] Activity log restore tercatat.
 
 ## Autosave
 
-Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E juga memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
+Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar. Browser E2E memverifikasi autosave lokal pada materi baru tanpa menulis ke database.
 
-- [x] Browser E2E: draft lokal tersimpan setelah perubahan.\n- [ ] Browser E2E: draft dipulihkan setelah reload.
-- [ ] Browser E2E: draft dipulihkan setelah reload.
-- [ ] Browser E2E: user mendapat konfirmasi recovery.
+- [x] Browser E2E: draft lokal tersimpan setelah perubahan.
+- [ ] Browser E2E: draft dipulihkan setelah reload — test sudah ditambahkan, tetapi workflow CI untuk commit test terbaru belum tersedia/terverifikasi.
+- [ ] Browser E2E: user mendapat konfirmasi recovery — dicakup oleh test yang sama, menunggu verifikasi CI.
 - [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
 - [ ] Browser E2E: recovery untuk materi baru tidak tertukar dengan recovery materi existing.
 
