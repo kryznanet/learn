@@ -1,6 +1,6 @@
 # Testing Kryzna Learn
 
-**Tanggal:** 17 September 2026
+**Tanggal:** 18 September 2026
 
 ## Authentication
 
@@ -41,10 +41,13 @@
 
 ## Autosave
 
-- [ ] Draft lokal tersimpan setelah perubahan.
-- [ ] Draft dipulihkan setelah reload.
-- [ ] User mendapat konfirmasi recovery.
-- [ ] Draft lokal dibersihkan setelah save/review berhasil.
+Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft-recovery.js`. Inisialisasi dilakukan setelah session dan materi selesai dimuat agar draft memakai key user + material yang benar.
+
+- [ ] Browser E2E: draft lokal tersimpan setelah perubahan.
+- [ ] Browser E2E: draft dipulihkan setelah reload.
+- [ ] Browser E2E: user mendapat konfirmasi recovery.
+- [ ] Browser E2E: draft lokal dibersihkan setelah save/review berhasil.
+- [ ] Browser E2E: recovery untuk materi baru tidak tertukar dengan recovery materi existing.
 
 ## Storage
 
