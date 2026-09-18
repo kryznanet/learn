@@ -142,7 +142,7 @@ Temuan yang masih pending:
 ### Prioritas 2 — Browser E2E
 4. Version Restore E2E dari UI sampai database pada environment terisolasi.
 5. Sediakan/konfirmasi environment Supabase staging atau branch untuk Restore execution E2E; jangan gunakan produksi.
-6. Draft Recovery/reload CI sudah diverifikasi pada run #43; cleanup ketergantungan fixture existing-material sudah dilakukan. CI untuk commit cleanup ini masih `Needs Verification`.
+6. Draft Recovery/reload CI sudah diverifikasi pada run #43; cleanup ketergantungan fixture existing-material sudah dilakukan dan diverifikasi pada Browser E2E push run #77 (`35302746397`) yang sukses.
 
 ### Prioritas 3 — Final audit
 8. Audit final query halaman publik dan sanitasi.
