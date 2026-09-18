@@ -2,6 +2,12 @@
 
 **Tanggal:** 18 September 2026
 
+### Public material content sanitization — 18 September 2026
+- `materi/view.html` sanitizes rendered Markdown/HTML before assigning to `innerHTML`.
+- Inline `style` and event-handler attributes are removed.
+- `href`/`src` are restricted to HTTP(S), root/relative, fragment, or `mailto:` schemes; `data:`, `javascript:`, `vbscript:`, and `file:` are rejected.
+- External links opened in a new tab use `noopener noreferrer`.
+
 ## Prinsip
 
 - Browser hanya memakai Supabase publishable key.
