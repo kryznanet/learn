@@ -1,3 +1,9 @@
+## 18 September 2026 — Swift API consumer re-audit
+- Re-verifikasi deployment `swift-api` langsung pada Supabase: ACTIVE v1, `verify_jwt=true`, source hash tetap `6ccb86e9607420d75fcd790e0cd86de168ef8ec12ed4724f0cb496be59646a2e`.
+- Source deployment hanya menangani payload `name` dan tidak menunjukkan akses database/Storage Kryzna Learn.
+- Audit repository branch `18-Sep-2026` tetap tidak menemukan source/config/consumer counterpart untuk `swift-api`.
+- Status tetap `Needs Verification`: consumer eksternal tidak dapat dibuktikan dari repository/deployment saja, sehingga function tidak dihapus atau diubah.
+
 ## 18 September 2026 — Final repository cleanup audit
 - Memverifikasi branch `18-Sep-2026` dan melakukan audit referensi runtime/build untuk `supabase-config-legacy.js`; tidak ditemukan referensi pada halaman aplikasi, shared code, test, workflow, atau konfigurasi yang diaudit.
 - Menghapus `supabase-config-legacy.js` karena tidak lagi memiliki consumer terverifikasi. `supabase-config.js` tetap menjadi konfigurasi browser aktif.
