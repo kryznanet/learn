@@ -21,6 +21,7 @@ RPC yang memang menjadi jalur aplikasi tetap dapat executable oleh `authenticate
 - Trigger `trg_snapshot_materi_version` tetap aktif untuk `AFTER INSERT OR UPDATE`.
 - Pengujian transaksional insert/update menghasilkan dua snapshot versi dan di-rollback.
 - `can_manage_materi(uuid)`, `can_delete_materi(uuid)`, dan `get_my_role(uuid)` dicabut dari `PUBLIC`, `anon`, dan `authenticated` karena tidak diperlukan sebagai RPC langsung.
+- Direct write ke `user_roles` dibatasi RLS kepada `super_admin`; Admin hanya memiliki akses baca assignment role.
 
 ## Remaining Security Advisor findings
 
@@ -46,6 +47,7 @@ Leaked Password Protection Supabase masih disabled dan menjadi pekerjaan securit
 - [x] SECURITY DEFINER yang di-hardening memakai search_path aman.
 - [x] Trigger-only function tidak executable publik.
 - [x] Internal SECURITY DEFINER helpers yang tidak diperlukan client tidak executable publik.
+- [x] Direct user-role writes dibatasi ke Super Admin.
 - [x] Edge Function secret tidak bocor ke client.
 - [ ] Auth password protection ditinjau/diaktifkan.
 - [x] Security Advisor dijalankan setelah hardening.
