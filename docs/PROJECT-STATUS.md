@@ -206,3 +206,18 @@ Repository hygiene spot-check found no remaining TODO, FIXME, or obvious debug c
 - Security/hardening area yang dapat diverifikasi telah ditutup. Residual items tetap tercatat: 7 intentional application SECURITY DEFINER warnings, leaked-password plan limitation, dan Restore UI-to-database E2E blocked tanpa isolated staging.
 - Commit audit dokumentasi `swift-api`: `32fc52f0b8296d60de5b903c20a7f26563325b0b`.
 - Checkpoint berikutnya: hanya pekerjaan residual di atas atau perubahan baru yang diminta; jangan mengulang audit yang sudah terverifikasi.
+
+## Local Supabase readiness audit — 18 September 2026
+
+- Branch `18-Sep-2026` reverified before this checkpoint.
+- Supabase production was queried read-only only; no migration, data mutation, branch creation, or paid resource was performed.
+- Live PostgreSQL version is **17.6**.
+- Live migration history contains required schema/RBAC/storage migrations from 16–17 September plus the 18 September hardening migrations.
+- Repository `supabase/migrations/` currently contains only the 18 September hardening subset and therefore cannot yet recreate the live database from zero.
+- `supabase/config.toml` is absent. This is intentional for now: adding it before a complete baseline would create a local stack that cannot reproduce the live schema safely.
+- Legacy root SQL bootstrap files remain explicitly non-authoritative and are not suitable as the current baseline.
+- Restore UI-to-database E2E remains **Blocked** until the complete local baseline is prepared and local reset can be verified.
+- No production mutation was performed and no paid Supabase resource was created.
+
+### Next checkpoint
+Prepare a reviewed, complete local schema baseline from the existing live schema/migration history, add `supabase/config.toml`, then verify local migrations before enabling Restore E2E. Do not connect Restore execution to production.

@@ -106,3 +106,10 @@ Implementasi sudah diintegrasikan ke `content/editor.html` melalui `shared/draft
 - Run #43 (`35298946197`) on commit `2ec49859a5fffd793a721d257eaac0b122fd31b8` completed successfully.
 - The Playwright job completed successfully, including the Browser E2E test step and report upload.
 - The authenticated suite verifies new-material autosave/recovery and existing-material draft recovery after reload.
+
+
+## Local Supabase Restore E2E readiness — 18 September 2026
+
+Restore UI-to-database E2E remains **Blocked** for the free local path until the repository has a complete reproducible database baseline. The branch currently tracks hardening migrations from 18 September, while the connected project migration history also contains required schema/RBAC/storage migrations from 16–17 September that are absent from this branch's `supabase/migrations/` directory.
+
+A local supabase/config.toml should be added only after the baseline is established. Do not point Browser E2E at production for Restore execution, and do not use the legacy root SQL bootstrap files as a substitute for the current live schema.

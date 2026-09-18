@@ -90,3 +90,10 @@ Migration `20260918024839_restrict_admin_staff_mutation_permissions_20260918` me
 ### Material workflow status enforcement — 18 September 2026
 
 Migrations `20260918025136_enforce_materi_status_permissions_20260918` and `20260918025144_tighten_materi_insert_author_20260918` enforce workflow status boundaries at the `materi` RLS layer. `penulis` can only insert/update their own material while it remains `draft`; `editor` can insert/update their own material across workflow statuses; `admin` and `super_admin` can manage material across workflow statuses. All content-role inserts still require `author_id = auth.uid()`. This prevents a caller with only `content.create`/`content.update` from bypassing missing `content.review`, `content.publish`, or `content.archive` permissions by writing `status` directly through the API.
+
+
+## Local Supabase / reproducible test environment — 18 September 2026
+
+Local Supabase is the no-cost path for isolated Restore E2E. The repository already contains versioned migrations, but the current repository migration directory is **not yet a complete baseline** for recreating the live database: the connected project currently records earlier migrations from 16–17 September that are not present in `supabase/migrations/` on this branch. The live database also reports PostgreSQL 17.6.
+
+Do not run the current hardening-only migrations against a fresh local database before a complete baseline migration is added. The legacy root SQL files are explicitly non-authoritative and must not be treated as that baseline. The next implementation step is to capture/review a complete schema baseline from the live project in a read-only manner, then verify local reset before wiring Restore E2E to local Supabase.
