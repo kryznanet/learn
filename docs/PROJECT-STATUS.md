@@ -1,3 +1,22 @@
+## 🎨 UI/UX polish global — 19 September 2026
+
+- Branch terverifikasi: `19-Sep-2026`.
+- Shared UI diperluas untuk toolbar/filter, status badge, empty state, statistik, form grid, sticky action bar, dan responsive mobile layout.
+- Harmonisasi legacy component diperkuat untuk dashboard admin, workspace materi, editor, ujian, pengguna, learner, hasil, sertifikat, dan profil melalui shared visual layer tanpa perubahan business logic.
+- Active navigation diperbaiki agar route-aware berdasarkan pathname penuh.
+- Commit UI: `6c0a77725286a6587b11a3b79e37f138852730c7` dan `2ca4c56b03b1fa72368b76e69e11860819e66f7e`.
+- Dokumentasi UI: `6d3d3369a21a8f3b520ae8ead6e82d1c7d4e5c61`.
+
+### Status
+
+- UI source polish: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending** sampai polish seluruh halaman selesai dan kemudian dijalankan fresh.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Audit cepat source untuk halaman admin/content/learner yang masih memiliki style lokal khusus; lanjutkan perbaikan visual yang benar-benar diperlukan. Setelah feature/UI freeze, jalankan fresh Browser E2E dan catat hasil ke `docs/BROWSER-E2E-RESULTS.md`, lalu final security/deployment audit.
+
 ## Pendalaman pedagogis 35 materi — 19 September 2026
 
 - Audit read-only terhadap seluruh **58 materi published** menemukan struktur lengkap pada 58/58 materi: tujuan pembelajaran, konsep, cara kerja, contoh, verifikasi teknis, troubleshooting, kesalahan umum, latihan, checklist, dan ringkasan.
