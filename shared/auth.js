@@ -187,7 +187,7 @@
     isSuperAdmin: (role) => role === 'super_admin'
   };
 
-  if (location.pathname.endsWith('/content/editor.html')) {
+  if (!location.pathname.endsWith('/admin/login.html') && !location.pathname.endsWith('/login.html')) {\n    const uiScript = document.createElement('script');\n    uiScript.src = location.pathname.includes('/') && !location.pathname.endsWith('/') ? '../shared/ui.js' : 'shared/ui.js';\n    uiScript.defer = true;\n    document.head.appendChild(uiScript);\n  }\n\n  if (location.pathname.endsWith('/content/editor.html')) {
     const script = document.createElement('script');
     script.src = '../shared/draft-recovery.js';
     script.defer = true;
