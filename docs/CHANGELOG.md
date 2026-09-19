@@ -294,3 +294,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 
 - Menambahkan halaman sertifikat kelulusan yang dapat dicetak/disimpan sebagai PDF dari attempt ujian yang lulus.
 - Certificate tidak membuat status kelulusan baru; sumber kebenaran tetap `exam_attempts` melalui `exam-api`.
+
+
+## 19 September 2026 — Final feature hardening before E2E
+
+- Archived exams are now excluded from learner catalog and exam-api start.
+- Bookmark toggle state was corrected so repeated add/remove interactions remain consistent.
+- exam-api final deployment version 4 includes secure result details and exam title for certificate rendering.
