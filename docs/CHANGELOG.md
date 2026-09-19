@@ -263,3 +263,12 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Kelola Ujian sekarang mendukung membuat dan mengedit ujian.
 - Pengaturan kategori, durasi, nilai lulus, draft/terbit, dan bank soal tersedia.
 - Soal dapat ditambah dengan 4 pilihan, kunci, tingkat kesulitan, pembahasan, dan dapat dihapus.
+
+
+## 19 September 2026 — Pengaturan dan learner UX
+
+- Memperluas Pengaturan Super Admin menjadi hub administrasi untuk pengguna learner, konten, kategori, ujian, dan aktivitas sistem tanpa membuat konfigurasi global palsu di browser.
+- Memperbaiki dashboard Belajar Saya dengan ringkasan progres dan navigasi yang lebih jelas.
+- Menambahkan pencarian/filter pada Riwayat Belajar, katalog Ujian, dan Riwayat Ujian.
+- Memperkuat interaksi pengerjaan ujian: peringatan lima menit, konfirmasi soal belum dijawab, pencegahan submit ganda, dan penghentian timer setelah submit.
+- Browser E2E untuk perubahan UX tetap ditunda sampai seluruh feature request selesai.
