@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riwayat Versi — Kelola Materi</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../shared/auth.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">KELOLA MATERI</div>
+      <h1>Riwayat Versi</h1>
+      <p class="muted">
+        Pilih materi untuk melihat dan memulihkan versi sebelumnya.
+      </p>
+    </section>
+
+    <section id="list">
+      <div class="empty">Memuat materi...</div>
+    </section>
+  </main>
+
+  <script>
+    const db = supabaseClient;
+    const $ = (id) => document.getElementById(id);
+
+    function esc(value) {
+      return String(value ?? '').replace(
+        /[&<>"']/g,
+        (char) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[char])
+      );
+    }
+
+    async function boot() {
+      const session = await KryznaAuth.requirePermission(
+        'content.read',
+        {
+          login: '../admin/login.html',
+          denied: null
+        }
+      );
+
+      if (!session) {
+        $('list').innerHTML =
+          '<div class="empty">Akses ditolak.</div>';
+        return;
+      }
+
+      const { data, error } = await db
+        .from('materi')
+        .select('id,judul,kategori,status,updated_at')
+        .order('updated_at', { ascending: false });
+
+      if (error) {
+        $('list').innerHTML =
+          '<div class="empty">Gagal memuat: ' +
+          esc(error.message) +
+          '</div>';
+        return;
+      }
+
+      $('list').innerHTML = (data || [])
+        .map(
+          (item) => `
+            <article class="card">
+              <div class="head">
+                <div>
+                  <h2 style="margin:0 0 5px">
+                    ${esc(item.judul)}
+                  </h2>
+                  <div class="muted">
+                    ${esc(item.kategori || 'Umum')} ·
+                    ${esc(item.status || '')} · diperbarui
+                    ${new Date(item.updated_at).toLocaleString('id-ID')}
+                  </div>
+                </div>
+                <a
+                  class="btn primary"
+                  href="versions.html?id=${encodeURIComponent(item.id)}"
+                >
+                  Lihat Versi
+                </a>
+              </div>
+            </article>
+          `
+        )
+        .join('') ||
+        '<div class="empty">Belum ada materi.</div>';
+    }
+
+    boot();
+  </script>
+</body>
+</html>
