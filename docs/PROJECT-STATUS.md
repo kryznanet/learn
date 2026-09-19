@@ -1095,3 +1095,20 @@ Restore UI-to-database remains **Blocked** until an isolated Supabase environmen
 ### Checkpoint berikutnya
 
 Fresh Browser E2E pada branch `19-Sep-2026` untuk memverifikasi seluruh group/submenu navigation, target URL, active state, permission filtering, dan mobile interaction. Catat hasil runtime ke `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## 🎨 Target navigation hierarchy final — 19 September 2026
+
+- Navigasi final sekarang menggunakan struktur bertingkat **CONTENT → Kelola Materi / Kelola Ujian** dan **ADMINISTRASI**.
+- Parent group otomatis terbuka saat submenu aktif.
+- Public **Materi** diarahkan ke katalog melalui `index.html#materi`.
+- Learner **Progress Belajar** diarahkan ke `belajar/index.html#progress`.
+- Riwayat Versi memiliki index pemilihan materi sebelum membuka halaman versi detail.
+- Source terakhir: `ae2ebd1239ac34702c84d073f7c9569847ece0ee` dan `8387dc6ac9a1ba7bfe10817d8a668c840f200e00`.
+- Dokumentasi final: `60184a68197201ea188b21edafd1108554a02634`.
+
+### Status
+
+- Navigation hierarchy: **Implemented — Needs Browser Verification**.
+- URL target/source checks: **Verified**.
+- Browser E2E: **Pending**; belum ada runtime baru setelah perubahan navigasi.
