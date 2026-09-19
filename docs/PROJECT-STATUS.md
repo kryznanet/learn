@@ -779,3 +779,12 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 
 - Learner exam history source: **Verified**.
 - Browser E2E learner: **Pending** sesuai keputusan menunda E2E sampai seluruh feature request selesai.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #264** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35431412907`; commit yang diuji: `917f53110d6ab39f668aefa897879de2d3a292c7`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35431412907.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
