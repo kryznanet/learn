@@ -169,3 +169,12 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Setelah konfirmasi, row learner disimpan sebagai `completed` dengan `completed_at`.
 - [x] Browser tidak lagi memiliki hak UPDATE langsung pada `material_reading_history`.
 - [ ] Browser E2E learner untuk alur ini masih membutuhkan runtime verification dengan akun E2E learner khusus.
+
+
+## Main web login + learner profile — 19 September 2026
+- [x] Source menu `Masuk` pada web utama.
+- [x] Source menu berubah ke identitas akun saat sesi aktif.
+- [x] Learner profile tersedia di `belajar/profile.html`.
+- [x] Shortcut profile tersedia dari `Belajar Saya`.
+- [ ] Browser E2E: visitor → login → profile → logout.
+- [ ] Browser E2E: update nama/avatar/password/email sesuai policy.
