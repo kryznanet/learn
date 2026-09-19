@@ -7,130 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../supabase-config.js"></script>
   <script src="../shared/auth.js"></script>
-  <style>
-    :root {
-      --bg: #f6f8fc;
-      --card: #fff;
-      --line: #e2e8f0;
-      --text: #172033;
-      --muted: #64748b;
-      --primary: #2563eb;
-      --soft: #eff6ff;
-    }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, Segoe UI, Arial, sans-serif;
-    }
-    .top {
-      background: #0f172a;
-      color: #fff;
-      padding: 15px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-    .brand {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: #fff;
-      color: #0f172a;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-    }
-    .brand small {
-      display: block;
-      color: #94a3b8;
-      font-size: 11px;
-      margin-top: 2px;
-    }
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 13px;
-      font-weight: 800;
-      text-decoration: none;
-      display: inline-block;
-      cursor: pointer;
-      background: #e2e8f0;
-      color: #1e293b;
-    }
-    .primary { background: var(--primary); color: #fff; }
-    .wrap { max-width: 1150px; margin: auto; padding: 28px 18px; }
-    .hero { margin-bottom: 22px; }
-    .eyebrow {
-      font-size: 11px;
-      color: var(--primary);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-    .hero h1 { font-size: 32px; margin: 7px 0; }
-    .hero p { color: var(--muted); margin: 0; }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-    .stat,
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 12px 35px #0f172a0d;
-    }
-    .stat b { font-size: 28px; }
-    .stat span {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    .card h2 { margin: 0 0 7px; font-size: 19px; }
-    .card p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-      min-height: 40px;
-    }
-    .denied { max-width: 650px; margin: 60px auto; }
-    .note {
-      padding: 11px;
-      border-radius: 10px;
-      background: var(--soft);
-      color: #1e40af;
-      font-size: 12px;
-      margin-bottom: 15px;
-    }
-    @media (max-width: 700px) {
-      .stats,
-      .grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 27px; }
-    }
-  </style>
+  <style>body.kx-modern .top{display:none}.wrap{max-width:1180px}.hero{padding:6px 0 8px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{min-height:96px;display:flex;flex-direction:column;justify-content:center}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.card{height:100%}.card .btn{margin-top:4px}.ops-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ops-item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}.ops-item b{font-size:24px}.ops-item .muted{margin-top:4px}@media(max-width:900px){.grid,.ops-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.stats,.grid,.ops-grid{grid-template-columns:1fr}.wrap{padding:20px 14px}.hero h1{font-size:27px}}</style>
 </head>
 <body>
   <header class="top">
@@ -252,7 +129,7 @@
       </p>
       <a class="btn" href="login.html">Kembali ke Login</a>
     </section>
-  <section class="card" id="statsCard"><h2>📊 Statistik Operasional</h2><div class="grid" style="grid-template-columns:repeat(4,1fr)"><div><b id="sUsers">—</b><div class="muted">Learner</div></div><div><b id="sMateri">—</b><div class="muted">Materi published</div></div><div><b id="sAttempts">—</b><div class="muted">Attempt ujian</div></div><div><b id="sPassed">—</b><div class="muted">Lulus</div></div></div></section><section class="card"><h2>🧩 Fitur Learner</h2><a class="btn" href="notifications.html">Kelola Notifikasi</a> <a class="btn" href="feedback.html">Review Feedback</a></section></main>
+  <section class="card" id="statsCard"><h2>📊 Statistik Operasional</h2><div class="ops-grid"><div class="ops-item"><b id="sUsers">—</b><div class="muted">Learner</div></div><div class="ops-item"><b id="sMateri">—</b><div class="muted">Materi published</div></div><div class="ops-item"><b id="sAttempts">—</b><div class="muted">Attempt ujian</div></div><div class="ops-item"><b id="sPassed">—</b><div class="muted">Lulus</div></div></div></section><section class="card"><h2>🧩 Fitur Learner</h2><a class="btn" href="notifications.html">Kelola Notifikasi</a> <a class="btn" href="feedback.html">Review Feedback</a></section></main>
 
   <script>
     const db = supabaseClient;
