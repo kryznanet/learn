@@ -1,3 +1,17 @@
+## Public material Browser E2E coverage — 19 September 2026
+
+- Branch `19-Sep-2026` was reverified in GitHub before the change.
+- Expanded `tests/e2e/public.spec.js` beyond smoke checks to cover the four public categories, the current published catalog count (58), learning-path category activation, and public material detail navigation.
+- Test commit: `6f54cf98357e668bcbd263ded86531f499226a7c`; commit diff and final file contents were fetched and verified.
+- Updated `docs/TESTING.md` in commit `aea8a618feea3e13ac1adf51477ebc3d485ec9e6`.
+- Updated `docs/CHANGELOG.md` in commit `a617423e30d725f744960a37b7b994931f6e78fa`.
+- No Supabase data/schema/RLS mutation was performed.
+- Runtime Browser E2E for the new tests is still **Needs Verification** because the available GitHub workflow-run reader does not expose a new push-triggered run for this branch.
+
+### Checkpoint berikutnya
+
+Obtain fresh Browser E2E runtime evidence for `19-Sep-2026`. If the run passes, close the public material regression coverage; if it fails, diagnose from the Playwright report. Keep Restore UI-to-database **Blocked** until an isolated Supabase environment exists.
+
 ## Browser E2E CI branch alignment — 19 September 2026
 
 - Branch `19-Sep-2026` was reverified in GitHub before the change.
