@@ -619,3 +619,10 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - `docs/CHANGELOG.md` mencatat penambahan role `user` dan permission learner.
 - Seluruh implementasi yang dicatat telah diverifikasi pada branch `19-Sep-2026`.
 - Status berikutnya tetap Browser E2E learner.
+
+## Learner role staff isolation — 19 September 2026
+
+- Migration commit `428cdec6a1e4c137eeee18abdb5889c2f0c2099a` membersihkan assignment role `user` dari akun yang memiliki row `admin_users`.
+- Migration live diterapkan dan diverifikasi; `staff_with_user_role = 0`.
+- Status: **Verified** untuk isolasi role learner dari role staf.
+- Checkpoint berikutnya: pastikan jalur pembuatan staf baru tidak meninggalkan role learner otomatis.
