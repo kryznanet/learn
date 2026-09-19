@@ -199,3 +199,15 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan contoh kasus, bukti verifikasi, troubleshooting, latihan, dan checklist yang relevan dengan domain masing-masing materi.
 - Verifikasi live: 58 published tetap terdiri dari Dasar 22, Intermediate 20, Advanced 12, Tutorial 4.
 - Tidak ada perubahan schema, RLS, RBAC, atau status publikasi.
+
+
+## 19 September 2026 — Modul Ujian Online & Riwayat Belajar
+
+- Menambahkan modul Ujian Online terpisah berdasarkan kategori Dasar, Intermediate, Advanced, dan Tutorial.
+- Menambahkan bank awal 20 soal (5 per kategori) dengan pilihan A–D dan pembahasan.
+- Menambahkan timer 30 menit dan nilai lulus 70 untuk ujian awal.
+- Menambahkan penilaian server-side melalui Edge Function `exam-api` agar answer key tidak diekspos ke browser.
+- Menambahkan riwayat materi per user dengan status sedang dipelajari/selesai dan jumlah kunjungan.
+- Menambahkan permission `exam.manage` dan `exam.read` untuk Admin/Super Admin.
+- Menambahkan halaman learner login, dashboard, riwayat, daftar ujian, pengerjaan ujian, serta admin bank soal.
+- Verifikasi live database selesai; browser/E2E modul baru masih **Needs Verification**.
