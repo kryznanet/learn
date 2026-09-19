@@ -7,7 +7,7 @@ export default {fetch:withSupabase({auth:'user'},async(req,ctx)=>{
  const body=await req.json().catch(()=>null); const uid=ctx.user?.id; if(!uid||!body) return out({error:'Autentikasi dan payload diperlukan.'},400)
  const db=ctx.supabaseAdmin
  if(body.action==='start'){
-  const {data:exam,error:ee}=await db.from('exams').select('id,title,description,duration_minutes,passing_score,category_id,exam_categories(name,label)').eq('id',body.examId).eq('is_published',true).maybeSingle()
+  const {data:exam,error:ee}=await db.from('exams').select('id,title,description,duration_minutes,passing_score,category_id,exam_categories(name,label)').eq('id',body.examId).eq('is_published',true).is('archived_at',null).maybeSingle()
   if(ee)return out({error:ee.message},400); if(!exam)return out({error:'Ujian tidak ditemukan.'},404)
   const {data:old}=await db.from('exam_attempts').select('id,started_at,status').eq('exam_id',exam.id).eq('user_id',uid).eq('status','in_progress').order('started_at',{ascending:false}).limit(1).maybeSingle()
   if(old&&Date.now()<new Date(old.started_at).getTime()+exam.duration_minutes*60000){return await build(db,exam,old.id)}
