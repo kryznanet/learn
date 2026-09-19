@@ -1061,3 +1061,37 @@ Restore UI-to-database remains **Blocked** until an isolated Supabase environmen
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35437248386.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## 🎨 Target navigation hierarchy — 19 September 2026
+
+- Branch: `19-Sep-2026`.
+- Shared navigation diperbaiki agar mengikuti struktur empat konteks: **Publik, Learner, Content, Administrasi**.
+- Learner sekarang memiliki group **Belajar Saya** dengan Progress Belajar, Riwayat Belajar, dan Bookmark.
+- Content memiliki Dashboard, Kelola Materi, dan Kelola Ujian dengan submenu yang sesuai.
+- Administrasi memiliki Kelola Pengguna, Aktivitas Sistem, Import Materi, dan Pengaturan sesuai permission.
+- Ditambahkan `content/versions-index.html` sebagai pintu masuk Riwayat Versi karena halaman versi detail membutuhkan `materi.id`.
+- Progress Belajar memakai anchor `#progress` pada dashboard Belajar Saya.
+- Editor Ujian dan Soal menggunakan bagian yang sudah tersedia pada `admin/exams.html`.
+- Tidak ada perubahan database, RLS, RPC, atau RBAC.
+
+### Commit
+
+- `a86b4f58d9763f87f11d1b0c974fc16f16ac9c2d` — shared navigation hierarchy.
+- `a8e3c92c392cfdfecbba854292b3a82ce09b92e4` — grouped navigation styling.
+- `eea80d9ab6d3ff7223a59fb03d53317b9c8c585e` — version history index.
+- `9f16935b9a5742d43136b44ad6cd866a473d4654` — learner progress anchor.
+- `b7f44e76e3f0c0f973e59c9f204234c024e5d9dc` — version history navigation route.
+- `123558feb30071af3cb2227c1c0569a40ba5c7c2` — UI structure documentation.
+
+### Status
+
+- Navigation source: **Implemented — Needs Browser Verification**.
+- Version history navigation: **Implemented — Needs Browser Verification**.
+- Mobile grouped navigation: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending**; latest recorded runtime remains Browser E2E #354 with 5 passed / 4 failed.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Fresh Browser E2E pada branch `19-Sep-2026` untuk memverifikasi seluruh group/submenu navigation, target URL, active state, permission filtering, dan mobile interaction. Catat hasil runtime ke `docs/BROWSER-E2E-RESULTS.md`.
