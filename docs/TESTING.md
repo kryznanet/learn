@@ -229,3 +229,13 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Riwayat Ujian memiliki ringkasan total/lulus dan filter hasil.
 - [x] Pengerjaan Ujian mencegah submit ganda, memperingatkan soal belum dijawab, memberi peringatan lima menit, dan menghentikan timer setelah submit.
 - [ ] Browser E2E untuk perubahan UX ini tetap ditunda sampai seluruh feature request selesai.
+
+
+## Feature expansion — 19 September 2026
+
+Source verification yang perlu dilakukan sebelum feature freeze:
+- Admin Ujian: edit soal, poin, pembahasan, kunci, urutan soal, arsip/aktifkan ujian, dan CRUD/aktif-nonaktif kategori.
+- Learner: dashboard progres, detail hasil ujian, bookmark materi, feedback materi, dan notifikasi.
+- Admin dashboard: statistik learner/materi/ujian dan filter pengguna.
+- Regression: ujian arsip tidak muncul pada katalog publik; riwayat attempt tetap tersedia; kategori yang masih dipakai tidak dapat dihapus.
+- E2E tetap ditunda sampai seluruh feature request selesai sesuai keputusan proyek.
