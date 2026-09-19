@@ -90,3 +90,33 @@ Perubahan `materi` dibuatkan snapshot oleh trigger ke `materi_versions`. Restore
 4. Secret/service-role key tidak boleh berada di browser.
 5. Audit log dipisahkan antara content dan system.
 6. Perubahan signifikan harus dicatat di dokumentasi proyek.
+
+
+## Modul Ujian Online & Riwayat Belajar — 19 September 2026
+
+Kryzna Learn memiliki modul learner terpisah untuk akun belajar, riwayat materi, daftar ujian, pengerjaan ujian, dan hasil. Modul admin memiliki halaman `admin/exams.html` untuk bank soal.
+
+```text
+Website Publik
+├── Materi / Detail Materi
+├── Belajar Saya
+│   └── Riwayat Belajar
+└── Ujian Online
+    ├── Daftar Ujian per Kategori
+    └── Pengerjaan + Timer + Hasil
+
+Administrasi
+└── Kelola Ujian & Bank Soal
+
+Browser
+  ↓ Auth JWT
+Edge Function exam-api
+  ↓ privileged server-side access
+PostgreSQL
+├── exams / questions / options
+├── answer_keys (tidak dibaca browser)
+├── attempts / answers
+└── material_reading_history
+```
+
+Penilaian ujian dilakukan server-side melalui `exam-api`, sehingga `exam_answer_keys` tidak menjadi sumber data yang dapat dibaca pengguna biasa. Riwayat materi memakai RLS berdasarkan `auth.uid()`.
