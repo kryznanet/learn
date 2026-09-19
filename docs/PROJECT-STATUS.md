@@ -579,3 +579,12 @@ Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otoma
 ### Checkpoint berikutnya
 
 Jalankan browser test dengan akun learner khusus untuk memverifikasi login, reading history, start/submit ujian, timer, hasil, dan riwayat attempt. Setelah runtime pass, catat hasil ke dokumentasi E2E seperti mekanisme Browser E2E yang sudah ada.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #192** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35429485400`; commit yang diuji: `b208db77c23d4eb712cc274f8cd91bb53c21a91a`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35429485400.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
