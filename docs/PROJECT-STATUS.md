@@ -517,3 +517,12 @@ Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otoma
 
 - `docs/CHANGELOG.md` mencatat perubahan retention latest-only untuk hasil Browser E2E.
 - CHANGELOG commit: `e93248ea0513ca99650956261acfd8d6d5a0a7ac`; isi diverifikasi setelah push.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #168** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35428756268`; commit yang diuji: `98dcc61fa1a1baeab4edaa6b11f46ca49f8f123d`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35428756268.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.

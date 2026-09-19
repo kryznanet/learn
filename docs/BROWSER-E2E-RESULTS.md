@@ -11,11 +11,11 @@ Dokumen ini menyimpan **hasil runtime Browser E2E terbaru** yang benar-benar dij
 - Run dengan authenticated test yang ter-skip karena secret tidak tersedia tidak boleh dianggap sebagai pass penuh.
 - Artifact Playwright menjadi bukti pendukung bila tersedia.
 
-## Status saat ini — 19 September 2026
+## Status saat ini — 2026-09-19
 
 **Status: Passed**
 
-Runtime Browser E2E terbaru yang diverifikasi adalah **Browser E2E #160** pada branch `19-Sep-2026`, dengan **9 passed, 0 failed, 0 skipped, 0 flaky**.
+Fresh GitHub Actions runtime evidence terbaru: Browser E2E #168 (9 passed, 0 failed, 0 skipped, 0 flaky).
 
 ### Coverage yang telah diverifikasi
 
@@ -38,17 +38,16 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 ### 2026-09-19 — Automated Browser E2E runtime
 
-- Workflow: **Browser E2E #160**
-- Run ID: `35428502175`
-- Run URL: https://github.com/kryznanet/learn/actions/runs/35428502175
+- Workflow: **Browser E2E #168**
+- Run ID: `35428756268`
+- Run URL: https://github.com/kryznanet/learn/actions/runs/35428756268
 - Branch: `19-Sep-2026`
-- Commit: `5e6951fb8455593d57aa1650157deeb97b605614`
-- Trigger: `workflow_dispatch`
+- Commit: `98dcc61fa1a1baeab4edaa6b11f46ca49f8f123d`
+- Trigger: `push`
 - Result: **Passed**
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky** (9 recorded)
-- Artifact: `playwright-report` diunggah oleh workflow bila file tersedia.
-- Recorded automatically from `test-results/results.json` at 2026-09-19T07:09:27.176Z.
-- Hasil #159, #155, #138, #6, #43, dan #35 tidak lagi disimpan di dokumen ini setelah kebijakan latest-only diterapkan.
+- Artifact: `playwright-report` is uploaded by the workflow when files are available.
+- Recorded automatically from `test-results/results.json` at 2026-09-19T07:15:03.073Z.
 
 ## Interpretation
 
