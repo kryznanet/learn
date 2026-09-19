@@ -438,3 +438,12 @@ Tambahkan/siapkan isolated E2E test data untuk memverifikasi Create → Read →
 ### Checkpoint berikutnya
 
 Jalankan Browser E2E sekali pada branch `19-Sep-2026` untuk memverifikasi bahwa workflow dapat menjalankan test, membuat `test-results/results.json`, lalu otomatis memperbarui dua dokumen hasil/progres. Setelah run selesai, verifikasi commit otomatis dan isi `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #155** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35428161841`; commit yang diuji: `ea81d15ab0179b8253a26f7211b250f1503ed1f5`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35428161841.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
