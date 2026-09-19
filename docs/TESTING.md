@@ -239,3 +239,17 @@ Source verification yang perlu dilakukan sebelum feature freeze:
 - Admin dashboard: statistik learner/materi/ujian dan filter pengguna.
 - Regression: ujian arsip tidak muncul pada katalog publik; riwayat attempt tetap tersedia; kategori yang masih dipakai tidak dapat dihapus.
 - E2E tetap ditunda sampai seluruh feature request selesai sesuai keputusan proyek.
+
+
+## Feature expansion implementation — 19 September 2026
+
+Implemented source/runtime prerequisites:
+- Admin Ujian edit soal, reorder, archive/restore, dan kategori aktif/nonaktif.
+- Learner bookmark dan feedback pada detail materi.
+- Halaman Bookmark dan Notifikasi learner.
+- Dashboard learner menampilkan progres materi, jumlah bookmark, dan unread notifications.
+- Dashboard Admin menampilkan statistik operasional dan link pusat notifikasi/feedback.
+- Filter status pengguna Admin/Super Admin.
+- Detail hasil ujian melalui `exam-api` action `result`.
+
+Semua item di atas masih **Needs Browser Verification**. Fresh Browser E2E tetap ditunda sampai seluruh feature request selesai.
