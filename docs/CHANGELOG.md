@@ -211,3 +211,12 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan permission `exam.manage` dan `exam.read` untuk Admin/Super Admin.
 - Menambahkan halaman learner login, dashboard, riwayat, daftar ujian, pengerjaan ujian, serta admin bank soal.
 - Verifikasi live database selesai; browser/E2E modul baru masih **Needs Verification**.
+
+
+### 19 September 2026 — Learner user role
+
+- Added RBAC role `user` / **Pengguna** for ordinary learner accounts.
+- Added learner permissions `learning.read`, `exam.take`, and `exam.history.read`.
+- Added automatic default-role assignment for newly created Supabase Auth users and reconciled existing users.
+- Updated `shared/auth.js` to resolve non-staff roles from `user_roles`.
+- Database and source verification passed; learner Browser E2E remains pending.
