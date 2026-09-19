@@ -805,3 +805,28 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35434786696.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Pengaturan & learner UX — 19 September 2026
+
+- Branch `19-Sep-2026` tetap digunakan.
+- Commit Pengaturan Super Admin: `4ea04ba22b5d6912bc12d841e3ce3216da258dd3` — hub diperluas ke Pengguna Belajar, Konten/Materi, Kategori, Ujian, dan Aktivitas Sistem; tidak membuat tabel konfigurasi global baru.
+- Commit dashboard learner: `93bc6a8ac4eacf988aef9deafeb479d9183e0f59` — ringkasan materi selesai, percobaan ujian, ujian lulus, dan navigasi.
+- Commit Riwayat Belajar: `cb72d639064197e7555a2947fe8018a953238544` — pencarian dan filter status.
+- Commit Riwayat Ujian: `1c2896d6de94230eacf09f73101747f1a38821db` — ringkasan dan filter hasil.
+- Commit katalog Ujian: `d7686fe30b862e4f879e4c83b18999d0de2d97d7` — pencarian dan filter kategori.
+- Commit pengerjaan Ujian: `39b11978544812594659af3f2b3397dd8c580406` — pencegahan submit ganda, konfirmasi soal kosong, peringatan lima menit, dan penghentian timer.
+- Source verification: seluruh file perubahan telah di-fetch kembali dari branch.
+- Dokumentasi testing: `6711713ed4bb0d96d81304fff5583c0cdf52cb15`.
+- Dokumentasi changelog: `b20439e0dbb594cfc1884f5cbae77526a5176ed5`.
+
+### Status
+
+- Pengaturan Super Admin: **Implemented — Needs Browser Verification**.
+- Learner UX: **Implemented — Needs Browser Verification**.
+- Browser E2E tetap **Pending** sesuai keputusan menunggu seluruh feature request selesai.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Lanjutkan feature request yang masih pending, terutama pendalaman administrasi Ujian bila diperlukan. Setelah seluruh fitur selesai, jalankan fresh Browser E2E learner/admin dan catat setiap hasil pada `docs/BROWSER-E2E-RESULTS.md`, kemudian lakukan final security/deployment audit.
