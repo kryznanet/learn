@@ -39,3 +39,7 @@ Edge Function baru untuk Ujian Online. Endpoint hanya menerima user JWT (`verify
 - Source: `supabase/functions/exam-api/index.ts`.
 - Deployment live: ACTIVE, version 1, JWT verification enabled.
 - Secret/service-role credential tidak berada di source browser.
+
+
+## manage-users — 19 September 2026
+`manage-users` menyediakan action `list`, `create`, dan `update` untuk akun learner. Authorization hanya Admin/Super Admin aktif. Function dideploy dengan `verify_jwt=true`; create menggunakan Auth Admin API dan trigger database otomatis memberikan role `user` kepada akun baru. Update mendukung display name, email, password opsional, dan active/disabled.
