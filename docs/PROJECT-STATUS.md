@@ -416,3 +416,25 @@ Perbarui `docs/BROWSER-E2E-RESULTS.md` setelah fresh Browser E2E workflow mengha
 ### Checkpoint berikutnya
 
 Tambahkan/siapkan isolated E2E test data untuk memverifikasi Create → Read → Update → status workflow → Delete dari browser tanpa menyentuh materi production. Restore UI-to-database tetap **Blocked** sampai environment Supabase terisolasi tersedia.
+
+
+## Automated Browser E2E result recording — 19 September 2026
+
+- Branch `19-Sep-2026` tetap menjadi branch yang dikonfirmasi untuk perubahan ini.
+- Browser E2E workflow sekarang menjalankan recorder setelah test dengan `if: always()`, sehingga run **pass maupun fail** tetap dicatat.
+- `scripts/record-browser-e2e.mjs` membaca `test-results/results.json` dan menulis runtime evidence ke `docs/BROWSER-E2E-RESULTS.md` serta checkpoint ringkas ke file ini.
+- Workflow memiliki `contents: write` hanya untuk kebutuhan commit dokumentasi hasil E2E dan menggunakan commit `[skip ci]` agar commit pencatatan tidak memicu siklus E2E baru.
+- Implementasi workflow: `f57fa87230636398a4b991f253454ef4ddce8cbb`.
+- Recorder: `d3357e712d98ffe50cb93cdde3b489db5a529eb6`.
+- TESTING: `a277227b35bca1af711088b8ec1872e6ec3eaaa8`.
+- CHANGELOG: `c7a31ba2afe80580befce87b22e4cc7cac280b5b`.
+
+### Status
+
+- Automatic Browser E2E result recording: **Implemented — Needs Runtime Verification**.
+- CRUD Delete browser E2E: **Pending**; tetap tidak boleh dijalankan terhadap production data.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan Browser E2E sekali pada branch `19-Sep-2026` untuk memverifikasi bahwa workflow dapat menjalankan test, membuat `test-results/results.json`, lalu otomatis memperbarui dua dokumen hasil/progres. Setelah run selesai, verifikasi commit otomatis dan isi `docs/BROWSER-E2E-RESULTS.md`.
