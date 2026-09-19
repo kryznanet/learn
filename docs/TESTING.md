@@ -6,12 +6,13 @@ The repository now includes a Chromium browser test harness:
 
 - package.json provides npm run test:e2e.
 - playwright.config.js runs Chromium tests and starts a local Python HTTP server when BASE_URL is not provided.
-- tests/e2e/public.spec.js covers public homepage and admin-login smoke checks.
+- tests/e2e/public.spec.js covers public homepage, admin-login smoke checks, published material category filters, learning-path category activation, and public material detail navigation.
 - tests/e2e/authenticated.spec.js covers authenticated editor reachability when KRYZNA_E2E_EMAIL and KRYZNA_E2E_PASSWORD are configured.
 - .github/workflows/browser-e2e.yml installs Chromium with dependencies and uploads Playwright reports/traces as workflow artifacts.
 - Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
 - Verified 18 September 2026: GitHub Actions Browser E2E run #6 ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
 - As of 19 September 2026, the workflow triggers on pushes and pull requests targeting both 18-Sep-2026 and the current 19-Sep-2026 development branch; manual workflow dispatch remains available.
+- Added 19 September 2026: public E2E coverage now verifies the live published catalog count (58), all four public category labels, category filtering, learning-path activation, and material-card navigation. The new tests are source/commit verified but still require a fresh Browser E2E workflow run for runtime verification on the current branch.
 
 GitHub Actions setup:
 
@@ -53,6 +54,8 @@ Do not use a personal password in source code or commit it to the repository. Pr
 - [ ] Submit review.
 - [ ] Publish.
 - [ ] Archive.
+- [x] Public category filter and learning-path navigation tests added; runtime verification pending fresh CI run.
+- [x] Public material card navigation test added; runtime verification pending fresh CI run.
 - [ ] Search/filter.
 - [ ] Slug otomatis.
 - [ ] Public hanya melihat published.
