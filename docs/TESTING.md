@@ -11,7 +11,7 @@ The repository now includes a Chromium browser test harness:
 - .github/workflows/browser-e2e.yml installs Chromium with dependencies, uploads Playwright reports/traces as workflow artifacts, and automatically records runtime results into `docs/BROWSER-E2E-RESULTS.md` and `docs/PROJECT-STATUS.md`.
 - Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
 - Verified 18 September 2026: GitHub Actions Browser E2E run #6 ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
-- As of 19 September 2026, the workflow triggers on pushes and pull requests targeting both 18-Sep-2026 and the current 19-Sep-2026 development branch; manual workflow dispatch remains available.
+- As of 19 September 2026, the workflow can receive push, pull request, and manual-dispatch events, but the Playwright job runs only when the event targets the repository default branch. The condition reads `github.event.repository.default_branch`, so it follows future default-branch changes automatically without hard-coded date branch names.
 - Added 19 September 2026: public E2E coverage now verifies the current published catalog count (58), exact counts for Dasar (22), Intermediate (20), Advanced (12), and Tutorial (4), category-filter badges, learning-path activation, and material-card navigation to a rendered public detail page. The strengthened tests are source/commit verified but still require a fresh Browser E2E workflow run for runtime verification on the current branch. Runtime evidence and run history are recorded separately in `docs/BROWSER-E2E-RESULTS.md`.
 
 GitHub Actions setup:
@@ -19,7 +19,7 @@ GitHub Actions setup:
 1. Repository Settings → Secrets and variables → Actions.
 2. Add KRYZNA_E2E_EMAIL for a dedicated E2E account.
 3. Add KRYZNA_E2E_PASSWORD for that account.
-4. Push to 18-Sep-2026 or 19-Sep-2026, or run the workflow manually.
+4. Push to the repository default branch, open a pull request targeting the default branch, or run the workflow manually on the default branch. Events from other branches are skipped by the Playwright job.
 5. Review the playwright-report artifact after the run; the workflow also commits the runtime result documentation automatically.
 
 Do not use a personal password in source code or commit it to the repository. Prefer a dedicated test account with only the permissions required by the E2E scenarios.
