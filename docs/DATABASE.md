@@ -149,3 +149,8 @@ Catatan security: database tidak dapat membuktikan secara kriptografis bahwa pen
 Migration `20260919160000_allow_materi_category_management` menambahkan RLS UPDATE dan DELETE pada `public.materi_categories`. Keduanya hanya tersedia untuk authenticated user yang memiliki permission `content.manage_categories`, dengan `WITH CHECK` pada UPDATE untuk mempertahankan authorization setelah perubahan row.
 
 UI kategori sekarang mendukung tambah, ubah nama, aktif/nonaktif, dan hapus. Rename dan delete memeriksa penggunaan kategori pada `materi.kategori`; kategori yang masih dipakai tidak dapat diubah namanya atau dihapus agar referensi materi berbasis nama tidak rusak. Untuk kategori yang sudah dipakai, gunakan nonaktifkan lalu buat kategori baru.
+
+
+## Riwayat Ujian learner — 19 September 2026
+
+UI learner sekarang menyediakan halaman `belajar/ujian-riwayat.html` yang membaca `exam_attempts` milik user melalui RLS dan menampilkan ujian, kategori, status, nilai, serta jumlah jawaban benar. Tidak ada answer key yang dibaca dari browser.
