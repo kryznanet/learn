@@ -43,3 +43,8 @@ Edge Function baru untuk Ujian Online. Endpoint hanya menerima user JWT (`verify
 
 ## manage-users — 19 September 2026
 `manage-users` menyediakan action `list`, `create`, dan `update` untuk akun learner. Authorization hanya Admin/Super Admin aktif. Function dideploy dengan `verify_jwt=true`; create menggunakan Auth Admin API dan trigger database otomatis memberikan role `user` kepada akun baru. Update mendukung display name, email, password opsional, dan active/disabled.
+
+
+## exam-api result detail — 19 September 2026
+
+`exam-api` version 2 menambahkan action `result` untuk mengambil detail hasil attempt milik caller, termasuk jawaban terpilih, kunci, status benar/salah, dan pembahasan. JWT verification tetap aktif. Deployment live version 2 telah diverifikasi.
