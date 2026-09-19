@@ -248,3 +248,11 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menyempurnakan halaman Kategori Materi: tambah, ubah nama, aktif/nonaktif, dan hapus.
 - Rename/delete yang masih digunakan materi diblokir agar referensi kategori berbasis nama tetap konsisten.
 - Browser E2E tetap ditunda sesuai checkpoint feature development.
+
+
+## 19 September 2026 — Riwayat Ujian learner
+
+- Menambahkan halaman Riwayat Ujian untuk learner.
+- Menambahkan shortcut Riwayat Ujian dari Belajar Saya dan Profile.
+- Menyelaraskan keterangan Riwayat Belajar agar hanya menyebut materi yang telah dikonfirmasi selesai.
+- Browser E2E tetap ditunda sampai seluruh feature request selesai.
