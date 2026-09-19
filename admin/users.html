@@ -177,6 +177,29 @@
         </div>
       </section>
 
+<section class="card">
+        <h2>Pengguna Belajar</h2>
+        <div class="note">Admin dan Super Admin dapat menambah serta mengedit akun pengguna biasa (role <b>Pengguna</b>). Pengelolaan staf tetap mengikuti aturan RBAC staf.</div>
+        <div class="fields" style="grid-template-columns:1fr 1fr">
+          <input id="new-email" type="email" placeholder="Email pengguna">
+          <input id="new-name" placeholder="Nama pengguna">
+        </div>
+        <div class="fields" style="grid-template-columns:1fr 1fr">
+          <input id="new-password" type="password" minlength="8" placeholder="Password awal (min. 8)">
+          <button class="btn primary" onclick="createLearner()">+ Tambah Pengguna</button>
+        </div>
+        <div id="learner-msg" class="muted"></div>
+      </section>
+
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+          <div><h2>Daftar Pengguna Biasa</h2><div id="learner-count" class="muted">Memuat...</div></div>
+          <button class="btn gray" onclick="loadLearners()">↻ Refresh</button>
+        </div>
+        <input id="learner-search" placeholder="🔎 Cari nama atau email...">
+        <div id="learners" class="muted">Memuat...</div>
+      </section>
+
       <section class="card">
         <div style="display: flex; justify-content: space-between; gap: 10px; align-items: center">
           <div>
@@ -198,6 +221,7 @@
 
     let staff = [];
     let session = null;
+    let learners = [];
 
     function esc(value) {
       return String(value ?? '').replace(
@@ -244,7 +268,7 @@
         });
       }
 
-      await loadStaff();
+      await Promise.all([loadStaff(), loadLearners()]);
     }
 
     async function loadStaff() {
@@ -336,6 +360,72 @@
         `;
       }).join('') || '<div class="muted" style="padding: 25px">Tidak ada pengguna yang cocok.</div>';
     }
+
+    async function manageLearner(payload) {
+      const { data, error } = await db.functions.invoke('manage-users', { body: payload });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      return data;
+    }
+
+    async function loadLearners() {
+      try {
+        const data = await manageLearner({ action: 'list' });
+        learners = data.users || [];
+        renderLearners();
+      } catch (error) {
+        $('learners').textContent = 'Gagal memuat: ' + error.message;
+      }
+    }
+
+    function renderLearners() {
+      const query = $('learner-search').value.toLowerCase().trim();
+      const rows = learners.filter(x => (x.display_name || '').toLowerCase().includes(query) || (x.email || '').toLowerCase().includes(query));
+      $('learner-count').textContent = rows.length + ' dari ' + learners.length + ' pengguna';
+      $('learners').innerHTML = rows.map(item => `
+        <article class="item">
+          <div class="head"><div><b>${esc(item.display_name || 'Tanpa nama')}</b><div class="email">${esc(item.email)}</div></div>
+          <span class="badge ${item.active ? '' : 'off'}">${item.active ? 'AKTIF' : 'NONAKTIF'}</span></div>
+          <div class="fields" style="grid-template-columns:1fr 1fr 130px">
+            <input id="ln-${item.user_id}" value="${esc(item.display_name || '')}" placeholder="Nama">
+            <input id="le-${item.user_id}" type="email" value="${esc(item.email || '')}" placeholder="Email">
+            <select id="la-${item.user_id}"><option value="true" ${item.active?'selected':''}>Aktif</option><option value="false" ${!item.active?'selected':''}>Nonaktif</option></select>
+          </div>
+          <div class="muted" style="margin-top:6px">Password dikosongkan jika tidak ingin mengubahnya.</div>
+          <div class="fields" style="grid-template-columns:1fr 150px">
+            <input id="lp-${item.user_id}" type="password" minlength="8" placeholder="Password baru (opsional)">
+            <button class="btn primary" onclick="editLearner('${item.user_id}')">Simpan</button>
+          </div>
+        </article>`).join('') || '<div class="muted" style="padding:25px">Tidak ada pengguna yang cocok.</div>';
+    }
+
+    async function createLearner() {
+      if (!can('users.create')) { alert('Anda tidak memiliki permission membuat pengguna.'); return; }
+      try {
+        const email=$('new-email').value.trim(), name=$('new-name').value.trim(), password=$('new-password').value;
+        await manageLearner({action:'create',email,display_name:name,password});
+        $('new-email').value='';$('new-name').value='';$('new-password').value='';
+        $('learner-msg').textContent='Pengguna berhasil dibuat.';
+        await loadLearners();
+      } catch(error) { $('learner-msg').textContent='Gagal: '+error.message; }
+    }
+
+    async function editLearner(id) {
+      if (!can('users.update')) { alert('Anda tidak memiliki permission mengedit pengguna.'); return; }
+      const password=$('lp-'+id).value;
+      try {
+        await manageLearner({
+          action:'update', user_id:id,
+          email:$('le-'+id).value.trim(),
+          display_name:$('ln-'+id).value.trim(),
+          active:$('la-'+id).value==='true',
+          ...(password ? {password} : {})
+        });
+        await loadLearners();
+      } catch(error) { alert(error.message); }
+    }
+
+    $('learner-search').oninput = renderLearners;
 
     $('search').oninput = render;
 
