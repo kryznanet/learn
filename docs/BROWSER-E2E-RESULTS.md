@@ -15,7 +15,7 @@ Dokumen ini menyimpan **hasil runtime Browser E2E terbaru** yang benar-benar dij
 
 **Status: Passed**
 
-Fresh GitHub Actions runtime evidence terbaru: Browser E2E #168 (9 passed, 0 failed, 0 skipped, 0 flaky).
+Fresh GitHub Actions runtime evidence terbaru: Browser E2E #171 (9 passed, 0 failed, 0 skipped, 0 flaky).
 
 ### Coverage yang telah diverifikasi
 
@@ -38,16 +38,16 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 ### 2026-09-19 — Automated Browser E2E runtime
 
-- Workflow: **Browser E2E #168**
-- Run ID: `35428756268`
-- Run URL: https://github.com/kryznanet/learn/actions/runs/35428756268
+- Workflow: **Browser E2E #171**
+- Run ID: `35429091688`
+- Run URL: https://github.com/kryznanet/learn/actions/runs/35429091688
 - Branch: `19-Sep-2026`
-- Commit: `98dcc61fa1a1baeab4edaa6b11f46ca49f8f123d`
+- Commit: `f75d67c889623a4a9284bf5f43ad7f02cdb01860`
 - Trigger: `push`
 - Result: **Passed**
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky** (9 recorded)
 - Artifact: `playwright-report` is uploaded by the workflow when files are available.
-- Recorded automatically from `test-results/results.json` at 2026-09-19T07:15:03.073Z.
+- Recorded automatically from `test-results/results.json` at 2026-09-19T07:22:21.605Z.
 
 ## Interpretation
 
