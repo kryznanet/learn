@@ -139,3 +139,8 @@ Persistence memakai RLS `material_reading_history`: learner hanya dapat INSERT r
 
 ## Main web learner account navigation — 19 September 2026
 `index.html` menampilkan `Masuk` bagi pengunjung dan secara dinamis menampilkan nama/email akun yang mengarah ke `belajar/profile.html` saat sesi aktif. Profile learner dipisahkan dari `admin/profile.html` agar area akun pengguna biasa tidak bergantung pada record `admin_users`.
+
+
+## Learner engagement & outcome features — 19 September 2026
+
+Learner experience now includes progress aggregation from reading history/attempts, material bookmarks, per-learner feedback, in-app notifications, detailed exam results through authenticated Edge Function `exam-api`, and a printable exam completion certificate for passed attempts. The certificate is a presentation of a verified passed attempt, not a separate accreditation record.
