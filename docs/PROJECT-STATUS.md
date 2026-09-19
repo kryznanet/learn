@@ -1,3 +1,22 @@
+## 🎨 UI/UX page-by-page polish — 19 September 2026
+
+- Branch terverifikasi: `19-Sep-2026`.
+- Perapihan page-by-page sudah diterapkan pada Dashboard Admin, Kelola Materi, Editor, Ujian Admin, Pengguna, Learner, Materi Detail, Hasil Ujian, dan Sertifikat.
+- Fokus perubahan: hierarchy, card/form consistency, action controls, status readability, responsive mobile, table overflow pada materi, dan printable certificate.
+- Source commits: `65f934b029d1110dfe346fa6e8321f0cd056c76c`, `2d458b147a3133eb7d32c352463d86b3b1d378d2`, `7f5a31ceb95efc0c8d6da319a8194df243932224`, `37700f05eb88925d55fa2fbf9fe856d17a228be`, `7163d42ca5951020ec0f89f822faafb09eda8c1a`, `779f79055aa7f3d33636101396a95de4ef1122fa`, `b0f301c78dcd1a41e3cd0c2001ab2c934516a3fa`, `ef040ffdb9e9c46d6afb7561a6812711fd7430a2`, `50577387cd7ba13cc13beca3cc3cce38d053685a`.
+- UI documentation: `7090f5bf2be8edf36d34c36c1bfe3bb93c9cbe32`.
+
+### Status
+
+- Page-by-page UI source: **Implemented — Needs Browser Verification**.
+- Mobile source polish: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending**; akan dijalankan setelah feature/UI freeze.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Fresh Browser E2E pada branch `19-Sep-2026`, review hasil runtime, perbaiki regresi bila ada, lalu update `docs/BROWSER-E2E-RESULTS.md` dan lakukan final Security Advisor/RLS/Storage/deployment audit.
+
 ## 🎨 UI/UX polish global — 19 September 2026
 
 - Branch terverifikasi: `19-Sep-2026`.
