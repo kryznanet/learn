@@ -788,3 +788,11 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35431412907.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Administrasi Ujian diperluas — 19 September 2026
+
+- `admin/exams.html` diperluas untuk create/edit ujian, publish/draft, kategori, durasi, nilai lulus, tambah soal, dan hapus soal.
+- Source UI diverifikasi kembali dari branch `19-Sep-2026`.
+- RLS live pada tabel ujian/soal/kunci/pilihan tetap menggunakan permission `exam.manage` untuk operasi manajemen.
+- Browser E2E masih **Pending** sampai seluruh feature request selesai.
