@@ -272,3 +272,11 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan pencarian/filter pada Riwayat Belajar, katalog Ujian, dan Riwayat Ujian.
 - Memperkuat interaksi pengerjaan ujian: peringatan lima menit, konfirmasi soal belum dijawab, pencegahan submit ganda, dan penghentian timer setelah submit.
 - Browser E2E untuk perubahan UX tetap ditunda sampai seluruh feature request selesai.
+
+
+## 19 September 2026 — Feature expansion foundation
+
+- Menambahkan archive state pada ujian agar ujian ber-riwayat dapat dinonaktifkan tanpa menghapus attempt.
+- Menambahkan activation state kategori ujian.
+- Menambahkan fondasi bookmark materi, feedback materi, dan notifikasi learner dengan RLS ownership.
+- Memperluas administrasi ujian: edit soal, poin/pembahasan/kunci, reorder, archive/restore, serta manajemen kategori.
