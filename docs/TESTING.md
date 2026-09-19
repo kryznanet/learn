@@ -217,3 +217,15 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Admin/Super Admin dapat menambah soal dengan 4 pilihan, kunci jawaban, kesulitan, dan pembahasan.
 - [x] Admin/Super Admin dapat menghapus soal.
 - [ ] Browser E2E ujian administration ditunda sampai seluruh feature request selesai.
+
+
+## Pengaturan & learner UX — 19 September 2026
+
+- [x] Halaman Pengaturan tetap dilindungi permission settings.manage dan hanya menjadi hub; tidak menambah tabel konfigurasi palsu di browser.
+- [x] Hub Pengaturan menyediakan jalur ke Pengguna Belajar, Konten/Materi, Kategori, Ujian, dan Aktivitas Sistem.
+- [x] Belajar Saya menampilkan ringkasan materi selesai, total percobaan ujian, dan ujian lulus dari data akun sendiri.
+- [x] Riwayat Belajar memiliki pencarian judul dan filter status serta mempertahankan aturan completion end-of-material.
+- [x] Katalog Ujian memiliki pencarian dan filter kategori serta hanya menampilkan ujian published.
+- [x] Riwayat Ujian memiliki ringkasan total/lulus dan filter hasil.
+- [x] Pengerjaan Ujian mencegah submit ganda, memperingatkan soal belum dijawab, memberi peringatan lima menit, dan menghentikan timer setelah submit.
+- [ ] Browser E2E untuk perubahan UX ini tetap ditunda sampai seluruh feature request selesai.
