@@ -1,3 +1,12 @@
+
+
+## 19 September 2026 — Material CRUD delete enforcement
+
+- Added a permission-aware **Hapus** action to `content/materials.html` for users with `content.delete`.
+- Added database RLS DELETE enforcement on `public.materi` for `admin` and `super_admin`.
+- Recorded the live migration as `20260919065701_add_materi_delete_policy_20260919_reconcile` and aligned the repository migration filename with the live migration history.
+- Verified that `materi_versions` uses `ON DELETE CASCADE` for related version snapshots.
+- Browser E2E delete execution remains pending because destructive production testing is not appropriate.
 ## 19 September 2026 — Browser E2E results log
 
 - Added `docs/BROWSER-E2E-RESULTS.md` as the dedicated runtime evidence/history log for Browser E2E.
