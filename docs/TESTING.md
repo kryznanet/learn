@@ -260,3 +260,12 @@ Semua item di atas masih **Needs Browser Verification**. Fresh Browser E2E tetap
 - Passed attempt exposes a printable certificate page using the authenticated result payload.
 - Failed or in-progress attempts must not expose a certificate as available.
 - Certificate remains a presentation layer over the attempt result; no separate credential table is created.
+
+
+## Final source verification — 19 September 2026
+
+- Learner catalog excludes archived exams.
+- exam-api start excludes archived exams.
+- exam-api deployment was refreshed after the final source changes and remains JWT-protected.
+- Certificate page is gated by a passed attempt result.
+- Runtime Browser E2E remains intentionally pending until feature freeze is complete.
