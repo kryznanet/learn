@@ -19,11 +19,11 @@
       --muted: #64748b;
       --primary: #2563eb;
       --soft: #eff6ff;
+      --danger: #b91c1c;
+      --danger-soft: #fee2e2;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -63,9 +63,7 @@
       padding: 26px 18px;
     }
 
-    .hero h1 {
-      margin: 5px 0;
-    }
+    .hero h1 { margin: 5px 0; }
 
     .muted {
       color: var(--muted);
@@ -134,6 +132,11 @@
       color: #fff;
     }
 
+    .danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
     .review {
       background: #fef3c7;
       color: #92400e;
@@ -156,9 +159,7 @@
     }
 
     @media (max-width: 650px) {
-      .head {
-        flex-direction: column;
-      }
+      .head { flex-direction: column; }
     }
   </style>
 </head>
@@ -385,6 +386,15 @@
                       ${label}
                     </button>
                   ` : ''}
+
+                  ${can('content.delete') ? `
+                    <button
+                      class="btn danger"
+                      onclick="deleteMaterial('${item.id}')"
+                    >
+                      Hapus
+                    </button>
+                  ` : ''}
                 </div>
               </article>
             `;
@@ -445,6 +455,51 @@
           'Status berhasil diubah tetapi log gagal:',
           log.error
         );
+      }
+
+      await load();
+    }
+
+    async function deleteMaterial(id) {
+      if (!can('content.delete')) {
+        alert('Anda tidak memiliki permission untuk menghapus materi.');
+        return;
+      }
+
+      const current = rows.find((item) => item.id === id);
+      if (!current) return;
+
+      const title = current.judul || 'materi ini';
+      const confirmed = confirm(
+        'Hapus "' +
+        title +
+        '" secara permanen? Riwayat versi terkait juga akan dihapus.'
+      );
+
+      if (!confirmed) return;
+
+      const result = await db
+        .from('materi')
+        .delete()
+        .eq('id', id);
+
+      if (result.error) {
+        alert('Gagal menghapus materi: ' + result.error.message);
+        return;
+      }
+
+      const log = await window.kryznaLogContent({
+        action: 'deleted',
+        entityId: null,
+        description: 'Menghapus materi "' + title + '" secara permanen',
+        metadata: {
+          material_id: id,
+          status: current.status
+        }
+      });
+
+      if (log?.error) {
+        console.warn('Materi terhapus tetapi log gagal:', log.error);
       }
 
       await load();
