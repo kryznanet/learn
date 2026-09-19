@@ -80,3 +80,10 @@ Migration `restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE 
 
 ## Learner management boundary — 19 September 2026
 Edge Function `manage-users` memakai `verify_jwt=true` dan memeriksa caller aktif pada `admin_users` dengan role `admin` atau `super_admin`. Daftar hanya mengembalikan akun Auth yang tidak memiliki row `admin_users`. Operasi update menolak target yang merupakan staf, sehingga Admin tidak dapat memakai endpoint learner untuk mengubah akun staf. Password hanya ditangani server-side melalui Auth Admin API.
+
+
+## Learner engagement security — 19 September 2026
+
+Bookmark dan feedback menggunakan ownership RLS berbasis `auth.uid()`. Notifikasi learner menggunakan SELECT/UPDATE ownership dan INSERT terpisah untuk Admin/Super Admin. Feedback dapat dibaca oleh Admin/Editor/Super Admin untuk quality review; learner tetap hanya dapat mengubah feedback miliknya sendiri.
+
+Exam result detail ditambahkan melalui Edge Function `exam-api` action `result`. Endpoint hanya mengambil attempt milik caller dan mengembalikan detail jawaban untuk attempt tersebut; answer keys tetap tidak diekspos sebagai tabel publik.
