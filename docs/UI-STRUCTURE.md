@@ -378,3 +378,13 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - Active state diterapkan pada item submenu dan parent group.
 - Backend/RLS tetap menjadi enforcement akses; navigasi hanya lapisan UX.
 - Mobile menggunakan submenu yang dapat dibuka dan tetap mempertahankan target sentuh yang memadai.
+
+
+### Navigasi bertingkat final
+
+- **CONTENT** menjadi group utama yang berisi Dashboard, Kelola Materi, dan Kelola Ujian.
+- **Kelola Materi** memiliki submenu Daftar Materi, Kategori, Riwayat Versi, dan Aktivitas Materi.
+- **Kelola Ujian** memiliki submenu Daftar Ujian, Editor Ujian, dan Soal.
+- **ADMINISTRASI** menjadi group utama untuk Kelola Pengguna, Aktivitas Sistem, Import Materi, dan Pengaturan.
+- Parent group otomatis terbuka ketika halaman anak sedang aktif.
+- Menu publik **Materi** menggunakan anchor katalog `#materi`; **Progress Belajar** menggunakan anchor `#progress`.
