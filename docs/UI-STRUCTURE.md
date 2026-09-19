@@ -266,3 +266,4 @@ Nama internal database, RPC, JavaScript API, dan endpoint tidak perlu diubah han
 5. Audit navigasi, workflow, dan keamanan Supabase/RLS.
 
 Dokumen ini harus diperbarui apabila struktur menu, role, permission, atau status implementasi berubah secara signifikan.
+\n\n## Kelola Konten, Kategori, dan Dashboard — 19 September 2026\n\n- Dashboard Admin sekarang menampilkan **Kelola Konten / Materi** dan akses **Kategori Materi**.\n- Workspace Kelola Materi memiliki halaman **Kategori Materi** untuk menambah kategori baru.\n- Editor materi mengambil kategori aktif dari `materi_categories`, sehingga pilihan tidak lagi hard-coded pada `Materi/Tutorial`.\n- Dashboard Super Admin sekarang menyediakan akses **Kelola Konten / Materi** dan halaman **Pengaturan**.\n- `admin/settings.html` menjadi titik awal pengaturan administratif; pengelolaan kategori tetap menggunakan permission `content.manage_categories`.\n
