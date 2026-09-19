@@ -84,3 +84,4 @@ Role `user` hanya untuk akun learner non-staf. Trigger `trg_remove_learner_role_
 
 ## Learner account management — 19 September 2026
 Admin dan Super Admin dapat mengelola akun learner role `user`: membuat akun, mengedit nama/email, dan mengaktifkan/menonaktifkan akun. Pengelolaan ini dipisahkan dari staff management; perubahan role staf tetap melalui jalur Super Admin.
+\n\n## Kategori Materi Dinamis — 19 September 2026\n\nPermission `content.manage_categories` digunakan untuk mengelola katalog kategori materi. UI kategori baru hanya menampilkan form tambah kepada user yang memiliki permission tersebut; RLS database tetap membatasi INSERT. Mapping live saat perubahan: `admin`, `editor`, dan `super_admin`.\n\nRole `penulis` dan `user` tidak dapat menambah kategori.\n
