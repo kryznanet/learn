@@ -190,3 +190,13 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [ ] Browser E2E Admin: create + edit learner.
 - [ ] Browser E2E Super Admin: create + edit learner.
 \n\n## Dynamic Material Category Verification — 19 September 2026\n\nChecklist runtime: (1) Admin/Super Admin dapat membuka Kelola Konten, (2) halaman Kategori Materi menampilkan kategori existing, (3) tambah kategori baru berhasil dan muncul di daftar, (4) editor menampilkan kategori baru tanpa hard-code, (5) user tanpa `content.manage_categories` tidak dapat menambah kategori, dan (6) RLS tetap menolak INSERT tanpa permission. Browser E2E khusus kategori masih **Pending**.\n
+
+## Kategori Materi — management coverage — 19 September 2026
+
+- [x] RLS INSERT kategori memerlukan `content.manage_categories`.
+- [x] RLS UPDATE kategori memerlukan `content.manage_categories` dan memiliki `WITH CHECK` authorization.
+- [x] RLS DELETE kategori memerlukan `content.manage_categories`.
+- [x] UI menampilkan tambah, ubah, aktif/nonaktif, dan hapus.
+- [x] Rename kategori yang sudah dipakai materi diblokir untuk menjaga referensi `materi.kategori`.
+- [x] Delete kategori yang masih dipakai materi diblokir; nonaktifkan sebagai alternatif.
+- [ ] Browser E2E kategori tetap ditunda sampai seluruh feature request selesai.
