@@ -135,3 +135,11 @@ Role `user` berada di `user_roles`, bukan `admin_users`. RLS `user_roles` tetap 
 Migration `20260919120000_add_user_role_learner_access.sql` menyediakan role learner `user`, permission learner, auto-assignment untuk Auth user baru, dan rekonsiliasi existing users. Migration `20260919123000_remove_user_role_from_staff.sql` membersihkan assignment learner dari staf. Migration `20260919124000_enforce_staff_learner_role_separation.sql` menambahkan trigger `trg_remove_learner_role_from_staff` pada `admin_users` agar staff creation/update tidak mempertahankan role learner.
 
 Verifikasi live: role `user` tersedia; `learning.read`, `exam.take`, dan `exam.history.read` terpetakan; trigger Auth assignment dan staff-separation aktif; 0 staff memiliki role `user`.
+
+## Reading history completion confirmation — 19 September 2026
+
+`material_reading_history` sekarang hanya dibuat saat learner mengonfirmasi materi sudah dibaca sampai bagian paling bawah. Browser menampilkan checkbox dan tombol konfirmasi setelah sentinel di bagian akhir materi terdeteksi oleh `IntersectionObserver`.
+
+Policy INSERT membatasi row baru ke `auth.uid()` sendiri dengan `status = 'completed'` dan `completed_at` terisi. Hak `UPDATE` untuk `authenticated` dicabut sehingga browser tidak dapat mengubah row riwayat secara langsung setelah tercatat. RLS SELECT tetap membatasi learner ke riwayat miliknya sendiri.
+
+Catatan security: database tidak dapat membuktikan secara kriptografis bahwa pengguna benar-benar membaca setiap bagian layar; kontrol “sampai bawah” adalah sinyal browser yang dipadukan dengan konfirmasi eksplisit. Database tetap menjadi boundary kepemilikan dan status completion.
