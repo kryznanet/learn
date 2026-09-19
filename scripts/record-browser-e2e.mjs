@@ -36,25 +36,46 @@ const now = new Date().toISOString();
 
 let resultsDoc = read(resultsDocPath);
 const historyMarker = "## Runtime history";
-const entry = `### ${now.slice(0, 10)} — Automated Browser E2E runtime
+const interpretationMarker = "## Interpretation";
+const entry = \`### \${now.slice(0, 10)} — Automated Browser E2E runtime
 
-- Workflow: **Browser E2E #${runNumber}**
-- Run ID: \`${runId}\`
-- Run URL: ${runUrl}
-- Branch: \`${branch}\`
-- Commit: \`${sha}\`
-- Trigger: \`${trigger}\`
-- Result: **${outcome}**
-- Playwright summary: **${expected} passed, ${unexpected} failed, ${skipped} skipped, ${flaky} flaky** (${total} recorded)
-- Artifact: \`playwright-report\` is uploaded by the workflow when files are available.
-- Recorded automatically from \`test-results/results.json\` at ${now}.
+- Workflow: **Browser E2E #\${runNumber}**
+- Run ID: \\\`\${runId}\\\`
+- Run URL: \${runUrl}
+- Branch: \\\`\${branch}\\\`
+- Commit: \\\`\${sha}\\\`
+- Trigger: \\\`\${trigger}\\\`
+- Result: **\${outcome}**
+- Playwright summary: **\${expected} passed, \${unexpected} failed, \${skipped} skipped, \${flaky} flaky** (\${total} recorded)
+- Artifact: \\\`playwright-report\\\` is uploaded by the workflow when files are available.
+- Recorded automatically from \\\`test-results/results.json\\\` at \${now}.
 
-`;
+\`;
 
-if (resultsDoc.includes(historyMarker)) {
-  resultsDoc = resultsDoc.replace(historyMarker, `${historyMarker}\n\n${entry.trimEnd()}\n`);
+const historyStart = resultsDoc.indexOf(historyMarker);
+const interpretationStart = resultsDoc.indexOf(interpretationMarker);
+
+if (historyStart !== -1 && interpretationStart !== -1 && interpretationStart > historyStart) {
+  resultsDoc =
+    resultsDoc.slice(0, historyStart) +
+    \`\${historyMarker}\\\\n\\\\n\${entry}\` +
+    resultsDoc.slice(interpretationStart);
+} else if (historyStart !== -1) {
+  resultsDoc = resultsDoc.slice(0, historyStart) + \`\${historyMarker}\\\\n\\\\n\${entry}\`;
 } else {
-  resultsDoc += `\n${entry}`;
+  resultsDoc += \`\\\\n\\\\n\${historyMarker}\\\\n\\\\n\${entry}\`;
+}
+
+const statusStart = resultsDoc.indexOf("## Status saat ini");
+const coverageMarker = "### Coverage yang telah diverifikasi";
+if (statusStart !== -1) {
+  const coverageStart = resultsDoc.indexOf(coverageMarker, statusStart);
+  if (coverageStart !== -1) {
+    resultsDoc =
+      resultsDoc.slice(0, statusStart) +
+      \`## Status saat ini — \${now.slice(0, 10)}\\\\n\\\\n**Status: \${outcome}**\\\\n\\\\nFresh GitHub Actions runtime evidence terbaru: Browser E2E #\${runNumber} (\${expected} passed, \${unexpected} failed, \${skipped} skipped, \${flaky} flaky).\\\\n\\\\n\` +
+      resultsDoc.slice(coverageStart);
+  }
 }
 fs.writeFileSync(resultsDocPath, resultsDoc);
 
