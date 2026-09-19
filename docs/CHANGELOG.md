@@ -301,3 +301,13 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Archived exams are now excluded from learner catalog and exam-api start.
 - Bookmark toggle state was corrected so repeated add/remove interactions remain consistent.
 - exam-api final deployment version 4 includes secure result details and exam title for certificate rendering.
+
+
+## 19 September 2026 — Target navigation hierarchy
+
+- Shared navigation disusun ulang menjadi Publik, Learner, Content, dan Administrasi.
+- Submenu Learner mencakup Belajar Saya → Progress Belajar, Riwayat Belajar, Bookmark.
+- Submenu Content mencakup Dashboard, Kelola Materi, dan Kelola Ujian.
+- Submenu Administrasi mencakup Kelola Pengguna, Aktivitas Sistem, Import Materi, dan Pengaturan.
+- Ditambahkan indeks Riwayat Versi agar menu tidak mengarah ke halaman detail tanpa `materi.id`.
+- Tidak ada perubahan database/RLS/RBAC.
