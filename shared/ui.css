@@ -884,3 +884,40 @@ body.kx-modern .card h3 {
     align-items: center;
   }
 }
+
+
+.kx-subgroup {
+  position: relative;
+}
+
+.kx-subgroup > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.kx-subgroup > summary::-webkit-details-marker {
+  display: none;
+}
+
+.kx-submenu-nested {
+  top: 0;
+  left: calc(100% + 4px);
+}
+
+@media (max-width: 850px) {
+  .kx-submenu-nested {
+    position: static;
+    min-width: 0;
+    margin: 2px 0 0 8px;
+    box-shadow: none;
+    border-left: 2px solid var(--kx-line);
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .kx-submenu-nested {
+    margin-left: 8px;
+    width: auto;
+  }
+}
