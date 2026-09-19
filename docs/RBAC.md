@@ -58,3 +58,15 @@ Permission checks for `content.review`, `content.publish`, and `content.archive`
 - RLS policy `Content admins can delete materi` membatasi DELETE kepada role `admin` dan `super_admin`, selaras dengan mapping `content.delete`.
 - UI `content/materials.html` hanya menampilkan tombol Hapus kepada user yang memiliki `content.delete` dan tetap memeriksa permission sebelum DELETE.
 - Penghapusan versi terkait mengikuti foreign key `materi_versions_materi_id_fkey` dengan `ON DELETE CASCADE`.
+
+
+## Ujian Online — 19 September 2026
+
+Permission baru:
+
+- `exam.manage` — mengelola ujian dan bank soal.
+- `exam.read` — akses administrasi baca ujian/hasil.
+
+Permission tersebut diberikan kepada `admin` dan `super_admin`. Pengguna learner tidak membutuhkan permission staf untuk mengikuti ujian; akses learner ditentukan oleh Supabase Auth + RLS + Edge Function.
+
+Admin UI memeriksa `exam.manage`, sedangkan database juga menegakkan policy manager pada tabel bank soal. Jawaban benar tidak diberikan kepada learner melalui Data API.
