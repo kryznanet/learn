@@ -28,3 +28,14 @@ Jangan menghapus function aktif sebelum consumer eksternal dipastikan tidak ada.
 5. Verifikasi version/status.
 6. Fetch source deployment kembali untuk parity check.
 7. Catat hasil di dokumentasi.
+
+
+## exam-api — 19 September 2026
+
+Edge Function baru untuk Ujian Online. Endpoint hanya menerima user JWT (`verify_jwt=true`) dan memakai `withSupabase({ auth: 'user' })`.
+
+- `start`: membuat/melanjutkan attempt aktif dan mengembalikan soal + opsi tanpa answer key.
+- `submit`: memvalidasi attempt milik user, membaca answer key server-side, menghitung nilai, menyimpan answer dan hasil attempt.
+- Source: `supabase/functions/exam-api/index.ts`.
+- Deployment live: ACTIVE, version 1, JWT verification enabled.
+- Secret/service-role credential tidak berada di source browser.
