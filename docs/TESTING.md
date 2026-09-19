@@ -189,3 +189,4 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Edge Function `manage-users` deployed aktif dengan JWT verification.
 - [ ] Browser E2E Admin: create + edit learner.
 - [ ] Browser E2E Super Admin: create + edit learner.
+\n\n## Dynamic Material Category Verification — 19 September 2026\n\nChecklist runtime: (1) Admin/Super Admin dapat membuka Kelola Konten, (2) halaman Kategori Materi menampilkan kategori existing, (3) tambah kategori baru berhasil dan muncul di daftar, (4) editor menampilkan kategori baru tanpa hard-code, (5) user tanpa `content.manage_categories` tidak dapat menambah kategori, dan (6) RLS tetap menolak INSERT tanpa permission. Browser E2E khusus kategori masih **Pending**.\n
