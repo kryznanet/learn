@@ -1112,3 +1112,12 @@ Fresh Browser E2E pada branch `19-Sep-2026` untuk memverifikasi seluruh group/su
 - Navigation hierarchy: **Implemented — Needs Browser Verification**.
 - URL target/source checks: **Verified**.
 - Browser E2E: **Pending**; belum ada runtime baru setelah perubahan navigasi.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #367** pada branch `19-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35437644401`; commit yang diuji: `b2538d0aa6a9e38bdda2231f70f73ba5949f6231`.
+- Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35437644401.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
