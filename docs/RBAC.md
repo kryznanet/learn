@@ -50,3 +50,11 @@ Direct write ke `user_roles` sekarang juga dibatasi oleh RLS: hanya `super_admin
 ## Workflow status enforcement
 
 Permission checks for `content.review`, `content.publish`, and `content.archive` are not UI-only. The `materi` RLS policies enforce the workflow boundary: `penulis` can only create/update authored `draft` rows; `editor` can create/update authored rows across workflow statuses; `admin` and `super_admin` retain cross-author workflow mutation. All inserts require `author_id = auth.uid()`.
+
+
+## Penghapusan materi — 19 September 2026
+
+- Permission `content.delete` sekarang memiliki enforcement database pada tabel `public.materi`, bukan hanya kontrol tombol UI.
+- RLS policy `Content admins can delete materi` membatasi DELETE kepada role `admin` dan `super_admin`, selaras dengan mapping `content.delete`.
+- UI `content/materials.html` hanya menampilkan tombol Hapus kepada user yang memiliki `content.delete` dan tetap memeriksa permission sebelum DELETE.
+- Penghapusan versi terkait mengikuti foreign key `materi_versions_materi_id_fkey` dengan `ON DELETE CASCADE`.
