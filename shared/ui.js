@@ -80,7 +80,7 @@
       items: [
         ['Daftar Materi', root + 'content/materials.html', 'content.read'],
         ['Kategori', root + 'content/categories.html', 'content.manage_categories'],
-        ['Riwayat Versi', root + 'content/materials.html', 'content.read'],
+        ['Riwayat Versi', root + 'content/versions-index.html', 'content.read'],
         ['Aktivitas Materi', root + 'content/activity.html', 'content.view_logs']
       ]
     },
