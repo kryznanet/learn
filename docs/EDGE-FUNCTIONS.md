@@ -48,3 +48,8 @@ Edge Function baru untuk Ujian Online. Endpoint hanya menerima user JWT (`verify
 ## exam-api result detail — 19 September 2026
 
 `exam-api` version 2 menambahkan action `result` untuk mengambil detail hasil attempt milik caller, termasuk jawaban terpilih, kunci, status benar/salah, dan pembahasan. JWT verification tetap aktif. Deployment live version 2 telah diverifikasi.
+
+
+## Final exam-api parity — 19 September 2026
+
+The repository source for supabase/functions/exam-api/index.ts was fetched again after the final archive/result changes. The live deployment is ACTIVE, version 4, with verify_jwt=true. Deployment metadata and source were re-read after deployment; final runtime parity is recorded as Needs Verification if a byte-level comparison cannot be completed by the deployment API response.
