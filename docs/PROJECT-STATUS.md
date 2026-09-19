@@ -676,3 +676,24 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 ### Checkpoint berikutnya
 
 Jalankan Browser E2E dengan akun learner khusus untuk memverifikasi alur end-to-end. Hasil runtime harus dicatat otomatis di `docs/BROWSER-E2E-RESULTS.md`. Jangan melakukan destructive test terhadap materi production.
+
+
+## Main web login + learner profile — 19 September 2026
+
+- `index.html` sekarang menampilkan menu `Masuk` untuk pengunjung. Saat sesi Supabase aktif, menu berubah menjadi nama/email pengguna dan mengarah ke `belajar/profile.html`.
+- `belajar/profile.html` ditambahkan sebagai profile khusus learner, terpisah dari profile Admin. Fitur: nama tampilan, avatar, ganti password, ganti email, logout, serta shortcut Riwayat Belajar dan Ujian Online.
+- `belajar/index.html` menambahkan tautan Profile pada area Belajar Saya.
+- Commit main web: `945d86e86c00b38620805453bf9ac0275187eedd`.
+- Commit learner profile: `6b35e55d8277e825ff3cdacbc248120c06947128`.
+- Commit Belajar Saya: `489a2bb3ac9a712c2ec5a00ad1104cbc45308159`.
+- Source verification: ketiga file berhasil di-fetch kembali dari branch `19-Sep-2026`.
+
+### Status
+
+- Menu login web utama: **Implemented — Needs Browser Verification**.
+- Learner profile: **Implemented — Needs Browser Verification**.
+- Browser E2E untuk login/profile: **Pending**.
+
+### Checkpoint berikutnya
+
+Verifikasi runtime: pengunjung melihat `Masuk`; learner login melihat nama/profile; profile dapat dibuka; update nama/password/email/avatar mengikuti auth/storage policy; logout mengembalikan menu menjadi `Masuk`. Hasil E2E dicatat di `docs/BROWSER-E2E-RESULTS.md`.
