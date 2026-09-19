@@ -208,3 +208,12 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Query hanya membaca `exam_attempts` dan relasi ujian/kategori; authorization tetap melalui RLS.
 - [x] Nilai/status ditampilkan dari hasil server-side attempt.
 - [ ] Browser E2E riwayat ujian ditunda sampai seluruh feature request selesai.
+
+
+## Ujian — administration expansion — 19 September 2026
+
+- [x] Admin/Super Admin dapat membuat ujian baru.
+- [x] Admin/Super Admin dapat mengubah judul, deskripsi, kategori, durasi, nilai lulus, dan status terbit.
+- [x] Admin/Super Admin dapat menambah soal dengan 4 pilihan, kunci jawaban, kesulitan, dan pembahasan.
+- [x] Admin/Super Admin dapat menghapus soal.
+- [ ] Browser E2E ujian administration ditunda sampai seluruh feature request selesai.
