@@ -868,3 +868,45 @@ Lanjutkan feature request yang masih pending, terutama pendalaman administrasi U
 ### Checkpoint berikutnya
 
 Lanjutkan implementasi UI learner dan admin untuk bookmark, feedback, notifikasi, dashboard progres/statistik, filter pengguna, serta detail hasil ujian. Setelah semua feature request selesai, jalankan fresh Browser E2E dan final security/deployment audit.
+
+
+## Feature expansion batch 2 — 19 September 2026
+
+- Commit learner material engagement UI: f8d40c3ffd62d3478858ccb792a63181657ab67c.
+- Commit Bookmark learner page: 3fa7a9306e0a89ad99e733827af44265643ccbd3.
+- Commit Notification learner page: f40c6f58198dfaca62cecfca815ecdcf5bb4b48c.
+- Commit learner dashboard: 14ef12f7b2895775f280ff89f2405b9a7a4344f7.
+- Commit user status filters: 86f08aa80f5cd60af7f18014a492874c21771aab.
+- Commit admin statistics: bf9e551bf5ccc3769bb3b3a6f704256c8335976b.
+- Commit exam result API: f3e072b45d79ee4c06e1491fb7d0c5aa95325cf3; deployed `exam-api` version 2 ACTIVE with `verify_jwt=true`.
+- Commit exam result page: f40ebf413269fed34c767b2881c9cae3090ae999.
+- Commit exam history detail-link fix: cb430f17b6d432a0a4ce4a53883139e9673a463b.
+- Commit notification permission migration: 6e341ffd082bbac5fbdfedc1ba7b2e3dcf334d0c.
+- Commit notification center: eb7d8affc8af1ff2e5ffb9714dddc0bfc75c5269.
+- Commit feedback policy migration: 5e11ee210b06c604922bf0af101d8cada4164f1c.
+- Commit feedback review page: 0ab2082a9ef48e16bbe91b466575b24abdd63ad2.
+- Commit admin dashboard links: d9e83fc3f7e8814d6487e38d2f2090fa2232f682.
+
+### Live verification
+
+- `notifications.manage` exists and is mapped to Admin + Super Admin.
+- RLS policies verified for bookmarks, feedback, and learner notifications.
+- Published exams remain 4 and archive column is available.
+- Security Advisor remains at baseline 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
+
+### Status
+
+- Bookmark: **Implemented — Needs Browser Verification**.
+- Feedback: **Implemented — Needs Browser Verification**.
+- Notifications: **Implemented — Needs Browser Verification**.
+- Learner progress: **Implemented — Needs Browser Verification**.
+- Admin statistics: **Implemented — Needs Browser Verification**.
+- Advanced user filters: **Implemented — Needs Browser Verification**.
+- Exam result detail: **Implemented — Needs Browser Verification**.
+- Certificate: **Deferred**.
+- Browser E2E: **Pending** until feature requests are complete.
+- Restore UI-to-database: **Blocked** until isolated Supabase environment exists.
+
+### Checkpoint berikutnya
+
+Lanjutkan feature completion yang masih tersisa: verify/fix public archive filtering, inspect UI links and source parity, then final security/deployment audit. Setelah feature freeze, jalankan fresh Browser E2E dan catat hasil di `docs/BROWSER-E2E-RESULTS.md`.
