@@ -511,3 +511,9 @@ Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otoma
 
 - `docs/TESTING.md` diperbarui untuk menjelaskan bahwa `docs/BROWSER-E2E-RESULTS.md` hanya menyimpan runtime result terbaru.
 - TESTING commit: `0539a07f6334317b89b5cc8e93ad1ba527e160cb`; isi diverifikasi setelah push.
+
+
+## Documentation sync — latest-only Browser E2E changelog
+
+- `docs/CHANGELOG.md` mencatat perubahan retention latest-only untuk hasil Browser E2E.
+- CHANGELOG commit: `e93248ea0513ca99650956261acfd8d6d5a0a7ac`; isi diverifikasi setelah push.
