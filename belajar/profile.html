@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profile Saya — Kryzna Learn</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<style>
+:root{--bg:#f5f7fb;--surface:#fff;--text:#0f172a;--muted:#64748b;--line:#dbe3ee;--primary:#2563eb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+header{background:#0b1220;color:#fff;padding:14px 22px}.nav{max-width:900px;margin:auto;display:flex;justify-content:space-between;gap:12px;align-items:center}.nav a{color:#fff;text-decoration:none}
+main{max-width:900px;margin:auto;padding:28px 18px}.hero{display:flex;align-items:center;gap:16px;margin-bottom:18px}.avatar{width:72px;height:72px;border-radius:20px;background:#2563eb;color:#fff;display:grid;place-items:center;font-size:26px;font-weight:900;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}.full{grid-column:1/-1}h1,h2{margin-top:0}.muted{color:var(--muted);font-size:13px;line-height:1.6}.field{margin:12px 0}.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px}.field input{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px}.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer;background:var(--primary);color:#fff}.btn.secondary{background:#eef3fa;color:#0f172a}.msg{min-height:20px;font-size:13px;margin-top:8px}.success{color:#166534}.error{color:#991b1b}@media(max-width:700px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div class="nav"><b>Kryzna Learn · Profile</b><div><a href="index.html">Belajar Saya</a> · <a href="../index.html">Website</a> · <a href="#" id="logout">Keluar</a></div></div></header>
+<main>
+<section class="hero"><div class="avatar" id="avatar">K</div><div><h1 id="hello">Profile Saya</h1><div class="muted" id="sub">Memuat akun...</div></div></section>
+<div class="grid">
+<section class="card"><h2>Informasi Akun</h2>
+<div class="field"><label>Email</label><input id="email" readonly></div>
+<div class="field"><label>Nama Tampilan</label><input id="name" maxlength="80" placeholder="Nama kamu"></div>
+<button class="btn" id="saveName">Simpan Nama</button><div id="nameMsg" class="msg"></div>
+</section>
+<section class="card"><h2>Foto Profile</h2><div class="muted">Upload PNG, JPG, atau WebP maksimal 2 MB.</div>
+<div class="field"><input id="avatarFile" type="file" accept="image/png,image/jpeg,image/webp"></div>
+<button class="btn" id="saveAvatar">Upload Avatar</button><div id="avatarMsg" class="msg"></div>
+</section>
+<section class="card"><h2>Ganti Password</h2><div class="muted">Gunakan password baru minimal 8 karakter.</div>
+<div class="field"><label>Password Baru</label><input id="newPass" type="password" minlength="8" autocomplete="new-password"></div>
+<div class="field"><label>Ulangi Password Baru</label><input id="newPass2" type="password" minlength="8" autocomplete="new-password"></div>
+<button class="btn" id="savePass">Ganti Password</button><div id="passMsg" class="msg"></div>
+</section>
+<section class="card"><h2>Ganti Email</h2><div class="muted">Perubahan email mengikuti verifikasi Supabase.</div>
+<div class="field"><label>Email Baru</label><input id="newEmail" type="email" autocomplete="email"></div>
+<button class="btn" id="saveEmail">Kirim Permintaan</button><div id="emailMsg" class="msg"></div>
+</section>
+<section class="card full"><h2>Akun Belajar</h2><div class="muted">Dari sini kamu bisa kembali ke materi, riwayat belajar, dan ujian online.</div><p><a class="btn secondary" href="riwayat.html">Riwayat Belajar</a> <a class="btn secondary" href="../ujian/index.html">Ujian Online</a></p></section>
+</div></main>
+<script>
+const db=supabaseClient,$=id=>document.getElementById(id);let user=null;
+const initials=(n,e)=>{const s=(n||e||'K').trim(),p=s.split(/\s+/);return(p.length>1?p[0][0]+p[1][0]:s.slice(0,2)).toUpperCase()};
+const msg=(id,t,c)=>{$(id).textContent=t;$(id).className='msg '+(c||'')};
+function setAvatar(url,name,email){$('avatar').innerHTML=url?'<img src="'+url+'" alt="Avatar">':initials(name,email)}
+async function boot(){
+ const {data:{user:u}}=await db.auth.getUser(); if(!u){location.href='login.html';return} user=u;
+ const name=u.user_metadata?.display_name||''; $('email').value=u.email||'';$('newEmail').value=u.email||'';$('name').value=name;$('hello').textContent='Profile '+(name||'Saya');$('sub').textContent=u.email||'';setAvatar(u.user_metadata?.avatar_url,name,u.email);
+}
+$('saveName').onclick=async()=>{const n=$('name').value.trim();if(n.length<2){msg('nameMsg','Nama minimal 2 karakter.','error');return}const{error}=await db.auth.updateUser({data:{display_name:n}});if(error){msg('nameMsg',error.message,'error');return} $('hello').textContent='Profile '+n;setAvatar(user.user_metadata?.avatar_url,n,user.email);msg('nameMsg','Nama berhasil diperbarui.','success')};
+$('savePass').onclick=async()=>{const a=$('newPass').value,b=$('newPass2').value;if(a.length<8||a!==b){msg('passMsg','Password minimal 8 karakter dan harus sama.','error');return}const{error}=await db.auth.updateUser({password:a});if(error){msg('passMsg',error.message,'error');return}$('newPass').value='';$('newPass2').value='';msg('passMsg','Password berhasil diganti.','success')};
+$('saveEmail').onclick=async()=>{const e=$('newEmail').value.trim().toLowerCase();if(!e||e===user.email){msg('emailMsg','Masukkan email baru yang berbeda.','error');return}const{error}=await db.auth.updateUser({email:e});msg('emailMsg',error?error.message:'Permintaan perubahan email dikirim. Cek email untuk verifikasi.',error?'error':'success')};
+$('saveAvatar').onclick=async()=>{const f=$('avatarFile').files[0];if(!f){msg('avatarMsg','Pilih file gambar dulu.','error');return}if(f.size>2*1024*1024){msg('avatarMsg','Maksimal 2 MB.','error');return}const ext=(f.name.split('.').pop()||'jpg').toLowerCase(),path=user.id+'/avatar.'+ext;const{error}=await db.storage.from('avatars').upload(path,f,{upsert:true,contentType:f.type});if(error){msg('avatarMsg',error.message,'error');return}const{data}=db.storage.from('avatars').getPublicUrl(path);const{error:ue}=await db.auth.updateUser({data:{avatar_url:data.publicUrl}});if(ue){msg('avatarMsg',ue.message,'error');return}setAvatar(data.publicUrl,$('name').value,user.email);msg('avatarMsg','Avatar berhasil diperbarui.','success')};
+$('logout').onclick=async e=>{e.preventDefault();await db.auth.signOut();location.href='login.html'};boot();
+</script>
+</body></html>
