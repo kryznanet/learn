@@ -12,7 +12,7 @@ The repository now includes a Chromium browser test harness:
 - Authenticated tests are intentionally skipped when the credentials secrets are absent; this is not equivalent to a passed authenticated E2E test.
 - Verified 18 September 2026: GitHub Actions Browser E2E run #6 ran with the dedicated E2E secrets and all 3 tests passed, including authenticated Super Admin editor reachability.
 - As of 19 September 2026, the workflow triggers on pushes and pull requests targeting both 18-Sep-2026 and the current 19-Sep-2026 development branch; manual workflow dispatch remains available.
-- Added 19 September 2026: public E2E coverage now verifies the live published catalog count (58), all four public category labels, category filtering, learning-path activation, and material-card navigation. The new tests are source/commit verified but still require a fresh Browser E2E workflow run for runtime verification on the current branch.
+- Added 19 September 2026: public E2E coverage now verifies the current published catalog count (58), exact counts for Dasar (22), Intermediate (20), Advanced (12), and Tutorial (4), category-filter badges, learning-path activation, and material-card navigation to a rendered public detail page. The strengthened tests are source/commit verified but still require a fresh Browser E2E workflow run for runtime verification on the current branch.
 
 GitHub Actions setup:
 
