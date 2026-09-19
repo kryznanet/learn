@@ -252,7 +252,7 @@
       </p>
       <a class="btn" href="login.html">Kembali ke Login</a>
     </section>
-  </main>
+  <section class="card" id="statsCard"><h2>📊 Statistik Operasional</h2><div class="grid" style="grid-template-columns:repeat(4,1fr)"><div><b id="sUsers">—</b><div class="muted">Learner</div></div><div><b id="sMateri">—</b><div class="muted">Materi published</div></div><div><b id="sAttempts">—</b><div class="muted">Attempt ujian</div></div><div><b id="sPassed">—</b><div class="muted">Lulus</div></div></div></section></main>
 
   <script>
     const db = supabaseClient;
@@ -303,5 +303,5 @@
 
     boot();
   </script>
-</body>
+<script>async function loadOperationalStats(){try{const [u,m,a]=await Promise.all([supabaseClient.from("user_roles").select("user_id,roles!inner(name)",{count:"exact",head:true}).eq("roles.name","user"),supabaseClient.from("materi").select("id",{count:"exact",head:true}).eq("status","published"),supabaseClient.from("exam_attempts").select("id,passed")]);document.getElementById("sUsers").textContent=u.count??"—";document.getElementById("sMateri").textContent=m.count??"—";document.getElementById("sAttempts").textContent=(a.data||[]).length;document.getElementById("sPassed").textContent=(a.data||[]).filter(x=>x.passed===true).length}catch(e){console.error(e)}}loadOperationalStats();</script></body>
 </html>
