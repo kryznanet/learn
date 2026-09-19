@@ -486,3 +486,22 @@ Jalankan Browser E2E sekali pada branch `19-Sep-2026` untuk memverifikasi bahwa 
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35428502175.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Browser E2E result retention — 19 September 2026
+
+- Recorder `scripts/record-browser-e2e.mjs` diperbarui agar `docs/BROWSER-E2E-RESULTS.md` hanya menyimpan **satu runtime result terbaru**.
+- Saat runtime E2E baru dicatat, bagian `Runtime history` lama diganti dengan hasil terbaru; hasil run sebelumnya tidak lagi menumpuk di dokumen tersebut.
+- Runtime terbaru yang saat ini tercatat adalah Browser E2E #160: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Recorder commit: `49217aac93c56afc4e9a219008291fef3d3e3924`; file diverifikasi setelah push.
+- Results document commit: `707cd41fa82212772516f4c8625f7cd0e74f2c30`; isi diverifikasi setelah push.
+
+### Status
+
+- Latest-only Browser E2E result recording: **Implemented — Needs Fresh Runtime Verification**.
+- Existing latest runtime #160 remains **Passed**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otomatis menggantikan hasil #160 dengan hasil run baru, bukan menambahkan entry lama.
