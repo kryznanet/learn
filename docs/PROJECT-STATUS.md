@@ -839,3 +839,32 @@ Lanjutkan feature request yang masih pending, terutama pendalaman administrasi U
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35435609307.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Feature expansion batch 1 — 19 September 2026
+
+- Branch terverifikasi: 19-Sep-2026.
+- Commit migration foundation: 8b662eb6c65401d0996bee5fcc31f6dafe1e735b.
+- Commit exam category activation migration: 2cb12da0cf9e9aded6dca96f31920cca56704508.
+- Commit administrasi ujian: 6aee4e7a643ed88908651bf7702f25580da07c6e, lalu bugfix archive attempt detection cc4a51795be84bcd6de5e6a701585b5a9660f447.
+- Database verification: exams.archived_at, exam_categories.is_active, materi_bookmarks, materi_feedback, dan learner_notifications tersedia; RLS aktif pada tiga tabel learner baru.
+- Security Advisor tetap baseline: 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
+
+### Status fitur tambahan
+
+- Admin Ujian edit/reorder/archive/category: Implemented — Needs Browser Verification.
+- Bookmark/feedback/notifikasi database foundation: Implemented — UI Pending.
+- Detail hasil ujian: Pending.
+- Dashboard progres learner: Pending.
+- Statistik admin: Pending.
+- Filter pengguna lanjutan: Pending.
+- Notifikasi UI: Pending.
+- Bookmark UI: Pending.
+- Feedback UI: Pending.
+- Sertifikat: Deferred setelah aturan kelulusan final.
+- Browser E2E: Pending sampai seluruh feature request selesai.
+- Restore UI-to-database: Blocked sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Lanjutkan implementasi UI learner dan admin untuk bookmark, feedback, notifikasi, dashboard progres/statistik, filter pengguna, serta detail hasil ujian. Setelah semua feature request selesai, jalankan fresh Browser E2E dan final security/deployment audit.
