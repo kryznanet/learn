@@ -640,3 +640,9 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - `docs/RBAC.md` diperbarui untuk mendokumentasikan pemisahan role learner `user` dari role staf.
 - Verifikasi live: 0 staf memiliki role `user`.
 - Status role learner: **Verified** pada database/source; Browser E2E learner masih **Pending**.
+
+## Database documentation checkpoint — learner role — 19 September 2026
+
+- `docs/DATABASE.md` diperbarui dengan migration learner dan mekanisme pemisahan role staf.
+- Verifikasi database tetap: role/permission learner tersedia dan 0 staf memiliki role learner.
+- Status: **Verified** pada database; Browser E2E learner tetap **Pending**.
