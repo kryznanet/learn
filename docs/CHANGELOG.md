@@ -233,3 +233,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan profile khusus learner dengan pengelolaan identitas dan kredensial.
 - Menambahkan shortcut Profile pada Belajar Saya.
 - Runtime browser verification masih pending.
+
+
+## 19 September 2026 — Admin dan Super Admin mengelola pengguna learner
+- Menambahkan create/edit learner user pada `Administrasi → Kelola Pengguna`.
+- Menambahkan Edge Function `manage-users` dengan authorization Admin/Super Admin.
+- Admin kini memiliki permission users.create/update/disable untuk learner, tanpa mengubah aturan staff management.
+- Runtime Browser E2E create/edit learner masih pending.
