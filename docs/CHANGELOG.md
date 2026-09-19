@@ -1,3 +1,11 @@
+## 19 September 2026 — Pendalaman pedagogis 35 materi
+
+- Audit read-only terhadap 58 materi published menemukan 35 materi dengan blok konten generik pada latihan/troubleshooting/kesalahan umum/checklist/ringkasan.
+- Memperbarui 35 materi tersebut dengan isi yang spesifik terhadap topik masing-masing, termasuk skenario diagnosis, bukti verifikasi, kesalahan umum, kompetensi checklist, dan ringkasan.
+- Verifikasi live setelah perubahan: 58 materi tetap berstatus published dan seluruh marker generik yang diaudit tersisa 0.
+- Tidak ada perubahan schema, RLS, RBAC, kategori, atau status publikasi.
+- Browser/rendering review masih **Needs Verification** dan akan menjadi checkpoint berikutnya.
+
 ## 19 September 2026 — Browser E2E latest-only result retention
 
 - Updated `scripts/record-browser-e2e.mjs` so `docs/BROWSER-E2E-RESULTS.md` keeps only the newest runtime result and replaces the previous runtime entry when a new E2E run is recorded.
