@@ -1,3 +1,11 @@
+## 19 September 2026 — Automated Browser E2E result recording
+
+- Updated `.github/workflows/browser-e2e.yml` to run a post-test recorder on every Browser E2E workflow execution.
+- Added `scripts/record-browser-e2e.mjs` to read `test-results/results.json` and record run number, run ID, branch, commit, trigger, outcome, and Playwright summary.
+- The workflow automatically commits changes to `docs/BROWSER-E2E-RESULTS.md` and `docs/PROJECT-STATUS.md` with `[skip ci]`, so future runtime evidence is preserved without manual copying.
+- Workflow contents and the recorder commit were verified after push.
+- The Browser E2E job still fails when the actual Playwright test step fails; documentation recording runs with `always()` so failed runs are recorded too.
+
 
 
 ## 19 September 2026 — Material CRUD delete enforcement
