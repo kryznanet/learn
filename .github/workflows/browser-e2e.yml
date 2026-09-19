@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - "18-Sep-2026"
+      - "19-Sep-2026"
   pull_request:
     branches:
       - "18-Sep-2026"
+      - "19-Sep-2026"
   workflow_dispatch:
 
 permissions:
