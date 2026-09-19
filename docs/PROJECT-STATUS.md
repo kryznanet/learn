@@ -1,3 +1,17 @@
+## Browser E2E CI branch alignment — 19 September 2026
+
+- Branch `19-Sep-2026` was reverified in GitHub before the change.
+- Found that `.github/workflows/browser-e2e.yml` only triggered automatically for `18-Sep-2026`, so pushes on the current development branch would not receive automatic Browser E2E coverage.
+- Updated the workflow to trigger on pushes and pull requests for both `18-Sep-2026` and `19-Sep-2026`; manual `workflow_dispatch` remains enabled.
+- Code/CI commit: `47fda485020fbe2e517c563bb83e54eb74560770`; commit diff and workflow contents were fetched and verified.
+- Documentation commits: `6399cc2fb8d4225d1dac987d2058c1fc356a7955` (TESTING) and `3244ec13d1b74650e42f17ad134ac9f47c37e6f1` (CHANGELOG).
+- Live Supabase catalog was independently re-queried read-only: **58 published** = Dasar 22, Intermediate 20, Advanced 12, Tutorial 4. The previously suspicious `JARINGAN-DASAR-X-2` title is confirmed as an actual published database row, not an inferred replacement.
+- No Supabase data/schema/RLS mutation was performed.
+
+### Checkpoint berikutnya
+
+The next useful runtime evidence should come from the Browser E2E workflow triggered by the current `19-Sep-2026` branch. Keep Version Restore UI-to-database blocked until an isolated Supabase environment exists. Continue pedagogical/browser verification only from actual CI evidence; do not claim a new browser pass without a workflow run.
+
 # 📌 Status Proyek — Kryzna Learn
 
 **Tanggal checkpoint:** 18 September 2026  
