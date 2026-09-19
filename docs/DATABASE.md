@@ -144,3 +144,8 @@ Policy INSERT membatasi row baru ke `auth.uid()` sendiri dengan `status = 'compl
 
 Catatan security: database tidak dapat membuktikan secara kriptografis bahwa pengguna benar-benar membaca setiap bagian layar; kontrol “sampai bawah” adalah sinyal browser yang dipadukan dengan konfirmasi eksplisit. Database tetap menjadi boundary kepemilikan dan status completion.
 \n## Kategori Materi Dinamis — 19 September 2026\n\nMigration `20260919150000_add_materi_categories` menambahkan tabel `public.materi_categories` untuk katalog kategori materi yang dapat berkembang tanpa perubahan kode editor. Tabel memiliki `name`, `is_active`, dan timestamp, dengan unique index case-insensitive pada nama.\n\nRLS aktif. Public/learner hanya dapat membaca kategori aktif; pembuatan kategori hanya dapat dilakukan oleh authenticated user yang memiliki permission `content.manage_categories`. Verifikasi live setelah migration: tabel tersedia dan berisi 4 kategori hasil sinkronisasi dari materi existing: Advanced, Dasar, Intermediate, Tutorial.\n
+## Kategori Materi — full management — 19 September 2026
+
+Migration `20260919160000_allow_materi_category_management` menambahkan RLS UPDATE dan DELETE pada `public.materi_categories`. Keduanya hanya tersedia untuk authenticated user yang memiliki permission `content.manage_categories`, dengan `WITH CHECK` pada UPDATE untuk mempertahankan authorization setelah perubahan row.
+
+UI kategori sekarang mendukung tambah, ubah nama, aktif/nonaktif, dan hapus. Rename dan delete memeriksa penggunaan kategori pada `materi.kategori`; kategori yang masih dipakai tidak dapat diubah namanya atau dihapus agar referensi materi berbasis nama tidak rusak. Untuk kategori yang sudah dipakai, gunakan nonaktifkan lalu buat kategori baru.
