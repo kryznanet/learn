@@ -202,10 +202,10 @@
 
           <div>
             <label>Kategori</label>
-            <select id="kategori">
-              <option>Materi</option>
-              <option>Tutorial</option>
-            </select>
+            <div style="display:flex;gap:8px;align-items:center">
+              <select id="kategori" style="flex:1"></select>
+              <a class="btn" href="categories.html" target="_blank" rel="noopener noreferrer">Kelola Kategori</a>
+            </div>
           </div>
 
           <div class="full">
@@ -310,6 +310,29 @@
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-+|-+$/g, '')
         .slice(0, 90) || 'materi-' + Date.now();
+    }
+
+    async function loadCategories(selected) {
+      const { data, error } = await db
+        .from('materi_categories')
+        .select('name')
+        .eq('is_active', true)
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+
+      const names = (data || []).map((item) => item.name).filter(Boolean);
+      $('kategori').innerHTML = names.map((name) =>
+        '<option value="' + name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') + '">' +
+        name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') +
+        '</option>'
+      ).join('');
+
+      if (selected && names.includes(selected)) {
+        $('kategori').value = selected;
+      } else if (names.length) {
+        $('kategori').value = names[0];
+      }
     }
 
     async function slug(title, id) {
@@ -548,6 +571,8 @@
 
       const id = new URLSearchParams(location.search).get('id');
 
+      await loadCategories();
+
       if (id) {
         if (!has('content.update')) {
           document.body.innerHTML = `
@@ -577,7 +602,7 @@
         $('id').value = material.id;
         $('judul').value = material.judul || '';
         $('deskripsi').value = material.deskripsi_singkat || '';
-        $('kategori').value = material.kategori || 'Materi';
+        await loadCategories(material.kategori || '');
         ed.innerHTML = sanitize(material.konten || '');
         currentStatus = material.status || 'draft';
         $('title').textContent = 'Edit Materi';
