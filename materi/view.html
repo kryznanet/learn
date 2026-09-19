@@ -220,7 +220,7 @@
     <article class="article">
       <div id="head" class="head" hidden></div>
       <div id="app" class="empty">Memuat materi...</div>
-      <div id="reading" style="padding:0 40px 28px" hidden></div>
+      <div id="reading" style="padding:0 40px 28px" hidden></div><div id="engagement" style="padding:0 40px 28px" hidden></div>
     </article>
   </main>
 
@@ -402,6 +402,21 @@
       });
     }
 
+    async function loadEngagement(materiId) {
+      const db=getDb(), box=document.getElementById('engagement');
+      const { data:{user} }=await db.auth.getUser();
+      if(!user){ box.hidden=false; box.innerHTML='<div class="docbox"><b>⭐ Simpan materi</b><p style="color:var(--muted);font-size:13px">Masuk untuk memakai bookmark dan memberikan feedback.</p><a class="doc-btn primary" href="../belajar/login.html">Masuk</a></div>'; return; }
+      const [{data:bm},{data:fb}]=await Promise.all([
+        db.from('materi_bookmarks').select('id').eq('user_id',user.id).eq('materi_id',materiId).maybeSingle(),
+        db.from('materi_feedback').select('id,rating,comment').eq('user_id',user.id).eq('materi_id',materiId).maybeSingle()
+      ]);
+      box.hidden=false;
+      box.innerHTML='<div class="docbox"><div class="doc-actions"><button id="bookmarkBtn" class="doc-btn '+(bm?'primary':'')+'" type="button">'+(bm?'🔖 Tersimpan':'🔖 Bookmark')+'</button><a class="doc-btn" href="../belajar/bookmarks.html">Daftar Bookmark</a></div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><b>⭐ Feedback materi</b><div style="display:grid;grid-template-columns:120px 1fr;gap:8px;margin-top:10px"><select id="feedbackRating"><option value="5">5 — Sangat membantu</option><option value="4">4 — Membantu</option><option value="3">3 — Cukup</option><option value="2">2 — Kurang</option><option value="1">1 — Tidak membantu</option></select><textarea id="feedbackComment" placeholder="Komentar singkat (opsional)" style="padding:10px;border:1px solid var(--line);border-radius:9px;min-height:70px">'+esc(fb?.comment||'')+'</textarea></div><button id="feedbackSave" class="doc-btn primary" type="button" style="margin-top:8px">Simpan Feedback</button><span id="feedbackStatus" style="margin-left:8px;color:var(--muted);font-size:13px"></span></div>';
+      if(fb) document.getElementById('feedbackRating').value=String(fb.rating);
+      document.getElementById('bookmarkBtn').onclick=async()=>{const btn=document.getElementById('bookmarkBtn');if(bm){const r=await db.from('materi_bookmarks').delete().eq('id',bm.id);if(r.error){alert(r.error.message);return}btn.className='doc-btn';btn.textContent='🔖 Bookmark';}else{const r=await db.from('materi_bookmarks').insert({user_id:user.id,materi_id:materiId});if(r.error){alert(r.error.message);return}btn.className='doc-btn primary';btn.textContent='🔖 Tersimpan';}};
+      document.getElementById('feedbackSave').onclick=async()=>{const r=await db.from('materi_feedback').upsert({user_id:user.id,materi_id:materiId,rating:Number(document.getElementById('feedbackRating').value),comment:document.getElementById('feedbackComment').value.trim(),updated_at:new Date().toISOString()},{onConflict:'user_id,materi_id'});document.getElementById('feedbackStatus').textContent=r.error?'Gagal: '+r.error.message:'Feedback tersimpan.';};
+    }
+
     async function load() {
       const slug = new URLSearchParams(location.search).get('slug');
 
@@ -469,7 +484,7 @@
         reading.hidden = false;
         reading.innerHTML = '<div style="border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg)"><b>📚 Konfirmasi membaca</b><p id="reading-status" style="margin:5px 0;color:var(--muted);font-size:13px">Memuat status...</p><label style="display:flex;gap:8px;align-items:flex-start;margin:10px 0;font-size:14px"><input id="reading-confirm" type="checkbox" disabled> Saya sudah membaca materi ini sampai bagian paling bawah.</label><button id="complete-reading" class="theme" type="button" disabled>Tandai sudah dibaca</button> · <a href="../belajar/riwayat.html" style="color:var(--primary);font-weight:800">Buka riwayat</a></div>';
         await refreshReading(material.id);
-        setupReadingConfirmation(material.id);
+        setupReadingConfirmation(material.id);\n        await loadEngagement(material.id);
       } catch (error) {
         console.error(error);
         app.innerHTML =
