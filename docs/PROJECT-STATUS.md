@@ -1,8 +1,21 @@
+## Pendalaman pedagogis 35 materi — 19 September 2026
+
+- Audit read-only terhadap seluruh **58 materi published** menemukan struktur lengkap pada 58/58 materi: tujuan pembelajaran, konsep, cara kerja, contoh, verifikasi teknis, troubleshooting, kesalahan umum, latihan, checklist, dan ringkasan.
+- Ditemukan pola konten generik pada **35 materi**: 20 Intermediate, 11 Advanced, dan 4 Tutorial. Pola tersebut terutama berada pada hipotesis troubleshooting, kesalahan umum, checklist, dan ringkasan.
+- Memperbarui 35 materi tersebut agar bagian yang sebelumnya generik menjadi spesifik terhadap topik masing-masing, tanpa mengubah kategori, status publikasi, schema, RLS, RBAC, atau workflow.
+- Verifikasi database setelah perubahan: tetap **58 published**; seluruh marker generik yang diaudit tersisa **0**.
+- Perubahan konten dilakukan langsung pada data materi; timestamp pembaruan ikut berubah sesuai perilaku tabel.
+- Status pedagogical content audit: **Needs Verification** untuk review visual/browser dan pembacaan manual final; audit struktur dan penghapusan pola generik sudah terverifikasi melalui query.
+
+### Checkpoint berikutnya
+
+Lakukan Browser E2E fresh untuk memastikan rendering 58 materi tetap sehat, lalu review visual/manual beberapa materi per kategori untuk memastikan HTML, heading, list, code block, dan panjang konten tampil baik. Restore UI-to-database tetap **Blocked** sampai environment Supabase terisolasi tersedia.
+
 ## Browser E2E default-branch alignment — 19 September 2026
 
 - Repository metadata was verified directly in GitHub: current default branch is `19-Sep-2026`.
 - Updated `.github/workflows/browser-e2e.yml` to remove hard-coded `18-Sep-2026` / `19-Sep-2026` branch filters.
-- Browser E2E now runs only when the push/manual event is on `github.event.repository.default_branch), or when a pull request targets that default branch.
+- Browser E2E now runs only when the push/manual event is on `github.event.repository.default_branch`), or when a pull request targets that default branch.
 - The workflow uses the repository metadata value dynamically, so future changes to the default branch do not require another workflow edit.
 - Events from non-default branches may still create a workflow run entry, but the Playwright job is skipped and no E2E test is executed there.
 - Manual dispatch on a non-default branch is also skipped by the same job condition.
