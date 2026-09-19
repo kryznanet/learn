@@ -253,3 +253,10 @@ Implemented source/runtime prerequisites:
 - Detail hasil ujian melalui `exam-api` action `result`.
 
 Semua item di atas masih **Needs Browser Verification**. Fresh Browser E2E tetap ditunda sampai seluruh feature request selesai.
+
+
+## Certificate / outcome verification — 19 September 2026
+
+- Passed attempt exposes a printable certificate page using the authenticated result payload.
+- Failed or in-progress attempts must not expose a certificate as available.
+- Certificate remains a presentation layer over the attempt result; no separate credential table is created.
