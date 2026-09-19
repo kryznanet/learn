@@ -966,3 +966,12 @@ Restore UI-to-database remains **Blocked** until an isolated Supabase environmen
 3. Diagnose any failures before claiming feature completion.
 4. Perform final Security Advisor/RLS/Storage/deployment audit.
 5. Verify documentation and final checkpoint again.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #322** pada branch `19-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35436176556`; commit yang diuji: `03f6850e9df39a30b70f96997ffcad6d02e9b4ab`.
+- Playwright summary: **8 passed, 1 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35436176556.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
