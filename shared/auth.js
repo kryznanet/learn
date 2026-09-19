@@ -3,6 +3,7 @@
   const db = window.supabaseClient;
 
   const ROLE_ALIASES = {
+    user: 'user',
     viewer: 'viewer',
     penulis: 'penulis',
     editor: 'editor',
@@ -12,6 +13,7 @@
 
   const CONTENT_ROLES = ['penulis', 'editor', 'admin', 'super_admin'];
   const ADMIN_ROLES = ['admin', 'super_admin'];
+  const LEARNER_ROLES = ['user'];
 
   async function getUser() {
     if (!db) return null;
@@ -34,6 +36,21 @@
 
     if (error) throw error;
     return data || null;
+  }
+
+  async function getRbacRole(userId) {
+    if (!db || !userId) return null;
+
+    const { data, error } = await db
+      .from('user_roles')
+      .select('roles(name,label)')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    const role = Array.isArray(data?.roles) ? data.roles[0] : data?.roles;
+    return role?.name ? ROLE_ALIASES[role.name] || null : null;
   }
 
   async function getPermissions() {
@@ -60,9 +77,10 @@
     }
 
     const staff = await getStaff(user.id);
-    const role = staff?.active
+    const staffRole = staff?.active
       ? ROLE_ALIASES[staff.role] || null
       : null;
+    const role = staffRole || await getRbacRole(user.id);
 
     let permissions = [];
 
@@ -153,8 +171,10 @@
     roles: ROLE_ALIASES,
     contentRoles: CONTENT_ROLES,
     adminRoles: ADMIN_ROLES,
+    learnerRoles: LEARNER_ROLES,
     getUser,
     getStaff,
+    getRbacRole,
     getPermissions,
     getSession,
     requireRole,
@@ -163,6 +183,7 @@
     hasPermission: (permission, permissions) => hasPermission(permission, permissions),
     isContent: (role) => CONTENT_ROLES.includes(role),
     isAdmin: (role) => ADMIN_ROLES.includes(role),
+    isLearner: (role) => LEARNER_ROLES.includes(role),
     isSuperAdmin: (role) => role === 'super_admin'
   };
 
