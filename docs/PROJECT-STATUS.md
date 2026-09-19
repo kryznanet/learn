@@ -1,16 +1,16 @@
 ## Public material Browser E2E coverage — 19 September 2026
 
 - Branch `19-Sep-2026` was reverified in GitHub before the change.
-- Expanded `tests/e2e/public.spec.js` beyond smoke checks to cover the four public categories, the current published catalog count (58), learning-path category activation, and public material detail navigation.
-- Test commit: `6f54cf98357e668bcbd263ded86531f499226a7c`; commit diff and final file contents were fetched and verified.
-- Updated `docs/TESTING.md` in commit `aea8a618feea3e13ac1adf51477ebc3d485ec9e6`.
-- Updated `docs/CHANGELOG.md` in commit `a617423e30d725f744960a37b7b994931f6e78fa`.
+- Strengthened `tests/e2e/public.spec.js` to assert the exact published counts: Dasar 22, Intermediate 20, Advanced 12, Tutorial 4; every visible card must carry the expected public label; learning-path activation must match the category; and the first material detail page must render its title and content.
+- Test commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`; commit diff and final test file were fetched and verified.
+- Updated `docs/TESTING.md` in commit `600b4a80cdbf5e65892f3380d967d4b42ca93324`.
+- Updated `docs/CHANGELOG.md` in commit `8151a90bc688af34dd10dc66362611a0c9c81e95`.
 - No Supabase data/schema/RLS mutation was performed.
-- Runtime Browser E2E for the new tests is still **Needs Verification** because the available GitHub workflow-run reader does not expose a new push-triggered run for this branch.
+- Runtime Browser E2E remains **Needs Verification** until a fresh GitHub Actions workflow run provides runtime evidence on the current branch.
 
 ### Checkpoint berikutnya
 
-Obtain fresh Browser E2E runtime evidence for `19-Sep-2026`. If the run passes, close the public material regression coverage; if it fails, diagnose from the Playwright report. Keep Restore UI-to-database **Blocked** until an isolated Supabase environment exists.
+Obtain fresh Browser E2E runtime evidence for `19-Sep-2026`. If it passes, close this public material regression item; if it fails, diagnose from the Playwright report. Keep Restore UI-to-database **Blocked** until an isolated Supabase environment exists.
 
 ## Browser E2E CI branch alignment — 19 September 2026
 
