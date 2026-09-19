@@ -240,3 +240,4 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan Edge Function `manage-users` dengan authorization Admin/Super Admin.
 - Admin kini memiliki permission users.create/update/disable untuk learner, tanpa mengubah aturan staff management.
 - Runtime Browser E2E create/edit learner masih pending.
+\n\n## 19 September 2026 — Dashboard Konten & Kategori Materi Dinamis\n\n- Menambahkan tabel `materi_categories` beserta RLS dan unique category name.\n- Menambahkan halaman Kelola Kategori Materi dan integrasi kategori dinamis pada editor.\n- Dashboard Admin menampilkan Kelola Konten / Materi dan akses Kategori Materi.\n- Dashboard Super Admin menghubungkan Kelola Konten / Materi dan Pengaturan.\n- Browser E2E create-category/update-editor: **Pending**.\n
