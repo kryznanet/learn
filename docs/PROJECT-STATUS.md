@@ -557,3 +557,25 @@ Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otoma
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35429378913.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Modul Ujian Online & Riwayat Belajar — 19 September 2026
+
+- Menambahkan schema terpisah untuk kategori ujian, ujian, bank soal, opsi, answer key, attempt, answer, dan riwayat baca materi.
+- Menambahkan 4 ujian published berdasarkan kategori materi: Dasar, Intermediate, Advanced, Tutorial.
+- Seed live: 20 soal, masing-masing 5 soal per kategori, dengan 20 answer key.
+- Menambahkan learner login/dashboard, riwayat belajar, katalog ujian, pengerjaan dengan timer, serta admin bank soal.
+- Menambahkan Edge Function `exam-api` untuk start/submit dan penilaian server-side; deployment aktif dengan `verify_jwt=true`.
+- Menambahkan permission `exam.manage` dan `exam.read` untuk Admin/Super Admin.
+- Verifikasi database live: seluruh 8 tabel modul memiliki RLS aktif; reading history masih 0 row karena belum ada learner test yang menjalankan pembukaan materi.
+
+### Status
+
+- Schema/RLS/seed/Edge Function: **Verified**.
+- UI/source integration: **Needs Verification**.
+- Browser E2E learner: **Pending**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan browser test dengan akun learner khusus untuk memverifikasi login, reading history, start/submit ujian, timer, hasil, dan riwayat attempt. Setelah runtime pass, catat hasil ke dokumentasi E2E seperti mekanisme Browser E2E yang sudah ada.
