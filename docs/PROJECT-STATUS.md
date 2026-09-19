@@ -392,3 +392,27 @@ Lanjutkan verifikasi runtime/browser dan review pedagogis akhir untuk 58 materi.
 ### Checkpoint berikutnya
 
 Perbarui `docs/BROWSER-E2E-RESULTS.md` setelah fresh Browser E2E workflow menghasilkan runtime evidence. Tetap pertahankan Restore UI-to-database sebagai **Blocked** sampai environment Supabase terisolasi tersedia.
+
+
+## Admin Dashboard + CRUD materi hardening — 19 September 2026
+
+- Branch aktif terverifikasi: `19-Sep-2026`; perubahan dilakukan setelah konfirmasi pengguna.
+- Audit source Admin Dashboard dan workspace CRUD menemukan gap bahwa permission `content.delete` sudah tersedia di RBAC tetapi belum memiliki tombol/action DELETE pada `content/materials.html`, dan tabel `materi` belum memiliki policy DELETE.
+- UI diperbaiki untuk menampilkan tombol **Hapus** hanya kepada user dengan `content.delete`, meminta konfirmasi, menjalankan DELETE, mencatat aktivitas penghapusan, lalu me-refresh daftar.
+- Commit UI: `73d76de076a9ccc799c98d409b17e9f963896eec`; file hasil commit diverifikasi kembali dari GitHub.
+- RLS DELETE ditambahkan pada `public.materi` untuk role `admin` dan `super_admin`, selaras dengan mapping `content.delete`.
+- Live migration tercatat sebagai `20260919065701_add_materi_delete_policy_20260919_reconcile`; policy diverifikasi melalui `pg_policies` dan repository migration file diselaraskan dengan live migration history.
+- Commit migration file awal: `08a2e47b53f54ccce477653ee581790248adc2a6`; commit alignment: `2c5c69884d844bb0391138f659d5ce746f5fe0c7` dan `10c9e429cee2863ea7712ecd6b280d33e7c19c7f`.
+- Dokumentasi diperbarui: RBAC `79cf302427d9bff3f938b23c851eb5db33c03c97`, CONTENT-WORKFLOW `4425649a873d71e47e20f7b2228b00e01254372b`, TESTING `67ac9852c62adcc0e42092bc087b1a2d523d6dfa`, CHANGELOG `c583293aedefb0fa6389a7824640ddad7e79d84c`.
+- Verifikasi database: policy DELETE aktif; `materi_versions_materi_id_fkey` menggunakan `ON DELETE CASCADE` sehingga snapshot versi terkait ikut terhapus.
+- Security Advisor setelah DDL tetap menunjukkan 7 application `SECURITY DEFINER` warnings dan 1 leaked-password warning; tidak ada warning baru akibat policy DELETE.
+
+### Status
+
+- Admin Dashboard + CRUD delete: **Needs Verification** untuk runtime browser/E2E.
+- Backend DELETE RLS: **Verified** secara live melalui catalog/policy query.
+- Browser E2E delete: **Pending**; jangan menjalankan destructive test terhadap production data.
+
+### Checkpoint berikutnya
+
+Tambahkan/siapkan isolated E2E test data untuk memverifikasi Create → Read → Update → status workflow → Delete dari browser tanpa menyentuh materi production. Restore UI-to-database tetap **Blocked** sampai environment Supabase terisolasi tersedia.
