@@ -66,6 +66,10 @@ export default {
         if (!userId) throw new Error("user_id wajib diisi.");
         const { data: existing } = await ctx.supabaseAdmin.auth.admin.getUserById(userId);
         if (!existing?.user) throw new Error("User tidak ditemukan.");
+        const { data: targetStaff, error: targetStaffError } = await ctx.supabaseAdmin
+          .from("admin_users").select("user_id").eq("user_id", userId).maybeSingle();
+        if (targetStaffError) throw targetStaffError;
+        if (targetStaff) throw new Error("Akun staf harus dikelola melalui Kelola Pengguna staf.");
         if (body.email && String(body.email).trim().toLowerCase() !== existing.user.email) {
           const email = String(body.email).trim().toLowerCase();
           const { error } = await ctx.supabaseAdmin.auth.admin.updateUserById(userId, { email });
