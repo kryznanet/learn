@@ -505,3 +505,9 @@ Jalankan Browser E2E sekali pada branch `19-Sep-2026` untuk memverifikasi bahwa 
 ### Checkpoint berikutnya
 
 Jalankan Browser E2E berikutnya dan pastikan `docs/BROWSER-E2E-RESULTS.md` otomatis menggantikan hasil #160 dengan hasil run baru, bukan menambahkan entry lama.
+
+
+## Documentation sync — latest-only Browser E2E results
+
+- `docs/TESTING.md` diperbarui untuk menjelaskan bahwa `docs/BROWSER-E2E-RESULTS.md` hanya menyimpan runtime result terbaru.
+- TESTING commit: `0539a07f6334317b89b5cc8e93ad1ba527e160cb`; isi diverifikasi setelah push.
