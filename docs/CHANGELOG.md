@@ -1,3 +1,9 @@
+## 19 September 2026 — Browser E2E results log
+
+- Added `docs/BROWSER-E2E-RESULTS.md` as the dedicated runtime evidence/history log for Browser E2E.
+- The log distinguishes actual GitHub Actions runtime results from source-level verification and records the current strengthened public E2E coverage as **Needs Verification** until a fresh run is available.
+- Existing verified runs are preserved: Browser E2E run #6 and Draft Recovery run #43 are recorded as passed; run #35 remains recorded as failed with its timing diagnosis.
+
 ## 19 September 2026 — Public material Browser E2E coverage
 
 - Added public Playwright coverage for the four published material categories: Dasar, Intermediate, Advanced, and Tutorial.
