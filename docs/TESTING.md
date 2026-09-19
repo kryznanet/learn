@@ -161,3 +161,11 @@ Jangan menggunakan akun production secara destruktif untuk pengujian; gunakan ak
 - [ ] Verifikasi bahwa learner tidak dapat membuka area Admin.
 
 Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap production untuk pengujian.
+
+## Learner reading completion — 19 September 2026
+- [x] Membuka materi tidak langsung membuat row `material_reading_history`.
+- [x] Kontrol konfirmasi disabled sampai sentinel bagian paling bawah materi terlihat.
+- [x] Checkbox wajib dicentang sebelum tombol `Tandai sudah dibaca` aktif.
+- [x] Setelah konfirmasi, row learner disimpan sebagai `completed` dengan `completed_at`.
+- [x] Browser tidak lagi memiliki hak UPDATE langsung pada `material_reading_history`.
+- [ ] Browser E2E learner untuk alur ini masih membutuhkan runtime verification dengan akun E2E learner khusus.
