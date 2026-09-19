@@ -136,3 +136,12 @@ The baseline is **not yet executable locally**. The branch lacks the earlier 16â
 - Blok generik tersebut telah diganti dengan konten spesifik topik untuk 20 Intermediate, 11 Advanced, dan 4 Tutorial.
 - Verifikasi live setelah update menunjukkan 58 published tetap tersedia dan marker generik yang diaudit menjadi 0.
 - Audit ini belum menggantikan verifikasi browser/rendering; fresh Browser E2E dan review visual tetap diperlukan.
+
+
+## Ujian Online & Riwayat Belajar â€” 19 September 2026
+
+Verifikasi database live: 4 kategori ujian published; masing-masing memiliki 5 soal; total 20 soal; 20 answer key tersedia server-side; 8 tabel modul memiliki RLS aktif; permission `exam.manage` dan `exam.read` terpetakan ke Admin dan Super Admin; Edge Function `exam-api` deployed aktif dengan JWT verification.
+
+Status browser/E2E modul baru: **Needs Verification**. Coverage berikut perlu dijalankan pada akun learner test: login/registrasi, pembukaan materi dan pencatatan riwayat, penandaan selesai, start exam, timer, submit, score, pass/fail, dan riwayat attempt.
+
+Jangan menggunakan akun production secara destruktif untuk pengujian; gunakan akun E2E learner khusus dan data ujian yang memang disediakan untuk test.
