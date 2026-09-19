@@ -697,3 +697,12 @@ Jalankan Browser E2E dengan akun learner khusus untuk memverifikasi alur end-to-
 ### Checkpoint berikutnya
 
 Verifikasi runtime: pengunjung melihat `Masuk`; learner login melihat nama/profile; profile dapat dibuka; update nama/password/email/avatar mengikuti auth/storage policy; logout mengembalikan menu menjadi `Masuk`. Hasil E2E dicatat di `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #225** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35430654801`; commit yang diuji: `bc306350a70c05910b13184b030a04279d2cd206`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35430654801.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
