@@ -120,3 +120,12 @@ PostgreSQL
 ```
 
 Penilaian ujian dilakukan server-side melalui `exam-api`, sehingga `exam_answer_keys` tidak menjadi sumber data yang dapat dibaca pengguna biasa. Riwayat materi memakai RLS berdasarkan `auth.uid()`.
+
+
+## Learner role boundary — 19 September 2026
+
+Role `user` adalah role learner non-staf. Assignment disimpan di `user_roles`; `admin_users` tetap khusus staf. Auth user baru memperoleh role learner otomatis melalui trigger database.
+
+`shared/auth.js` memprioritaskan role staf aktif dari `admin_users`, lalu fallback ke role RBAC pada `user_roles`. Dengan demikian akun learner dapat dikenali sebagai `user` tanpa dibuat menjadi staf dan tanpa memperoleh akses Admin.
+
+Akses learner ke Belajar Saya, riwayat belajar, dan Ujian Online tetap ditegakkan oleh Auth + RLS + Edge Function; UI hanya menjadi guard UX.
