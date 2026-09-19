@@ -25,7 +25,7 @@ export default {fetch:withSupabase({auth:'user'},async(req,ctx)=>{
   const {data:ans,error:an}=await db.from('exam_answers').select('question_id,selected_option_id').eq('attempt_id',a.id); if(an)return out({error:an.message},400)
   const am=new Map((ans||[]).map((x:any)=>[x.question_id,x.selected_option_id]))
   const details=(qs||[]).map((q:any)=>{const key=q.exam_answer_keys?.[0]?.correct_option_id;const selected=am.get(q.id)||null;const options=(q.exam_question_options||[]).sort((x:any,y:any)=>x.sort_order-y.sort_order).map((o:any)=>({id:o.id,key:o.option_key,text:o.option_text}));const so=options.find((o:any)=>o.id===selected);const co=options.find((o:any)=>o.id===key);return {id:q.id,text:q.question_text,explanation:q.explanation,points:q.points,selectedOptionId:selected,selectedKey:so?.key||null,correctOptionId:key,correctKey:co?.key||null,isCorrect:selected===key,options}})
-  return out({attempt:{id:a.id,startedAt:a.started_at,submittedAt:a.submitted_at,status:a.status,score:a.score,correctCount:a.correct_count,totalQuestions:a.total_questions,passed:a.passed,passingScore:(Array.isArray(a.exams)?a.exams[0]:a.exams)?.passing_score},questions:details})
+  return out({attempt:{id:a.id,startedAt:a.started_at,submittedAt:a.submitted_at,status:a.status,score:a.score,correctCount:a.correct_count,totalQuestions:a.total_questions,passed:a.passed,examTitle:(Array.isArray(a.exams)?a.exams[0]:a.exams)?.title,passingScore:(Array.isArray(a.exams)?a.exams[0]:a.exams)?.passing_score},questions:details})
  }
  if(body.action==='submit'){
   const {data:a,error:ae}=await db.from('exam_attempts').select('id,exam_id,user_id,started_at,status,total_questions,exams(title,duration_minutes,passing_score)').eq('id',body.attemptId).eq('user_id',uid).maybeSingle()
