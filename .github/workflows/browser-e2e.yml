@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   playwright:
@@ -38,7 +38,28 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run Browser E2E
+        id: e2e
         run: npm run test:e2e
+
+      - name: Record Browser E2E result
+        if: always()
+        env:
+          E2E_OUTCOME: ${{ steps.e2e.outcome }}
+        run: node scripts/record-browser-e2e.mjs
+
+      - name: Commit Browser E2E result
+        if: always()
+        run: |
+          if git diff --quiet -- docs/BROWSER-E2E-RESULTS.md docs/PROJECT-STATUS.md; then
+            echo "No E2E documentation changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/BROWSER-E2E-RESULTS.md docs/PROJECT-STATUS.md
+          git commit -m "ci: record Browser E2E result [skip ci]"
+          git push origin HEAD:${GITHUB_REF_NAME}
 
       - name: Upload Playwright report
         if: always()
