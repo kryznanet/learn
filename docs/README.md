@@ -70,3 +70,6 @@ DECISIONS / CHANGELOG / LEGACY
 - Perubahan besar pada UI, role, permission, database, keamanan, workflow, atau deployment harus diikuti pembaruan dokumentasi.
 - `PROJECT-STATUS.md` adalah sumber checkpoint proyek.
 - Dokumen teknis menjelaskan kondisi dan aturan implementasi, bukan sekadar rencana.
+
+
+- `EXAM-MODULE.md` — desain, keamanan, seed, dan status verifikasi modul Ujian Online + Riwayat Belajar.
