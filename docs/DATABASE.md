@@ -163,3 +163,8 @@ Migration 20260919170000_add_learner_engagement_and_exam_archive.sql menambahkan
 Migration 20260919171000_add_exam_category_activation.sql menambahkan exam_categories.is_active dan index active/order. UI administrasi ujian menggunakan status ini untuk mengelola kategori tanpa menghapus kategori yang masih direferensikan.
 
 Verifikasi live: kolom archived_at tersedia, tiga tabel engagement memiliki RLS aktif, policy ownership terpasang, dan Security Advisor tetap pada baseline 7 application SECURITY DEFINER + 1 leaked-password warning.
+
+
+## Final feature verification — 19 September 2026
+
+Exam archive filtering is enforced in both learner catalog and exam-api start path: only published exams with archived_at IS NULL can be started. exam-api result detail remains caller-owned and answer keys are read only inside the authenticated Edge Function.
