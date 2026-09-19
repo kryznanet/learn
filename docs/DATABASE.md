@@ -129,3 +129,9 @@ Migration `20260919120000_add_user_role_learner_access.sql` menambahkan role `us
 Trigger `on_auth_user_created_assign_default_role` memberi role `user` secara otomatis untuk Auth user baru. Existing Auth users juga direkonsiliasi ke role tersebut saat migration diterapkan. Verifikasi live menemukan role `user`, ketiga permission terpetakan, trigger aktif, 4 Auth users, dan 4 assignment learner.
 
 Role `user` berada di `user_roles`, bukan `admin_users`. RLS `user_roles` tetap membatasi pembacaan assignment self dan perubahan assignment hanya untuk Super Admin.
+
+### Learner role and staff separation — 19 September 2026
+
+Migration `20260919120000_add_user_role_learner_access.sql` menyediakan role learner `user`, permission learner, auto-assignment untuk Auth user baru, dan rekonsiliasi existing users. Migration `20260919123000_remove_user_role_from_staff.sql` membersihkan assignment learner dari staf. Migration `20260919124000_enforce_staff_learner_role_separation.sql` menambahkan trigger `trg_remove_learner_role_from_staff` pada `admin_users` agar staff creation/update tidak mempertahankan role learner.
+
+Verifikasi live: role `user` tersedia; `learning.read`, `exam.take`, dan `exam.history.read` terpetakan; trigger Auth assignment dan staff-separation aktif; 0 staff memiliki role `user`.
