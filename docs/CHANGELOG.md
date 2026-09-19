@@ -1,3 +1,10 @@
+## 19 September 2026 — Browser E2E latest-only result retention
+
+- Updated `scripts/record-browser-e2e.mjs` so `docs/BROWSER-E2E-RESULTS.md` keeps only the newest runtime result and replaces the previous runtime entry when a new E2E run is recorded.
+- The current latest runtime remains Browser E2E #160 with 9 passed, 0 failed, 0 skipped, 0 flaky.
+- Recorder commit: `49217aac93c56afc4e9a219008291fef3d3e3924`.
+- Results document commit: `707cd41fa82212772516f4c8625f7cd0e74f2c30`.
+
 ## 19 September 2026 — Browser E2E default-branch alignment
 
 - Updated `.github/workflows/browser-e2e.yml` to remove hard-coded date branch names from Browser E2E triggers.
