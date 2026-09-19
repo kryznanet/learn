@@ -256,3 +256,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan shortcut Riwayat Ujian dari Belajar Saya dan Profile.
 - Menyelaraskan keterangan Riwayat Belajar agar hanya menyebut materi yang telah dikonfirmasi selesai.
 - Browser E2E tetap ditunda sampai seluruh feature request selesai.
+
+
+## 19 September 2026 — Administrasi Ujian diperluas
+
+- Kelola Ujian sekarang mendukung membuat dan mengedit ujian.
+- Pengaturan kategori, durasi, nilai lulus, draft/terbit, dan bank soal tersedia.
+- Soal dapat ditambah dengan 4 pilihan, kunci, tingkat kesulitan, pembahasan, dan dapat dihapus.
