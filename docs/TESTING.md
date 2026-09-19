@@ -178,3 +178,14 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Shortcut profile tersedia dari `Belajar Saya`.
 - [ ] Browser E2E: visitor → login → profile → logout.
 - [ ] Browser E2E: update nama/avatar/password/email sesuai policy.
+
+
+## Admin learner user management — 19 September 2026
+- [x] Admin memiliki `users.read`, `users.create`, `users.update`, `users.disable` untuk learner account management.
+- [x] Super Admin memiliki permission yang sama.
+- [x] UI Kelola Pengguna memiliki form tambah pengguna biasa.
+- [x] UI memiliki daftar learner dan edit nama/email/status/password opsional.
+- [x] Endpoint menolak target staff.
+- [x] Edge Function `manage-users` deployed aktif dengan JWT verification.
+- [ ] Browser E2E Admin: create + edit learner.
+- [ ] Browser E2E Super Admin: create + edit learner.
