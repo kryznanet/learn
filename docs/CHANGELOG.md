@@ -226,3 +226,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Learner harus mencapai bagian paling bawah, mencentang konfirmasi, lalu menekan `Tandai sudah dibaca`.
 - Database membatasi INSERT riwayat ke row milik learner dengan status `completed` dan mencabut UPDATE langsung dari browser.
 - Browser E2E learner untuk alur ini masih pending runtime verification.
+
+
+## 19 September 2026 — Main web login and learner profile
+- Menambahkan menu akun dinamis pada web utama.
+- Menambahkan profile khusus learner dengan pengelolaan identitas dan kredensial.
+- Menambahkan shortcut Profile pada Belajar Saya.
+- Runtime browser verification masih pending.
