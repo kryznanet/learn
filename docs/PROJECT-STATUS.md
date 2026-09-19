@@ -600,3 +600,9 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Commit helper auth: `134693851f8a87101a003c63f46f98a25d405cbc`; `shared/auth.js` sekarang membaca role learner dari `user_roles` bila user bukan staf.
 - Status: **Needs Verification** untuk Browser E2E learner; source dan database sudah diverifikasi.
 - Checkpoint berikutnya: uji login learner, Belajar Saya, reading history, Ujian Online, timer, submit, hasil, dan riwayat attempt dengan akun E2E learner khusus.
+
+## Documentation checkpoint — learner architecture — 19 September 2026
+
+- `docs/ARCHITECTURE.md` diperbarui untuk menjelaskan boundary role `user` non-staf dan fallback role pada `shared/auth.js`.
+- Commit dokumentasi dibuat setelah verifikasi commit implementasi sebelumnya.
+- Status learner tetap **Needs Verification** pada browser karena runtime learner E2E belum dijalankan.
