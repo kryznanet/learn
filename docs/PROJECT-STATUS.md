@@ -940,3 +940,29 @@ Restore UI-to-database tetap **Blocked** karena belum ada environment Supabase t
 ### Checkpoint berikutnya
 
 Lakukan source review final untuk semua feature batch, verifikasi deployment parity, lalu jalankan fresh Browser E2E setelah feature freeze. Catat setiap hasil runtime di `docs/BROWSER-E2E-RESULTS.md`, kemudian lakukan final Security Advisor/RLS/Storage/deployment audit.
+
+
+## Feature expansion final source checkpoint — 19 September 2026
+
+- Final archive filter commits: f2a2928c1ea88d4221f7302f915a3571aa5b53b1 and a2d7401b2cfa1e99d83a7a5f5ddef00d51238605.
+- Bookmark toggle fix: b602737fdc2f2802b9c319f4603bfe48d3ef60f5.
+- Certificate title/result payload fixes: af49e7d288b5a7eea655b49bd13438207b8e44f3 and a0ddc93cfabecdcaf8e159bc7f1f118711086791.
+- exam-api deployed version 4 ACTIVE with verify_jwt=true; deployment was refreshed after the final source changes.
+- All feature-request source files and docs were fetched again from branch 19-Sep-2026 and expected feature markers were present.
+- Security Advisor remains baseline: 7 application SECURITY DEFINER warnings + 1 leaked-password warning.
+
+### Feature freeze status
+
+Source implementation is complete for the agreed feature set: exam administration improvements, learner progress, exam result detail, printable certificate, bookmarks, feedback/review, notifications, admin statistics, and user status filters.
+
+Runtime verification remains **Pending**. Per project decision, fresh Browser E2E should now be the next execution step because feature work is complete.
+
+Restore UI-to-database remains **Blocked** until an isolated Supabase environment exists.
+
+### Next checkpoint
+
+1. Run fresh Browser E2E from the current default branch.
+2. Record the runtime result automatically in docs/BROWSER-E2E-RESULTS.md.
+3. Diagnose any failures before claiming feature completion.
+4. Perform final Security Advisor/RLS/Storage/deployment audit.
+5. Verify documentation and final checkpoint again.
