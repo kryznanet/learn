@@ -6,7 +6,7 @@
 - Added coverage that public material cards navigate to `materi/view.html?slug=...`.
 - Test commit: `6f54cf98357e668bcbd263ded86531f499226a7c`.
 - Source commit and resulting test file were fetched and verified.
-- Runtime Browser E2E verification on branch `19-Sep-2026` remains **Needs Verification** until a fresh GitHub Actions workflow run is available.
+- Strengthened the tests with exact category counts (Dasar 22, Intermediate 20, Advanced 12, Tutorial 4), badge assertions for every displayed card, and detail-page rendering assertions.
 
 ## 19 September 2026 — Browser E2E branch coverage
 
