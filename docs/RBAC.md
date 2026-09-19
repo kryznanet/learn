@@ -89,3 +89,8 @@ Admin dan Super Admin dapat mengelola akun learner role `user`: membuat akun, me
 ## Kategori Materi — management enforcement — 19 September 2026
 
 Permission `content.manage_categories` sekarang mencakup create, update, dan delete pada `materi_categories`. RLS UPDATE/DELETE memeriksa permission backend; UI hanya menyediakan kontrol sesuai permission. Rename/delete juga dilindungi oleh pemeriksaan penggunaan kategori pada materi agar referensi string `materi.kategori` tetap konsisten.
+
+
+## Notification management — 19 September 2026
+
+Permission `notifications.manage` ditambahkan dan dipetakan ke `admin` serta `super_admin`. RLS INSERT pada `learner_notifications` membatasi pembuatan notifikasi kepada actor Admin/Super Admin; learner hanya SELECT/UPDATE notifikasi miliknya sendiri.
