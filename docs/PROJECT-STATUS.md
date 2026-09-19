@@ -796,3 +796,12 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 - Source UI diverifikasi kembali dari branch `19-Sep-2026`.
 - RLS live pada tabel ujian/soal/kunci/pilihan tetap menggunakan permission `exam.manage` untuk operasi manajemen.
 - Browser E2E masih **Pending** sampai seluruh feature request selesai.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #268** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35434786696`; commit yang diuji: `060262ecee21f2d2d6aa677e8de9d678a48cbd53`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35434786696.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
