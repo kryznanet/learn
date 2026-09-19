@@ -154,3 +154,12 @@ UI kategori sekarang mendukung tambah, ubah nama, aktif/nonaktif, dan hapus. Ren
 ## Riwayat Ujian learner — 19 September 2026
 
 UI learner sekarang menyediakan halaman `belajar/ujian-riwayat.html` yang membaca `exam_attempts` milik user melalui RLS dan menampilkan ujian, kategori, status, nilai, serta jumlah jawaban benar. Tidak ada answer key yang dibaca dari browser.
+
+
+## Fitur learner & administrasi ujian — 19 September 2026
+
+Migration 20260919170000_add_learner_engagement_and_exam_archive.sql menambahkan exams.archived_at beserta index status arsip, tabel materi_bookmarks, materi_feedback, dan learner_notifications. Ketiganya memiliki RLS aktif dan policy kepemilikan berbasis auth.uid(); notification hanya dapat dibaca/ditandai oleh learner pemilik.
+
+Migration 20260919171000_add_exam_category_activation.sql menambahkan exam_categories.is_active dan index active/order. UI administrasi ujian menggunakan status ini untuk mengelola kategori tanpa menghapus kategori yang masih direferensikan.
+
+Verifikasi live: kolom archived_at tersedia, tiga tabel engagement memiliki RLS aktif, policy ownership terpasang, dan Security Advisor tetap pada baseline 7 application SECURITY DEFINER + 1 leaked-password warning.
