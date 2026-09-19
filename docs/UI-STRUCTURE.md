@@ -275,3 +275,18 @@ Dokumen ini harus diperbarui apabila struktur menu, role, permission, atau statu
 - Active navigation diperbaiki menjadi route-aware berdasarkan pathname penuh, sehingga halaman dengan nama file sama di folder berbeda tidak lagi salah menandai menu aktif.
 - Commit source: `6c0a77725286a6587b11a3b79e37f138852730c7` dan `2ca4c56b03b1fa72368b76e69e11860819e66f7e`.
 - Browser E2E belum dijalankan pada checkpoint ini; menunggu seluruh polish UI selesai.
+
+
+## UI page-by-page polish — 19 September 2026
+
+- Dashboard Admin: hierarchy statistik, feature cards, dan responsive operational stats dirapikan.
+- Kelola Materi: toolbar/filter, card list, status badge, action buttons, dan mobile layout dirapikan.
+- Editor Materi: shell, form, toolbar editor, card, action area, dan responsive layout dirapikan.
+- Kelola Ujian: workspace dua kolom, form, card ujian/soal, action buttons, dan mobile layout dirapikan.
+- Kelola Pengguna: form/list hierarchy, card, status, dan mobile controls dirapikan.
+- Learner: dashboard diberi hierarchy card dan responsive layout yang lebih konsisten.
+- Materi Detail: reading area, document box, engagement controls, typography, table overflow, dan mobile layout dirapikan.
+- Hasil Ujian: hierarchy score/result dan pilihan jawaban dibuat lebih mudah dipindai di mobile.
+- Sertifikat: layout cetak dan nama/kode panjang dibuat lebih aman pada layar kecil.
+- Source commits: `65f934b029d1110dfe346fa6e8321f0cd056c76c`, `2d458b147a3133eb7d32c352463d86b3b1d378d2`, `7f5a31ceb95efc0c8d6da319a8194df243932224`, `37700f05eb88925d55fa2fbf9fe856d17a228be`, `7163d42ca5951020ec0f89f822faafb09eda8c1a`, `779f79055aa7f3d33636101396a95de4ef1122fa`, `b0f301c78dcd1a41e3cd0c2001ab2c934516a3fa`, `ef040ffdb9e9c46d6afb7561a6812711fd7430a2`, `50577387cd7ba13cc13beca3cc3cce38d053685a`.
+- Mobile source polish: Implemented — Needs Browser Verification.
