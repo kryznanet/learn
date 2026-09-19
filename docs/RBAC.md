@@ -81,3 +81,6 @@ Permission `exam.manage` dan `exam.read` diberikan kepada `admin` dan `super_adm
 ## Isolasi role learner dari staf — 19 September 2026
 
 Role `user` hanya untuk akun learner non-staf. Trigger `trg_remove_learner_role_from_staff` pada `admin_users` menghapus assignment `user` ketika akun menjadi staf atau record staf diperbarui. Verifikasi live menunjukkan tidak ada staf yang masih memiliki role `user`.
+
+## Learner account management — 19 September 2026
+Admin dan Super Admin dapat mengelola akun learner role `user`: membuat akun, mengedit nama/email, dan mengaktifkan/menonaktifkan akun. Pengelolaan ini dipisahkan dari staff management; perubahan role staf tetap melalui jalur Super Admin.
