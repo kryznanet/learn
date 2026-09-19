@@ -632,6 +632,7 @@
         <a href="ujian/index.html">Ujian Online</a>
         <a href="belajar/index.html">Belajar Saya</a>
         <a href="#tutorial">Tutorial</a>
+        <span id="account-nav"><a href="belajar/login.html">Masuk</a></span>
         <a class="admin-link" href="admin/login.html">Admin</a>
         <button class="theme" id="theme" type="button">🌙</button>
       </nav>
@@ -991,11 +992,31 @@
       $('theme').textContent = isDark ? '🌙' : '☀️';
     });
 
+    async function renderAccountNav() {
+      const wrap = $('account-nav');
+      if (!wrap || !window.supabaseClient) return;
+      try {
+        const { data: { user } } = await window.supabaseClient.auth.getUser();
+        if (!user) {
+          wrap.innerHTML = '<a href="belajar/login.html">Masuk</a>';
+          return;
+        }
+        const name = String(user.user_metadata?.display_name || user.email || 'Profil').trim();
+        const safe = esc(name.length > 24 ? name.slice(0, 24) + '…' : name);
+        wrap.innerHTML =
+          '<a href="belajar/profile.html" aria-label="Buka profile">' +
+          '👤 ' + safe + '</a>';
+      } catch (error) {
+        console.warn('Account nav gagal:', error);
+      }
+    }
+
     const savedTheme = localStorage.getItem('kryzna-theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     $('theme').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 
     loadMateri();
+    renderAccountNav();
   </script>
 </body>
 </html>
