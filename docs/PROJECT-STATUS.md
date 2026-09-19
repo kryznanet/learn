@@ -384,7 +384,7 @@ Lanjutkan verifikasi runtime/browser dan review pedagogis akhir untuk 58 materi.
 - Dokumen memisahkan runtime evidence dari checkpoint proyek dan menetapkan bahwa source verification tidak boleh dicatat sebagai runtime pass.
 - Histori mencatat Browser E2E run #6 sebagai Passed, Draft Recovery run #43 sebagai Passed, run #35 sebagai Failed dengan diagnosis timing, serta assertion public terbaru sebagai **Needs Verification** sampai fresh workflow run tersedia.
 - Commit dokumen: `d24fb59a39130ceb748e56654d34e4891385a4a5`.
-- `docs/TESTING.md` kini merujuk ke log hasil runtime khusus tersebut; perubahan dokumentasi diverifikasi melalui commit `41892d5ea9f302a46e3e8aba553ebe8f7dd5067b`.
+- `docs/TESTING.md` kini merujuk ke log hasil runtime khusus tersebut; commit dokumentasi terbaru `f8c7ae01e3617f09eb91199ea9c53396bf35a9a3` diverifikasi.
 - Status Browser E2E public terbaru tetap **Needs Verification**; tidak ada hasil runtime baru yang diklaim.
 - `docs/CHANGELOG.md` mencatat penambahan log hasil Browser E2E; commit dokumentasi `0c7b94de1ebc74a10bb22d3d18b9ab5ade9736d1`.
 - `docs/README.md` kini mengindeks `docs/BROWSER-E2E-RESULTS.md`; commit `2a677d264a3dc398879b2be88e0f8c42f6fce7b3`.
