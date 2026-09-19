@@ -196,7 +196,7 @@
           <div><h2>Daftar Pengguna Biasa</h2><div id="learner-count" class="muted">Memuat...</div></div>
           <button class="btn gray" onclick="loadLearners()">↻ Refresh</button>
         </div>
-        <input id="learner-search" placeholder="🔎 Cari nama atau email...">
+        <input id="learner-search" placeholder="🔎 Cari nama atau email..."><select id="learner-status"><option value="all">Semua status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select>
         <div id="learners" class="muted">Memuat...</div>
       </section>
 
@@ -209,7 +209,7 @@
           <button class="btn gray" onclick="loadStaff()">↻ Refresh</button>
         </div>
 
-        <input id="search" placeholder="🔎 Cari nama atau email...">
+        <input id="search" placeholder="🔎 Cari nama atau email..."><select id="staff-status"><option value="all">Semua status</option><option value="active">Aktif</option><option value="inactive">Nonaktif</option></select>
         <div id="staff" class="muted">Memuat...</div>
       </section>
     </div>
@@ -285,11 +285,11 @@
 
     function render() {
       const query = $('search').value.toLowerCase().trim();
-      const rows = staff.filter(
+      const status=$('staff-status').value; const rows = staff.filter(
         (item) =>
           (item.display_name || '').toLowerCase().includes(query) ||
           (item.email || '').toLowerCase().includes(query)
-      );
+      ).filter(item=>status==='all'||(status==='active'?item.active:!item.active));
 
       $('count').textContent =
         rows.length + ' dari ' + staff.length + ' pengguna';
@@ -380,7 +380,7 @@
 
     function renderLearners() {
       const query = $('learner-search').value.toLowerCase().trim();
-      const rows = learners.filter(x => (x.display_name || '').toLowerCase().includes(query) || (x.email || '').toLowerCase().includes(query));
+      const status=$('learner-status').value; const rows = learners.filter(x => (x.display_name || '').toLowerCase().includes(query) || (x.email || '').toLowerCase().includes(query)).filter(x => status==='all' || (status==='active'?x.active:!x.active));
       $('learner-count').textContent = rows.length + ' dari ' + learners.length + ' pengguna';
       $('learners').innerHTML = rows.map(item => `
         <article class="item">
@@ -425,9 +425,9 @@
       } catch(error) { alert(error.message); }
     }
 
-    $('learner-search').oninput = renderLearners;
+    $('learner-search').oninput = renderLearners; $('learner-status').onchange = renderLearners;
 
-    $('search').oninput = render;
+    $('search').oninput = render; $('staff-status').onchange = render;
 
     window.saveStaff = async (id) => {
       if (!can('roles.manage')) {
