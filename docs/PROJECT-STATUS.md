@@ -626,3 +626,11 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Migration live diterapkan dan diverifikasi; `staff_with_user_role = 0`.
 - Status: **Verified** untuk isolasi role learner dari role staf.
 - Checkpoint berikutnya: pastikan jalur pembuatan staf baru tidak meninggalkan role learner otomatis.
+
+## Learner/staff role separation — 19 September 2026
+
+- Migration commit `802f69f3f3f390d978640905524d7dc9ed93d195` menambahkan trigger `trg_remove_learner_role_from_staff` pada `admin_users`.
+- Trigger menghapus role `user` saat record staf dibuat atau diperbarui, sehingga akun staf tidak memperoleh permission learner dari auto-assignment.
+- Migration live diterapkan dan diverifikasi; `staff_with_user_role = 0` dan trigger aktif.
+- Status: **Verified**.
+- Checkpoint berikutnya: jalankan Browser E2E learner dengan akun khusus dan verifikasi routing/akses Belajar Saya + Ujian Online tanpa akses Admin.
