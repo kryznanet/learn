@@ -729,3 +729,12 @@ Verifikasi runtime: pengunjung melihat `Masuk`; learner login melihat nama/profi
 ### Checkpoint berikutnya
 
 Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit learner, termasuk memastikan Admin tidak dapat mengedit akun staff melalui endpoint learner. Hasil dicatat di `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #235** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35430758926`; commit yang diuji: `12b25075370d77887315590e8d201c5f0ede8f54`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35430758926.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
