@@ -387,6 +387,7 @@ Lanjutkan verifikasi runtime/browser dan review pedagogis akhir untuk 58 materi.
 - `docs/TESTING.md` kini merujuk ke log hasil runtime khusus tersebut; perubahan dokumentasi diverifikasi melalui commit `41892d5ea9f302a46e3e8aba553ebe8f7dd5067b`.
 - Status Browser E2E public terbaru tetap **Needs Verification**; tidak ada hasil runtime baru yang diklaim.
 - `docs/CHANGELOG.md` mencatat penambahan log hasil Browser E2E; commit dokumentasi `0c7b94de1ebc74a10bb22d3d18b9ab5ade9736d1`.
+- `docs/README.md` kini mengindeks `docs/BROWSER-E2E-RESULTS.md`; commit `2a677d264a3dc398879b2be88e0f8c42f6fce7b3`.
 
 ### Checkpoint berikutnya
 
