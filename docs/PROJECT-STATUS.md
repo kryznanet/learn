@@ -1022,3 +1022,12 @@ Restore UI-to-database remains **Blocked** until an isolated Supabase environmen
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35436648890.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #350** pada branch `19-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35437013037`; commit yang diuji: `a0ec0b2f557385fb0e7984a2fab6b13235b9676a`.
+- Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35437013037.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
