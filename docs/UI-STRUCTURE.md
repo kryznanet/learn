@@ -1,7 +1,7 @@
 # Struktur UI Kryzna Learn
 
-**Tanggal pembaruan:** 17 September 2026  
-**Branch:** `17-Sep-2026`
+**Tanggal pembaruan:** 19 September 2026  
+**Branch:** `19-Sep-2026`
 
 Dokumen ini menjadi acuan penamaan, struktur navigasi, dan pembagian area aplikasi Kryzna Learn. Istilah teknis database/API boleh tetap menggunakan nama internal yang sudah berjalan; istilah yang dilihat pengguna menggunakan bahasa Indonesia yang konsisten.
 
@@ -290,3 +290,42 @@ Dokumen ini harus diperbarui apabila struktur menu, role, permission, atau statu
 - Sertifikat: layout cetak dan nama/kode panjang dibuat lebih aman pada layar kecil.
 - Source commits: `65f934b029d1110dfe346fa6e8321f0cd056c76c`, `2d458b147a3133eb7d32c352463d86b3b1d378d2`, `7f5a31ceb95efc0c8d6da319a8194df243932224`, `37700f05eb88925d55fa2fbf9fe856d17a228be`, `7163d42ca5951020ec0f89f822faafb09eda8c1a`, `779f79055aa7f3d33636101396a95de4ef1122fa`, `b0f301c78dcd1a41e3cd0c2001ab2c934516a3fa`, `ef040ffdb9e9c46d6afb7561a6812711fd7430a2`, `50577387cd7ba13cc13beca3cc3cce38d053685a`.
 - Mobile source polish: Implemented — Needs Browser Verification.
+
+
+## Design System Kryzna Learn — 19 September 2026
+
+Shared UI kini menjadi acuan visual utama melalui `shared/ui.css` dan `shared/ui.js`.
+
+### Token visual
+- Background: `--kx-bg`
+- Surface: `--kx-surface` / `--kx-surface-soft`
+- Border: `--kx-line` / `--kx-line-strong`
+- Text: `--kx-text` / `--kx-muted`
+- Primary: `--kx-primary` / `--kx-primary-strong`
+- Semantic status: success, warning, danger, info
+- Radius: small, standard, large
+- Shadow: `--kx-shadow`
+- Focus ring: `--kx-focus`
+
+### Komponen bersama
+- Navigation shell dan active state
+- Page header / breadcrumb / back link
+- Button dan action group
+- Card dan section
+- Toolbar/filter
+- Form field dan form grid
+- Status badge
+- Statistic card/grid
+- Empty/loading/error/success state
+- Sticky action bar
+- Responsive table wrapper
+
+### Aturan responsive
+- Desktop: workspace lebar dengan hierarchy dan action group yang jelas.
+- Tablet: grid turun menjadi dua kolom bila sesuai.
+- Mobile: form menjadi satu kolom, toolbar dapat membungkus, tombol action memiliki area sentuh minimum, dan tabel memakai horizontal scroll terkontrol.
+- Animasi dihormati dengan `prefers-reduced-motion`.
+- Focus keyboard menggunakan focus ring yang konsisten.
+
+### Prinsip
+Page-specific CSS hanya digunakan untuk kebutuhan yang benar-benar khas halaman. Komponen yang berulang harus menggunakan design system agar halaman baru tidak kembali memiliki visual berbeda.
