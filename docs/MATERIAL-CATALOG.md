@@ -1,79 +1,98 @@
 # Katalog Materi Pembelajaran
 
-**Tanggal:** 18 September 2026  
-**Branch:** 18-Sep-2026
+**Tanggal:** 19 September 2026  
+**Branch:** 19-Sep-2026
 
-Dokumen ini mencatat penambahan materi pembelajaran yang dilakukan langsung pada database Supabase terhubung. Konten baru berstatus `published` dan menggunakan author sistem materi yang sudah ada.
+Dokumen ini mencatat katalog materi pembelajaran yang terverifikasi pada database Supabase terhubung. Katalog mengikuti kategori publik yang digunakan aplikasi: **Dasar**, **Intermediate**, **Advanced**, dan **Tutorial**.
 
-## Materi yang ditambahkan
+## Ringkasan katalog
 
-1. **Model OSI dan Fungsi Setiap Layer** — tujuh layer OSI dan troubleshooting berlapis.
-2. **TCP dan UDP: Perbedaan dan Kapan Digunakan** — transport layer, reliabilitas, port, dan perbandingan TCP/UDP.
-3. **NAT dan Port Forwarding Dasar** — private/public IP, PAT, port forwarding, dan keamanan.
-4. **ARP dan Hubungan IP dengan MAC Address** — ARP request/reply, cache, dan troubleshooting.
-5. **Ethernet dan Dasar Switching** — frame, MAC address table, forwarding, flooding, dan masalah switch.
-6. **Wi-Fi Dasar: SSID, Band, Channel, dan Keamanan** — SSID, radio band, channel, access point, dan keamanan.
-7. **HTTP dan HTTPS Dasar** — request/response, method, status code, TLS, dan batasan keamanan HTTPS.
-8. **Troubleshooting Jaringan dengan Metode Berlapis** — physical, IP, gateway, routing, DNS, port, dan aplikasi.
+| Kategori | Jumlah published |
+|---|---:|
+| Dasar | 22 |
+| Intermediate | 20 |
+| Advanced | 12 |
+| Tutorial | 4 |
+| **Total** | **58** |
 
-## Cakupan materi saat ini
+## Materi Dasar
 
-Katalog menggunakan empat kategori publik yang konsisten: **Dasar**, **Intermediate**, **Advanced**, dan **Tutorial**.
+1. **ARP dan Hubungan IP dengan MAC Address**
+2. **CIDR dan Perhitungan Subnet Dasar**
+3. **Dasar Firewall dan Port Jaringan**
+4. **Default Gateway dan Alur Paket**
+5. **DHCP: Pemberian IP Otomatis**
+6. **DNS dan Cara Kerjanya**
+7. **Ethernet dan Dasar Switching**
+8. **HTTP dan HTTPS Dasar**
+9. **IP Address dan Subnet Mask Dasar**
+10. **JARINGAN-DASAR-X-2**
+11. **Mengenal IP Address**
+12. **Mengenal IPv4**
+13. **Mengenal MAC Address**
+14. **Model OSI dan Fungsi Setiap Layer**
+15. **NAT dan Port Forwarding Dasar**
+16. **Perbedaan Router dan Switch**
+17. **Private IP dan Public IP**
+18. **Subnet Mask dan Subnetting Dasar**
+19. **TCP dan UDP: Perbedaan dan Kapan Digunakan**
+20. **Urutan Kabel LAN (Crimping)**
+21. **VLAN Dasar untuk Jaringan Lokal**
+22. **Wi-Fi Dasar: SSID, Band, Channel, dan Keamanan**
+
+## Materi Intermediate
+
+1. **DHCP Lanjutan dan DHCP Relay**
+2. **DNS Lanjutan dan DNS Troubleshooting**
+3. **DNS Record A AAAA CNAME MX dan TXT**
+4. **Firewall dan Access Control List**
+5. **IPv6 dan Dasar Pengalamatan**
+6. **Link Aggregation dan LACP**
+7. **Monitoring Jaringan dan Analisis Log**
+8. **Network Automation Dasar dengan API dan Script**
+9. **Network Security Dasar dan Hardening**
+10. **OSPF Dasar dan Routing Dinamis**
+11. **Port Socket dan Layanan Jaringan**
+12. **Proxy dan Reverse Proxy**
+13. **QoS dan Manajemen Traffic Jaringan**
+14. **Routing dan Routing Table**
+15. **Static Routing dan Routing Table**
+16. **STP dan RSTP pada Jaringan Switching**
+17. **Subnetting Lanjutan dan VLSM**
+18. **VLAN dan Inter-VLAN Routing**
+19. **VPN dan Konsep Tunneling**
+20. **Wireshark dan Analisis Packet Capture**
+
+## Materi Advanced
+
+1. **BGP Dasar dan Konsep Autonomous System**
+2. **Cloud Networking Dasar dan Hybrid Connectivity**
+3. **High Availability dan Redundansi Jaringan**
+4. **IDS IPS dan Network Detection**
+5. **Incident Response untuk Insiden Jaringan**
+6. **MPLS dan Konsep Label Switching**
+7. **OSPF Multi-Area dan Area Design**
+8. **PKI TLS dan Sertifikat Digital**
+9. **SD-WAN dan Software Defined Networking**
+10. **SIEM dan Centralized Network Logging**
+11. **VRRP HSRP dan Gateway Redundancy**
+12. **Zero Trust untuk Infrastruktur Jaringan**
+
+## Tutorial
+
+1. **Cara Cek IP di Windows 11**
+2. **Cara Tes Koneksi (Ping)**
+3. **Melacak Rute Data (Traceroute)**
+4. **Troubleshooting Jaringan dengan Metode Berlapis**
 
 ## Catatan integritas data
 
-Penambahan diverifikasi dengan query terhadap `public.materi`: seluruh delapan slug baru ditemukan dengan status `published` dan konten non-kosong. Tidak ada materi lama yang ditimpa; insert menggunakan pemeriksaan slug agar tidak membuat duplikasi.
+- Daftar di atas disusun berdasarkan query read-only terhadap `public.materi` dengan filter `status = 'published'`, lalu dikelompokkan berdasarkan nilai `kategori`.
+- Verifikasi live pada 19 September 2026 menghasilkan **58 materi published**: Dasar 22, Intermediate 20, Advanced 12, dan Tutorial 4.
+- Dua materi placeholder **Test** dan **Test 12** tidak masuk katalog karena telah diverifikasi berstatus `archived`.
+- Katalog ini tidak mengubah data aplikasi. Perubahan pada dokumen hanya menyelaraskan dokumentasi repository dengan keadaan database yang terverifikasi.
+- Konten materi tetap menjadi data aplikasi di Supabase dan bukan pengganti migration baseline schema.
 
-Konten ini merupakan data aplikasi, bukan pengganti migration baseline schema. Untuk reproducibility database dari nol, baseline migration tetap mengikuti checkpoint local Supabase pada `PROJECT-STATUS.md`.
+## Catatan kualitas materi
 
-
-## Materi lanjutan
-
-9. **IPv6 dan Dasar Pengalamatan** — alamat, prefix, jenis alamat, dan troubleshooting.
-10. **VLAN dan Inter-VLAN Routing** — segmentasi, access/trunk, gateway, dan routing antar-VLAN.
-11. **Routing dan Routing Table** — connected/static route, next-hop, dan longest prefix match.
-12. **DHCP Lanjutan dan DHCP Relay** — lease, scope, reservation, dan relay antar-subnet.
-13. **DNS Lanjutan dan DNS Troubleshooting** — record, resolver, cache, TTL, dan diagnosis.
-14. **Firewall dan Access Control List** — rule, stateful filtering, ACL, dan least privilege.
-15. **VPN dan Konsep Tunneling** — remote access, site-to-site, endpoint, route, dan troubleshooting.
-16. **Monitoring Jaringan dan Analisis Log** — latency, packet loss, throughput, interface error, dan korelasi log.
-
-
-## Materi intermediate networking
-
-17. **Subnetting Lanjutan dan VLSM** — perancangan prefix berbeda dan efisiensi alamat.
-18. **STP dan RSTP pada Jaringan Switching** — root bridge, port role, loop prevention, dan konvergensi.
-19. **Link Aggregation dan LACP** — logical bundle, redundansi, kapasitas agregat, dan troubleshooting.
-20. **QoS dan Manajemen Traffic Jaringan** — classification, marking, queueing, shaping/policing, dan metrik.
-21. **Wireshark dan Analisis Packet Capture** — capture, filter, stream, latency, retransmission, dan privasi.
-22. **OSPF Dasar dan Routing Dinamis** — neighbor, area, cost, topology, dan troubleshooting.
-23. **Network Security Dasar dan Hardening** — least privilege, segmentasi, patching, MFA, logging, defense in depth.
-24. **Network Automation Dasar dengan API dan Script** — inventory, API, idempotensi, validasi, secret management, dan rollout.
-
-
-## Materi advanced networking — 18 September 2026
-
-25. **BGP Dasar dan Konsep Autonomous System**
-26. **MPLS dan Konsep Label Switching**
-27. **High Availability dan Redundansi Jaringan**
-28. **IDS IPS dan Network Detection**
-29. **Zero Trust untuk Infrastruktur Jaringan**
-30. **SD-WAN dan Software Defined Networking**
-31. **Cloud Networking Dasar dan Hybrid Connectivity**
-32. **Incident Response untuk Insiden Jaringan**
-
-
-## Materi pelengkap jalur belajar — 18 September 2026
-
-33. **IP Address dan Subnet Mask Dasar** — IPv4, subnet mask, network address, host, dan broadcast.
-34. **Default Gateway dan Alur Paket** — keputusan pengiriman lokal dan penggunaan gateway.
-35. **Private IP dan Public IP** — rentang private IPv4 dan hubungan dengan NAT.
-36. **CIDR dan Perhitungan Subnet Dasar** — prefix CIDR dan ukuran subnet.
-37. **Static Routing dan Routing Table** — static route, next hop, default route, dan routing table.
-38. **DNS Record A AAAA CNAME MX dan TXT** — record DNS dan troubleshooting resolusi.
-39. **Port Socket dan Layanan Jaringan** — IP, port, socket, TCP/UDP, dan layanan umum.
-40. **Proxy dan Reverse Proxy** — forward proxy, reverse proxy, TLS termination, routing, dan caching.
-41. **OSPF Multi-Area dan Area Design** — area, backbone, ABR, dan pertimbangan desain.
-42. **VRRP HSRP dan Gateway Redundancy** — virtual gateway dan high availability.
-43. **PKI TLS dan Sertifikat Digital** — CA, trust chain, sertifikat, dan TLS.
-44. **SIEM dan Centralized Network Logging** — log terpusat, korelasi event, dan alert.
+Seluruh 58 materi published telah diverifikasi memiliki konten non-kosong dan struktur pembelajaran yang mencakup tujuan, troubleshooting, latihan, dan checklist. Review browser/rendering serta review pedagogis akhir tetap berstatus **Needs Verification** sampai verifikasi runtime dan pemeriksaan akhir dilakukan.
