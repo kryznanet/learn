@@ -135,3 +135,7 @@ Akses learner ke Belajar Saya, riwayat belajar, dan Ujian Online tetap ditegakka
 Detail materi tidak menandai baca hanya karena halaman dibuka. Setelah konten dan sentinel akhir materi dimuat, browser mendeteksi pengguna telah mencapai bagian paling bawah, mengaktifkan checkbox konfirmasi, lalu mengaktifkan tombol `Tandai sudah dibaca` setelah checkbox dicentang. Hanya setelah konfirmasi berhasil, materi muncul sebagai selesai di Riwayat Belajar.
 
 Persistence memakai RLS `material_reading_history`: learner hanya dapat INSERT row miliknya sendiri dengan status `completed`; UPDATE langsung dari browser dicabut. UI gate meningkatkan kualitas sinyal completion, sementara ownership dan status completion tetap ditegakkan database.
+
+
+## Main web learner account navigation — 19 September 2026
+`index.html` menampilkan `Masuk` bagi pengunjung dan secara dinamis menampilkan nama/email akun yang mengarah ke `belajar/profile.html` saat sesi aktif. Profile learner dipisahkan dari `admin/profile.html` agar area akun pengguna biasa tidak bergantung pada record `admin_users`.
