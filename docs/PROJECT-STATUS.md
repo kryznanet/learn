@@ -1,3 +1,24 @@
+## 🎨 Kryzna Learn Design System — 19 September 2026
+
+- Branch terverifikasi: `19-Sep-2026`.
+- `shared/ui.css` direfaktor menjadi design system bersama dengan token warna, surface, border, typography spacing, radius, shadow, semantic status, focus state, responsive rules, table wrapper, sticky actions, dan state components.
+- `shared/ui.js` diformat agar mudah ditinjau dan active navigation sekarang juga memberi `aria-current` pada halaman aktif.
+- CSS/JS tetap tidak mengubah business logic, auth, RBAC, atau database.
+- Dokumentasi design system ditambahkan ke `docs/UI-STRUCTURE.md`.
+- Commits: `c37eb047626b2997cc63264b2554dbd7628b0224`, `b30658ca73be78ec3ac44d3225bb6a6c05574210`, `8c0dd6ccfa1a281c3be5a8c7151b48416dc08322`.
+
+### Status
+
+- Design system source: **Implemented — Needs Browser Verification**.
+- Page-specific UI polish: **Implemented — Needs Browser Verification**.
+- Mobile: **Needs Browser Verification**.
+- Browser E2E: **Pending** sampai visual/source freeze diverifikasi.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Audit runtime seluruh halaman utama, admin, learner, materi, ujian, hasil, dan mobile melalui fresh Browser E2E. Catat hasil ke `docs/BROWSER-E2E-RESULTS.md`, perbaiki regresi, lalu lakukan final Security Advisor/RLS/Storage/deployment audit.
+
 ## 🎨 UI/UX page-by-page polish — 19 September 2026
 
 - Branch terverifikasi: `19-Sep-2026`.
