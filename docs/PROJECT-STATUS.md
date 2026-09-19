@@ -1,3 +1,24 @@
+## Browser E2E default-branch alignment — 19 September 2026
+
+- Repository metadata was verified directly in GitHub: current default branch is `19-Sep-2026`.
+- Updated `.github/workflows/browser-e2e.yml` to remove hard-coded `18-Sep-2026` / `19-Sep-2026` branch filters.
+- Browser E2E now runs only when the push/manual event is on `github.event.repository.default_branch), or when a pull request targets that default branch.
+- The workflow uses the repository metadata value dynamically, so future changes to the default branch do not require another workflow edit.
+- Events from non-default branches may still create a workflow run entry, but the Playwright job is skipped and no E2E test is executed there.
+- Manual dispatch on a non-default branch is also skipped by the same job condition.
+- Workflow commit: `3b7cdbec26f04a77a1e57f77e08c2b1c521ccf6b`; workflow diff and final file were verified.
+
+### Status
+
+- Browser E2E default-branch execution: **Implemented — Needs Runtime Verification**.
+- Automatic runtime result recording: **Verified** on Browser E2E #155.
+- Browser E2E delete: **Pending**; destructive production testing remains prohibited.
+- Restore UI-to-database: **Blocked** until an isolated Supabase environment is available.
+
+### Checkpoint berikutnya
+
+Run Browser E2E from the current default branch after this workflow change and verify that the Playwright job executes there. Also verify that a push to a non-default development branch does not execute the Playwright job. Keep runtime result documentation on the default branch.
+
 ## Public material Browser E2E coverage — 19 September 2026
 
 - Branch `19-Sep-2026` was reverified in GitHub before the change.
