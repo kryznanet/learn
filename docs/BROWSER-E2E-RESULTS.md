@@ -1,6 +1,6 @@
 # Browser E2E Results — Kryzna Learn
 
-Dokumen ini menyimpan **hasil runtime Browser E2E** yang benar-benar dijalankan oleh GitHub Actions. Dokumen ini dipisahkan dari `docs/PROJECT-STATUS.md) agar checkpoint proyek tetap ringkas sementara histori pengujian tetap dapat ditelusuri.
+Dokumen ini menyimpan **hasil runtime Browser E2E** yang benar-benar dijalankan oleh GitHub Actions. Dokumen ini dipisahkan dari `docs/PROJECT-STATUS.md` agar checkpoint proyek tetap ringkas sementara histori pengujian tetap dapat ditelusuri.
 
 ## Aturan pencatatan
 
@@ -13,11 +13,11 @@ Dokumen ini menyimpan **hasil runtime Browser E2E** yang benar-benar dijalankan 
 
 ## Status saat ini — 19 September 2026
 
-**Status: Needs Verification**
+**Status: Passed**
 
-Assertion public Browser E2E telah diperkuat pada branch `19-Sep-2026), tetapi belum ada fresh GitHub Actions runtime result yang dapat diverifikasi untuk assertion terbaru tersebut.
+Fresh GitHub Actions runtime evidence untuk assertion public Browser E2E pada branch `19-Sep-2026` telah diverifikasi melalui run #138.
 
-### Coverage yang menunggu runtime verification
+### Coverage yang telah diverifikasi
 
 - Homepage title.
 - Admin login form.
@@ -38,11 +38,18 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 ### 19 September 2026 — Strengthened public catalog assertions
 
+- Workflow: **Browser E2E #138**
+- Run ID: `35427073533`
 - Branch: `19-Sep-2026`
-- Test commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`
-- Runtime result: **Needs Verification**
-- Reason: connector saat ini tidak menyediakan workflow dispatch maupun listing seluruh workflow run berdasarkan branch, sehingga fresh run belum dapat dipicu/dibuktikan dari tool yang tersedia.
-- Expected evidence: GitHub Actions Browser E2E run setelah commit tersebut, dengan Playwright report/artifact bila tersedia.
+- Commit: `185742bc803138c1bf9488046957b8d1d638e985`
+- Trigger: `workflow_dispatch`
+- Result: **Passed**
+- Playwright job: **success**
+- Test result: **9 passed, 0 failed**
+- Coverage: 4 authenticated editor/version-history tests dan 5 public-page tests, termasuk seluruh strengthened public catalog assertions.
+- Artifact: `playwright-report`, artifact ID `10579152444`, tersedia selama retention period GitHub Actions.
+- Runtime started: 19 September 2026 06:36:42 UTC.
+- Runtime completed: 19 September 2026 06:37:57 UTC.
 
 ### 18 September 2026 — Browser E2E baseline
 
@@ -79,15 +86,7 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 **Blocked** is reserved for tests that intentionally cannot run because a required safe environment does not exist. The Version Restore UI-to-database E2E remains separately blocked because it must not mutate the production Supabase project.
 
-## Next entry
+## Next checkpoint
 
-After the next Browser E2E workflow completes, append a new dated entry with:
+Setelah fresh public E2E runtime pass ini, lanjutkan **review pedagogis akhir dan browser/rendering review untuk 58 materi**. Restore UI-to-database tetap **Blocked** sampai environment Supabase terisolasi tersedia.
 
-1. branch;
-2. commit SHA;
-3. workflow/run number and ID;
-4. pass/fail/skip counts;
-5. authenticated test status;
-6. relevant artifact/report;
-7. failure diagnosis if applicable;
-8. resulting project status.
