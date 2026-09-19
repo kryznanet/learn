@@ -747,3 +747,22 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35431123800.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Kategori Materi — full management — 19 September 2026
+
+- Branch: `19-Sep-2026`.
+- Migration `20260919160000_allow_materi_category_management` diterapkan ke Supabase live.
+- RLS UPDATE dan DELETE kategori diverifikasi; keduanya membutuhkan `content.manage_categories`.
+- Halaman kategori sekarang mendukung tambah, ubah nama, aktif/nonaktif, dan hapus.
+- Rename/delete kategori yang masih digunakan materi diblokir agar referensi `materi.kategori` tidak rusak.
+- Migration commit: `7c7cc664fa1bf8ead23f86e1db0b16291b00de1c`.
+- UI commit: `a2f8499223c8d6f0c3ed38f024a0325ce47563f2`.
+- Rename protection fix commit: `7abce5eaebee9543aaefabcd1ac5b47eef4f38d9`.
+- Supabase Security Advisor setelah perubahan tetap baseline: 7 application `SECURITY DEFINER` warnings + 1 leaked-password warning; tidak ada warning kategori baru.
+
+### Status
+
+- Category schema/RLS: **Verified**.
+- Category management source: **Verified**.
+- Browser E2E kategori: **Pending** sesuai keputusan untuk menunda E2E sampai seluruh feature request selesai.
