@@ -76,3 +76,7 @@ Migration `restrict_direct_admin_users_updates_20260918` mencabut policy UPDATE 
 - `authenticated` retains only DML privileges required by existing RLS policies; unused `REFERENCES`, `TRIGGER`, and `TRUNCATE` privileges were removed.
 - `user_roles` and `role_permissions` retain authenticated INSERT/UPDATE/DELETE privileges because their Super Admin-only RLS policies intentionally provide those write paths.
 - Final verification confirmed RLS remains enabled on all core public tables and no `anon` write privilege remains on the audited tables.
+
+
+## Learner management boundary — 19 September 2026
+Edge Function `manage-users` memakai `verify_jwt=true` dan memeriksa caller aktif pada `admin_users` dengan role `admin` atau `super_admin`. Daftar hanya mengembalikan akun Auth yang tidak memiliki row `admin_users`. Operasi update menolak target yang merupakan staf, sehingga Admin tidak dapat memakai endpoint learner untuk mengubah akun staf. Password hanya ditangani server-side melalui Auth Admin API.
