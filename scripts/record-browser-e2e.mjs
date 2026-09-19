@@ -30,40 +30,39 @@ const sha = process.env.GITHUB_SHA ?? "unknown";
 const branch = process.env.GITHUB_REF_NAME ?? "unknown";
 const server = process.env.GITHUB_SERVER_URL ?? "https://github.com";
 const repository = process.env.GITHUB_REPOSITORY ?? "kryznanet/learn";
-const runUrl = `${server}/${repository}/actions/runs/${runId}`;
+const runUrl = server + "/" + repository + "/actions/runs/" + runId;
 const trigger = process.env.GITHUB_EVENT_NAME ?? "unknown";
 const now = new Date().toISOString();
+
+const entry =
+  "### " + now.slice(0, 10) + " — Automated Browser E2E runtime\n\n" +
+  "- Workflow: **Browser E2E #" + runNumber + "**\n" +
+  "- Run ID: \`" + runId + "\`\n" +
+  "- Run URL: " + runUrl + "\n" +
+  "- Branch: \`" + branch + "\`\n" +
+  "- Commit: \`" + sha + "\`\n" +
+  "- Trigger: \`" + trigger + "\`\n" +
+  "- Result: **" + outcome + "**\n" +
+  "- Playwright summary: **" + expected + " passed, " + unexpected + " failed, " + skipped + " skipped, " + flaky + " flaky** (" + total + " recorded)\n" +
+  "- Artifact: \`playwright-report\` is uploaded by the workflow when files are available.\n" +
+  "- Recorded automatically from \`test-results/results.json\` at " + now + ".\n";
 
 let resultsDoc = read(resultsDocPath);
 const historyMarker = "## Runtime history";
 const interpretationMarker = "## Interpretation";
-const entry = \`### \${now.slice(0, 10)} — Automated Browser E2E runtime
-
-- Workflow: **Browser E2E #\${runNumber}**
-- Run ID: \\\`\${runId}\\\`
-- Run URL: \${runUrl}
-- Branch: \\\`\${branch}\\\`
-- Commit: \\\`\${sha}\\\`
-- Trigger: \\\`\${trigger}\\\`
-- Result: **\${outcome}**
-- Playwright summary: **\${expected} passed, \${unexpected} failed, \${skipped} skipped, \${flaky} flaky** (\${total} recorded)
-- Artifact: \\\`playwright-report\\\` is uploaded by the workflow when files are available.
-- Recorded automatically from \\\`test-results/results.json\\\` at \${now}.
-
-\`;
-
 const historyStart = resultsDoc.indexOf(historyMarker);
 const interpretationStart = resultsDoc.indexOf(interpretationMarker);
 
 if (historyStart !== -1 && interpretationStart !== -1 && interpretationStart > historyStart) {
   resultsDoc =
     resultsDoc.slice(0, historyStart) +
-    \`\${historyMarker}\\\\n\\\\n\${entry}\` +
+    historyMarker + "\n\n" +
+    entry + "\n" +
     resultsDoc.slice(interpretationStart);
 } else if (historyStart !== -1) {
-  resultsDoc = resultsDoc.slice(0, historyStart) + \`\${historyMarker}\\\\n\\\\n\${entry}\`;
+  resultsDoc = resultsDoc.slice(0, historyStart) + historyMarker + "\n\n" + entry + "\n";
 } else {
-  resultsDoc += \`\\\\n\\\\n\${historyMarker}\\\\n\\\\n\${entry}\`;
+  resultsDoc += "\n\n" + historyMarker + "\n\n" + entry + "\n";
 }
 
 const statusStart = resultsDoc.indexOf("## Status saat ini");
@@ -73,15 +72,24 @@ if (statusStart !== -1) {
   if (coverageStart !== -1) {
     resultsDoc =
       resultsDoc.slice(0, statusStart) +
-      \`## Status saat ini — \${now.slice(0, 10)}\\\\n\\\\n**Status: \${outcome}**\\\\n\\\\nFresh GitHub Actions runtime evidence terbaru: Browser E2E #\${runNumber} (\${expected} passed, \${unexpected} failed, \${skipped} skipped, \${flaky} flaky).\\\\n\\\\n\` +
+      "## Status saat ini — " + now.slice(0, 10) + "\n\n" +
+      "**Status: " + outcome + "**\n\n" +
+      "Fresh GitHub Actions runtime evidence terbaru: Browser E2E #" + runNumber +
+      " (" + expected + " passed, " + unexpected + " failed, " + skipped + " skipped, " + flaky + " flaky).\n\n" +
       resultsDoc.slice(coverageStart);
   }
 }
 fs.writeFileSync(resultsDocPath, resultsDoc);
 
 let statusDoc = read(statusDocPath);
-const checkpoint = `\n\n## Automated Browser E2E runtime record — ${now.slice(0, 10)}\n\n- Workflow **Browser E2E #${runNumber}** pada branch \`${branch}\` selesai dengan hasil **${outcome}**.\n- Run ID: \`${runId}\`; commit yang diuji: \`${sha}\`.\n- Playwright summary: **${expected} passed, ${unexpected} failed, ${skipped} skipped, ${flaky} flaky**.\n- Runtime evidence dicatat otomatis ke \`docs/BROWSER-E2E-RESULTS.md\`; detail run: ${runUrl}.\n- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.\n`;
+const checkpoint =
+  "\n\n## Automated Browser E2E runtime record — " + now.slice(0, 10) + "\n\n" +
+  "- Workflow **Browser E2E #" + runNumber + "** pada branch \`" + branch + "\` selesai dengan hasil **" + outcome + "**.\n" +
+  "- Run ID: \`" + runId + "\`; commit yang diuji: \`" + sha + "\`.\n" +
+  "- Playwright summary: **" + expected + " passed, " + unexpected + " failed, " + skipped + " skipped, " + flaky + " flaky**.\n" +
+  "- Runtime evidence dicatat otomatis ke \`docs/BROWSER-E2E-RESULTS.md\`; detail run: " + runUrl + ".\n" +
+  "- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.\n";
 statusDoc += checkpoint;
 fs.writeFileSync(statusDocPath, statusDoc);
 
-console.log(`Recorded Browser E2E #${runNumber}: ${outcome} (${expected} passed, ${unexpected} failed, ${skipped} skipped, ${flaky} flaky).`);
+console.log("Recorded Browser E2E #" + runNumber + ": " + outcome + " (" + expected + " passed, " + unexpected + " failed, " + skipped + " skipped, " + flaky + " flaky).");
