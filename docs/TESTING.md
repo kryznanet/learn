@@ -120,3 +120,11 @@ A local supabase/config.toml should be added only after the baseline is establis
 Read-only Supabase catalog inspection verified the live baseline inputs needed for Restore E2E isolation: PostgreSQL 17.6.1, ten application tables with RLS enabled, current PK/FK/check/unique constraints, core indexes, 14 public application functions, material/version/activity triggers, two Storage buckets, and the current four-role/17-permission/41-mapping RBAC seed. No production mutation was performed.
 
 The baseline is **not yet executable locally**. The branch lacks the earlier 16–17 September migration sequence, and Supabase-managed Auth/Storage dependencies should be reproduced through the supported CLI/database-pull workflow rather than hand-authored from catalog output. Local reset remains unverified because this environment has no Supabase CLI/Docker runtime.
+
+
+## Material CRUD delete — 19 September 2026
+
+- [x] UI hanya menampilkan Hapus jika user memiliki `content.delete`.
+- [x] Backend RLS DELETE `materi` membatasi aksi ke `admin` dan `super_admin`.
+- [x] Foreign key version history menggunakan `ON DELETE CASCADE` untuk snapshot terkait.
+- [ ] Browser E2E delete materi masih perlu runtime verification pada dedicated test data; jangan menghapus materi production secara destruktif untuk pengujian.
