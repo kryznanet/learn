@@ -329,3 +329,52 @@ Shared UI kini menjadi acuan visual utama melalui `shared/ui.css` dan `shared/ui
 
 ### Prinsip
 Page-specific CSS hanya digunakan untuk kebutuhan yang benar-benar khas halaman. Komponen yang berulang harus menggunakan design system agar halaman baru tidak kembali memiliki visual berbeda.
+
+
+## Struktur navigasi target — 19 September 2026
+
+Navigasi shared sekarang mengikuti empat konteks utama:
+
+```text
+KRYZNA LEARN
+├── 🌐 PUBLIK
+│   ├── Beranda
+│   ├── Materi
+│   └── Ujian
+├── 👨‍🎓 LEARNER
+│   ├── Beranda
+│   ├── Materi
+│   ├── Ujian
+│   ├── Belajar Saya
+│   │   ├── Progress Belajar
+│   │   ├── Riwayat Belajar
+│   │   └── Bookmark
+│   ├── Notifikasi
+│   └── Profil
+├── 📚 CONTENT
+│   ├── Dashboard
+│   ├── Kelola Materi
+│   │   ├── Daftar Materi
+│   │   ├── Kategori
+│   │   ├── Riwayat Versi
+│   │   └── Aktivitas Materi
+│   └── Kelola Ujian
+│       ├── Daftar Ujian
+│       ├── Editor Ujian
+│       └── Soal
+└── 🛡️ ADMINISTRASI
+    ├── Kelola Pengguna
+    ├── Aktivitas Sistem
+    ├── Import Materi
+    └── Pengaturan
+```
+
+Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu responsive pada `shared/ui.css`.
+
+- Menu Content dan Administrasi disaring berdasarkan permission aktif.
+- Learner menggunakan submenu **Belajar Saya** untuk progress, riwayat, dan bookmark.
+- **Riwayat Versi** memiliki halaman indeks `content/versions-index.html` karena halaman versi individual membutuhkan `materi.id`.
+- **Editor Ujian** dan **Soal** menggunakan bagian yang sesuai pada `admin/exams.html`; tidak dibuat halaman palsu yang terpisah.
+- Active state diterapkan pada item submenu dan parent group.
+- Backend/RLS tetap menjadi enforcement akses; navigasi hanya lapisan UX.
+- Mobile menggunakan submenu yang dapat dibuka dan tetap mempertahankan target sentuh yang memadai.
