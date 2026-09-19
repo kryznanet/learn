@@ -333,3 +333,18 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 - Verifikasi live setelah perubahan: **Dasar 22, Intermediate 20, Advanced 12, Tutorial 4 = 58 published**; seluruh konten non-kosong.
 - Contoh spesifik mencakup subnet /26, DORA DHCP, DNS resolution, MAC learning, NAT/PAT, VLAN 802.1Q, IPv6 SLAAC, OSPF adjacency, BGP path selection, IPsec SA, PKI/TLS, SIEM correlation, serta prosedur Windows ping/tracert.
 - Status kualitas: **Needs Verification** untuk browser/rendering dan review pedagogis akhir. Tidak ada perubahan schema, RLS, status publikasi, atau jumlah materi.
+
+
+## Rekonsiliasi katalog materi — 19 September 2026
+
+- Katalog `docs/MATERIAL-CATALOG.md` direkonsiliasi terhadap data live `public.materi` menggunakan query read-only.
+- Verifikasi live menghasilkan **58 materi published**: Dasar 22, Intermediate 20, Advanced 12, Tutorial 4.
+- Seluruh 58 judul yang berstatus `published` sekarang dicatat di katalog dan dikelompokkan berdasarkan kategori aktual database.
+- Dua placeholder **Test** dan **Test 12** tetap tidak dimasukkan karena berstatus `archived`.
+- Commit katalog: `9a65c0a777b04778b35dd283f1bd077b3f6bf434`; commit diverifikasi setelah push.
+- Status kualitas materi tetap **Needs Verification** untuk browser/rendering dan review pedagogis akhir.
+- Tidak ada perubahan pada data aplikasi, schema, RLS, atau status publikasi pada checkpoint ini.
+
+### Checkpoint berikutnya
+
+Lanjutkan verifikasi runtime/browser dan review pedagogis akhir untuk 58 materi. Setelah area tersebut diverifikasi, lanjutkan residual project items yang masih pending: Restore UI-to-database pada environment terisolasi, local Supabase authoritative baseline, dan consumer eksternal `swift-api` bila diperlukan.
