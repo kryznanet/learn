@@ -613,3 +613,9 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Source/database verification: **Verified**.
 - Runtime Browser E2E learner: **Pending**.
 - Runtime yang dibutuhkan: login, Belajar Saya, reading history, Ujian Online, timer, submit, hasil, attempt history, dan penolakan area Admin.
+
+## Changelog checkpoint — learner role — 19 September 2026
+
+- `docs/CHANGELOG.md` mencatat penambahan role `user` dan permission learner.
+- Seluruh implementasi yang dicatat telah diverifikasi pada branch `19-Sep-2026`.
+- Status berikutnya tetap Browser E2E learner.
