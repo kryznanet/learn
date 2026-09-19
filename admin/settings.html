@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Pengaturan — Kryzna Learn</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../supabase-config.js"></script><script src="../shared/auth.js"></script>
+<style>
+:root{--bg:#f6f8fc;--card:#fff;--line:#e2e8f0;--text:#172033;--muted:#64748b;--primary:#2563eb}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.top{background:#0f172a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}.top a,.btn{padding:9px 12px;border-radius:9px;text-decoration:none;border:0;font-weight:800}.top a{background:#ffffff14;color:#fff}.wrap{max-width:900px;margin:auto;padding:28px 18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px}.muted{color:var(--muted);font-size:13px}.btn{display:inline-block;background:#e2e8f0;color:#1e293b}.primary{background:var(--primary);color:#fff}
+</style></head>
+<body><header class="top"><div><b>⚙️ Kryzna Learn</b><div style="font-size:11px;color:#94a3b8">Pengaturan Administrasi</div></div><a href="index.html">← Dashboard</a></header>
+<main class="wrap"><section class="card"><h1 style="margin:0 0 6px">Pengaturan</h1><p class="muted">Pusat konfigurasi administratif Kryzna Learn. Fitur pengaturan ditambahkan bertahap tanpa mengubah permission atau keamanan yang sudah berjalan.</p></section>
+<section class="card"><h2>🏷️ Kategori Materi</h2><p class="muted">Kelola kategori yang tersedia saat membuat dan mengedit materi.</p><a class="btn primary" href="../content/categories.html">Kelola Kategori Materi</a></section>
+<section class="card"><h2>🔐 Akses</h2><p class="muted">Halaman ini hanya dapat dibuka oleh Super Admin. Perubahan konfigurasi tetap harus memiliki enforcement backend.</p></section></main>
+<script>
+async function boot(){const session=await KryznaAuth.requirePermission('settings.manage',{login:'login.html',denied:null});if(!session){document.body.innerHTML='<main class="wrap"><section class="card"><h2>Akses ditolak</h2><a class="btn" href="login.html">Kembali ke Login</a></section></main>'}}boot();
+</script></body></html>
