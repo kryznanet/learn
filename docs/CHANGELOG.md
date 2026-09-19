@@ -1,3 +1,11 @@
+## 19 September 2026 — Browser E2E default-branch alignment
+
+- Updated `.github/workflows/browser-e2e.yml` to remove hard-coded date branch names from Browser E2E triggers.
+- Browser E2E now runs only when the event targets the repository's current default branch, using `github.event.repository.default_branch` rather than a fixed branch name.
+- Pull requests are executed only when their base branch is the current default branch; push events and manual dispatches on other branches skip the Playwright job.
+- This keeps Browser E2E automatically aligned when the repository default branch changes in a future checkpoint.
+- Workflow commit: `3b7cdbec26f04a77a1e57f77e08c2b1c521ccf6b`; commit and final workflow contents were verified.
+
 ## 19 September 2026 — Automated Browser E2E result recording
 
 - Updated `.github/workflows/browser-e2e.yml` to run a post-test recorder on every Browser E2E workflow execution.
