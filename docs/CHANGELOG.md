@@ -288,3 +288,9 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Admin: statistik operasional, filter status pengguna, pusat notifikasi, review feedback.
 - Ujian: detail hasil aman melalui `exam-api` action `result`; administrasi soal/kategori/arsip diperluas.
 - RBAC: permission `notifications.manage` untuk Admin/Super Admin.
+
+
+## 19 September 2026 — Outcome certificate
+
+- Menambahkan halaman sertifikat kelulusan yang dapat dicetak/disimpan sebagai PDF dari attempt ujian yang lulus.
+- Certificate tidak membuat status kelulusan baru; sumber kebenaran tetap `exam_attempts` melalui `exam-api`.
