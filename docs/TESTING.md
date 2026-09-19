@@ -145,3 +145,19 @@ Verifikasi database live: 4 kategori ujian published; masing-masing memiliki 5 s
 Status browser/E2E modul baru: **Needs Verification**. Coverage berikut perlu dijalankan pada akun learner test: login/registrasi, pembukaan materi dan pencatatan riwayat, penandaan selesai, start exam, timer, submit, score, pass/fail, dan riwayat attempt.
 
 Jangan menggunakan akun production secara destruktif untuk pengujian; gunakan akun E2E learner khusus dan data ujian yang memang disediakan untuk test.
+
+
+## Learner / user role — 19 September 2026
+
+- [x] Role `user` tersedia di RBAC.
+- [x] User Auth baru mendapat role `user` melalui trigger.
+- [x] Existing Auth users direkonsiliasi ke role `user`.
+- [x] Permission learner: `learning.read`, `exam.take`, `exam.history.read`.
+- [x] `shared/auth.js` dapat mengenali role learner dari `user_roles`.
+- [ ] Browser E2E learner: login dan routing ke Belajar Saya.
+- [ ] Browser E2E learner: buka materi dan reading history.
+- [ ] Browser E2E learner: start/submit ujian, timer, score/pass-fail.
+- [ ] Browser E2E learner: riwayat attempt.
+- [ ] Verifikasi bahwa learner tidak dapat membuka area Admin.
+
+Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap production untuk pengujian.
