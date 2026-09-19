@@ -1,3 +1,13 @@
+## 19 September 2026 — Public material Browser E2E coverage
+
+- Added public Playwright coverage for the four published material categories: Dasar, Intermediate, Advanced, and Tutorial.
+- Added assertions for the live published catalog count used by the current branch checkpoint: 58 materials, including 4 Tutorial materials.
+- Added coverage that learning-path cards activate the corresponding category filter.
+- Added coverage that public material cards navigate to `materi/view.html?slug=...`.
+- Test commit: `6f54cf98357e668bcbd263ded86531f499226a7c`.
+- Source commit and resulting test file were fetched and verified.
+- Runtime Browser E2E verification on branch `19-Sep-2026` remains **Needs Verification** until a fresh GitHub Actions workflow run is available.
+
 ## 19 September 2026 — Browser E2E branch coverage
 
 - Updated `.github/workflows/browser-e2e.yml` so Browser E2E triggers on pushes and pull requests targeting both `18-Sep-2026` and the current development branch `19-Sep-2026`.
