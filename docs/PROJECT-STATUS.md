@@ -634,3 +634,9 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Migration live diterapkan dan diverifikasi; `staff_with_user_role = 0` dan trigger aktif.
 - Status: **Verified**.
 - Checkpoint berikutnya: jalankan Browser E2E learner dengan akun khusus dan verifikasi routing/akses Belajar Saya + Ujian Online tanpa akses Admin.
+
+## RBAC documentation checkpoint — learner/staff separation — 19 September 2026
+
+- `docs/RBAC.md` diperbarui untuk mendokumentasikan pemisahan role learner `user` dari role staf.
+- Verifikasi live: 0 staf memiliki role `user`.
+- Status role learner: **Verified** pada database/source; Browser E2E learner masih **Pending**.
