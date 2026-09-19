@@ -654,3 +654,25 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35430353728.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Reading history — end-of-material confirmation — 19 September 2026
+
+- Branch `19-Sep-2026` terverifikasi sebelum perubahan dan tetap menjadi branch yang dikonfirmasi.
+- `materi/view.html` diperbarui: membuka materi tidak lagi membuat row riwayat; learner harus mencapai sentinel di bagian paling bawah, mencentang `Saya sudah membaca materi ini sampai bagian paling bawah`, lalu menekan `Tandai sudah dibaca`.
+- Commit UI: `8f604b492aeade64bfadfb2530820d037524db40`; file diverifikasi kembali dari GitHub.
+- Migration live `20260919130000_require_reading_completion_confirmation` diterapkan. Policy INSERT hanya menerima row milik `auth.uid()` dengan `status = completed` dan `completed_at` terisi; UPDATE langsung dari `authenticated` dicabut.
+- Commit migration repository: `1153da087212d5196ec860f374c81e3f487a73a3`; file diverifikasi kembali dari GitHub.
+- Verifikasi live: `material_reading_history` memiliki policy SELECT milik sendiri dan policy INSERT completed milik sendiri; privilege `authenticated`: SELECT=true, INSERT=true, UPDATE=false.
+- Security Advisor tetap menunjukkan 7 warning `SECURITY DEFINER` yang sudah ada dan 1 warning leaked-password protection; tidak ada warning baru dari perubahan ini.
+- Dokumentasi diperbarui: `DATABASE.md` commit `da50c34084bfa592ab34c36be646c82f617ac92e`, `TESTING.md` commit `9f2c0fd6c47ba09d24afb6243d9e7d301dca9d18`, `ARCHITECTURE.md` commit `390dfba2710c6f215bd216edd2d09ec56e54e570`, `CHANGELOG.md` commit `3904025607d96ef87e5d76160b72cffad72ec5b6`.
+
+### Status
+
+- Reading history completion flow: **Implemented — Needs Runtime Verification**.
+- RLS/privilege boundary: **Verified** live.
+- Browser E2E learner: **Pending** untuk login, buka materi, pastikan belum tercatat sebelum bottom, konfirmasi setelah bottom, dan verifikasi Riwayat Belajar.
+
+### Checkpoint berikutnya
+
+Jalankan Browser E2E dengan akun learner khusus untuk memverifikasi alur end-to-end. Hasil runtime harus dicatat otomatis di `docs/BROWSER-E2E-RESULTS.md`. Jangan melakukan destructive test terhadap materi production.
