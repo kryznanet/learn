@@ -65,3 +65,11 @@ Materi published menggunakan struktur pembelajaran yang lebih lengkap: tujuan pe
 ## Pendalaman pedagogis seluruh materi — 18 September 2026
 
 Seluruh 58 materi published telah diperbarui dari kategori Dasar sampai Tutorial. Setiap materi sekarang mengaitkan konsep dengan contoh kasus spesifik, parameter/bukti verifikasi, troubleshooting berbasis hipotesis, kesalahan umum, dan latihan yang sesuai topik. Verifikasi live mempertahankan 58 published (Dasar 22, Intermediate 20, Advanced 12, Tutorial 4). Perubahan hanya pada konten materi dan timestamp pembaruan; workflow status, schema, RLS, dan RBAC tidak berubah.
+
+
+## CRUD materi — 19 September 2026
+
+- Daftar materi menyediakan Create melalui editor, Read melalui daftar/riwayat versi, Update melalui editor, dan Delete melalui aksi Hapus untuk permission `content.delete`.
+- DELETE materi sekarang dilindungi RLS backend untuk role `admin` dan `super_admin`; UI permission check bukan satu-satunya security boundary.
+- Penghapusan materi bersifat permanen dan menghapus snapshot `materi_versions` terkait melalui foreign key cascade.
+- Aktivitas penghapusan dicatat ke `content_activity_logs`; jika logging gagal, kegagalan dicatat sebagai warning tanpa membatalkan DELETE.
