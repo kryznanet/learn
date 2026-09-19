@@ -646,3 +646,11 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - `docs/DATABASE.md` diperbarui dengan migration learner dan mekanisme pemisahan role staf.
 - Verifikasi database tetap: role/permission learner tersedia dan 0 staf memiliki role learner.
 - Status: **Verified** pada database; Browser E2E learner tetap **Pending**.
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #211** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35430353728`; commit yang diuji: `bf3f26f56e94859d9b67fd4f562b7b05930b5380`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35430353728.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
