@@ -109,3 +109,14 @@ The audit also confirmed why a hand-written baseline should not be committed yet
 Local Supabase is the no-cost path for isolated Restore E2E. The repository already contains versioned migrations, but the current repository migration directory is **not yet a complete baseline** for recreating the live database: the connected project currently records earlier migrations from 16–17 September that are not present in `supabase/migrations/` on this branch. The live database also reports PostgreSQL 17.6.
 
 Do not run the current hardening-only migrations against a fresh local database before a complete baseline migration is added. The legacy root SQL files are explicitly non-authoritative and must not be treated as that baseline. The next implementation step is to generate/review the authoritative baseline with Supabase CLI, then verify local reset before wiring Restore E2E to local Supabase.
+
+
+## Ujian Online & Riwayat Belajar — 19 September 2026
+
+Migration `20260919100000_add_exam_and_learning_history.sql` menambahkan delapan tabel: `exam_categories`, `exams`, `exam_questions`, `exam_question_options`, `exam_answer_keys`, `exam_attempts`, `exam_answers`, dan `material_reading_history`.
+
+Seluruh tabel baru mengaktifkan RLS. Learner hanya dapat membaca ujian yang published, pertanyaan dan opsi dari ujian published, attempt miliknya sendiri, answer miliknya sendiri, serta reading history miliknya sendiri. Insert/update attempt dan answer tidak diberikan kepada browser; `exam-api` menggunakan server-side privileged client untuk membuat attempt dan melakukan penilaian.
+
+Permission `exam.manage` dan `exam.read` ditambahkan untuk `admin` dan `super_admin`. Seed live saat ini: 4 kategori, 4 ujian published, 20 soal, dan 20 answer key.
+
+`exam-api` adalah Edge Function authenticated-user dengan `verify_jwt=true`. Source repo berada di `supabase/functions/exam-api/index.ts` dan deployment live aktif.
