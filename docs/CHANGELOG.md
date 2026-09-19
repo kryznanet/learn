@@ -1,3 +1,10 @@
+## 19 September 2026 — Browser E2E branch coverage
+
+- Updated `.github/workflows/browser-e2e.yml` so Browser E2E triggers on pushes and pull requests targeting both `18-Sep-2026` and the current development branch `19-Sep-2026`.
+- Manual `workflow_dispatch` remains available.
+- Commit: `47fda485020fbe2e517c563bb83e54eb74560770`; commit and workflow contents were verified.
+- No application data or Supabase schema was changed.
+
 ## 19 September 2026 — Rekonsiliasi katalog materi
 
 - Menyelaraskan `docs/MATERIAL-CATALOG.md` dengan data live `public.materi` menggunakan query read-only.
