@@ -766,3 +766,16 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 - Category schema/RLS: **Verified**.
 - Category management source: **Verified**.
 - Browser E2E kategori: **Pending** sesuai keputusan untuk menunda E2E sampai seluruh feature request selesai.
+
+
+## Riwayat Ujian learner — 19 September 2026
+
+- Menambahkan `belajar/ujian-riwayat.html` untuk menampilkan attempt milik learner: kategori, judul, waktu, status, nilai, dan hasil lulus/tidak lulus.
+- Menambahkan shortcut Riwayat Ujian dari Belajar Saya dan Profile.
+- Menyelaraskan copy Riwayat Belajar dengan aturan completion baru.
+- Source verification: file baru dan perubahan navigasi telah di-fetch kembali dari branch `19-Sep-2026`.
+
+### Status
+
+- Learner exam history source: **Verified**.
+- Browser E2E learner: **Pending** sesuai keputusan menunda E2E sampai seluruh feature request selesai.
