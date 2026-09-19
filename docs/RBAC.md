@@ -76,3 +76,8 @@ Permission checks for `content.review`, `content.publish`, and `content.archive`
 Permission `exam.manage` dan `exam.read` diberikan kepada `admin` dan `super_admin`. Pengguna `user` tidak membutuhkan permission staf untuk mengikuti ujian; akses learner ditentukan oleh Auth + role learner + RLS + Edge Function.
 
 `exam-api` membuat attempt dan melakukan penilaian server-side. `exam_answer_keys` tidak dibaca oleh browser melalui Data API. Attempt dan answer hanya dapat dibaca oleh pemiliknya melalui RLS.
+
+
+## Isolasi role learner dari staf — 19 September 2026
+
+Role `user` hanya untuk akun learner non-staf. Trigger `trg_remove_learner_role_from_staff` pada `admin_users` menghapus assignment `user` ketika akun menjadi staf atau record staf diperbarui. Verifikasi live menunjukkan tidak ada staf yang masih memiliki role `user`.
