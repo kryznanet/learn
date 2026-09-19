@@ -128,3 +128,11 @@ The baseline is **not yet executable locally**. The branch lacks the earlier 16â
 - [x] Backend RLS DELETE `materi` membatasi aksi ke `admin` dan `super_admin`.
 - [x] Foreign key version history menggunakan `ON DELETE CASCADE` untuk snapshot terkait.
 - [ ] Browser E2E delete materi masih perlu runtime verification pada dedicated test data; jangan menghapus materi production secara destruktif untuk pengujian.
+
+## Audit pedagogis materi â€” 19 September 2026
+
+- Read-only audit terhadap 58 materi published memverifikasi struktur lengkap pada seluruh materi.
+- Ditemukan 35 materi dengan blok latihan/troubleshooting/checklist/ringkasan yang terlalu generik.
+- Blok generik tersebut telah diganti dengan konten spesifik topik untuk 20 Intermediate, 11 Advanced, dan 4 Tutorial.
+- Verifikasi live setelah update menunjukkan 58 published tetap tersedia dan marker generik yang diaudit menjadi 0.
+- Audit ini belum menggantikan verifikasi browser/rendering; fresh Browser E2E dan review visual tetap diperlukan.
