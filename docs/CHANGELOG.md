@@ -220,3 +220,9 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Added automatic default-role assignment for newly created Supabase Auth users and reconciled existing users.
 - Updated `shared/auth.js` to resolve non-staff roles from `user_roles`.
 - Database and source verification passed; learner Browser E2E remains pending.
+
+## 19 September 2026 — Reading history requires end-of-material confirmation
+- Detail materi tidak lagi membuat riwayat hanya saat dibuka.
+- Learner harus mencapai bagian paling bawah, mencentang konfirmasi, lalu menekan `Tandai sudah dibaca`.
+- Database membatasi INSERT riwayat ke row milik learner dengan status `completed` dan mencabut UPDATE langsung dari browser.
+- Browser E2E learner untuk alur ini masih pending runtime verification.
