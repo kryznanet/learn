@@ -830,3 +830,12 @@ Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit le
 ### Checkpoint berikutnya
 
 Lanjutkan feature request yang masih pending, terutama pendalaman administrasi Ujian bila diperlukan. Setelah seluruh fitur selesai, jalankan fresh Browser E2E learner/admin dan catat setiap hasil pada `docs/BROWSER-E2E-RESULTS.md`, kemudian lakukan final security/deployment audit.
+
+
+## Automated Browser E2E runtime record — 2026-09-19
+
+- Workflow **Browser E2E #277** pada branch `19-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35435609307`; commit yang diuji: `16c38b3f2efc6a5c93d97cfed65e4c54f5b2ce1b`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35435609307.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
