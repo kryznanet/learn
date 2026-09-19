@@ -280,3 +280,11 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Menambahkan activation state kategori ujian.
 - Menambahkan fondasi bookmark materi, feedback materi, dan notifikasi learner dengan RLS ownership.
 - Memperluas administrasi ujian: edit soal, poin/pembahasan/kunci, reorder, archive/restore, serta manajemen kategori.
+
+
+## 19 September 2026 — Feature expansion batch 2
+
+- Learner: bookmark materi, feedback materi, halaman bookmark, halaman notifikasi, progres dashboard.
+- Admin: statistik operasional, filter status pengguna, pusat notifikasi, review feedback.
+- Ujian: detail hasil aman melalui `exam-api` action `result`; administrasi soal/kategori/arsip diperluas.
+- RBAC: permission `notifications.manage` untuk Admin/Super Admin.
