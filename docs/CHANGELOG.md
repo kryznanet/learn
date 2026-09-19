@@ -241,3 +241,10 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Admin kini memiliki permission users.create/update/disable untuk learner, tanpa mengubah aturan staff management.
 - Runtime Browser E2E create/edit learner masih pending.
 \n\n## 19 September 2026 — Dashboard Konten & Kategori Materi Dinamis\n\n- Menambahkan tabel `materi_categories` beserta RLS dan unique category name.\n- Menambahkan halaman Kelola Kategori Materi dan integrasi kategori dinamis pada editor.\n- Dashboard Admin menampilkan Kelola Konten / Materi dan akses Kategori Materi.\n- Dashboard Super Admin menghubungkan Kelola Konten / Materi dan Pengaturan.\n- Browser E2E create-category/update-editor: **Pending**.\n
+
+## 19 September 2026 — Full management kategori materi
+
+- Menambahkan RLS UPDATE dan DELETE untuk `materi_categories` dengan permission `content.manage_categories`.
+- Menyempurnakan halaman Kategori Materi: tambah, ubah nama, aktif/nonaktif, dan hapus.
+- Rename/delete yang masih digunakan materi diblokir agar referensi kategori berbasis nama tetap konsisten.
+- Browser E2E tetap ditunda sesuai checkpoint feature development.
