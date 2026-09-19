@@ -588,3 +588,15 @@ Jalankan browser test dengan akun learner khusus untuk memverifikasi login, read
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35429485400.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Learner role / user biasa — 19 September 2026
+
+- Branch: `19-Sep-2026`.
+- Commit migration: `43f833613f7b88b88f9d4750c4ef06bc1e892801`.
+- Live migration diterapkan dan diverifikasi.
+- Role `user` / label Pengguna tersedia dengan `learning.read`, `exam.take`, dan `exam.history.read`.
+- Trigger auto-assignment untuk Auth user baru aktif; 4 Auth users saat verifikasi memiliki 4 assignment role `user`.
+- Commit helper auth: `134693851f8a87101a003c63f46f98a25d405cbc`; `shared/auth.js` sekarang membaca role learner dari `user_roles` bila user bukan staf.
+- Status: **Needs Verification** untuk Browser E2E learner; source dan database sudah diverifikasi.
+- Checkpoint berikutnya: uji login learner, Belajar Saya, reading history, Ujian Online, timer, submit, hasil, dan riwayat attempt dengan akun E2E learner khusus.
