@@ -120,3 +120,12 @@ Seluruh tabel baru mengaktifkan RLS. Learner hanya dapat membaca ujian yang publ
 Permission `exam.manage` dan `exam.read` ditambahkan untuk `admin` dan `super_admin`. Seed live saat ini: 4 kategori, 4 ujian published, 20 soal, dan 20 answer key.
 
 `exam-api` adalah Edge Function authenticated-user dengan `verify_jwt=true`. Source repo berada di `supabase/functions/exam-api/index.ts` dan deployment live aktif.
+
+
+## Learner role / user biasa — 19 September 2026
+
+Migration `20260919120000_add_user_role_learner_access.sql` menambahkan role `user` (label **Pengguna**) dan tiga permission learner: `learning.read`, `exam.take`, dan `exam.history.read`.
+
+Trigger `on_auth_user_created_assign_default_role` memberi role `user` secara otomatis untuk Auth user baru. Existing Auth users juga direkonsiliasi ke role tersebut saat migration diterapkan. Verifikasi live menemukan role `user`, ketiga permission terpetakan, trigger aktif, 4 Auth users, dan 4 assignment learner.
+
+Role `user` berada di `user_roles`, bukan `admin_users`. RLS `user_roles` tetap membatasi pembacaan assignment self dan perubahan assignment hanya untuk Super Admin.
