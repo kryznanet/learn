@@ -910,3 +910,33 @@ Lanjutkan implementasi UI learner dan admin untuk bookmark, feedback, notifikasi
 ### Checkpoint berikutnya
 
 Lanjutkan feature completion yang masih tersisa: verify/fix public archive filtering, inspect UI links and source parity, then final security/deployment audit. Setelah feature freeze, jalankan fresh Browser E2E dan catat hasil di `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## Feature expansion batch 3 — 19 September 2026
+
+- Commit certificate page: af49e7d288b5a7eea655b49bd13438207b8e44f3.
+- Commit certificate link: 577a7e9bdd30f9d356312a0c395a2fa0e2a1b84b.
+- Commit exam result payload title fix: a0ddc93cfabecdcaf8e159bc7f1f118711086791.
+- `exam-api` redeployed version 4 ACTIVE with `verify_jwt=true`.
+
+### Feature request status
+
+- Admin Ujian edit/reorder/archive/category: **Implemented — Needs Browser Verification**.
+- Learner progress dashboard: **Implemented — Needs Browser Verification**.
+- Exam result detail: **Implemented — Needs Browser Verification**.
+- Certificate kelulusan: **Implemented — Needs Browser Verification**.
+- Bookmark materi: **Implemented — Needs Browser Verification**.
+- Feedback materi + admin review: **Implemented — Needs Browser Verification**.
+- Notifikasi learner + admin sender: **Implemented — Needs Browser Verification**.
+- Statistik admin: **Implemented — Needs Browser Verification**.
+- Filter pengguna: **Implemented — Needs Browser Verification**.
+
+### Feature freeze candidate
+
+Seluruh fitur tambahan yang disepakati pada batch ini sudah memiliki source implementation atau database foundation. Belum boleh dinyatakan final sebelum Browser E2E fresh, source/deployment parity, dan final security audit dilakukan.
+
+Restore UI-to-database tetap **Blocked** karena belum ada environment Supabase terisolasi.
+
+### Checkpoint berikutnya
+
+Lakukan source review final untuk semua feature batch, verifikasi deployment parity, lalu jalankan fresh Browser E2E setelah feature freeze. Catat setiap hasil runtime di `docs/BROWSER-E2E-RESULTS.md`, kemudian lakukan final Security Advisor/RLS/Storage/deployment audit.
