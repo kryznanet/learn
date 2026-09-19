@@ -40,6 +40,7 @@ Folder `docs/` menjadi titik masuk utama untuk memahami kondisi proyek, struktur
 - `EDGE-FUNCTIONS.md` — inventory Edge Function, deployment/version, auth, dan parity source.
 - `DEPLOYMENT.md` — checklist sebelum/sesudah deployment dan rollback.
 - `TESTING.md` — checklist pengujian manual/E2E.
+- `BROWSER-E2E-RESULTS.md` — log khusus hasil runtime Browser E2E dan histori verifikasi.
 - `LEGACY.md` — inventory object/file legacy dan aturan cleanup.
 
 ## Urutan membaca
