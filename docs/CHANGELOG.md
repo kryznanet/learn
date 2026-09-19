@@ -1,3 +1,11 @@
+## 19 September 2026 — Rekonsiliasi katalog materi
+
+- Menyelaraskan `docs/MATERIAL-CATALOG.md` dengan data live `public.materi` menggunakan query read-only.
+- Katalog sekarang mencatat seluruh **58 materi published** berdasarkan kategori aktual: Dasar 22, Intermediate 20, Advanced 12, Tutorial 4.
+- Placeholder **Test** dan **Test 12** tidak dimasukkan karena telah diverifikasi berstatus `archived`.
+- Commit katalog: `9a65c0a777b04778b35dd283f1bd077b3f6bf434`.
+- Tidak ada perubahan pada data aplikasi atau schema database.
+
 ## 18 September 2026 — Draft Recovery E2E fixture cleanup
 - Menghapus ketergantungan test Browser E2E authenticated terhadap judul fixture `Test 12` untuk existing-material recovery dan version history.
 - Test sekarang memilih materi pertama yang tersedia dan membaca judul aktual dari card, sehingga coverage tidak bergantung pada seed data bernama tertentu.
