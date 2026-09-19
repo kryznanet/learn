@@ -706,3 +706,26 @@ Verifikasi runtime: pengunjung melihat `Masuk`; learner login melihat nama/profi
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35430654801.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Admin + Super Admin learner user management — 19 September 2026
+
+- Branch `19-Sep-2026` diverifikasi sebelum perubahan dan tetap digunakan.
+- `admin/users.html` sekarang memiliki bagian `Pengguna Belajar`: tambah akun baru dan edit akun learner.
+- Admin dan Super Admin memiliki `users.read`, `users.create`, `users.update`, `users.disable` untuk akun learner. Permission ini tidak mengubah batasan staff management.
+- Edge Function `manage-users` dibuat dan dideploy dengan `verify_jwt=true`; version 2 aktif. Endpoint `list/create/update` hanya menerima caller Admin/Super Admin aktif dan menolak target yang merupakan staff.
+- Migration `20260919140000_allow_admin_learner_user_management` diterapkan dan diverifikasi live.
+- Commit migration: `e370e92bedfb32f03724ec3fae47b0325d9205f9`.
+- Commit UI: `d3da7b50af387be366f447e58724965eae420ce9`.
+- Commit Edge Function source: `689a94365b13acf10b31ac5e59d88afad55d90e7`.
+- Edge Function deployment: `manage-users` version 2, status ACTIVE, `verify_jwt=true`.
+- Runtime E2E create/edit learner: **Pending**.
+
+### Status
+
+- RBAC Admin/Super Admin learner management: **Verified** live.
+- UI + Edge Function: **Implemented — Needs Browser Verification**.
+
+### Checkpoint berikutnya
+
+Jalankan Browser E2E menggunakan akun Admin dan Super Admin untuk create/edit learner, termasuk memastikan Admin tidak dapat mengedit akun staff melalui endpoint learner. Hasil dicatat di `docs/BROWSER-E2E-RESULTS.md`.
