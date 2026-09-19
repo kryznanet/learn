@@ -200,3 +200,11 @@ Gunakan akun E2E learner khusus. Jangan menggunakan operasi destruktif terhadap 
 - [x] Rename kategori yang sudah dipakai materi diblokir untuk menjaga referensi `materi.kategori`.
 - [x] Delete kategori yang masih dipakai materi diblokir; nonaktifkan sebagai alternatif.
 - [ ] Browser E2E kategori tetap ditunda sampai seluruh feature request selesai.
+
+
+## Learner exam history — 19 September 2026
+
+- [x] Halaman `belajar/ujian-riwayat.html` tersedia dan terhubung dari Belajar Saya/Profile.
+- [x] Query hanya membaca `exam_attempts` dan relasi ujian/kategori; authorization tetap melalui RLS.
+- [x] Nilai/status ditampilkan dari hasil server-side attempt.
+- [ ] Browser E2E riwayat ujian ditunda sampai seluruh feature request selesai.
