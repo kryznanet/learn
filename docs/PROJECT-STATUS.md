@@ -376,3 +376,16 @@ Kategori materi published dinormalisasi menjadi empat kategori publik: `Dasar`, 
 ### Checkpoint berikutnya
 
 Lanjutkan verifikasi runtime/browser dan review pedagogis akhir untuk 58 materi. Setelah area tersebut diverifikasi, lanjutkan residual project items yang masih pending: Restore UI-to-database pada environment terisolasi, local Supabase authoritative baseline, dan consumer eksternal `swift-api` bila diperlukan.
+
+
+## Dokumentasi hasil Browser E2E — 19 September 2026
+
+- Ditambahkan `docs/BROWSER-E2E-RESULTS.md` sebagai log khusus hasil runtime Browser E2E.
+- Dokumen memisahkan runtime evidence dari checkpoint proyek dan menetapkan bahwa source verification tidak boleh dicatat sebagai runtime pass.
+- Histori mencatat Browser E2E run #6 sebagai Passed, Draft Recovery run #43 sebagai Passed, run #35 sebagai Failed dengan diagnosis timing, serta assertion public terbaru sebagai **Needs Verification** sampai fresh workflow run tersedia.
+- Commit dokumen: `d24fb59a39130ceb748e56654d34e4891385a4a5`.
+- Status Browser E2E public terbaru tetap **Needs Verification**; tidak ada hasil runtime baru yang diklaim.
+
+### Checkpoint berikutnya
+
+Perbarui `docs/BROWSER-E2E-RESULTS.md` setelah fresh Browser E2E workflow menghasilkan runtime evidence. Tetap pertahankan Restore UI-to-database sebagai **Blocked** sampai environment Supabase terisolasi tersedia.
