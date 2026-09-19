@@ -324,49 +324,82 @@
       );
     }
 
-    async function trackReading(materiId) {
-      const { data: { user } } = await getDb().auth.getUser();
-      if (!user) return;
-      const { data: existing } = await getDb()
-        .from('material_reading_history')
-        .select('id,status,visit_count')
-        .eq('user_id', user.id)
-        .eq('materi_id', materiId)
-        .maybeSingle();
-      if (existing) {
-        await getDb().from('material_reading_history').update({
-          last_read_at: new Date().toISOString(),
-          visit_count: Number(existing.visit_count || 0) + 1
-        }).eq('id', existing.id).eq('user_id', user.id);
-      } else {
-        await getDb().from('material_reading_history').insert({
-          user_id: user.id, materi_id: materiId, status: 'in_progress'
-        });
-      }
-    }
-
     async function refreshReading(materiId) {
       const { data: { user } } = await getDb().auth.getUser();
       const status = document.getElementById('reading-status');
+      const checkbox = document.getElementById('reading-confirm');
+      const button = document.getElementById('complete-reading');
       if (!user) {
         status.innerHTML = 'Login untuk menyimpan riwayat materi. <a href="../belajar/login.html" style="color:var(--primary);font-weight:800">Masuk / Daftar</a>';
-        document.getElementById('complete-reading').disabled = true;
+        checkbox.disabled = true;
+        button.disabled = true;
         return;
       }
-      const { data } = await getDb().from('material_reading_history')
+      const { data, error } = await getDb().from('material_reading_history')
         .select('status').eq('user_id', user.id).eq('materi_id', materiId).maybeSingle();
-      status.textContent = data?.status === 'completed' ? 'Materi sudah ditandai selesai dibaca.' : 'Materi tercatat sebagai sedang dipelajari.';
-      document.getElementById('complete-reading').textContent = data?.status === 'completed' ? 'Sudah selesai dibaca' : 'Tandai selesai dibaca';
-      document.getElementById('complete-reading').disabled = data?.status === 'completed';
+      if (error) throw error;
+      const completed = data?.status === 'completed';
+      status.textContent = completed
+        ? 'Materi sudah ditandai selesai dibaca dan masuk ke Riwayat Belajar.'
+        : 'Baca materi sampai bagian paling bawah, lalu konfirmasi.';
+      button.textContent = completed ? 'Sudah selesai dibaca' : 'Tandai sudah dibaca';
+      checkbox.checked = completed;
+      checkbox.disabled = completed || !window.__kryznaReachedBottom;
+      button.disabled = completed || !window.__kryznaReachedBottom || !checkbox.checked;
     }
 
     async function completeReading(materiId) {
       const { data: { user } } = await getDb().auth.getUser();
-      if (!user) return;
-      await getDb().from('material_reading_history').update({
-        status: 'completed', completed_at: new Date().toISOString(), last_read_at: new Date().toISOString()
-      }).eq('user_id', user.id).eq('materi_id', materiId);
+      if (!user || !window.__kryznaReachedBottom) return;
+      const checkbox = document.getElementById('reading-confirm');
+      if (!checkbox?.checked) return;
+      const now = new Date().toISOString();
+      const { error } = await getDb().from('material_reading_history').upsert({
+        user_id: user.id,
+        materi_id: materiId,
+        status: 'completed',
+        first_read_at: now,
+        last_read_at: now,
+        completed_at: now,
+        visit_count: 1
+      }, { onConflict: 'user_id,materi_id' });
+      if (error) throw error;
       await refreshReading(materiId);
+    }
+
+    function setupReadingConfirmation(materiId) {
+      window.__kryznaReachedBottom = false;
+      const checkbox = document.getElementById('reading-confirm');
+      const button = document.getElementById('complete-reading');
+      const sentinel = document.getElementById('reading-bottom-sentinel');
+
+      const updateControls = () => {
+        const completed = checkbox.checked && button.textContent === 'Sudah selesai dibaca';
+        checkbox.disabled = completed || !window.__kryznaReachedBottom;
+        button.disabled = completed || !window.__kryznaReachedBottom || !checkbox.checked;
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          window.__kryznaReachedBottom = true;
+          checkbox.disabled = false;
+          updateControls();
+        }
+      }, { rootMargin: '0px 0px 80px 0px' });
+      observer.observe(sentinel);
+
+      checkbox.addEventListener('change', updateControls);
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        try {
+          await completeReading(materiId);
+        } catch (error) {
+          console.error(error);
+          button.disabled = false;
+          document.getElementById('reading-status').textContent =
+            'Gagal menyimpan konfirmasi. Silakan coba lagi.';
+        }
+      });
     }
 
     async function load() {
@@ -430,13 +463,13 @@
           docBox(material) +
           '<div class="content">' +
           renderContent(material.konten) +
-          '</div>';
-        await trackReading(material.id);
+          '</div>' +
+          '<div id="reading-bottom-sentinel" style="height:1px" aria-hidden="true"></div>';
         const reading = document.getElementById('reading');
         reading.hidden = false;
-        reading.innerHTML = '<div style="border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg)"><b>📚 Riwayat belajar</b><p id="reading-status" style="margin:5px 0;color:var(--muted);font-size:13px">Memuat status...</p><button id="complete-reading" class="theme" type="button">Tandai selesai dibaca</button> · <a href="../belajar/riwayat.html" style="color:var(--primary);font-weight:800">Buka riwayat</a></div>';
+        reading.innerHTML = '<div style="border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg)"><b>📚 Konfirmasi membaca</b><p id="reading-status" style="margin:5px 0;color:var(--muted);font-size:13px">Memuat status...</p><label style="display:flex;gap:8px;align-items:flex-start;margin:10px 0;font-size:14px"><input id="reading-confirm" type="checkbox" disabled> Saya sudah membaca materi ini sampai bagian paling bawah.</label><button id="complete-reading" class="theme" type="button" disabled>Tandai sudah dibaca</button> · <a href="../belajar/riwayat.html" style="color:var(--primary);font-weight:800">Buka riwayat</a></div>';
         await refreshReading(material.id);
-        document.getElementById('complete-reading')?.addEventListener('click', () => completeReading(material.id));
+        setupReadingConfirmation(material.id);
       } catch (error) {
         console.error(error);
         app.innerHTML =
