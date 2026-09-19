@@ -21,16 +21,27 @@
 
   const isAdminArea =
     pathname.includes('/admin/') || pathname.includes('/content/');
-  const isLearnerArea =
-    pathname.includes('/belajar/') || pathname.includes('/ujian/');
+  const isLearnerArea = pathname.includes('/belajar/');
 
-  const publicLinks = [
-    ['⌂', 'Beranda', root + 'index.html'],
-    ['📚', 'Materi', root + 'index.html'],
-    ['📝', 'Ujian', root + 'ujian/index.html']
+  const publicNavigation = [
+    {
+      icon: '⌂',
+      label: 'Beranda',
+      href: root + 'index.html'
+    },
+    {
+      icon: '📚',
+      label: 'Materi',
+      href: root + 'index.html#materi'
+    },
+    {
+      icon: '📝',
+      label: 'Ujian',
+      href: root + 'ujian/index.html'
+    }
   ];
 
-  const learnerGroups = [
+  const learnerNavigation = [
     {
       icon: '⌂',
       label: 'Beranda',
@@ -39,7 +50,7 @@
     {
       icon: '📚',
       label: 'Materi',
-      href: root + 'index.html'
+      href: root + 'index.html#materi'
     },
     {
       icon: '📝',
@@ -50,9 +61,18 @@
       icon: '📖',
       label: 'Belajar Saya',
       items: [
-        ['Progress Belajar', root + 'belajar/index.html#progress'],
-        ['Riwayat Belajar', root + 'belajar/riwayat.html'],
-        ['Bookmark', root + 'belajar/bookmarks.html']
+        {
+          label: 'Progress Belajar',
+          href: root + 'belajar/index.html#progress'
+        },
+        {
+          label: 'Riwayat Belajar',
+          href: root + 'belajar/riwayat.html'
+        },
+        {
+          label: 'Bookmark',
+          href: root + 'belajar/bookmarks.html'
+        }
       ]
     },
     {
@@ -67,60 +87,92 @@
     }
   ];
 
-  const contentGroups = [
-    {
-      icon: '📊',
-      label: 'Dashboard',
-      href: root + 'content/index.html',
-      permission: 'content.read'
-    },
-    {
-      icon: '📚',
-      label: 'Kelola Materi',
-      items: [
-        ['Daftar Materi', root + 'content/materials.html', 'content.read'],
-        ['Kategori', root + 'content/categories.html', 'content.manage_categories'],
-        ['Riwayat Versi', root + 'content/versions-index.html', 'content.read'],
-        ['Aktivitas Materi', root + 'content/activity.html', 'content.view_logs']
-      ]
-    },
-    {
-      icon: '📝',
-      label: 'Kelola Ujian',
-      items: [
-        ['Daftar Ujian', root + 'admin/exams.html', 'exam.manage'],
-        ['Editor Ujian', root + 'admin/exams.html#examForm', 'exam.manage'],
-        ['Soal', root + 'admin/exams.html#questionCard', 'exam.manage']
-      ]
-    }
-  ];
+  const contentNavigation = {
+    icon: '📚',
+    label: 'CONTENT',
+    items: [
+      {
+        icon: '📊',
+        label: 'Dashboard',
+        href: root + 'content/index.html',
+        permission: 'content.read'
+      },
+      {
+        icon: '📚',
+        label: 'Kelola Materi',
+        items: [
+          {
+            label: 'Daftar Materi',
+            href: root + 'content/materials.html',
+            permission: 'content.read'
+          },
+          {
+            label: 'Kategori',
+            href: root + 'content/categories.html',
+            permission: 'content.manage_categories'
+          },
+          {
+            label: 'Riwayat Versi',
+            href: root + 'content/versions-index.html',
+            permission: 'content.read'
+          },
+          {
+            label: 'Aktivitas Materi',
+            href: root + 'content/activity.html',
+            permission: 'content.view_logs'
+          }
+        ]
+      },
+      {
+        icon: '📝',
+        label: 'Kelola Ujian',
+        items: [
+          {
+            label: 'Daftar Ujian',
+            href: root + 'admin/exams.html',
+            permission: 'exam.manage'
+          },
+          {
+            label: 'Editor Ujian',
+            href: root + 'admin/exams.html#examForm',
+            permission: 'exam.manage'
+          },
+          {
+            label: 'Soal',
+            href: root + 'admin/exams.html#questionCard',
+            permission: 'exam.manage'
+          }
+        ]
+      }
+    ]
+  };
 
-  const adminGroups = [
-    {
-      icon: '👥',
-      label: 'Kelola Pengguna',
-      href: root + 'admin/users.html',
-      permission: 'users.read'
-    },
-    {
-      icon: '🕘',
-      label: 'Aktivitas Sistem',
-      href: root + 'admin/activity.html',
-      permission: 'system.view_logs'
-    },
-    {
-      icon: '📥',
-      label: 'Import Materi',
-      href: root + 'admin/import.html',
-      permission: 'content.import'
-    },
-    {
-      icon: '⚙️',
-      label: 'Pengaturan',
-      href: root + 'admin/settings.html',
-      permission: 'settings.manage'
-    }
-  ];
+  const administrationNavigation = {
+    icon: '🛡️',
+    label: 'ADMINISTRASI',
+    items: [
+      {
+        label: 'Kelola Pengguna',
+        href: root + 'admin/users.html',
+        permission: 'users.read'
+      },
+      {
+        label: 'Aktivitas Sistem',
+        href: root + 'admin/activity.html',
+        permission: 'system.view_logs'
+      },
+      {
+        label: 'Import Materi',
+        href: root + 'admin/import.html',
+        permission: 'content.import'
+      },
+      {
+        label: 'Pengaturan',
+        href: root + 'admin/settings.html',
+        permission: 'settings.manage'
+      }
+    ]
+  };
 
   function normalize(value) {
     try {
@@ -143,90 +195,82 @@
     }
 
     if (!target.hash) {
-      return true;
+      return !location.hash;
     }
 
     return location.hash === target.hash;
   }
 
-  function renderSimpleLink(link) {
-    const [icon, label, href] = link;
-    const current = isCurrent(href);
+  function hasCurrentItem(item) {
+    if (item.href && isCurrent(item.href)) {
+      return true;
+    }
+
+    return (item.items || []).some(hasCurrentItem);
+  }
+
+  function visibleItems(item) {
+    return (item.items || []).filter(
+      (child) => !child.permission || allowed(child.permission)
+    );
+  }
+
+  function renderLink(item, nested) {
+    const current = isCurrent(item.href);
+    const className = nested ? 'kx-sublink' : 'kx-link';
 
     return (
-      '<a class="kx-link' +
+      '<a class="' +
+      className +
       (current ? ' active' : '') +
       '" href="' +
-      href +
+      item.href +
       '"' +
       (current ? ' aria-current="page"' : '') +
       '>' +
-      icon +
-      ' ' +
-      label +
+      (item.icon ? item.icon + ' ' : '') +
+      item.label +
       '</a>'
     );
   }
 
-  function renderGroup(group) {
-    const items = group.items || [];
-    const visibleItems = items.filter(
-      (item) => !item[2] || allowed(item[2])
-    );
+  function renderGroup(item, nested) {
+    const children = visibleItems(item);
 
-    if (group.permission && !allowed(group.permission)) {
+    if (!children.length) {
       return '';
     }
 
-    if (!group.href && !visibleItems.length) {
-      return '';
-    }
-
-    if (group.href) {
-      return renderSimpleLink([
-        group.icon,
-        group.label,
-        group.href
-      ]);
-    }
-
-    const groupCurrent = visibleItems.some((item) => isCurrent(item[1]));
-    const menuId = 'kx-menu-' + group.label
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-');
+    const current = hasCurrentItem(item);
+    const menuId = 'kx-menu-' +
+      item.label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     return (
-      '<details class="kx-group"' +
-      (groupCurrent ? ' open' : '') +
+      '<details class="' +
+      (nested ? 'kx-subgroup' : 'kx-group') +
+      '"' +
+      (current ? ' open' : '') +
       '>' +
-      '<summary class="kx-link' +
-      (groupCurrent ? ' active' : '') +
-      '" aria-controls="' +
-      menuId +
+      '<summary class="' +
+      (nested ? 'kx-sublink' : 'kx-link') +
+      (current ? ' active' : '') +
       '">' +
-      group.icon +
-      ' ' +
-      group.label +
+      (item.icon ? item.icon + ' ' : '') +
+      item.label +
       '<span class="kx-chevron" aria-hidden="true">⌄</span>' +
       '</summary>' +
       '<div id="' +
       menuId +
-      '" class="kx-submenu">' +
-      visibleItems
-        .map((item) => {
-          const current = isCurrent(item[1]);
+      '" class="' +
+      (nested ? 'kx-submenu kx-submenu-nested' : 'kx-submenu') +
+      '">' +
+      children
+        .map((child) => {
+          if (child.items) {
+            return renderGroup(child, true);
+          }
 
-          return (
-            '<a class="kx-sublink' +
-            (current ? ' active' : '') +
-            '" href="' +
-            item[1] +
-            '"' +
-            (current ? ' aria-current="page"' : '') +
-            '>' +
-            item[0] +
-            '</a>'
-          );
+          return renderLink(child, true);
         })
         .join('') +
       '</div>' +
@@ -234,9 +278,7 @@
     );
   }
 
-  let allowed = () => true;
-
-  function renderNavigation(groups, accountHref) {
+  function renderNavigation(items, accountHref) {
     const shell = document.createElement('div');
     shell.className = 'kx-shell';
 
@@ -249,7 +291,13 @@
       '<span>Kryzna Learn</span>' +
       '</a>' +
       '<div class="kx-links">' +
-      groups.map((group) => renderGroup(group)).join('') +
+      items
+        .map((item) =>
+          item.items
+            ? renderGroup(item, false)
+            : renderLink(item, false)
+        )
+        .join('') +
       '</div>' +
       '<div class="kx-user">' +
       '<a class="kx-menu" href="' +
@@ -267,14 +315,12 @@
     document.body.classList.add('kx-modern');
   }
 
+  let allowed = () => true;
+
   async function boot() {
     if (!isAdminArea && !isLearnerArea) {
       renderNavigation(
-        publicLinks.map(([icon, label, href]) => ({
-          icon,
-          label,
-          href
-        })),
+        publicNavigation,
         root + 'belajar/login.html'
       );
       return;
@@ -282,7 +328,7 @@
 
     if (isLearnerArea) {
       renderNavigation(
-        learnerGroups,
+        learnerNavigation,
         root + 'belajar/profile.html'
       );
       return;
@@ -309,13 +355,6 @@
         return true;
       }
 
-      if (permission === 'content.read') {
-        return (
-          permissions.includes(permission) ||
-          ['penulis', 'editor', 'admin', 'super_admin'].includes(role)
-        );
-      }
-
       return permissions.includes(permission);
     };
 
@@ -328,7 +367,7 @@
 
     if (!isContentRole) {
       renderNavigation(
-        learnerGroups,
+        learnerNavigation,
         root + 'belajar/profile.html'
       );
       return;
@@ -336,8 +375,8 @@
 
     renderNavigation(
       [
-        ...contentGroups,
-        ...adminGroups
+        contentNavigation,
+        administrationNavigation
       ],
       role === 'super_admin'
         ? root + 'admin/index.html'
