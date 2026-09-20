@@ -1,3 +1,12 @@
+## 20 September 2026 — Perbaikan Dashboard Admin blank
+
+- Memperbaiki syntax rusak pada loader `shared/ui.js` di `shared/auth.js` yang dapat menghentikan seluruh helper autentikasi sebelum dashboard authenticated dirender.
+- Merapikan `admin/dashboard.html`: statistik operasional dipindahkan ke dalam area aplikasi yang terproteksi, query statistik dijalankan setelah autentikasi berhasil, dan error data diberi state yang terlihat agar halaman tidak berakhir blank.
+- Tidak mengubah role, permission, routing, database, RLS, RPC, atau business logic akses.
+- Commit source: `7286140f4a26f21e7bc0ca68e67834898735d759` dan `a33161d6b1f7535742abe847de9a66af74f69398`.
+- Source verification: kedua file berhasil di-fetch ulang dari branch `20-Sep-2026`.
+- Browser verification masih **Pending**.
+
 ## 20 September 2026 — Shared visual refinement
 
 - Memperhalus shared Blue Theme untuk Light + Dark mode melalui `shared/ui.css`.
