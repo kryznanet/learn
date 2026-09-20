@@ -76,7 +76,7 @@ textarea:focus-visible,
   padding: 8px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .kx-brand {
@@ -103,11 +103,11 @@ textarea:focus-visible,
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: 12px;
-  flex: 1;
+  margin-left: 10px;
+  flex: 1 1 auto;
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: thin;
+  overflow: visible;
+}
 }
 
 .kx-toggle {
@@ -131,6 +131,9 @@ textarea:focus-visible,
 }
 
 .kx-link {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
   padding: 8px 10px;
   border-radius: 10px;
   color: #475569;
@@ -822,6 +825,20 @@ body.kx-modern .card h3 {
   flex: 0 0 auto;
 }
 
+.kx-group > summary,
+.kx-subgroup > summary {
+  user-select: none;
+}
+
+.kx-group[open] > summary {
+  box-shadow: inset 0 0 0 1px var(--kx-line);
+}
+
+.kx-group > .kx-submenu {
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+}
+
 .kx-group > summary {
   list-style: none;
   cursor: pointer;
@@ -843,6 +860,8 @@ body.kx-modern .card h3 {
 
 .kx-submenu {
   position: absolute;
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
   top: calc(100% + 6px);
   left: 0;
   z-index: 1010;
@@ -873,6 +892,10 @@ body.kx-modern .card h3 {
 }
 
 @media (max-width: 850px) {
+  .kx-links {
+    overflow: visible;
+  }
+
   .kx-group {
     flex: 0 0 auto;
   }
@@ -1008,5 +1031,26 @@ body.kx-modern .card h3 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+
+@media (min-width: 601px) {
+  .kx-nav {
+    position: relative;
+  }
+
+  .kx-links {
+    justify-content: flex-start;
+  }
+
+  .kx-group > .kx-submenu {
+    min-width: 220px;
+  }
+
+  .kx-sublink {
+    min-height: 38px;
+    display: flex;
+    align-items: center;
   }
 }
