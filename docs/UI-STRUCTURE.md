@@ -388,3 +388,15 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - **ADMINISTRASI** menjadi group utama untuk Kelola Pengguna, Aktivitas Sistem, Import Materi, dan Pengaturan.
 - Parent group otomatis terbuka ketika halaman anak sedang aktif.
 - Menu publik **Materi** menggunakan anchor katalog `#materi`; **Progress Belajar** menggunakan anchor `#progress`.
+
+
+## Navigasi mobile — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Navigasi bersama sekarang memiliki tombol menu mobile dengan `aria-expanded` dan `aria-controls`.
+- Pada layar kecil, menu utama tidak lagi bergantung pada horizontal scroll; menu dapat dibuka/tutup sebagai panel vertikal.
+- Group **CONTENT**, **ADMINISTRASI**, dan **Belajar Saya** tetap menggunakan `details/summary` sehingga submenu tetap dapat dibuka bertingkat.
+- Setelah memilih link, menu mobile otomatis ditutup.
+- Menu **Akun** tetap tersedia pada mobile.
+- Desktop mempertahankan pola navigasi horizontal yang sudah ada.
+- Tidak ada perubahan database, RLS, RPC, role, atau permission.
