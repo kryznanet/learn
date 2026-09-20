@@ -1,3 +1,12 @@
+## 🔧 Shared navigation duplicate-load fix — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- `shared/ui.js` sekarang memiliki initialization guard `window.__kryznaUiBooted` agar shared navigation hanya di-boot sekali ketika script ter-load lebih dari satu kali melalui kombinasi `shared/auth.js` dan halaman.
+- Perubahan mencegah dua shell navigasi muncul bersamaan di bagian atas halaman.
+- Tidak ada perubahan routing, auth, permission, RBAC, database, atau RLS.
+- Source commit: `f2023bae9af59c5562dfd740093e10490aa1eae6`.
+- Status: **Source Verified — Needs Browser Verification**.
+
 ## 19 September 2026 — Pendalaman pedagogis 35 materi
 
 - Audit read-only terhadap 58 materi published menemukan 35 materi dengan blok konten generik pada latihan/troubleshooting/kesalahan umum/checklist/ringkasan.
