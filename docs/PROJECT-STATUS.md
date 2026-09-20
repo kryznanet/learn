@@ -1,3 +1,29 @@
+## 🎨 Full Blue Theme — 20 September 2026
+
+- Branch: `20-Sep-2026` (explicitly confirmed for this work).
+- Shared `shared/ui.css` diperbarui untuk menerapkan tema biru menyeluruh pada **Light + Dark mode**.
+- Light mode menggunakan background biru lembut, surface putih, border biru muda, dan primary blue.
+- Dark mode menggunakan background navy gelap, surface biru tua, teks biru muda, dan interactive state biru.
+- Shared navigation, header/footer, card, form, table, status badge, empty/error/success state, dan sticky action ikut menggunakan token tema.
+- Toggle tema yang sudah ada di `shared/ui.js` tetap digunakan; preferensi `kryzna-theme` tetap tersimpan di `localStorage`.
+- Tidak ada perubahan routing, auth, permission, RBAC, database, RLS, RPC, atau business logic.
+- Aturan penulisan kode pada `docs/CODE-STYLE.md` diterapkan: perubahan terisolasi, CSS property per baris, token bersama, dan verifikasi setelah commit.
+- Commit source: `a381fdb4bb1d8665f95a68f8320a90eccd7d0387`.
+- Dokumentasi UI: commit `81d085f070d480d6c4c25a02a366d026cbdacf00`.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E: **Pending** setelah perubahan tema.
+- Visual verification Light mode: **Needs Verification**.
+- Visual verification Dark mode: **Needs Verification**.
+- Mobile Light/Dark: **Needs Verification**.
+- Latest recorded Browser E2E sebelum perubahan tema tetap #379, **5 passed / 4 failed**; tidak dianggap sebagai verifikasi tema baru.
+
+### Checkpoint berikutnya
+
+Jalankan fresh Browser E2E pada branch `20-Sep-2026`, lalu verifikasi visual Light/Dark pada desktop dan mobile. Catat runtime ke `docs/BROWSER-E2E-RESULTS.md`; jika ada regresi, perbaiki berdasarkan evidence. Setelah UI stabil, lanjutkan final Security Advisor/RLS/Storage/deployment audit.
+
 ## 🔧 Shared navigation duplicate-load fix — 20 September 2026
 
 - Branch: `20-Sep-2026`.
