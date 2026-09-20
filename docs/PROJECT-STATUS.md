@@ -1,3 +1,26 @@
+## 🎨 Final shared design polish — 20 September 2026
+
+- Branch: 20-Sep-2026.
+- Shared visual layer dirapikan menyeluruh melalui shared/ui.css: hierarchy header, submenu, card, toolbar, table, primary action, focus state, footer, spacing, dan responsive behavior.
+- Breakpoint navigasi mobile diperluas hingga 760px agar tablet kecil tidak mengalami header/menu yang terlalu padat; desktop tetap horizontal.
+- State active/open parent group, submenu, target klik, hover, focus, dan primary action dibuat lebih konsisten dengan Light + Dark Blue Theme.
+- Tidak ada perubahan routing, auth, permission, RBAC, database, RLS, RPC, atau business logic.
+- Source commit: c0471453ad9ce2fa42badd033b702dc80d9d409f.
+- UI documentation commit: efaaf29a1e11f57749bd57eec1c217b9f505f859.
+- Source verification: shared/ui.css berhasil di-fetch ulang dengan content SHA b0e7fff74ab44d8df73551520dd6b145dc77d67e.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E: **Pending**; runtime terbaru sebelum perubahan ini tetap #390 (5 passed / 4 failed) dan bukan bukti untuk polish baru.
+- Visual Light desktop/tablet/mobile: **Needs Verification**.
+- Visual Dark desktop/tablet/mobile: **Needs Verification**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Fresh Browser E2E pada branch 20-Sep-2026, lalu visual verification desktop/tablet/mobile untuk Light + Dark pada public, learner, content, administrasi, materi, ujian, hasil, dan profil. Catat runtime ke docs/BROWSER-E2E-RESULTS.md dan perbaiki regresi berdasarkan evidence sebelum final security/deployment audit.
+
 ## 🎨 Shared visual refinement — 20 September 2026
 
 - Branch: `20-Sep-2026`.
