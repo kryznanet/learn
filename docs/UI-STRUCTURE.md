@@ -428,3 +428,14 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - Footer lama pada halaman yang sudah memilikinya tetap dipertahankan dan diharmonisasi melalui shared visual layer.
 - Perubahan hanya pada presentasi UI; tidak mengubah routing, auth, permission, RBAC, database, atau RLS.
 - Status: **Implemented — Needs Browser Verification**.
+
+## 🎨 Full Blue Theme — 20 September 2026
+
+- Shared visual system now uses a blue-first palette for both Light and Dark mode.
+- Light mode uses a soft blue page background, blue-tinted borders/surfaces, and blue primary actions.
+- Dark mode uses deep navy surfaces/backgrounds with readable light-blue text and blue interactive states.
+- Shared navigation, cards, forms, tables, status badges, empty/error/success states, sticky actions, header, and footer inherit the theme tokens.
+- Theme preference remains stored in `localStorage` under `kryzna-theme`; the existing 🌙 / ☀️ toggle in `shared/ui.js` controls the `data-theme` attribute.
+- No routing, auth, permission, RBAC, database, RLS, or business logic changes were made.
+- Source commit: `a381fdb4bb1d8665f95a68f8320a90eccd7d0387`.
+- Status: **Source Verified — Needs Browser Verification**.
