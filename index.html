@@ -884,16 +884,6 @@
 
     $('search').addEventListener('input', filterMateri);
 
-    $('theme').addEventListener('click', () => {
-      const documentElement = document.documentElement;
-      const isDark = documentElement.getAttribute('data-theme') === 'dark';
-      const nextTheme = isDark ? 'light' : 'dark';
-
-      documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('kryzna-theme', nextTheme);
-      $('theme').textContent = isDark ? '🌙' : '☀️';
-    });
-
     async function renderAccountNav() {
       const wrap = $('account-nav');
       if (!wrap || !window.supabaseClient) return;
@@ -912,10 +902,6 @@
         console.warn('Account nav gagal:', error);
       }
     }
-
-    const savedTheme = localStorage.getItem('kryzna-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    $('theme').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 
     loadMateri();
     renderAccountNav();
