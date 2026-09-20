@@ -1252,3 +1252,331 @@ body.kx-modern > footer:not(.kx-footer) .footer-in {
     flex-direction: column;
   }
 }
+
+/* Blue theme — light + dark */
+:root {
+  --kx-bg: #f0f7ff;
+  --kx-surface: #ffffff;
+  --kx-surface-soft: #f5f9ff;
+  --kx-line: #d7e7f8;
+  --kx-line-strong: #b8d2ee;
+  --kx-text: #102a43;
+  --kx-muted: #5f7892;
+  --kx-primary: #1976d2;
+  --kx-primary-strong: #1259a6;
+  --kx-success: #15803d;
+  --kx-warning: #a16207;
+  --kx-danger: #b91c1c;
+  --kx-info: #1769aa;
+  --kx-shadow: 0 10px 30px rgba(15, 76, 129, 0.08);
+  --kx-focus: 0 0 0 3px rgba(25, 118, 210, 0.2);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --kx-bg: #071a2d;
+  --kx-surface: #0d2742;
+  --kx-surface-soft: #103451;
+  --kx-line: #214765;
+  --kx-line-strong: #326384;
+  --kx-text: #e8f3ff;
+  --kx-muted: #a8c1d8;
+  --kx-primary: #4da3ff;
+  --kx-primary-strong: #78bbff;
+  --kx-success: #4ade80;
+  --kx-warning: #facc15;
+  --kx-danger: #f87171;
+  --kx-info: #60a5fa;
+  --kx-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  --kx-focus: 0 0 0 3px rgba(77, 163, 255, 0.28);
+  color-scheme: dark;
+}
+
+body,
+body.kx-modern {
+  background: var(--kx-bg);
+  color: var(--kx-text);
+}
+
+.kx-shell,
+body.kx-modern .top {
+  background: color-mix(in srgb, var(--kx-surface) 94%, transparent);
+  color: var(--kx-text);
+  border-color: var(--kx-line);
+  box-shadow: 0 6px 24px rgba(15, 76, 129, 0.08);
+}
+
+.kx-logo,
+body.kx-modern .top .logo {
+  background: linear-gradient(135deg, var(--kx-primary-strong), var(--kx-primary));
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.2);
+}
+
+.kx-brand,
+.kx-link,
+.kx-menu,
+.kx-theme,
+.kx-toggle,
+.kx-btn,
+.kx-back,
+.kx-sublink {
+  color: var(--kx-text);
+}
+
+.kx-link:hover,
+.kx-sublink:hover,
+.kx-group[open] > summary,
+.kx-menu:hover,
+.kx-theme:hover,
+.kx-toggle:hover,
+body.kx-modern .btn:hover {
+  background: var(--kx-surface-soft);
+  color: var(--kx-primary-strong);
+}
+
+.kx-link.active,
+.kx-sublink.active {
+  background: color-mix(in srgb, var(--kx-primary) 12%, var(--kx-surface));
+  border-color: color-mix(in srgb, var(--kx-primary) 28%, var(--kx-line));
+  color: var(--kx-primary-strong);
+}
+
+.kx-submenu {
+  background: color-mix(in srgb, var(--kx-surface) 98%, transparent);
+  border-color: var(--kx-line);
+  box-shadow: 0 14px 32px rgba(15, 76, 129, 0.16);
+}
+
+.kx-card,
+.kx-stat,
+.kx-toolbar,
+.kx-table-wrap,
+.kx-footer,
+.kx-field input,
+.kx-field select,
+.kx-field textarea,
+.kx-input,
+.kx-select,
+.kx-textarea,
+body.kx-modern .card,
+body.kx-modern .stat,
+body.kx-modern .filters,
+body.kx-modern table {
+  background: var(--kx-surface);
+  border-color: var(--kx-line);
+  color: var(--kx-text);
+}
+
+.kx-card,
+.kx-stat,
+body.kx-modern .card,
+body.kx-modern .stat {
+  box-shadow: var(--kx-shadow);
+}
+
+.kx-btn,
+.kx-theme,
+.kx-toggle,
+.kx-menu {
+  background: var(--kx-surface);
+  border-color: var(--kx-line);
+}
+
+.kx-btn.primary,
+body.kx-modern .btn.primary,
+body.kx-modern .primary {
+  background: var(--kx-primary);
+  border-color: var(--kx-primary);
+  color: #ffffff;
+}
+
+.kx-btn.secondary {
+  background: var(--kx-surface-soft);
+  color: var(--kx-text);
+}
+
+.kx-btn.danger,
+.kx-danger {
+  background: var(--kx-surface) !important;
+  border-color: color-mix(in srgb, var(--kx-danger) 35%, var(--kx-line)) !important;
+  color: var(--kx-danger) !important;
+}
+
+.kx-btn.danger:hover,
+.kx-danger:hover {
+  background: color-mix(in srgb, var(--kx-danger) 10%, var(--kx-surface)) !important;
+}
+
+.kx-field label,
+body.kx-modern th,
+.kx-table-wrap th {
+  color: var(--kx-text);
+}
+
+.kx-table-wrap th,
+body.kx-modern th {
+  background: var(--kx-surface-soft);
+  border-color: var(--kx-line);
+}
+
+.kx-table-wrap td,
+body.kx-modern td {
+  border-color: var(--kx-line);
+  color: var(--kx-text);
+}
+
+.kx-empty,
+.kx-loading {
+  background: var(--kx-surface);
+  border-color: var(--kx-line-strong);
+  color: var(--kx-muted);
+}
+
+.kx-error {
+  background: color-mix(in srgb, var(--kx-danger) 9%, var(--kx-surface));
+  border-color: color-mix(in srgb, var(--kx-danger) 32%, var(--kx-line));
+  color: var(--kx-danger);
+}
+
+.kx-success {
+  background: color-mix(in srgb, var(--kx-success) 10%, var(--kx-surface));
+  border-color: color-mix(in srgb, var(--kx-success) 32%, var(--kx-line));
+  color: var(--kx-success);
+}
+
+.kx-status {
+  background: var(--kx-surface-soft);
+  color: var(--kx-muted);
+}
+
+.kx-status.published,
+.kx-status.success {
+  background: color-mix(in srgb, var(--kx-success) 16%, var(--kx-surface));
+  color: var(--kx-success);
+}
+
+.kx-status.review,
+.kx-status.warning {
+  background: color-mix(in srgb, var(--kx-warning) 16%, var(--kx-surface));
+  color: var(--kx-warning);
+}
+
+.kx-status.draft,
+.kx-status.info {
+  background: color-mix(in srgb, var(--kx-primary) 16%, var(--kx-surface));
+  color: var(--kx-primary-strong);
+}
+
+.kx-status.archived {
+  background: color-mix(in srgb, var(--kx-muted) 15%, var(--kx-surface));
+  color: var(--kx-muted);
+}
+
+.kx-status.danger,
+.kx-status.error {
+  background: color-mix(in srgb, var(--kx-danger) 15%, var(--kx-surface));
+  color: var(--kx-danger);
+}
+
+.kx-sticky-actions {
+  background: color-mix(in srgb, var(--kx-surface) 95%, transparent);
+  border-color: var(--kx-line);
+  box-shadow: var(--kx-shadow);
+}
+
+.kx-footer {
+  border-top-color: var(--kx-line);
+}
+
+.kx-footer-copy span,
+.kx-footer-meta,
+.kx-brand-subtitle,
+.kx-pagehead p,
+.kx-breadcrumb {
+  color: var(--kx-muted);
+}
+
+.kx-footer-links a {
+  color: var(--kx-text);
+}
+
+.kx-footer-links a:hover {
+  color: var(--kx-primary-strong);
+}
+
+body.kx-modern input,
+body.kx-modern select,
+body.kx-modern textarea {
+  background: var(--kx-surface);
+  color: var(--kx-text);
+  border-color: var(--kx-line-strong);
+}
+
+body.kx-modern input:focus,
+body.kx-modern select:focus,
+body.kx-modern textarea:focus,
+.kx-field input:focus,
+.kx-field select:focus,
+.kx-field textarea:focus,
+.kx-input:focus,
+.kx-select:focus,
+.kx-textarea:focus {
+  border-color: var(--kx-primary);
+  box-shadow: var(--kx-focus);
+}
+
+body.kx-modern .card p,
+body.kx-modern .card h2,
+body.kx-modern .card h3 {
+  color: var(--kx-text);
+}
+
+body.kx-modern .empty {
+  background: var(--kx-surface);
+  border-color: var(--kx-line-strong);
+  color: var(--kx-muted);
+}
+
+:root[data-theme="dark"] body {
+  background: var(--kx-bg);
+  color: var(--kx-text);
+}
+
+:root[data-theme="dark"] .kx-shell,
+:root[data-theme="dark"] body.kx-modern .top {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.26);
+}
+
+:root[data-theme="dark"] .kx-link:hover,
+:root[data-theme="dark"] .kx-sublink:hover,
+:root[data-theme="dark"] .kx-group[open] > summary,
+:root[data-theme="dark"] .kx-menu:hover,
+:root[data-theme="dark"] .kx-theme:hover,
+:root[data-theme="dark"] .kx-toggle:hover,
+:root[data-theme="dark"] body.kx-modern .btn:hover {
+  background: var(--kx-surface-soft);
+  color: var(--kx-primary-strong);
+}
+
+:root[data-theme="dark"] .kx-submenu {
+  background: var(--kx-surface);
+}
+
+:root[data-theme="dark"] .kx-danger {
+  background: var(--kx-surface) !important;
+}
+
+@supports not (background: color-mix(in srgb, white 50%, black)) {
+  .kx-shell,
+  body.kx-modern .top,
+  .kx-submenu,
+  .kx-sticky-actions {
+    background: var(--kx-surface);
+  }
+
+  .kx-link.active,
+  .kx-sublink.active {
+    background: var(--kx-surface-soft);
+  }
+}
