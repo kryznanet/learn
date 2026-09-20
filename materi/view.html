@@ -284,7 +284,8 @@
         reading.hidden = false;
         reading.innerHTML = '<div style="border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--bg)"><b>📚 Konfirmasi membaca</b><p id="reading-status" style="margin:5px 0;color:var(--muted);font-size:13px">Memuat status...</p><label style="display:flex;gap:8px;align-items:flex-start;margin:10px 0;font-size:14px"><input id="reading-confirm" type="checkbox" disabled> Saya sudah membaca materi ini sampai bagian paling bawah.</label><button id="complete-reading" class="theme" type="button" disabled>Tandai sudah dibaca</button> · <a href="../belajar/riwayat.html" style="color:var(--primary);font-weight:800">Buka riwayat</a></div>';
         await refreshReading(material.id);
-        setupReadingConfirmation(material.id);\n        await loadEngagement(material.id);
+        setupReadingConfirmation(material.id);
+        await loadEngagement(material.id);
       } catch (error) {
         console.error(error);
         app.innerHTML =
