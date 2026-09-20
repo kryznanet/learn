@@ -1401,3 +1401,12 @@ Pertahankan Browser E2E **Passed** dan lanjutkan verifikasi visual Light/Dark de
 - Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35515952867.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Automated Browser E2E runtime record — 2026-09-20
+
+- Workflow **Browser E2E #407** pada branch `20-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35516029265`; commit yang diuji: `c8b11ea9238f29e83de87133b6e3070a71295f67`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35516029265.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
