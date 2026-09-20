@@ -1146,3 +1146,26 @@ Fresh Browser E2E pada branch `19-Sep-2026` untuk memverifikasi seluruh group/su
 ### Checkpoint berikutnya
 
 Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi navigasi publik, learner, Content, Administrasi, active state, permission filtering, submenu, dan mobile toggle. Jika ada kegagalan, perbaiki berdasarkan runtime evidence lalu update `docs/BROWSER-E2E-RESULTS.md`. Setelah navigasi stabil, lanjutkan final security/deployment audit.
+
+
+## 🎨 Penyempurnaan navigasi desktop — 20 September 2026
+
+- Shared navigation desktop diperbaiki pada branch `20-Sep-2026`.
+- Dropdown tidak lagi terpotong oleh horizontal overflow pada container navigasi.
+- Parent group mendapat state visual ketika terbuka.
+- Target klik link dibuat lebih konsisten dengan minimum height.
+- Dropdown panjang menggunakan batas tinggi + scroll internal.
+- Active state dan auto-open berdasarkan halaman aktif tetap dipertahankan.
+- Tidak ada perubahan routing, permission, RBAC, database, atau RLS.
+- Commit source: `134d5f0b734ba2b6f1c6998550b4e8e6c0c70cb0`.
+- Dokumentasi UI: `5668e219394decb016bd363c97170360c4748f56`.
+
+### Status
+
+- Desktop navigation: **Implemented — Needs Browser Verification**.
+- Mobile navigation: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending**.
+
+### Checkpoint berikutnya
+
+Fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi desktop dropdown, active state, target URL, permission filtering, submenu bertingkat, serta mobile toggle. Catat hasil runtime ke `docs/BROWSER-E2E-RESULTS.md`.
