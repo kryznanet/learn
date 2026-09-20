@@ -1198,3 +1198,12 @@ Fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi desktop dropdown
 ### Checkpoint berikutnya
 
 Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/footer di desktop dan mobile, termasuk navigasi dropdown, active state, submenu, dan layout halaman. Catat hasil runtime di `docs/BROWSER-E2E-RESULTS.md`, lalu perbaiki regresi bila ada.
+
+
+## Automated Browser E2E runtime record — 2026-09-20
+
+- Workflow **Browser E2E #379** pada branch `20-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35514425593`; commit yang diuji: `97b84a6801e8370a95f684f51646e1b1fec36c44`.
+- Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35514425593.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
