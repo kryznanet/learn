@@ -1,3 +1,13 @@
+## 20 September 2026 — Shared visual refinement
+
+- Memperhalus shared Blue Theme untuk Light + Dark mode melalui `shared/ui.css`.
+- Menyamakan surface, border, typography color, primary action, shadow, focus state, submenu, form, table, status, sticky action, header, dan footer.
+- Memperkuat dark-mode coverage untuk komponen legacy agar halaman tidak kembali ke surface putih/hard-coded color.
+- Menjaga header mobile tetap ringkas tanpa mengubah struktur navigasi atau behavior permission.
+- Tidak ada perubahan routing, auth, RBAC, database, RLS, RPC, atau business logic.
+- Source commit: `d4a8ec6ab0f81b0dadd727691f8842a56ef62f54`.
+- Browser E2E/visual verification masih **Pending**.
+
 ## 🔧 Shared navigation duplicate-load fix — 20 September 2026
 
 - Branch: `20-Sep-2026`.
