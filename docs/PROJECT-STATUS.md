@@ -1,3 +1,23 @@
+## 🔧 Dashboard Admin auth bootstrap fix — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Pengguna melaporkan Dashboard Admin masih belum muncul setelah perbaikan sebelumnya.
+- Audit source menemukan `shared/auth.js` hanya membaca `window.supabaseClient`; loader diperkuat agar juga dapat memakai global `supabaseClient` ketika konfigurasi Supabase mendefinisikannya sebagai global lexical binding.
+- Tidak mengubah role, permission, RLS, RPC, routing, atau business logic akses.
+- Source commit: `3d613aaaecff9bbd01f81c50a6ebc0657076141f`.
+- Source verification: `shared/auth.js` berhasil di-fetch ulang dengan content SHA `09ed5a90041a29fd3f032acf8cb85cf415a3e485`.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E: **Pending**; perlu fresh runtime setelah auth bootstrap fix.
+- Visual Light/Dark desktop/tablet/mobile: **Needs Verification**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan fresh Browser E2E pada branch `20-Sep-2026`, fokus pertama pada `admin/dashboard.html`. Jika masih gagal, gunakan runtime console/network evidence untuk menentukan apakah masalah berada pada konfigurasi Supabase, role/RLS, atau rendering UI.
+
 ## 🛠️ Perbaikan Dashboard Admin Blank — 20 September 2026
 
 - Branch: `20-Sep-2026`.
