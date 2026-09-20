@@ -1,4 +1,10 @@
 (() => {
+  if (window.__kryznaUiBooted) {
+    return;
+  }
+
+  window.__kryznaUiBooted = true;
+
   const pathname = location.pathname.replace(/\\/g, '/');
   const segments = pathname.split('/').filter(Boolean);
 
