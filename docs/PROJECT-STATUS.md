@@ -1121,3 +1121,28 @@ Fresh Browser E2E pada branch `19-Sep-2026` untuk memverifikasi seluruh group/su
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35437644401.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## 🎨 Penyempurnaan navigasi mobile — 20 September 2026
+
+- Branch terverifikasi: `20-Sep-2026`.
+- Navigasi bersama disempurnakan dengan mobile menu toggle yang memiliki state aksesibilitas `aria-expanded` dan `aria-controls`.
+- Pada layar kecil, navigasi berubah dari horizontal scroll menjadi panel vertikal yang dapat dibuka/tutup.
+- Group **CONTENT**, **ADMINISTRASI**, dan **Belajar Saya** tetap mendukung submenu bertingkat.
+- Klik link otomatis menutup menu mobile; **Akun** tetap tersedia.
+- Desktop tetap mempertahankan navigasi horizontal.
+- Tidak ada perubahan database, RLS, RPC, RBAC, atau permission.
+- Commit UI: `9e549098427d53909382700b06425bdbbd9ed441` dan `7bf7e01bdc76f7ffea38f3670d3565977fa4ef6e`.
+- Dokumentasi UI: `192c66c7dcedeeb0f93b0c9193d1ef49da276cd8`.
+
+### Status
+
+- Navigation source: **Implemented — Needs Browser Verification**.
+- Desktop navigation: **Source Verified**.
+- Mobile navigation: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending**; perlu fresh runtime setelah perubahan navigasi.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi navigasi publik, learner, Content, Administrasi, active state, permission filtering, submenu, dan mobile toggle. Jika ada kegagalan, perbaiki berdasarkan runtime evidence lalu update `docs/BROWSER-E2E-RESULTS.md`. Setelah navigasi stabil, lanjutkan final security/deployment audit.
