@@ -1,6 +1,8 @@
 /* Kryzna Learn — centralized authentication & authorization helper */
 (function () {
-  const db = window.supabaseClient;
+  const db =
+    window.supabaseClient ||
+    (typeof supabaseClient !== 'undefined' ? supabaseClient : null);
 
   const ROLE_ALIASES = {
     user: 'user',
@@ -180,7 +182,8 @@
     requireRole,
     requirePermission,
     hasRole: (role, roles) => hasRole(role, roles),
-    hasPermission: (permission, permissions) => hasPermission(permission, permissions),
+    hasPermission: (permission, permissions) =>
+      hasPermission(permission, permissions),
     isContent: (role) => CONTENT_ROLES.includes(role),
     isAdmin: (role) => ADMIN_ROLES.includes(role),
     isLearner: (role) => LEARNER_ROLES.includes(role),
@@ -192,7 +195,8 @@
     !location.pathname.endsWith('/login.html')
   ) {
     const uiScript = document.createElement('script');
-    uiScript.src = location.pathname.includes('/') && !location.pathname.endsWith('/')
+    uiScript.src = location.pathname.includes('/') &&
+      !location.pathname.endsWith('/')
       ? '../shared/ui.js'
       : 'shared/ui.js';
     uiScript.defer = true;
