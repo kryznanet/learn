@@ -1379,19 +1379,19 @@ Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/
 - Source commit: `502fdc94715126b7c73a32361b3da428af71e928`.
 - Source verification: `materi/view.html` berhasil di-fetch ulang dengan content SHA `8bba2d41304c419fc93470a616d122c1be9f1dbe`; diff terverifikasi hanya pada statement tersebut.
 - Tidak ada perubahan auth, role, permission, RBAC, database, RLS, RPC, atau routing.
-- Status: **Source Verified — Needs Browser Verification**.
+- Status: **Source + Browser Verified**.
 
-### Status pending
+### Status
 
-- Browser E2E setelah fix: **Pending**; harus menggunakan fresh runtime pada commit `502fdc94715126b7c73a32361b3da428af71e928` atau commit dokumentasi turunannya.
-- `docs/BROWSER-E2E-RESULTS.md`: sudah diperbarui untuk mencatat root cause #403.
-- `docs/PROJECT-STATUS.md`: sudah diperbarui untuk checkpoint root cause/fix ini.
+- Browser E2E setelah fix: **Passed** pada Browser E2E #406, dengan **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- `docs/BROWSER-E2E-RESULTS.md`: otomatis merekam #406 sebagai runtime terbaru.
+- `docs/PROJECT-STATUS.md`: checkpoint root cause/fix dan hasil runtime sudah tercatat.
 - Visual Light/Dark desktop/tablet/mobile: **Needs Verification**.
 - Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
 
 ### Checkpoint berikutnya
 
-Jalankan/verifikasi fresh Browser E2E setelah source fix. Jika test detail materi lulus, lanjutkan verifikasi halaman admin/content dan visual Light + Dark. Jika masih gagal, gunakan runtime console/network evidence dan artifact Playwright.
+Pertahankan Browser E2E **Passed** dan lanjutkan verifikasi visual Light/Dark desktop/tablet/mobile serta audit akhir security/deployment. Restore UI-to-database tetap **Blocked** sampai environment Supabase terisolasi tersedia.
 
 
 ## Automated Browser E2E runtime record — 2026-09-20
