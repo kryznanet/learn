@@ -288,7 +288,10 @@
       root +
       'index.html" aria-label="Kryzna Learn">' +
       '<span class="kx-logo" aria-hidden="true">K</span>' +
-      '<span>Kryzna Learn</span>' +
+      '<span class="kx-brand-text">' +
+      '<span class="kx-brand-title">Kryzna Learn</span>' +
+      '<span class="kx-brand-subtitle">Belajar • Praktik • Berkembang</span>' +
+      '</span>' +
       '</a>' +
       '<button class="kx-toggle" type="button" aria-expanded="false" ' +
       'aria-controls="kx-navigation" aria-label="Buka navigasi">' +
@@ -311,6 +314,31 @@
       '</nav>';
 
     document.body.prepend(shell);
+
+    if (!document.querySelector('footer')) {
+      const footer = document.createElement('footer');
+      footer.className = 'kx-footer';
+      footer.innerHTML =
+        '<div class="kx-footer-inner">' +
+        '<div class="kx-footer-brand">' +
+        '<span class="kx-footer-logo" aria-hidden="true">K</span>' +
+        '<div class="kx-footer-copy">' +
+        '<strong>Kryzna Learn</strong>' +
+        '<span>Belajar jaringan komputer dengan lebih terarah.</span>' +
+        '</div>' +
+        '</div>' +
+        '<nav class="kx-footer-links" aria-label="Navigasi footer">' +
+        '<a href="' + root + 'index.html">Beranda</a>' +
+        '<a href="' + root + 'index.html#materi">Materi</a>' +
+        '<a href="' + root + 'ujian/index.html">Ujian</a>' +
+        (isLearnerArea
+          ? '<a href="' + root + 'belajar/index.html">Belajar Saya</a>'
+          : '') +
+        '</nav>' +
+        '<span class="kx-footer-meta">© Kryzna Learn</span>' +
+        '</div>';
+      document.body.appendChild(footer);
+    }
 
     const toggle = shell.querySelector('.kx-toggle');
     const links = shell.querySelector('.kx-links');
