@@ -11,11 +11,11 @@ Dokumen ini menyimpan **hasil runtime Browser E2E terbaru** yang benar-benar dij
 - Run dengan authenticated test yang ter-skip karena secret tidak tersedia tidak boleh dianggap sebagai pass penuh.
 - Artifact Playwright menjadi bukti pendukung bila tersedia.
 
-## Status saat ini — 2026-09-19
+## Status saat ini — 2026-09-20
 
 **Status: Failed**
 
-Fresh GitHub Actions runtime evidence terbaru: Browser E2E #367 (5 passed, 4 failed, 0 skipped, 0 flaky).
+Fresh GitHub Actions runtime evidence terbaru: Browser E2E #374 (5 passed, 4 failed, 0 skipped, 0 flaky).
 
 ### Coverage yang telah diverifikasi
 
@@ -36,18 +36,18 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 ## Runtime history
 
-### 2026-09-19 — Automated Browser E2E runtime
+### 2026-09-20 — Automated Browser E2E runtime
 
-- Workflow: **Browser E2E #367**
-- Run ID: `35437644401`
-- Run URL: https://github.com/kryznanet/learn/actions/runs/35437644401
-- Branch: `19-Sep-2026`
-- Commit: `b2538d0aa6a9e38bdda2231f70f73ba5949f6231`
+- Workflow: **Browser E2E #374**
+- Run ID: `35514203038`
+- Run URL: https://github.com/kryznanet/learn/actions/runs/35514203038
+- Branch: `20-Sep-2026`
+- Commit: `ba0ff4d93aed2f1645fa325ea023ac31e23ac3a3`
 - Trigger: `push`
 - Result: **Failed**
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky** (9 recorded)
 - Artifact: `playwright-report` is uploaded by the workflow when files are available.
-- Recorded automatically from `test-results/results.json` at 2026-09-19T10:34:56.012Z.
+- Recorded automatically from `test-results/results.json` at 2026-09-20T13:43:58.682Z.
 
 ## Interpretation
 

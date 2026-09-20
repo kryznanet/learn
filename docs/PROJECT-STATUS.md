@@ -1169,3 +1169,12 @@ Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi navigas
 ### Checkpoint berikutnya
 
 Fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi desktop dropdown, active state, target URL, permission filtering, submenu bertingkat, serta mobile toggle. Catat hasil runtime ke `docs/BROWSER-E2E-RESULTS.md`.
+
+
+## Automated Browser E2E runtime record — 2026-09-20
+
+- Workflow **Browser E2E #374** pada branch `20-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35514203038`; commit yang diuji: `ba0ff4d93aed2f1645fa325ea023ac31e23ac3a3`.
+- Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35514203038.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
