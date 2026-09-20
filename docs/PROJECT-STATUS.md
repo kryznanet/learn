@@ -1,3 +1,33 @@
+## 📌 Progress akhir hari — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Perbaikan root cause Browser E2E #403 pada `materi/view.html` telah selesai dan diverifikasi melalui fresh runtime.
+- Browser E2E **#406**: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Browser E2E **#407**: **9 passed, 0 failed, 0 skipped, 0 flaky**; runtime terbaru tercatat otomatis di `docs/BROWSER-E2E-RESULTS.md`.
+- Root cause sebelumnya dipastikan berasal dari syntax JavaScript pada halaman detail materi, bukan pengambilan source dari branch lama.
+- Dashboard Admin blank/auth bootstrap dan shared navigation/header/footer/UI polish hari ini sudah memiliki source verification; browser runtime setelah rangkaian perbaikan juga sudah kembali **Passed**.
+- Status visual Light/Dark desktop/tablet/mobile: **Needs Verification**.
+- Restore UI-to-database: **Blocked** sampai tersedia environment Supabase terisolasi.
+- Review pedagogis/rendering final untuk 58 materi masih menjadi pekerjaan lanjutan.
+
+### Verifikasi hari ini
+
+- Repository/branch: terverifikasi pada `kryznanet/learn`, branch `20-Sep-2026`.
+- `docs/BROWSER-E2E-RESULTS.md`: runtime terbaru #407 berhasil dicatat.
+- `docs/PROJECT-STATUS.md`: checkpoint ini ditambahkan pada branch aktif.
+- Latest E2E runtime: **Passed**.
+
+### Status pending
+
+- Visual Light + Dark desktop/tablet/mobile: **Needs Verification**.
+- Review pedagogis/rendering final 58 materi: **Pending**.
+- Final Security Advisor/RLS/Storage/deployment audit: **Pending**.
+- Restore UI-to-database: **Blocked** karena environment Supabase terisolasi belum tersedia.
+
+### Checkpoint berikutnya
+
+Lanjutkan dari branch `20-Sep-2026` dengan review visual/rendering Light + Dark desktop/tablet/mobile dan review pedagogis final 58 materi. Setelah itu lakukan final Security Advisor/RLS/Storage/deployment audit. Jangan menggunakan hasil E2E lama sebagai bukti perubahan baru; setiap perubahan source baru harus diikuti fresh runtime.
+
 ## 🔧 Dashboard Admin auth bootstrap fix — 20 September 2026
 
 - Branch: `20-Sep-2026`.
