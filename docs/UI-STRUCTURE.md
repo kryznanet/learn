@@ -450,3 +450,15 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - No routing, auth, permission, RBAC, database, RLS, or business logic changes were made.
 - Source commit: `a381fdb4bb1d8665f95a68f8320a90eccd7d0387`.
 - Status: **Source Verified — Needs Browser Verification**.
+
+
+## Final shared visual polish — 20 September 2026
+
+- Shared shell diperhalus lagi pada shared/ui.css untuk hierarchy header, submenu, action button, card, table, footer, focus state, dan spacing.
+- Target sentuh navigasi dibuat konsisten; parent group dan submenu aktif memiliki state visual yang lebih jelas.
+- Pada viewport hingga 760px, navigasi menggunakan panel vertikal sehingga tablet kecil tidak lagi memaksakan banyak menu dalam satu baris.
+- Mobile tetap mempertahankan submenu bertingkat, tombol Akun, theme toggle, dan minimum touch target.
+- Card, toolbar, table wrapper, dan primary action mendapat depth/hover yang lebih konsisten tanpa mengubah fungsi.
+- Perubahan hanya pada presentasi UI; routing, auth, permission, RBAC, database, RLS, RPC, dan business logic tidak diubah.
+- Source commit: c0471453ad9ce2fa42badd033b702dc80d9d409f.
+- Status: **Source Verified — Needs Browser Verification**.
