@@ -108,7 +108,6 @@ textarea:focus-visible,
   min-width: 0;
   overflow: visible;
 }
-}
 
 .kx-toggle {
   display: none;
@@ -158,6 +157,23 @@ textarea:focus-visible,
   display: flex;
   gap: 7px;
   align-items: center;
+}
+
+.kx-theme {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--kx-line);
+  border-radius: 10px;
+  background: var(--kx-surface);
+  color: var(--kx-text);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.kx-theme:hover {
+  border-color: var(--kx-line-strong);
+  background: var(--kx-surface-soft);
 }
 
 .kx-menu {
