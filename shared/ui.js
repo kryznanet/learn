@@ -290,7 +290,11 @@
       '<span class="kx-logo" aria-hidden="true">K</span>' +
       '<span>Kryzna Learn</span>' +
       '</a>' +
-      '<div class="kx-links">' +
+      '<button class="kx-toggle" type="button" aria-expanded="false" ' +
+      'aria-controls="kx-navigation" aria-label="Buka navigasi">' +
+      '<span aria-hidden="true">☰</span>' +
+      '</button>' +
+      '<div class="kx-links" id="kx-navigation">' +
       items
         .map((item) =>
           item.items
@@ -307,6 +311,26 @@
       '</nav>';
 
     document.body.prepend(shell);
+
+    const toggle = shell.querySelector('.kx-toggle');
+    const links = shell.querySelector('.kx-links');
+
+    toggle?.addEventListener('click', () => {
+      const isOpen = shell.classList.toggle('kx-menu-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute(
+        'aria-label',
+        isOpen ? 'Tutup navigasi' : 'Buka navigasi'
+      );
+    });
+
+    links?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        shell.classList.remove('kx-menu-open');
+        toggle?.setAttribute('aria-expanded', 'false');
+        toggle?.setAttribute('aria-label', 'Buka navigasi');
+      });
+    });
 
     const style = document.createElement('link');
     style.rel = 'stylesheet';
