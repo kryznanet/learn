@@ -1178,3 +1178,23 @@ Fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi desktop dropdown
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35514203038.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## 🎨 Header & footer visual polish — 20 September 2026
+
+- Branch terverifikasi: `20-Sep-2026`.
+- Desain bagian atas disempurnakan melalui shared header: brand title/subtitle, spacing, active/open state, dan target klik navigasi yang lebih konsisten.
+- Desain bagian bawah disempurnakan melalui shared footer untuk halaman yang belum memiliki footer; footer lama tetap dipertahankan dan diharmonisasi.
+- Tidak ada perubahan database, RLS, RPC, RBAC, routing, auth, atau business logic.
+- Source commits: `174fb48a0bf8dac711e8c68f6dfcfe54e57e19a0` dan `c1b6b7282b30ed9cc9935247cd861c4cb0123987`.
+- Documentation commits: `947d60e7f5ad88ac42900003369430362fa85973` dan `729c0a1a4d5395de78b9ee0403f2faa398ecc7e8`.
+
+### Status
+
+- Header visual: **Implemented — Needs Browser Verification**.
+- Footer visual: **Implemented — Needs Browser Verification**.
+- Browser E2E: **Pending**; perlu fresh runtime setelah polish ini.
+
+### Checkpoint berikutnya
+
+Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/footer di desktop dan mobile, termasuk navigasi dropdown, active state, submenu, dan layout halaman. Catat hasil runtime di `docs/BROWSER-E2E-RESULTS.md`, lalu perbaiki regresi bila ada.
