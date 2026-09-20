@@ -1580,3 +1580,293 @@ body.kx-modern .empty {
     background: var(--kx-surface-soft);
   }
 }
+
+/* Blue theme refinement — shared light/dark surface system */
+:root {
+  --kx-bg: #f3f7ff;
+  --kx-surface: #ffffff;
+  --kx-surface-soft: #eef5ff;
+  --kx-line: #d8e5f7;
+  --kx-line-strong: #b8cbea;
+  --kx-text: #17233a;
+  --kx-muted: #5f708a;
+  --kx-primary: #2563eb;
+  --kx-primary-strong: #1d4ed8;
+  --kx-primary-soft: #dbeafe;
+  --kx-shadow: 0 12px 32px rgba(30, 64, 175, 0.08);
+  --kx-shadow-hover: 0 16px 38px rgba(30, 64, 175, 0.12);
+}
+
+[data-theme="dark"] {
+  --kx-bg: #071426;
+  --kx-surface: #0d1d33;
+  --kx-surface-soft: #122945;
+  --kx-line: #27466c;
+  --kx-line-strong: #3a5e89;
+  --kx-text: #e8f1ff;
+  --kx-muted: #a9bdd8;
+  --kx-primary: #60a5fa;
+  --kx-primary-strong: #93c5fd;
+  --kx-primary-soft: #173b67;
+  --kx-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  --kx-shadow-hover: 0 16px 38px rgba(0, 0, 0, 0.36);
+}
+
+body.kx-modern {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 0, rgba(96, 165, 250, 0.10), transparent 30%),
+    var(--kx-bg);
+  color: var(--kx-text);
+}
+
+[data-theme="dark"] body.kx-modern {
+  background:
+    radial-gradient(circle at 10% 0, rgba(37, 99, 235, 0.16), transparent 32%),
+    var(--kx-bg);
+}
+
+.kx-shell {
+  background: color-mix(in srgb, var(--kx-surface) 94%, transparent);
+  border-bottom-color: var(--kx-line);
+  box-shadow: 0 6px 24px rgba(30, 64, 175, 0.08);
+}
+
+[data-theme="dark"] .kx-shell {
+  background: color-mix(in srgb, var(--kx-surface) 94%, transparent);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
+}
+
+.kx-logo,
+body.kx-modern .top .logo {
+  background: linear-gradient(135deg, var(--kx-primary-strong), var(--kx-primary));
+  color: #ffffff;
+}
+
+.kx-link,
+.kx-menu,
+.kx-back,
+.kx-sublink {
+  color: var(--kx-muted);
+}
+
+.kx-link:hover,
+.kx-sublink:hover {
+  background: var(--kx-primary-soft);
+  color: var(--kx-primary-strong);
+}
+
+.kx-link.active,
+.kx-sublink.active {
+  background: var(--kx-primary-soft);
+  border-color: var(--kx-line);
+  color: var(--kx-primary-strong);
+}
+
+.kx-group[open] > summary {
+  background: var(--kx-primary-soft);
+  border-color: var(--kx-line);
+}
+
+.kx-submenu {
+  background: var(--kx-surface);
+  border-color: var(--kx-line);
+  box-shadow: var(--kx-shadow-hover);
+}
+
+.kx-btn,
+.kx-theme,
+.kx-menu {
+  border-color: var(--kx-line);
+  background: var(--kx-surface);
+  color: var(--kx-text);
+}
+
+.kx-btn:hover,
+.kx-theme:hover,
+.kx-menu:hover {
+  border-color: var(--kx-line-strong);
+  background: var(--kx-surface-soft);
+  box-shadow: var(--kx-shadow-hover);
+}
+
+.kx-btn.primary,
+body.kx-modern .btn.primary,
+body.kx-modern .primary {
+  background: linear-gradient(135deg, var(--kx-primary), var(--kx-primary-strong));
+  border-color: var(--kx-primary);
+  color: #ffffff;
+}
+
+.kx-btn.secondary,
+body.kx-modern .btn.secondary {
+  background: var(--kx-surface-soft);
+  color: var(--kx-text);
+}
+
+.kx-card,
+.kx-stat,
+.kx-toolbar,
+.kx-table-wrap,
+.kx-empty,
+.kx-loading,
+body.kx-modern .card,
+body.kx-modern .stat,
+body.kx-modern .filters,
+body.kx-modern table,
+body.kx-modern .side,
+body.kx-modern .hero-card,
+body.kx-modern .search {
+  background: var(--kx-surface);
+  border-color: var(--kx-line);
+  color: var(--kx-text);
+}
+
+.kx-card:hover,
+.kx-stat:hover {
+  border-color: var(--kx-line-strong);
+  box-shadow: var(--kx-shadow-hover);
+}
+
+.kx-field label,
+body.kx-modern .card h2,
+body.kx-modern .card h3,
+body.kx-modern th {
+  color: var(--kx-text);
+}
+
+.kx-field input,
+.kx-field select,
+.kx-field textarea,
+.kx-input,
+.kx-select,
+.kx-textarea,
+body.kx-modern input,
+body.kx-modern select,
+body.kx-modern textarea {
+  border-color: var(--kx-line-strong);
+  background: var(--kx-surface);
+  color: var(--kx-text);
+}
+
+.kx-field input::placeholder,
+.kx-field textarea::placeholder,
+body.kx-modern input::placeholder,
+body.kx-modern textarea::placeholder {
+  color: var(--kx-muted);
+}
+
+.kx-field input:focus,
+.kx-field select:focus,
+.kx-field textarea:focus,
+.kx-input:focus,
+.kx-select:focus,
+.kx-textarea:focus,
+body.kx-modern input:focus,
+body.kx-modern select:focus,
+body.kx-modern textarea:focus {
+  border-color: var(--kx-primary);
+}
+
+.kx-status {
+  background: var(--kx-surface-soft);
+  color: var(--kx-muted);
+}
+
+.kx-status.published,
+.kx-status.success {
+  background: rgba(34, 197, 94, 0.14);
+  color: #4ade80;
+}
+
+.kx-status.review,
+.kx-status.warning {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fbbf24;
+}
+
+.kx-status.draft {
+  background: var(--kx-primary-soft);
+  color: var(--kx-primary-strong);
+}
+
+.kx-status.archived {
+  background: rgba(148, 163, 184, 0.16);
+  color: var(--kx-muted);
+}
+
+.kx-status.danger,
+.kx-status.error {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+}
+
+.kx-status.info {
+  background: rgba(59, 130, 246, 0.14);
+  color: var(--kx-primary-strong);
+}
+
+.kx-danger {
+  background: var(--kx-surface) !important;
+  border-color: rgba(248, 113, 113, 0.45) !important;
+}
+
+.kx-danger:hover {
+  background: rgba(239, 68, 68, 0.10) !important;
+}
+
+.kx-sticky-actions {
+  background: color-mix(in srgb, var(--kx-surface) 94%, transparent);
+  border-color: var(--kx-line);
+}
+
+body.kx-modern .top {
+  background: color-mix(in srgb, var(--kx-surface) 94%, transparent);
+  border-bottom-color: var(--kx-line);
+}
+
+body.kx-modern .top .brand small,
+body.kx-modern .muted,
+body.kx-modern .hero p,
+body.kx-modern .side h3 {
+  color: var(--kx-muted);
+}
+
+body.kx-modern .btn {
+  color: var(--kx-text);
+  background: var(--kx-surface);
+}
+
+body.kx-modern .btn:not(.primary):not(.danger):hover {
+  background: var(--kx-surface-soft);
+}
+
+body.kx-modern .empty {
+  background: var(--kx-surface);
+  border-color: var(--kx-line-strong);
+}
+
+@media (max-width: 600px) {
+  .kx-brand {
+    min-width: 0;
+    max-width: calc(100% - 92px);
+  }
+
+  .kx-brand-subtitle {
+    display: none;
+  }
+
+  .kx-nav {
+    min-height: 60px;
+  }
+
+  .kx-links {
+    padding-top: 8px;
+    border-top: 1px solid var(--kx-line);
+  }
+
+  .kx-group > .kx-submenu,
+  .kx-subgroup > .kx-submenu {
+    background: var(--kx-surface-soft);
+  }
+}
