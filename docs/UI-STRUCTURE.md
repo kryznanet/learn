@@ -410,3 +410,12 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - Dropdown memiliki batas tinggi dan scroll internal bila item terlalu banyak, sehingga tidak mendorong layout halaman secara tidak terkendali.
 - Submenu tetap mempertahankan active state dan pembukaan otomatis berdasarkan halaman aktif.
 - Perubahan hanya pada shared navigation styling; tidak mengubah routing, permission, RBAC, database, atau RLS.
+
+
+## Header & footer visual polish — 20 September 2026
+
+- Shared header diperhalus dengan brand block yang memiliki nama dan subtitle, target klik navigasi yang konsisten, active/open state yang lebih jelas, dan shadow/border yang lebih ringan.
+- Shared footer ditambahkan untuk halaman yang belum memiliki footer, dengan identitas Kryzna Learn dan shortcut Beranda, Materi, Ujian, serta Belajar Saya pada area learner.
+- Footer lama pada halaman yang sudah memilikinya tetap dipertahankan dan diharmonisasi melalui shared visual layer.
+- Perubahan hanya pada presentasi UI; tidak mengubah routing, auth, permission, RBAC, database, atau RLS.
+- Status: **Implemented — Needs Browser Verification**.
