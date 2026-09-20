@@ -110,6 +110,26 @@ textarea:focus-visible,
   scrollbar-width: thin;
 }
 
+.kx-toggle {
+  display: none;
+  min-width: 40px;
+  min-height: 40px;
+  margin-left: auto;
+  padding: 8px 10px;
+  border: 1px solid var(--kx-line);
+  border-radius: 10px;
+  background: var(--kx-surface);
+  color: var(--kx-text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.kx-toggle:hover {
+  border-color: var(--kx-line-strong);
+  background: var(--kx-surface-soft);
+}
+
 .kx-link {
   padding: 8px 10px;
   border-radius: 10px;
@@ -919,5 +939,74 @@ body.kx-modern .card h3 {
   .kx-submenu-nested {
     margin-left: 8px;
     width: auto;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .kx-nav {
+    flex-wrap: wrap;
+  }
+
+  .kx-toggle {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .kx-links {
+    display: none;
+    order: 4;
+    width: 100%;
+    margin: 0;
+    padding: 4px 0 10px;
+    overflow: visible;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kx-menu-open .kx-links {
+    display: flex;
+  }
+
+  .kx-link,
+  .kx-sublink {
+    width: 100%;
+  }
+
+  .kx-group,
+  .kx-subgroup {
+    width: 100%;
+  }
+
+  .kx-group > summary,
+  .kx-subgroup > summary {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+
+  .kx-group > .kx-submenu,
+  .kx-subgroup > .kx-submenu {
+    position: static;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    margin: 2px 0 4px 8px;
+    overflow: visible;
+  }
+
+  .kx-submenu-nested {
+    border-left: 2px solid var(--kx-line);
+    box-shadow: none;
+  }
+
+  .kx-user {
+    margin-left: 0;
+  }
+
+  .kx-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
