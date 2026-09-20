@@ -312,6 +312,7 @@
         )
         .join('') +
       '</div>' +
+      '<button class="kx-theme" id="kx-theme" type="button" aria-label="Ubah tema">🌙</button>' +
       '<div class="kx-user">' +
       '<a class="kx-menu" href="' +
       accountHref +
@@ -348,6 +349,20 @@
 
     const toggle = shell.querySelector('.kx-toggle');
     const links = shell.querySelector('.kx-links');
+    const theme = shell.querySelector('#kx-theme');
+
+    const savedTheme = localStorage.getItem('kryzna-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (theme) {
+      theme.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+      theme.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const nextTheme = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('kryzna-theme', nextTheme);
+        theme.textContent = isDark ? '🌙' : '☀️';
+      });
+    }
 
     toggle?.addEventListener('click', () => {
       const isOpen = shell.classList.toggle('kx-menu-open');
