@@ -1,3 +1,27 @@
+## 🎨 Shared visual refinement — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Shared `shared/ui.css` diperhalus sebagai lapisan visual global untuk Light + Dark Blue Theme.
+- Token surface, border, text, primary, shadow, dan focus dibuat lebih konsisten sehingga komponen shared dan legacy memakai bahasa visual biru yang sama.
+- Header, navigation, submenu, card, statistic, toolbar, form control, table, state, sticky action, dan footer mendapat harmonisasi surface/border/hover/focus.
+- Dark mode sekarang mendapat override yang lebih lengkap pada komponen legacy yang sebelumnya masih memiliki warna terang/hard-coded.
+- Mobile branding diringkas agar header tidak sesak pada layar kecil; submenu mobile tetap mempertahankan hierarchy dan target sentuh.
+- Tidak ada perubahan routing, auth, permission, RBAC, database, RLS, RPC, atau business logic.
+- Source commit: `d4a8ec6ab0f81b0dadd727691f8842a56ef62f54`.
+- Source verification: `shared/ui.css` berhasil di-fetch ulang dari branch dan SHA content menjadi `1801b4c840b004df6645d28a2d05feb43d5e5326`.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E: **Pending** setelah refinement visual.
+- Visual Light desktop/mobile: **Needs Verification**.
+- Visual Dark desktop/mobile: **Needs Verification**.
+- Runtime terbaru sebelum refinement tetap Browser E2E #390 (**5 passed / 4 failed**) dan tidak digunakan sebagai bukti untuk perubahan ini.
+
+### Checkpoint berikutnya
+
+Fresh Browser E2E pada branch `20-Sep-2026`, lalu verifikasi visual desktop/mobile untuk Light + Dark pada public, learner, content, administrasi, materi, ujian, hasil, dan profil. Catat hasil runtime di `docs/BROWSER-E2E-RESULTS.md`; perbaiki regresi berdasarkan evidence sebelum final security/deployment audit.
+
 ## 🎨 Full Blue Theme — 20 September 2026
 
 - Branch: `20-Sep-2026` (explicitly confirmed for this work).
