@@ -1,3 +1,25 @@
+## 🛠️ Perbaikan Dashboard Admin Blank — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Ditemukan syntax invalid pada `shared/auth.js`: loader `shared/ui.js` tersimpan sebagai teks dengan literal `\\n`, sehingga browser dapat gagal mem-parse helper auth dan `admin/dashboard.html` tetap tersembunyi.
+- `shared/auth.js` diperbaiki dan diverifikasi ulang.
+- `admin/dashboard.html` dirapikan: statistik operasional berada di dalam authenticated app area, query statistik baru berjalan setelah role terverifikasi, dan tersedia visible error state untuk kegagalan pemuatan data.
+- Tidak ada perubahan routing, auth policy, role, permission, RBAC, database, RLS, RPC, atau business logic akses.
+- Source commits: `7286140f4a26f21e7bc0ca68e67834898735d759`, `a33161d6b1f7535742abe847de9a66af74f69398`.
+- Documentation commit: akan dicatat pada commit dokumentasi ini.
+- Source verification: `shared/auth.js` content SHA `275ebfa57e1b19ab9b5448712845d673f57994ba`; `admin/dashboard.html` content SHA `ea6a9669cea9d5962d3333168af4bfc2649733bb`.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E: **Pending**; fresh runtime belum dijalankan setelah perbaikan blank dashboard.
+- Visual Light/Dark desktop/tablet/mobile: **Needs Verification**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan fresh Browser E2E pada branch `20-Sep-2026`, fokus pertama pada `admin/dashboard.html`, lalu verifikasi halaman admin/content terkait dan visual Light + Dark. Catat runtime di `docs/BROWSER-E2E-RESULTS.md` dan perbaiki regresi berdasarkan evidence.
+
 ## 🎨 Final shared design polish — 20 September 2026
 
 - Branch: 20-Sep-2026.
