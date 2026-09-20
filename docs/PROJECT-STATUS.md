@@ -1329,3 +1329,12 @@ Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/
 - Playwright summary: **5 passed, 4 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35514909269.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## Automated Browser E2E runtime record — 2026-09-20
+
+- Workflow **Browser E2E #401** pada branch `20-Sep-2026` selesai dengan hasil **Failed**.
+- Run ID: `35515590881`; commit yang diuji: `b546dc0977e8510390a1a033676320ce5d3450c5`.
+- Playwright summary: **8 passed, 1 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35515590881.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
