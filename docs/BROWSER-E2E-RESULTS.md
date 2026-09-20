@@ -13,13 +13,9 @@ Dokumen ini menyimpan **hasil runtime Browser E2E terbaru** yang benar-benar dij
 
 ## Status saat ini — 2026-09-20
 
-**Status: Failed — root cause identified and fixed in source**
+**Status: Passed**
 
-Fresh GitHub Actions runtime evidence terbaru: Browser E2E #403 (8 passed, 1 failed, 0 skipped, 0 flaky).
-
-Root cause pada commit yang diuji #403: `materi/view.html` memiliki literal `\\n` di dalam JavaScript setelah `setupReadingConfirmation(material.id);`. Literal tersebut membuat script detail materi tidak dapat diparse, sehingga `#head` tetap `hidden`. Ini bukan pengambilan source dari branch lama: workflow #403 checkout langsung commit `7815812487ff98778bd95af16d5c72ff2fae277c` pada branch `20-Sep-2026`.
-
-Fix: literal `\\n` dihapus dan statement dipisahkan menjadi JavaScript normal pada commit `502fdc94715126b7c73a32361b3da428af71e928`. Source sudah di-fetch ulang dan diverifikasi.
+Fresh GitHub Actions runtime evidence terbaru: Browser E2E #406 (9 passed, 0 failed, 0 skipped, 0 flaky).
 
 ### Coverage yang telah diverifikasi
 
@@ -42,16 +38,16 @@ Test source commit: `a75f2de2e5dffc72e044770e2241ce25681acf57`.
 
 ### 2026-09-20 — Automated Browser E2E runtime
 
-- Workflow: **Browser E2E #403**
-- Run ID: `35515702977`
-- Run URL: https://github.com/kryznanet/learn/actions/runs/35515702977
+- Workflow: **Browser E2E #406**
+- Run ID: `35515952867`
+- Run URL: https://github.com/kryznanet/learn/actions/runs/35515952867
 - Branch: `20-Sep-2026`
-- Commit: `7815812487ff98778bd95af16d5c72ff2fae277c`
+- Commit: `335f6a274556f878684691df32adf643bdbbd637`
 - Trigger: `push`
-- Result: **Failed**
-- Playwright summary: **8 passed, 1 failed, 0 skipped, 0 flaky** (9 recorded)
+- Result: **Passed**
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky** (9 recorded)
 - Artifact: `playwright-report` is uploaded by the workflow when files are available.
-- Recorded automatically from `test-results/results.json` at 2026-09-20T14:12:35.146Z.
+- Recorded automatically from `test-results/results.json` at 2026-09-20T14:17:00.355Z.
 
 ## Interpretation
 

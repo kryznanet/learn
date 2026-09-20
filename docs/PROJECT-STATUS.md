@@ -1392,3 +1392,12 @@ Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/
 ### Checkpoint berikutnya
 
 Jalankan/verifikasi fresh Browser E2E setelah source fix. Jika test detail materi lulus, lanjutkan verifikasi halaman admin/content dan visual Light + Dark. Jika masih gagal, gunakan runtime console/network evidence dan artifact Playwright.
+
+
+## Automated Browser E2E runtime record — 2026-09-20
+
+- Workflow **Browser E2E #406** pada branch `20-Sep-2026` selesai dengan hasil **Passed**.
+- Run ID: `35515952867`; commit yang diuji: `335f6a274556f878684691df32adf643bdbbd637`.
+- Playwright summary: **9 passed, 0 failed, 0 skipped, 0 flaky**.
+- Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35515952867.
+- Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
