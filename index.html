@@ -62,84 +62,6 @@
       font: inherit;
     }
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(9, 17, 31, .94);
-      backdrop-filter: blur(18px);
-      color: #fff;
-      border-bottom: 1px solid rgba(255, 255, 255, .1);
-    }
-
-    .nav {
-      max-width: 1280px;
-      margin: auto;
-      padding: 11px 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      text-decoration: none;
-    }
-
-    .logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #60a5fa, #22d3ee);
-      color: #07101d;
-      font-weight: 950;
-    }
-
-    .brand b {
-      font-size: 17px;
-    }
-
-    .brand small {
-      display: block;
-      color: #9eb0c7;
-      font-size: 10px;
-    }
-
-    .navlinks {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-
-    .navlinks a,
-    .theme {
-      padding: 9px 11px;
-      border-radius: 11px;
-      text-decoration: none;
-      color: #e2e8f0;
-      border: 1px solid transparent;
-      background: transparent;
-    }
-
-    .navlinks a:hover,
-    .theme:hover {
-      background: rgba(255, 255, 255, .09);
-    }
-
-    .admin-link {
-      border-color: rgba(255, 255, 255, .16) !important;
-    }
-
-    .theme {
-      cursor: pointer;
-    }
-
     .hero-in {
       max-width: 1280px;
       margin: auto;
@@ -618,26 +540,6 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="nav">
-      <a class="brand" href="index.html">
-        <span class="logo">K</span>
-        <span>
-          <b>Kryzna Learn</b>
-          <small>Jaringan • Komputer • Teknologi</small>
-        </span>
-      </a>
-      <nav class="navlinks">
-        <a href="#materi">Materi</a>
-        <a href="ujian/index.html">Ujian Online</a>
-        <a href="belajar/index.html">Belajar Saya</a>
-        <a href="#tutorial">Tutorial</a>
-        <span id="account-nav"><a href="belajar/login.html">Masuk</a></span>
-        <a class="admin-link" href="admin/login.html">Admin</a>
-        <button class="theme" id="theme" type="button">🌙</button>
-      </nav>
-    </div>
-  </header>
 
   <section class="hero">
     <div class="hero-in">
