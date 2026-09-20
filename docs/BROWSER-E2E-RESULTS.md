@@ -13,9 +13,13 @@ Dokumen ini menyimpan **hasil runtime Browser E2E terbaru** yang benar-benar dij
 
 ## Status saat ini — 2026-09-20
 
-**Status: Failed**
+**Status: Failed — root cause identified and fixed in source**
 
 Fresh GitHub Actions runtime evidence terbaru: Browser E2E #403 (8 passed, 1 failed, 0 skipped, 0 flaky).
+
+Root cause pada commit yang diuji #403: `materi/view.html` memiliki literal `\\n` di dalam JavaScript setelah `setupReadingConfirmation(material.id);`. Literal tersebut membuat script detail materi tidak dapat diparse, sehingga `#head` tetap `hidden`. Ini bukan pengambilan source dari branch lama: workflow #403 checkout langsung commit `7815812487ff98778bd95af16d5c72ff2fae277c` pada branch `20-Sep-2026`.
+
+Fix: literal `\\n` dihapus dan statement dipisahkan menjadi JavaScript normal pada commit `502fdc94715126b7c73a32361b3da428af71e928`. Source sudah di-fetch ulang dan diverifikasi.
 
 ### Coverage yang telah diverifikasi
 
