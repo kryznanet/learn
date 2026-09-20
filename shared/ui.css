@@ -1870,3 +1870,216 @@ body.kx-modern .empty {
     background: var(--kx-surface-soft);
   }
 }
+
+
+/* Final visual polish — shared shell, spacing, hierarchy, responsive behavior */
+body.kx-modern {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.kx-shell {
+  isolation: isolate;
+}
+
+.kx-nav {
+  min-height: 62px;
+}
+
+.kx-brand:focus-visible,
+.kx-link:focus-visible,
+.kx-sublink:focus-visible,
+.kx-menu:focus-visible,
+.kx-theme:focus-visible,
+.kx-toggle:focus-visible {
+  position: relative;
+  z-index: 2;
+}
+
+.kx-brand-title {
+  color: var(--kx-text);
+}
+
+.kx-link,
+.kx-sublink,
+.kx-menu,
+.kx-theme,
+.kx-toggle {
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.kx-group > summary {
+  min-height: 40px;
+}
+
+.kx-group > summary.active,
+.kx-group[open] > summary {
+  color: var(--kx-primary-strong);
+}
+
+.kx-submenu {
+  min-width: 230px;
+  padding: 7px;
+  border-radius: 14px;
+}
+
+.kx-sublink {
+  min-height: 40px;
+  padding: 9px 11px;
+}
+
+.kx-page,
+.kx-page-shell {
+  padding-top: 26px;
+}
+
+.kx-pagehead {
+  padding: 2px 0;
+}
+
+.kx-card,
+.kx-stat,
+.kx-toolbar,
+.kx-table-wrap {
+  overflow: hidden;
+}
+
+.kx-cardpad {
+  padding: 20px;
+}
+
+.kx-btn {
+  min-height: 42px;
+}
+
+.kx-btn.primary,
+body.kx-modern .btn.primary,
+body.kx-modern .primary {
+  box-shadow: 0 6px 16px rgba(25, 118, 210, 0.16);
+}
+
+.kx-btn.primary:hover,
+body.kx-modern .btn.primary:hover,
+body.kx-modern .primary:hover {
+  box-shadow: 0 9px 20px rgba(25, 118, 210, 0.22);
+}
+
+.kx-table-wrap {
+  box-shadow: var(--kx-shadow);
+}
+
+.kx-table-wrap tbody tr:hover,
+body.kx-modern tbody tr:hover {
+  background: var(--kx-surface-soft);
+}
+
+.kx-footer-inner {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (max-width: 760px) {
+  .kx-nav {
+    min-height: 58px;
+  }
+
+  .kx-toggle {
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .kx-links {
+    display: none;
+    order: 4;
+    width: 100%;
+    margin: 0;
+    padding: 6px 0 10px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+  }
+
+  .kx-menu-open .kx-links {
+    display: flex;
+  }
+
+  .kx-link,
+  .kx-sublink {
+    width: 100%;
+  }
+
+  .kx-group,
+  .kx-subgroup {
+    width: 100%;
+  }
+
+  .kx-group > summary,
+  .kx-subgroup > summary {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+
+  .kx-group > .kx-submenu,
+  .kx-subgroup > .kx-submenu {
+    position: static;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    margin: 2px 0 4px 8px;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .kx-submenu-nested {
+    border-left: 2px solid var(--kx-line);
+  }
+
+  .kx-user {
+    margin-left: 0;
+  }
+
+  .kx-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kx-page,
+  .kx-page-shell {
+    padding-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kx-nav {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .kx-brand-title {
+    font-size: 13px;
+  }
+
+  .kx-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .kx-pagehead h1 {
+    font-size: 25px;
+  }
+
+  .kx-cardpad {
+    padding: 15px;
+  }
+
+  .kx-footer-links {
+    width: 100%;
+  }
+}
