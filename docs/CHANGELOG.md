@@ -311,3 +311,12 @@ Setiap commit juga wajib melalui siklus dokumentasi: **ubah → commit → verif
 - Submenu Administrasi mencakup Kelola Pengguna, Aktivitas Sistem, Import Materi, dan Pengaturan.
 - Ditambahkan indeks Riwayat Versi agar menu tidak mengarah ke halaman detail tanpa `materi.id`.
 - Tidak ada perubahan database/RLS/RBAC.
+
+
+## 20 September 2026 — Header & footer visual polish
+
+- Menyempurnakan shared header agar identitas Kryzna Learn lebih jelas melalui brand title/subtitle, spacing, active/open state, dan target klik yang konsisten.
+- Menambahkan shared footer untuk halaman yang belum memiliki footer, serta harmonisasi footer lama melalui shared/ui.css.
+- Tidak ada perubahan database, RLS, RBAC, routing, atau business logic.
+- Source commits: 174fb48a0bf8dac711e8c68f6dfcfe54e57e19a0 dan c1b6b7282b30ed9cc9935247cd861c4cb0123987.
+- Browser E2E/visual verification masih **Pending**.
