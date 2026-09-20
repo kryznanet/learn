@@ -1367,3 +1367,28 @@ Jalankan fresh Browser E2E pada branch `20-Sep-2026` untuk memverifikasi header/
 - Playwright summary: **8 passed, 1 failed, 0 skipped, 0 flaky**.
 - Runtime evidence dicatat otomatis ke `docs/BROWSER-E2E-RESULTS.md`; detail run: https://github.com/kryznanet/learn/actions/runs/35515702977.
 - Catatan ini dibuat dari artifact JSON hasil runtime, bukan dari source-level verification.
+
+
+## 🔍 Root cause Browser E2E #403 — 20 September 2026
+
+- Branch: `20-Sep-2026`.
+- Workflow #403 checkout langsung commit `7815812487ff98778bd95af16d5c72ff2fae277c` pada branch yang sama; tidak ada indikasi source diambil dari branch lama.
+- Failure hanya pada `tests/e2e/public.spec.js` test **material cards link to the public detail page**: `#head` tetap hidden; total runtime **8 passed, 1 failed**.
+- Audit source menemukan `materi/view.html` mengandung literal `\\n` di dalam JavaScript pada baris setelah `setupReadingConfirmation(material.id);`, sehingga parser JavaScript gagal sebelum `loadEngagement()` dan rendering header/content dijalankan.
+- Perbaikan terisolasi: mengubah literal `\\n` menjadi newline JavaScript normal.
+- Source commit: `502fdc94715126b7c73a32361b3da428af71e928`.
+- Source verification: `materi/view.html` berhasil di-fetch ulang dengan content SHA `8bba2d41304c419fc93470a616d122c1be9f1dbe`; diff terverifikasi hanya pada statement tersebut.
+- Tidak ada perubahan auth, role, permission, RBAC, database, RLS, RPC, atau routing.
+- Status: **Source Verified — Needs Browser Verification**.
+
+### Status pending
+
+- Browser E2E setelah fix: **Pending**; harus menggunakan fresh runtime pada commit `502fdc94715126b7c73a32361b3da428af71e928` atau commit dokumentasi turunannya.
+- `docs/BROWSER-E2E-RESULTS.md`: sudah diperbarui untuk mencatat root cause #403.
+- `docs/PROJECT-STATUS.md`: sudah diperbarui untuk checkpoint root cause/fix ini.
+- Visual Light/Dark desktop/tablet/mobile: **Needs Verification**.
+- Restore UI-to-database: **Blocked** sampai environment Supabase terisolasi tersedia.
+
+### Checkpoint berikutnya
+
+Jalankan/verifikasi fresh Browser E2E setelah source fix. Jika test detail materi lulus, lanjutkan verifikasi halaman admin/content dan visual Light + Dark. Jika masih gagal, gunakan runtime console/network evidence dan artifact Playwright.
