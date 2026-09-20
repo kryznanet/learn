@@ -400,3 +400,13 @@ Implementasi menggunakan grouped navigation pada `shared/ui.js` dan submenu resp
 - Menu **Akun** tetap tersedia pada mobile.
 - Desktop mempertahankan pola navigasi horizontal yang sudah ada.
 - Tidak ada perubahan database, RLS, RPC, role, atau permission.
+
+
+## Navigasi desktop — 20 September 2026
+
+- Dropdown desktop tidak lagi bergantung pada horizontal overflow; `.kx-links` menggunakan overflow visible agar submenu tidak terpotong.
+- Parent group diberi state visual saat terbuka sehingga konteks **CONTENT**, **ADMINISTRASI**, dan **Belajar Saya** lebih jelas.
+- Link navigasi memiliki tinggi minimum yang konsisten untuk target klik yang lebih nyaman.
+- Dropdown memiliki batas tinggi dan scroll internal bila item terlalu banyak, sehingga tidak mendorong layout halaman secara tidak terkendali.
+- Submenu tetap mempertahankan active state dan pembukaan otomatis berdasarkan halaman aktif.
+- Perubahan hanya pada shared navigation styling; tidak mengubah routing, permission, RBAC, database, atau RLS.
