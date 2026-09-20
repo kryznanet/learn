@@ -7,35 +7,100 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../supabase-config.js"></script>
   <script src="../shared/auth.js"></script>
-  <style>body.kx-modern .top{display:none}.wrap{max-width:1180px}.hero{padding:6px 0 8px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{min-height:96px;display:flex;flex-direction:column;justify-content:center}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.card{height:100%}.card .btn{margin-top:4px}.ops-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.ops-item{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff}.ops-item b{font-size:24px}.ops-item .muted{margin-top:4px}@media(max-width:900px){.grid,.ops-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.stats,.grid,.ops-grid{grid-template-columns:1fr}.wrap{padding:20px 14px}.hero h1{font-size:27px}}</style>
+  <style>
+    .wrap {
+      max-width: 1180px;
+    }
+
+    .hero {
+      padding: 6px 0 8px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stat {
+      min-height: 96px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      height: 100%;
+    }
+
+    .card .btn {
+      margin-top: 4px;
+    }
+
+    .ops-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .ops-item {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--surface, #fff);
+    }
+
+    .ops-item b {
+      font-size: 24px;
+    }
+
+    .ops-item .muted {
+      margin-top: 4px;
+    }
+
+    .load-error {
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .grid,
+      .ops-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats,
+      .grid,
+      .ops-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wrap {
+        padding: 20px 14px;
+      }
+
+      .hero h1 {
+        font-size: 27px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <div class="brand">
-      <div class="logo">K</div>
-      <div>
-        <b>Kryzna Learn</b>
-        <small>Panel Admin</small>
-      </div>
-    </div>
-    <div class="actions">
-      <a class="btn" href="../index.html">🌐 Website Publik</a>
-      <button class="btn" onclick="logout()">Keluar</button>
-    </div>
-  </header>
-
   <main class="wrap">
     <div id="app" hidden>
       <section class="hero">
         <div class="eyebrow">Administrasi</div>
         <h1>Dashboard Admin</h1>
         <p>
-          Fokus pada pengelolaan materi dan operasional konten. Pengguna dan
-          log sistem berada di panel Super Admin.
+          Fokus pada pengelolaan materi dan operasional konten.
+          Pengguna dan log sistem berada di panel Super Admin.
         </p>
       </section>
 
-      <div class="stats">
+      <section class="stats" aria-label="Ringkasan materi">
         <div class="stat">
           <b id="total">—</b>
           <span>Total materi</span>
@@ -48,14 +113,14 @@
           <b id="review">—</b>
           <span>Review</span>
         </div>
-      </div>
+      </section>
 
-      <div class="grid">
+      <section class="grid" aria-label="Fitur administrasi">
         <article class="card">
           <h2>📚 Kelola Konten / Materi</h2>
           <p>
-            Lihat, cari, edit, dan kelola status seluruh materi yang menjadi
-            tanggung jawab Admin.
+            Lihat, cari, edit, dan kelola status seluruh materi
+            yang menjadi tanggung jawab Admin.
           </p>
           <a class="btn primary" href="../content/materials.html">
             Buka Kelola Konten
@@ -65,8 +130,8 @@
         <article class="card">
           <h2>✏️ Tulis / Edit Materi</h2>
           <p>
-            Buat atau edit materi dengan editor rich text, lalu simpan sebagai
-            draft atau kirim untuk review.
+            Buat atau edit materi dengan editor rich text, lalu simpan
+            sebagai draft atau kirim untuk review.
           </p>
           <a class="btn primary" href="../content/editor.html">
             Buka Editor Materi
@@ -75,7 +140,10 @@
 
         <article class="card">
           <h2>🏷️ Kategori Materi</h2>
-          <p>Tambahkan kategori baru dan gunakan kategori tersebut saat membuat materi.</p>
+          <p>
+            Tambahkan kategori baru dan gunakan kategori tersebut
+            saat membuat materi.
+          </p>
           <a class="btn primary" href="../content/categories.html">
             Kelola Kategori
           </a>
@@ -84,56 +152,176 @@
         <article class="card">
           <h2>📥 Import Materi</h2>
           <p>
-            Masukkan materi dari DOCX atau PDF dan lanjutkan pengelolaan dari
-            workspace materi.
+            Masukkan materi dari DOCX atau PDF dan lanjutkan
+            pengelolaan dari workspace materi.
           </p>
-          <a class="btn primary" href="../admin/import.html">
+          <a class="btn primary" href="import.html">
             Buka Import Materi
           </a>
         </article>
 
         <article class="card">
-          <h2>📝 Ujian Online & Bank Soal</h2>
-          <p>Kelola kategori ujian, lihat bank soal, dan tambahkan soal pilihan ganda.</p>
-          <a class="btn primary" href="exams.html">Buka Kelola Ujian</a>
+          <h2>📝 Ujian Online &amp; Bank Soal</h2>
+          <p>
+            Kelola kategori ujian, lihat bank soal, dan tambahkan
+            soal pilihan ganda.
+          </p>
+          <a class="btn primary" href="exams.html">
+            Buka Kelola Ujian
+          </a>
         </article>
 
         <article class="card">
           <h2>📝 Riwayat Aktivitas Materi</h2>
           <p>
-            Lihat aktivitas yang berkaitan dengan pembuatan, perubahan,
-            review, publish, dan arsip materi.
+            Lihat aktivitas yang berkaitan dengan pembuatan,
+            perubahan, review, publish, dan arsip materi.
           </p>
           <a class="btn primary" href="../content/activity.html">
             Buka Riwayat Aktivitas
           </a>
         </article>
-      </div>
+      </section>
 
-      <div class="card" style="margin-top: 16px">
+      <section class="card" aria-labelledby="operationalStatsTitle">
+        <h2 id="operationalStatsTitle">📊 Statistik Operasional</h2>
+        <div class="ops-grid">
+          <div class="ops-item">
+            <b id="sUsers">—</b>
+            <div class="muted">Learner</div>
+          </div>
+          <div class="ops-item">
+            <b id="sMateri">—</b>
+            <div class="muted">Materi published</div>
+          </div>
+          <div class="ops-item">
+            <b id="sAttempts">—</b>
+            <div class="muted">Attempt ujian</div>
+          </div>
+          <div class="ops-item">
+            <b id="sPassed">—</b>
+            <div class="muted">Lulus</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Fitur learner">
+        <h2>🧩 Fitur Learner</h2>
+        <a class="btn" href="notifications.html">
+          Kelola Notifikasi
+        </a>
+        <a class="btn" href="feedback.html">
+          Review Feedback
+        </a>
+      </section>
+
+      <section id="loadError" class="card load-error" hidden>
+        <h2>Data dashboard belum dapat dimuat</h2>
+        <p class="muted">
+          Struktur dashboard berhasil dimuat, tetapi data statistik belum
+          tersedia. Silakan coba muat ulang halaman.
+        </p>
+      </section>
+
+      <section class="card" aria-label="Informasi akses">
         <div class="note">
-          🔒 Kelola Pengguna dan Riwayat Aktivitas Sistem tetap tersedia di
-          Dashboard Super Admin. Pengaturan konten tersedia melalui Kelola Konten.
+          🔒 Kelola Pengguna dan Riwayat Aktivitas Sistem tetap tersedia
+          di Dashboard Super Admin. Pengaturan konten tersedia melalui
+          Kelola Konten.
         </div>
         <a class="btn" href="index.html">
           Kembali ke Panel Super Admin
         </a>
-      </div>
+      </section>
     </div>
 
     <section id="denied" class="card denied" hidden>
       <h2>Akses ditolak</h2>
       <p class="muted">
-        Dashboard ini hanya untuk Admin aktif. Penulis dan Editor menggunakan
-        workspace materi.
+        Dashboard ini hanya untuk Admin aktif. Penulis dan Editor
+        menggunakan workspace materi.
       </p>
       <a class="btn" href="login.html">Kembali ke Login</a>
     </section>
-  <section class="card" id="statsCard"><h2>📊 Statistik Operasional</h2><div class="ops-grid"><div class="ops-item"><b id="sUsers">—</b><div class="muted">Learner</div></div><div class="ops-item"><b id="sMateri">—</b><div class="muted">Materi published</div></div><div class="ops-item"><b id="sAttempts">—</b><div class="muted">Attempt ujian</div></div><div class="ops-item"><b id="sPassed">—</b><div class="muted">Lulus</div></div></div></section><section class="card"><h2>🧩 Fitur Learner</h2><a class="btn" href="notifications.html">Kelola Notifikasi</a> <a class="btn" href="feedback.html">Review Feedback</a></section></main>
+  </main>
 
   <script>
     const db = supabaseClient;
     const $ = (id) => document.getElementById(id);
+
+    async function loadMaterialStats() {
+      const { data, error } = await db
+        .from('materi')
+        .select('id,status');
+
+      if (error) {
+        console.error('Gagal memuat statistik materi:', error);
+        return false;
+      }
+
+      const rows = data || [];
+
+      $('total').textContent = rows.length;
+      $('published').textContent = rows.filter(
+        (item) => item.status === 'published'
+      ).length;
+      $('review').textContent = rows.filter(
+        (item) => item.status === 'review'
+      ).length;
+
+      return true;
+    }
+
+    async function loadOperationalStats() {
+      const [users, materi, attempts] = await Promise.all([
+        db
+          .from('user_roles')
+          .select('user_id,roles!inner(name)', {
+            count: 'exact',
+            head: true
+          })
+          .eq('roles.name', 'user'),
+        db
+          .from('materi')
+          .select('id', {
+            count: 'exact',
+            head: true
+          })
+          .eq('status', 'published'),
+        db
+          .from('exam_attempts')
+          .select('id,passed')
+      ]);
+
+      if (users.error) {
+        console.error('Gagal memuat jumlah learner:', users.error);
+      }
+
+      if (materi.error) {
+        console.error(
+          'Gagal memuat jumlah materi published:',
+          materi.error
+        );
+      }
+
+      if (attempts.error) {
+        console.error(
+          'Gagal memuat attempt ujian:',
+          attempts.error
+        );
+      }
+
+      $('sUsers').textContent = users.error ? '—' : users.count ?? 0;
+      $('sMateri').textContent = materi.error ? '—' : materi.count ?? 0;
+
+      const attemptRows = attempts.data || [];
+      $('sAttempts').textContent = attempts.error
+        ? '—'
+        : attemptRows.length;
+      $('sPassed').textContent = attempts.error
+        ? '—'
+        : attemptRows.filter((item) => item.passed === true).length;
+    }
 
     async function boot() {
       const session = await KryznaAuth.requireRole(
@@ -156,21 +344,14 @@
 
       $('app').hidden = false;
 
-      const { data, error } = await db
-        .from('materi')
-        .select('id,status');
+      const [materialLoaded] = await Promise.all([
+        loadMaterialStats(),
+        loadOperationalStats()
+      ]);
 
-      if (error) {
-        console.warn(error);
-        return;
+      if (!materialLoaded) {
+        $('loadError').hidden = false;
       }
-
-      const rows = data || [];
-      $('total').textContent = rows.length;
-      $('published').textContent =
-        rows.filter((item) => item.status === 'published').length;
-      $('review').textContent =
-        rows.filter((item) => item.status === 'review').length;
     }
 
     window.logout = async () => {
@@ -180,5 +361,5 @@
 
     boot();
   </script>
-<script>async function loadOperationalStats(){try{const [u,m,a]=await Promise.all([supabaseClient.from("user_roles").select("user_id,roles!inner(name)",{count:"exact",head:true}).eq("roles.name","user"),supabaseClient.from("materi").select("id",{count:"exact",head:true}).eq("status","published"),supabaseClient.from("exam_attempts").select("id,passed")]);document.getElementById("sUsers").textContent=u.count??"—";document.getElementById("sMateri").textContent=m.count??"—";document.getElementById("sAttempts").textContent=(a.data||[]).length;document.getElementById("sPassed").textContent=(a.data||[]).filter(x=>x.passed===true).length}catch(e){console.error(e)}}loadOperationalStats();</script></body>
+</body>
 </html>
