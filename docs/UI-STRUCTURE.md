@@ -1,3 +1,14 @@
+## Shared visual refinement — 20 September 2026
+
+- Shared `shared/ui.css` menjadi lapisan visual biru yang lebih konsisten untuk Light dan Dark mode.
+- Token utama mencakup background, surface, surface-soft, border, text, muted text, primary, primary-strong, shadow, dan focus ring.
+- Komponen shared dan legacy yang terkena harmonisasi: header, navigation, submenu, card, statistic, toolbar/filter, form control, table, empty/loading/error/success state, sticky action, dan footer.
+- Dark mode tidak hanya mengubah background halaman, tetapi juga surface, border, input, table, button, submenu, legacy card, dan status state.
+- Pada mobile, brand subtitle disembunyikan agar header tetap ringkas; menu utama tetap menggunakan panel vertikal dan submenu bertingkat.
+- Perubahan hanya pada presentasi UI dan tidak mengubah routing, auth, permission, RBAC, database, RLS, RPC, atau business logic.
+- Status: **Implemented — Needs Browser Verification**.
+- Source commit: `d4a8ec6ab0f81b0dadd727691f8842a56ef62f54`.
+
 ## 🔧 Shared navigation duplicate-load fix — 20 September 2026
 
 - Branch: `20-Sep-2026`.
